@@ -1,27 +1,23 @@
 package wipraktikum.informationwallandroidapp;
 
+import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.GridView;
 
 
-public class MainActivity extends BaseActivity {
+public class BaseActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        GridView gridView = (GridView)findViewById(R.id.gridview);
-        gridView.setAdapter(new GridViewAdapter(this));
-
-
+        setContentView(R.layout.activity_base);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_base, menu);
         return true;
     }
 

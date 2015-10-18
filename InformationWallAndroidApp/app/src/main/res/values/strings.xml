@@ -3,4 +3,14 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_base">BaseActivity</string>
+
+    <!--- GridViewLongClickDialog  -->
+    <string name="small">Klein</string>
+    <string name="middle">Mittel</string>
+    <string name="big">Groß</string>
+
+    <string name="switch_showItem">Anzeigen:</string>
+
+
 </resources>

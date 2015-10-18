@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <Switch
+        android:id="@+id/switch_showItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/switch_showItem"/>
+
+<RadioGroup
+    android:id="@+id/radioGroup_itemSize"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp" >
+
+
+    <RadioButton 
+        android:id="@+id/radioButton_itemSizeSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/small" />
+
+    <RadioButton 
+        android:id="@+id/radioButton_itemSizeMiddle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/middle" />
+
+    <RadioButton 
+        android:id="@+id/radioButton_itemSizeBig"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/big" />
+</RadioGroup>
+
+
+
+</LinearLayout>
