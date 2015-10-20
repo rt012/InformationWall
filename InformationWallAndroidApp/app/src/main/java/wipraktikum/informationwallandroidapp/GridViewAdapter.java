@@ -23,12 +23,9 @@ public final class GridViewAdapter extends BaseAdapter {
         this.context = context;
         mInflater = LayoutInflater.from(context);
 
-        mItems.add(new Item("Red",       R.drawable.red, MainActivity.class));
-        mItems.add(new Item("Magenta",   R.drawable.magenta,  MainActivity.class));
-        mItems.add(new Item("Dark Gray", R.drawable.orange,  MainActivity.class));
-        mItems.add(new Item("Gray",      R.drawable.red, MainActivity.class));
-        mItems.add(new Item("Green",     R.drawable.green, MainActivity.class));
-        mItems.add(new Item("Cyan",      R.drawable.magenta, MainActivity.class));
+        mItems.add(new Item("Example Tile 1",       R.drawable.slide_1, MainActivity.class));
+        mItems.add(new Item("Example Tile 2",   R.drawable.slide_2,  MainActivity.class));
+        mItems.add(new Item("Example Tile 3", R.drawable.slide_3,  MainActivity.class));
     }
 
     @Override
@@ -66,14 +63,14 @@ public final class GridViewAdapter extends BaseAdapter {
         picture.setImageResource(item.drawableId);
         name.setText(item.name);
 
-        v.setOnClickListener(new View.OnClickListener() {
+        picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                context.startActivity(new Intent(context, item.screen));
+               context.startActivity(new Intent(context, item.screen));
             }
         });
 
-        v.setOnLongClickListener(new View.OnLongClickListener() {
+        picture.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 new GridViewLongClickDialog().show(context.getSupportFragmentManager(), "GridViewLongClickDialog");
