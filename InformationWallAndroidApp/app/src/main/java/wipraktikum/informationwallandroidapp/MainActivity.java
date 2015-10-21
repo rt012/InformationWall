@@ -13,9 +13,8 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         GridView gridView = (GridView)findViewById(R.id.gridview);
+
         gridView.setAdapter(new GridViewAdapter(this));
-
-
     }
 
     @Override
