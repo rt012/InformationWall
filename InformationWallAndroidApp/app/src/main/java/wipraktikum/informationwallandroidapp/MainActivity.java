@@ -5,6 +5,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.GridView;
 
+import wipraktikum.informationwallandroidapp.Database.InformationWallDbHelper;
+
 
 public class MainActivity extends BaseActivity {
 
@@ -15,6 +17,9 @@ public class MainActivity extends BaseActivity {
         GridView gridView = (GridView)findViewById(R.id.gridview);
 
         gridView.setAdapter(new GridViewAdapter(this));
+
+        //Set Up Datebase
+        InformationWallDbHelper informationWallDbHelper = new InformationWallDbHelper(this);
     }
 
     @Override

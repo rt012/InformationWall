@@ -7,7 +7,7 @@
 
     <!--- GridViewLongClickDialog  -->
     <string name="small">Small</string>
-    <string name="middle">Middel</string>
+    <string name="middle">Middle</string>
     <string name="big">Big</string>
     <string name="cancelDialog">Cancel</string>
     <string name="acceptDialog">Ok</string>

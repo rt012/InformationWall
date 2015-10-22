@@ -82,13 +82,18 @@ public final class GridViewAdapter extends BaseAdapter {
                 Bundle args = new Bundle();
                 args.putString("tileTitle", tile.getName());
                 args.putBoolean("isActivated", tile.getIsActivated());
+                args.putInt("radioButtonPos", tile.getTileSize().getValue());
 
                 // Open LongClickDialog
                 GridViewLongClickDialog gridViewLongClickDialog = new GridViewLongClickDialog();
+                gridViewLongClickDialog.setArguments(args);
+                gridViewLongClickDialog.show(context.getSupportFragmentManager(), "GridViewLongClickDialog");
+
+                // Listeners
                 gridViewLongClickDialog.setOnSwitchChangeListener(new GridViewLongClickDialog.OnSwitchChangeListener() {
                     @Override
                     public void onSwitchChanged(boolean isChecked) {
-                        Log.i("FragmentAlertDialog", "Test");
+                        Log.i("GridViewAdapter", "Send message to Webserver - Tile activated");
                         if (isChecked) {
                             mRelativeLayout.setVisibility(View.VISIBLE);
                             tile.setIsActivated(true);
@@ -98,8 +103,13 @@ public final class GridViewAdapter extends BaseAdapter {
                         }
                     }
                 });
-                gridViewLongClickDialog.setArguments(args);
-                gridViewLongClickDialog.show(context.getSupportFragmentManager(), "GridViewLongClickDialog");
+                gridViewLongClickDialog.setOnRadioButtonChangeListener(new GridViewLongClickDialog.OnRadioButtonChangeListener() {
+                    @Override
+                    public void onRadioButtonChanged(int radioButtonPos) {
+                        Log.i("GridViewAdapter", "Send message to Webserver - Tile changed Size");
+                        tile.setTileSize(EnumTileSize.fromInt(radioButtonPos));
+                    }
+                });
 
                 return false;
             }

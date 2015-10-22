@@ -21,7 +21,9 @@ public class GridViewLongClickDialog extends DialogFragment {
     private RadioGroup radioGroup;
     private Switch switchActivate;
 
+    // Listener
     private OnSwitchChangeListener mOnSwitchChangeListener;
+    private OnRadioButtonChangeListener mOnRadioButtonChangeListener;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -32,21 +34,32 @@ public class GridViewLongClickDialog extends DialogFragment {
         // Get arguments
         String tileTitle = getArguments().getString("tileTitle");
         Boolean isActivated = getArguments().getBoolean("isActivated");
+        int radioButtonPos = getArguments().getInt("radioButtonPos");
 
         // Inflate and set the layouts for the dialog
-        View customDialogView = inflater.inflate(R.layout.dialog_gridviewlongclick, null);
+        final View customDialogView = inflater.inflate(R.layout.dialog_gridviewlongclick, null);
         View customDialogTitle = inflater.inflate(R.layout.dialog_gridviewlongclick_title, null);
 
         RadioGroup radioGroupSize = (RadioGroup) customDialogView.findViewById(R.id.radioGroup_itemSize);
 
         Switch switchActivate = (Switch) customDialogTitle.findViewById(R.id.switch_showItem);
         TextView titleText = (TextView) customDialogTitle.findViewById(R.id.dialogTitleText);
+        RadioGroup radioGroupItemSize = (RadioGroup) customDialogView.findViewById(R.id.radioGroup_itemSize);
 
         //Use Arguments to configure Dialog (Title, RadioButton, Activated)
         titleText.setText(tileTitle);
         switchActivate.setChecked(isActivated);
+        radioGroupItemSize.check(radioGroupItemSize.getChildAt(radioButtonPos).getId());
 
         // Define Click handler for views
+        radioGroupItemSize.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int radioButtonViewID) {
+                if(mOnRadioButtonChangeListener != null){
+                    mOnRadioButtonChangeListener.onRadioButtonChanged(radioGroup.indexOfChild(customDialogView.findViewById(radioButtonViewID)));
+                }
+            }
+        });
         switchActivate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
@@ -80,5 +93,13 @@ public class GridViewLongClickDialog extends DialogFragment {
 
     public interface OnSwitchChangeListener{
         public void onSwitchChanged(boolean isChecked);
+    }
+
+    public void setOnRadioButtonChangeListener(OnRadioButtonChangeListener onRadioButtonChangeListener){
+        mOnRadioButtonChangeListener = onRadioButtonChangeListener;
+    }
+
+    public interface OnRadioButtonChangeListener{
+        public void onRadioButtonChanged(int radioButtonPos);
     }
 }

@@ -4,15 +4,17 @@ package wipraktikum.informationwallandroidapp;
  * Created by Eric Schmidt on 21.10.2015.
  */
 public class Tile {
-    public final String mName;
-    public final int mDrawableId;
-    public final Class mScreen;
-    public boolean mIsActivated = false;
+    private final String mName;
+    private final int mDrawableId;
+    private final Class mScreen;
+    private boolean mIsActivated = false;
+    private EnumTileSize mTileSize;
 
     Tile(String name, int drawableId, Class screen) {
         this.mName = name;
         this.mDrawableId = drawableId;
         this.mScreen = screen;
+        this.mTileSize = EnumTileSize.SMALL;
     }
 
     public void setIsActivated(boolean isActivated){
@@ -23,10 +25,17 @@ public class Tile {
         return mIsActivated;
     }
 
+    public EnumTileSize getTileSize() {
+        return mTileSize;
+    }
+
+    public void setTileSize(EnumTileSize mTileSize) {
+        this.mTileSize = mTileSize;
+    }
+
     public int getDrawableId() {
         return mDrawableId;
     }
-
 
     public Class getScreen() {
         return mScreen;
