@@ -11,6 +11,7 @@ import com.j256.ormlite.dao.Dao;
 import java.sql.SQLException;
 
 import wipraktikum.informationwallandroidapp.Database.InformationWallORMHelper;
+import wipraktikum.informationwallandroidapp.HttpConnection.HttpConnectionPhp;
 
 
 public class MainActivity extends BaseActivity {
@@ -28,6 +29,8 @@ public class MainActivity extends BaseActivity {
         }
 
         gridView.setAdapter(new GridViewAdapter(this));
+
+        HttpConnectionPhp test = new HttpConnectionPhp();
     }
 
     @Override
