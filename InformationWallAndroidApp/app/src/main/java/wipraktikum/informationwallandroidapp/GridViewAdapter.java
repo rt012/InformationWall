@@ -11,24 +11,36 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.j256.ormlite.dao.Dao;
+
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import wipraktikum.informationwallandroidapp.Database.InformationWallORMHelper;
 
 /**
  * Created by Remi on 18.10.2015.
  */
 public final class GridViewAdapter extends BaseAdapter {
     private final BaseActivity context;
-    private final List<Tile> mTiles = new ArrayList<Tile>();
     private final LayoutInflater mInflater;
+    private List<Tile> mTiles = new ArrayList<Tile>();
+    private Dao<Tile, Long> tileDAO = null;
 
     public GridViewAdapter(BaseActivity context) {
         this.context = context;
         mInflater = LayoutInflater.from(context);
 
-        mTiles.add(new Tile("Example Tile 1", R.drawable.slide_1, MainActivity.class));
-        mTiles.add(new Tile("Example Tile 2", R.drawable.slide_2,  MainActivity.class));
-        mTiles.add(new Tile("Example Tile 3", R.drawable.slide_3,  MainActivity.class));
+        // Get tiles from database
+        try {
+            tileDAO = OpenHelperManager.getHelper(context,
+                    InformationWallORMHelper.class).getTileDAO();
+            mTiles = tileDAO.queryForAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -71,7 +83,11 @@ public final class GridViewAdapter extends BaseAdapter {
         picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               context.startActivity(new Intent(context, tile.getScreen()));
+                try {
+                    context.startActivity(new Intent(context, Class.forName(tile.getScreen())));
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -82,7 +98,7 @@ public final class GridViewAdapter extends BaseAdapter {
                 Bundle args = new Bundle();
                 args.putString("tileTitle", tile.getName());
                 args.putBoolean("isActivated", tile.getIsActivated());
-                args.putInt("radioButtonPos", tile.getTileSize().getValue());
+                args.putInt("radioButtonPos", tile.getTileSize().ordinal());
 
                 // Open LongClickDialog
                 GridViewLongClickDialog gridViewLongClickDialog = new GridViewLongClickDialog();
@@ -99,15 +115,17 @@ public final class GridViewAdapter extends BaseAdapter {
                             tile.setIsActivated(true);
                         } else {
                             mRelativeLayout.setVisibility(View.GONE);
-                            tile.setIsActivated(true);
+                            tile.setIsActivated(false);
                         }
+                        updateTile(tile);
                     }
                 });
                 gridViewLongClickDialog.setOnRadioButtonChangeListener(new GridViewLongClickDialog.OnRadioButtonChangeListener() {
                     @Override
                     public void onRadioButtonChanged(int radioButtonPos) {
                         Log.i("GridViewAdapter", "Send message to Webserver - Tile changed Size");
-                        tile.setTileSize(EnumTileSize.fromInt(radioButtonPos));
+                        tile.setTileSize(Tile.EnumTileSize.values()[radioButtonPos]);
+                        updateTile(tile);
                     }
                 });
 
@@ -116,6 +134,17 @@ public final class GridViewAdapter extends BaseAdapter {
         });
 
         return v;
+    }
+
+    private void updateTile(Tile tile){
+        // Update tile in database
+        if (tileDAO != null) {
+            try {
+                tileDAO.update(tile);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
 

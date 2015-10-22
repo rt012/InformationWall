@@ -5,7 +5,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.GridView;
 
-import wipraktikum.informationwallandroidapp.Database.InformationWallDbHelper;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.j256.ormlite.dao.Dao;
+
+import java.sql.SQLException;
+
+import wipraktikum.informationwallandroidapp.Database.InformationWallORMHelper;
 
 
 public class MainActivity extends BaseActivity {
@@ -16,10 +21,13 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         GridView gridView = (GridView)findViewById(R.id.gridview);
 
-        gridView.setAdapter(new GridViewAdapter(this));
+        try {
+            insertTestData();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-        //Set Up Datebase
-        InformationWallDbHelper informationWallDbHelper = new InformationWallDbHelper(this);
+        gridView.setAdapter(new GridViewAdapter(this));
     }
 
     @Override
@@ -42,5 +50,19 @@ public class MainActivity extends BaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Testing out the TodoOrmLiteExample app by creating some Todo entries in the database,
+     * and querying for all the Todo object from the todo table.
+     * @throws SQLException
+     */
+    private void insertTestData() throws SQLException {
+        InformationWallORMHelper informationWallORMHelper = OpenHelperManager.getHelper(this,
+                InformationWallORMHelper.class);
+        Dao<Tile, Long> tileDao = informationWallORMHelper.getTileDAO();
+        tileDao.createIfNotExists(new Tile(1, "Example Tile 1", R.drawable.slide_1, MainActivity.class.getName()));
+        tileDao.createIfNotExists(new Tile(2, "Example Tile 2", R.drawable.slide_2, MainActivity.class.getName()));
+        tileDao.createIfNotExists(new Tile(3, "Example Tile 3", R.drawable.slide_3, MainActivity.class.getName()));
     }
 }

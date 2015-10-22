@@ -1,16 +1,31 @@
 package wipraktikum.informationwallandroidapp;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 /**
  * Created by Eric Schmidt on 21.10.2015.
  */
+@DatabaseTable(tableName = "tile")
 public class Tile {
-    private final String mName;
-    private final int mDrawableId;
-    private final Class mScreen;
+    @DatabaseField(generatedId = true)
+    private long mTileID;
+    @DatabaseField(unique = true)
+    private String mName;
+    @DatabaseField
+    private int mDrawableId;
+    @DatabaseField
+    private String mScreen;
+    @DatabaseField
     private boolean mIsActivated = false;
+    //@DatabaseField(foreign = true)
+    @DatabaseField
     private EnumTileSize mTileSize;
 
-    Tile(String name, int drawableId, Class screen) {
+    Tile(){}
+
+    Tile(long tileID, String name, int drawableId, String screen) {
+        this.mTileID = tileID;
         this.mName = name;
         this.mDrawableId = drawableId;
         this.mScreen = screen;
@@ -37,11 +52,15 @@ public class Tile {
         return mDrawableId;
     }
 
-    public Class getScreen() {
+    public String getScreen() {
         return mScreen;
     }
 
     public String getName() {
         return mName;
+    }
+
+    public enum EnumTileSize {
+        SMALL, MIDDLE, BIG;
     }
 }

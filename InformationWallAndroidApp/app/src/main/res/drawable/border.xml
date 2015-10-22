@@ -66,9 +66,9 @@
             <shape android:shape="rectangle" >
                 <stroke
                     android:width="10dp"
-                    android:color="#FF9100" />
+                    android:color="@color/activate" />
 
-                <solid android:color="#FF9100" />
+                <solid android:color="@color/activate" />
             </shape>
         </rotate>
     </item>
@@ -78,7 +78,7 @@
             android:shape="rectangle">
             <stroke
                 android:width="5dip"
-                android:color="#FF9100" />
+                android:color="@color/activate" />
         </shape>
     </item>
 </layer-list>
