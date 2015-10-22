@@ -77,6 +77,12 @@ public final class GridViewAdapter extends BaseAdapter {
 
         final Tile tile = getItem(i);
 
+        if(tile.getIsActivated()) {
+            mRelativeLayout.setVisibility(View.VISIBLE);
+        } else {
+            mRelativeLayout.setVisibility(View.GONE);
+        }
+
         picture.setImageResource(tile.getDrawableId());
         name.setText(tile.getName());
 
