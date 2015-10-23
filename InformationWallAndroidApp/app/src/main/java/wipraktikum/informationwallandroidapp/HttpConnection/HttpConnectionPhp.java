@@ -2,11 +2,16 @@ package wipraktikum.informationwallandroidapp.HttpConnection;
 
 import android.os.AsyncTask;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 
 /**
  * Created by Eric Schmidt on 22.10.2015.
@@ -20,35 +25,31 @@ public class HttpConnectionPhp
     private class DownloadFilesTask extends AsyncTask<Void, Integer, Long> {
         @Override
         protected Long doInBackground(Void... voids) {
+            // Create a new HttpClient and Post Header
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost httppost = new HttpPost("http://192.168.0.17/test.php");
+
             try {
-                URL targetURL = new URL("http://lerain.tode.cz/s.php");
-                HttpURLConnection conn = (HttpURLConnection) targetURL.openConnection();
-                //data send via POST request
-                String data = "test=someData";
-                conn.setDoOutput(true);
-                conn.setInstanceFollowRedirects(true);
-                conn.setRequestMethod("POST");
-                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                conn.setRequestProperty("charset", "UTF-8");
-                ((HttpURLConnection) conn).setFixedLengthStreamingMode(data.length());
+                // Add your data
+                JSONObject obj = new JSONObject();
+                obj.put("name", "mkyong.com");
+                httppost.addHeader("content-type", "application/x-www-form-urlencoded");
 
-                conn.setUseCaches(false);
-                try (OutputStreamWriter out = new OutputStreamWriter(
-                        conn.getOutputStream())) {
-                    out.write(data);
-                }
+                StringEntity requestEntity = new StringEntity(
+                        "json="+obj.toString());
+                httppost.setEntity(requestEntity);
 
-                //reading code after POST request (here I want to have value from "test" field
-                try (BufferedReader in = new BufferedReader(new InputStreamReader(
-                        conn.getInputStream()))) {
-                    String currentLine;
-                    while ((currentLine = in.readLine()) != null) {
-                        System.out.println(currentLine);
-                    }
-                }
-            }catch(Exception e){
+                // Execute HTTP Post Request
+                HttpResponse response = httpclient.execute(httppost);
+
+            } catch (ClientProtocolException e) {
+                // TODO Auto-generated catch block
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
+
 
             return null;
         }
