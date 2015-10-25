@@ -1,4 +1,4 @@
-package wipraktikum.informationwallandroidapp;
+package wipraktikum.informationwallandroidapp.TileOverview;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -12,6 +12,8 @@ import android.widget.CompoundButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
+
+import wipraktikum.informationwallandroidapp.R;
 
 /**
  * Created by Remi on 18.10.2015.

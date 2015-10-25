@@ -10,7 +10,8 @@ import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
 
-import wipraktikum.informationwallandroidapp.Tile;
+import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
+import wipraktikum.informationwallandroidapp.BusinessObject.Tile;
 
 /**
  * Created by Eric Schmidt on 22.10.2015.
@@ -23,6 +24,7 @@ public class InformationWallORMHelper extends OrmLiteSqliteOpenHelper{
      * The data access object used to interact with the Sqlite database to do C.R.U.D operations.
      */
     private Dao<Tile, Long> tileDAO;
+    private Dao<BlackBoardItem, Long> blackBoardItemDAO;
 
     public InformationWallORMHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -71,6 +73,22 @@ public class InformationWallORMHelper extends OrmLiteSqliteOpenHelper{
             e.printStackTrace();
         }
         return tileDAO;
+    }
+
+    /**
+     * Returns an instance of the BlackBoardItem data access object
+     * @return
+     * @throws SQLException
+     */
+    public Dao<BlackBoardItem, Long> getBlackBoardItemDAO() throws SQLException {
+        try {
+            if (blackBoardItemDAO == null) {
+                blackBoardItemDAO = getDao(BlackBoardItem.class);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return blackBoardItemDAO;
     }
 
 }

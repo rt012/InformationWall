@@ -15,6 +15,9 @@
     <string name="title">Current Tile</string>
 
     <string name="dialog_fire_missiles">Test</string>
+    <string name="title_activity_black_board">BlackBoard</string>
 
-
+    <!--- BlackBoard  -->
+    <string name="black_board_attachment">Attachment</string>
+    <string name="black_board_description">Description</string>
 </resources>

@@ -1,4 +1,4 @@
-package wipraktikum.informationwallandroidapp;
+package wipraktikum.informationwallandroidapp.BusinessObject;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -24,7 +24,7 @@ public class Tile {
 
     Tile(){}
 
-    Tile(long tileID, String name, int drawableId, String screen) {
+    public Tile(long tileID, String name, int drawableId, String screen) {
         this.mTileID = tileID;
         this.mName = name;
         this.mDrawableId = drawableId;

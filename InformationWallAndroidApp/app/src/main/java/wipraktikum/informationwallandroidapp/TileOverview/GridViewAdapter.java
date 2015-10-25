@@ -1,4 +1,4 @@
-package wipraktikum.informationwallandroidapp;
+package wipraktikum.informationwallandroidapp.TileOverview;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,7 +18,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import wipraktikum.informationwallandroidapp.BaseActivity;
+import wipraktikum.informationwallandroidapp.BusinessObject.Tile;
 import wipraktikum.informationwallandroidapp.Database.InformationWallORMHelper;
+import wipraktikum.informationwallandroidapp.R;
 
 /**
  * Created by Remi on 18.10.2015.

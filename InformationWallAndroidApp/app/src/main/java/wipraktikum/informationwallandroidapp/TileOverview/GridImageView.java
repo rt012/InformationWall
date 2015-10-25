@@ -1,4 +1,4 @@
-package wipraktikum.informationwallandroidapp;
+package wipraktikum.informationwallandroidapp.TileOverview;
 
 import android.content.Context;
 import android.util.AttributeSet;

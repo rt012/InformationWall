@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:padding="5dp">
 
-    <wipraktikum.informationwallandroidapp.GridImageView
+    <wipraktikum.informationwallandroidapp.TileOverview.GridImageView
         android:id="@+id/picture"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

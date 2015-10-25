@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <item name="blue" type="color">#163F50</item>
-    <item name="activate" type="color">#FF9100</item>
-    #FF9100
+    <item name="ci_color" type="color">#163f50</item>
 </resources>
