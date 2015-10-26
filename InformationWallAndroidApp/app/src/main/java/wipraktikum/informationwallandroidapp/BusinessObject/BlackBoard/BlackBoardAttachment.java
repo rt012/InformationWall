@@ -16,6 +16,8 @@ public class BlackBoardAttachment {
     private String mDeviceDataPath;
     @DatabaseField
     private String mDataType;
+    @DatabaseField(canBeNull = true, foreign = true)
+    private BlackBoardItem mBlackBoardItem;
 
     BlackBoardAttachment(){};
 

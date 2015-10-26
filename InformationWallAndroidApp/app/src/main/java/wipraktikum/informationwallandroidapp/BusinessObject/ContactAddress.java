@@ -8,16 +8,6 @@ import com.j256.ormlite.table.DatabaseTable;
  */
 @DatabaseTable(tableName = "contactAddress")
 public class ContactAddress {
-    ContactAddress(){};
-
-    public ContactAddress(long mContactAddressID, String mStreetName, String mHouseNumber, String mZipCode, String mCity) {
-        this.mContactAddressID = mContactAddressID;
-        this.mStreetName = mStreetName;
-        this.mHouseNumber = mHouseNumber;
-        this.mZipCode = mZipCode;
-        this.mCity = mCity;
-    }
-
     @DatabaseField(generatedId = true)
     private long mContactAddressID;
     @DatabaseField
@@ -28,6 +18,16 @@ public class ContactAddress {
     private String mZipCode;
     @DatabaseField
     private String mCity;
+
+    ContactAddress(){};
+
+    public ContactAddress(long mContactAddressID, String mStreetName, String mHouseNumber, String mZipCode, String mCity) {
+        this.mContactAddressID = mContactAddressID;
+        this.mStreetName = mStreetName;
+        this.mHouseNumber = mHouseNumber;
+        this.mZipCode = mZipCode;
+        this.mCity = mCity;
+    }
 
 
 }

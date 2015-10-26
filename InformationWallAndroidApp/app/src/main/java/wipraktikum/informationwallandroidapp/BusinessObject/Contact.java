@@ -8,18 +8,6 @@ import com.j256.ormlite.table.DatabaseTable;
  */
 @DatabaseTable(tableName = "contact")
 public class Contact {
-    Contact(){};
-
-    public Contact(long mContactID, String mCompany, String mTelephone, String mEMailAddress, String mName, String mSurname, ContactAddress mContactAddress) {
-        this.mContactAddress = mContactAddress;
-        this.mCompany = mCompany;
-        this.mTelephone = mTelephone;
-        this.mEMailAddress = mEMailAddress;
-        this.mName = mName;
-        this.mSurname = mSurname;
-        this.mContactID = mContactID;
-    }
-
     @DatabaseField(generatedId = true)
     private long mContactID;
     @DatabaseField
@@ -32,6 +20,18 @@ public class Contact {
     private String mTelephone;
     @DatabaseField
     private String mCompany;
-    @DatabaseField
+    @DatabaseField(foreign = true)
     public ContactAddress mContactAddress;
+
+    Contact(){};
+
+    public Contact(long mContactID, String mCompany, String mTelephone, String mEMailAddress, String mName, String mSurname, ContactAddress mContactAddress) {
+        this.mContactAddress = mContactAddress;
+        this.mCompany = mCompany;
+        this.mTelephone = mTelephone;
+        this.mEMailAddress = mEMailAddress;
+        this.mName = mName;
+        this.mSurname = mSurname;
+        this.mContactID = mContactID;
+    }
 }

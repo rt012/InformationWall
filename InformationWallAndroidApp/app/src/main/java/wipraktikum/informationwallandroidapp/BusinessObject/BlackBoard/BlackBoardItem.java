@@ -1,10 +1,11 @@
 package wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard;
 
-import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 import wipraktikum.informationwallandroidapp.BusinessObject.Contact;
@@ -18,12 +19,12 @@ public class BlackBoardItem {
     private long mBlackBoardItemID;
     @DatabaseField
     private String mTitle;
-    @DatabaseField
+    @DatabaseField(foreign = true)
     private Contact mContact;
     @DatabaseField
     private String mDescriptionText;
-    @DatabaseField (dataType= DataType.SERIALIZABLE)
-    private ArrayList<BlackBoardAttachment> mBlackBoardAttachment;
+    @ForeignCollectionField(eager= true)
+    private Collection<BlackBoardAttachment> mBlackBoardAttachment = new ArrayList<BlackBoardAttachment>();
     @DatabaseField
     private Date mCreatedTimestamp;
     @DatabaseField
@@ -31,7 +32,7 @@ public class BlackBoardItem {
 
     BlackBoardItem(){};
 
-    public BlackBoardItem(long mBlackBoardItemID, String mTitle, Contact mContact, String mDescriptionText, ArrayList<BlackBoardAttachment> mBlackBoardAttachment, Date mCreatedTimestamp, Date mEditedTimestamp) {
+    public BlackBoardItem(long mBlackBoardItemID, String mTitle, Contact mContact, String mDescriptionText, Collection<BlackBoardAttachment> mBlackBoardAttachment, Date mCreatedTimestamp, Date mEditedTimestamp) {
         this.mBlackBoardItemID = mBlackBoardItemID;
         this.mTitle = mTitle;
         this.mContact = mContact;

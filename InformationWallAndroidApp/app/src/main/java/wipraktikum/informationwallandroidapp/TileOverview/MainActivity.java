@@ -10,6 +10,7 @@ import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 import wipraktikum.informationwallandroidapp.BaseActivity;
@@ -79,7 +80,7 @@ public class MainActivity extends BaseActivity {
         tileDao.createIfNotExists(new Tile(3, "Example Tile 3", R.drawable.slide_3, MainActivity.class.getName()));
 
         Dao<BlackBoardItem, Long> blackBoardItemsDAO = informationWallORMHelper.getBlackBoardItemDAO();
-        ArrayList<BlackBoardAttachment> attachmentList = new ArrayList<BlackBoardAttachment>();
+        Collection<BlackBoardAttachment> attachmentList = new ArrayList<BlackBoardAttachment>();
         attachmentList.add(new BlackBoardAttachment(0, "http://localhost/imagestore/test.pdf", "C://temp/test/test.pdf", "PDF"));
         attachmentList.add(new BlackBoardAttachment(1, "http://localhost/imagestore/test.pdf", "C://temp/test/test.pdf", "PDF"));
         attachmentList.add(new BlackBoardAttachment(2, "http://localhost/imagestore/test.pdf", "C://temp/test/test.pdf", "PDF"));
