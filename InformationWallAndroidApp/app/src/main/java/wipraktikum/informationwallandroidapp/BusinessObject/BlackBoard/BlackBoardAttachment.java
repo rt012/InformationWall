@@ -9,7 +9,7 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "blackBoardAttachment")
 public class BlackBoardAttachment {
     @DatabaseField(generatedId = true)
-    private long mBlackBoardItemID;
+    private long mBlackBoardAttachmentID;
     @DatabaseField
     private String mRemoteDataPath;
     @DatabaseField
@@ -21,8 +21,8 @@ public class BlackBoardAttachment {
 
     BlackBoardAttachment(){};
 
-    public BlackBoardAttachment(long mBlackBoardItemID, String mRemoteDataPath, String mDeviceDataPath, String mDataType) {
-        this.mBlackBoardItemID = mBlackBoardItemID;
+    public BlackBoardAttachment(long mBlackBoardAttachmentID, String mRemoteDataPath, String mDeviceDataPath, String mDataType) {
+        this.mBlackBoardAttachmentID = mBlackBoardAttachmentID;
         this.mRemoteDataPath = mRemoteDataPath;
         this.mDeviceDataPath = mDeviceDataPath;
         this.mDataType = mDataType;

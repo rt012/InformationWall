@@ -7,7 +7,7 @@ import com.j256.ormlite.table.DatabaseTable;
  * Created by Eric Schmidt on 25.10.2015.
  */
 @DatabaseTable(tableName = "contactAddress")
-public class ContactAddress {
+public class ContactAdress {
     @DatabaseField(generatedId = true)
     private long mContactAddressID;
     @DatabaseField
@@ -19,9 +19,9 @@ public class ContactAddress {
     @DatabaseField
     private String mCity;
 
-    ContactAddress(){};
+    ContactAdress(){};
 
-    public ContactAddress(long mContactAddressID, String mStreetName, String mHouseNumber, String mZipCode, String mCity) {
+    public ContactAdress(long mContactAddressID, String mStreetName, String mHouseNumber, String mZipCode, String mCity) {
         this.mContactAddressID = mContactAddressID;
         this.mStreetName = mStreetName;
         this.mHouseNumber = mHouseNumber;

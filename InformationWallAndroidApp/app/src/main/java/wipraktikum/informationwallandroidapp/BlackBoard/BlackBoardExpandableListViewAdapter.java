@@ -42,12 +42,12 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
     }
     @Override
     public int getGroupCount() {
-        return 0;
+        return mBlackBoardItems.size();
     }
 
     @Override
     public int getChildrenCount(int i) {
-        return 0;
+        return 1;
     }
 
     @Override

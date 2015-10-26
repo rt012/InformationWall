@@ -10,7 +10,10 @@ import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
 
+import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardAttachment;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
+import wipraktikum.informationwallandroidapp.BusinessObject.Contact;
+import wipraktikum.informationwallandroidapp.BusinessObject.ContactAdress;
 import wipraktikum.informationwallandroidapp.BusinessObject.Tile;
 
 /**
@@ -25,6 +28,9 @@ public class InformationWallORMHelper extends OrmLiteSqliteOpenHelper{
      */
     private Dao<Tile, Long> tileDAO;
     private Dao<BlackBoardItem, Long> blackBoardItemDAO;
+    private Dao<BlackBoardAttachment, Long> blackBoardAttachmentDAO;
+    private Dao<Contact, Long> contactDAO;
+    private Dao<ContactAdress, Long> contactAdressDAO;
 
     public InformationWallORMHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -38,6 +44,10 @@ public class InformationWallORMHelper extends OrmLiteSqliteOpenHelper{
              * creates the Todo database table
              */
             TableUtils.createTable(connectionSource, Tile.class);
+            TableUtils.createTable(connectionSource, BlackBoardItem.class);
+            TableUtils.createTable(connectionSource, BlackBoardAttachment.class);
+            TableUtils.createTable(connectionSource, Contact.class);
+            TableUtils.createTable(connectionSource, ContactAdress.class);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -52,6 +62,10 @@ public class InformationWallORMHelper extends OrmLiteSqliteOpenHelper{
              * Recreates the database when onUpgrade is called by the framework
              */
             TableUtils.dropTable(connectionSource, Tile.class, false);
+            TableUtils.dropTable(connectionSource, BlackBoardItem.class, false);
+            TableUtils.dropTable(connectionSource, BlackBoardAttachment.class, false);
+            TableUtils.dropTable(connectionSource, Contact.class, false);
+            TableUtils.dropTable(connectionSource, ContactAdress.class, false);
             onCreate(database, connectionSource);
 
         } catch (SQLException e) {
@@ -89,6 +103,44 @@ public class InformationWallORMHelper extends OrmLiteSqliteOpenHelper{
             e.printStackTrace();
         }
         return blackBoardItemDAO;
+    }
+
+    /**
+     *
+     * @return
+     * @throws SQLException
+     */
+    public Dao<BlackBoardAttachment, Long> getBlackBoardAttachmentDAO() throws SQLException {
+        try {
+            if (blackBoardAttachmentDAO == null) {
+                blackBoardAttachmentDAO = getDao(BlackBoardAttachment.class);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return blackBoardAttachmentDAO;
+    }
+
+    public Dao<Contact, Long> getContactDAO() throws SQLException {
+        try {
+            if (contactDAO == null) {
+                contactDAO = getDao(Contact.class);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return contactDAO;
+    }
+
+    public Dao<ContactAdress, Long> getContactAdressDAO() throws SQLException {
+        try {
+            if (contactAdressDAO == null) {
+                contactAdressDAO = getDao(ContactAdress.class);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return contactAdressDAO;
     }
 
 }

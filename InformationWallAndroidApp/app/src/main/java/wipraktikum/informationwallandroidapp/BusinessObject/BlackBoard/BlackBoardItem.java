@@ -1,14 +1,17 @@
 package wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard;
 
+import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
 import wipraktikum.informationwallandroidapp.BusinessObject.Contact;
+import wipraktikum.informationwallandroidapp.InfoWallApplication;
 
 /**
  * Created by Eric Schmidt on 25.10.2015.
@@ -57,5 +60,13 @@ public class BlackBoardItem {
 
     public void setDescriptionText(String mDescriptionText) {
         this.mDescriptionText = mDescriptionText;
+    }
+
+    public void setmBlackBoardAttachment(Collection<BlackBoardAttachment> attachments) throws SQLException {
+        if (attachments == null) {
+            Dao<BlackBoardItem, Long> dao = InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardItemDAO();
+            this.mBlackBoardAttachment = dao.getEmptyForeignCollection("mBlackBoardAttachment");
+        }
+        this.mBlackBoardAttachment.addAll(attachments);
     }
 }

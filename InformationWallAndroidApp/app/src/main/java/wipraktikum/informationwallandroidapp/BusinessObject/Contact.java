@@ -20,13 +20,13 @@ public class Contact {
     private String mTelephone;
     @DatabaseField
     private String mCompany;
-    @DatabaseField(foreign = true)
-    public ContactAddress mContactAddress;
+    @DatabaseField(foreign = true,  foreignAutoCreate = true, foreignAutoRefresh = true)
+    public ContactAdress mContactAdress;
 
     Contact(){};
 
-    public Contact(long mContactID, String mCompany, String mTelephone, String mEMailAddress, String mName, String mSurname, ContactAddress mContactAddress) {
-        this.mContactAddress = mContactAddress;
+    public Contact(long mContactID, String mCompany, String mTelephone, String mEMailAddress, String mName, String mSurname, ContactAdress mContactAdress) {
+        this.mContactAdress = mContactAdress;
         this.mCompany = mCompany;
         this.mTelephone = mTelephone;
         this.mEMailAddress = mEMailAddress;
