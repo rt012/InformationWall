@@ -18,6 +18,8 @@
     <string name="title_activity_black_board">BlackBoard</string>
 
     <!--- BlackBoard  -->
+    <string name="black_board_no_title">No Title</string>
+    <string name="black_board_no_item_information">No Item Information</string>
     <string name="black_board_attachment">Attachment</string>
     <string name="black_board_description">Description</string>
 </resources>

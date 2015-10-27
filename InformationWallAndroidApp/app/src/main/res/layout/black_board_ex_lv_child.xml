@@ -2,24 +2,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="10dp"
     android:weightSum="3">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/black_board_description" />
     <TextView
         android:id="@+id/tv_black_board_item_description"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/black_board_attachment" />
+        android:paddingBottom="@dimen/black_board_ex_lv_padding"
+        android:layout_weight="1"/>
+    <View
+        style="@style/Divider" />
     <ListView
         android:id="@+id/lv_black_board_item_attachment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"/>
+    <View
+        style="@style/Divider" />
+
+    <include
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        layout="@layout/content_black_board_ex_lv_child_contact"
+        />
 </LinearLayout>

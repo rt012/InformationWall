@@ -6,7 +6,7 @@ import com.j256.ormlite.table.DatabaseTable;
 /**
  * Created by Eric Schmidt on 25.10.2015.
  */
-@DatabaseTable(tableName = "blackBoardAttachment")
+@DatabaseTable
 public class BlackBoardAttachment {
     @DatabaseField(generatedId = true)
     private long mBlackBoardAttachmentID;
@@ -15,16 +15,31 @@ public class BlackBoardAttachment {
     @DatabaseField
     private String mDeviceDataPath;
     @DatabaseField
-    private String mDataType;
-    @DatabaseField(canBeNull = true, foreign = true)
+    private DataType mDataType;
+    @DatabaseField(foreign = true, foreignAutoRefresh = true, columnName = "mBlackBoardItemID")
     private BlackBoardItem mBlackBoardItem;
 
     BlackBoardAttachment(){};
 
-    public BlackBoardAttachment(long mBlackBoardAttachmentID, String mRemoteDataPath, String mDeviceDataPath, String mDataType) {
-        this.mBlackBoardAttachmentID = mBlackBoardAttachmentID;
+    public BlackBoardAttachment(String mRemoteDataPath, String mDeviceDataPath, DataType mDataType) {
         this.mRemoteDataPath = mRemoteDataPath;
         this.mDeviceDataPath = mDeviceDataPath;
         this.mDataType = mDataType;
+    }
+
+    public String getDeviceDataPath() {
+        return mDeviceDataPath;
+    }
+
+    public String getRemoteDataPath() {
+        return mRemoteDataPath;
+    }
+
+    public DataType getDataType() {
+        return mDataType;
+    }
+
+    public enum DataType {
+        PDF, IMG, OTHER;
     }
 }

@@ -6,7 +6,7 @@ import com.j256.ormlite.table.DatabaseTable;
 /**
  * Created by Eric Schmidt on 21.10.2015.
  */
-@DatabaseTable(tableName = "tile")
+@DatabaseTable
 public class Tile {
     @DatabaseField(generatedId = true)
     private long mTileID;
@@ -18,14 +18,12 @@ public class Tile {
     private String mScreen;
     @DatabaseField
     private boolean mIsActivated = false;
-    //@DatabaseField(foreign = true)
     @DatabaseField
     private EnumTileSize mTileSize;
 
     Tile(){}
 
-    public Tile(long tileID, String name, int drawableId, String screen) {
-        this.mTileID = tileID;
+    public Tile(String name, int drawableId, String screen) {
         this.mName = name;
         this.mDrawableId = drawableId;
         this.mScreen = screen;
