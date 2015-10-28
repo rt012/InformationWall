@@ -9,7 +9,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.GsonBuilder;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -33,7 +35,18 @@ public class VolleyTest {
         pDialog.setMessage("Loading...");
         pDialog.show();
 
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST, url, null,
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.excludeFieldsWithoutExposeAnnotation();
+
+        String blackBoardItemAsJsonString = gsonBuilder.create().toJson(data);
+        BlackBoardItem item = gsonBuilder.create().fromJson(blackBoardItemAsJsonString, BlackBoardItem.class);
+        JSONObject blackBoardItemAsJsonObject = null;
+        try {
+            blackBoardItemAsJsonObject = new JSONObject(blackBoardItemAsJsonString);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST, url, blackBoardItemAsJsonObject,
                 new Response.Listener<JSONObject>() {
 
                     @Override

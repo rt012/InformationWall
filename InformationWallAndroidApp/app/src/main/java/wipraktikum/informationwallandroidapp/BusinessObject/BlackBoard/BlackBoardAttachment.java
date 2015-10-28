@@ -1,5 +1,6 @@
 package wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard;
 
+import com.google.gson.annotations.Expose;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -8,12 +9,16 @@ import com.j256.ormlite.table.DatabaseTable;
  */
 @DatabaseTable
 public class BlackBoardAttachment {
+    @Expose
     @DatabaseField(generatedId = true)
     private long mBlackBoardAttachmentID;
+    @Expose
     @DatabaseField
     private String mRemoteDataPath;
+    @Expose
     @DatabaseField
     private String mDeviceDataPath;
+    @Expose
     @DatabaseField
     private DataType mDataType;
     @DatabaseField(foreign = true, foreignAutoRefresh = true, columnName = "mBlackBoardItemID")
@@ -21,10 +26,11 @@ public class BlackBoardAttachment {
 
     BlackBoardAttachment(){};
 
-    public BlackBoardAttachment(String mRemoteDataPath, String mDeviceDataPath, DataType mDataType) {
+    public BlackBoardAttachment(String mRemoteDataPath, String mDeviceDataPath, DataType mDataType, BlackBoardItem blackboardItem) {
         this.mRemoteDataPath = mRemoteDataPath;
         this.mDeviceDataPath = mDeviceDataPath;
         this.mDataType = mDataType;
+        this.mBlackBoardItem = blackboardItem;
     }
 
     public String getDeviceDataPath() {

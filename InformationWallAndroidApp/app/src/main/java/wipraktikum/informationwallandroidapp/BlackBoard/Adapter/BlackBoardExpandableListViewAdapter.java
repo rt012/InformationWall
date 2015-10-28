@@ -5,8 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
@@ -17,6 +16,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoardAttachmentView;
+import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoardContactView;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
 import wipraktikum.informationwallandroidapp.Database.InformationWallORMHelper;
 import wipraktikum.informationwallandroidapp.R;
@@ -117,45 +118,16 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
                 .findViewById(R.id.tv_black_board_item_description);
         txtListChild.setText(blackBoardItem.getDescriptionText());
         //Attachment Information
-        ListView lvContactInformation = (ListView) convertView.
-                findViewById(R.id.lv_black_board_item_attachment);
-        lvContactInformation.setAdapter(new BlackBoardListViewAttachmentAdapter(context, 0, blackBoardItem.getBlackBoardAttachment()));
-        //Contact Information
-        TextView txtContactCompany = (TextView) convertView
-                .findViewById(R.id.tv_black_board_contact_company);
-        txtContactCompany.setText(blackBoardItem.getContact().getCompany());
-        ImageView ivContactCompany = (ImageView) convertView
-                .findViewById(R.id.iv_black_board_contact_company);
-        ivContactCompany.setImageDrawable(context.getDrawable(R.drawable.icon_company));
+        LinearLayout attachmentContainer = (LinearLayout) convertView.findViewById(R.id.ll_attachment_container);
+        attachmentContainer.removeAllViews();
+        for(int i = 0; i < blackBoardItem.getBlackBoardAttachment().size(); i++) {
+            BlackBoardAttachmentView attachmentView = new BlackBoardAttachmentView(this.context, blackBoardItem.getBlackBoardAttachment().get(i));
+            attachmentContainer.addView(attachmentView);
+        }
 
-        TextView txtContactFullName= (TextView) convertView
-                .findViewById(R.id.tv_black_board_contact_full_name);
-        txtContactFullName.setText(blackBoardItem.getContact().getFullName());
-        ImageView ivContactFullName = (ImageView) convertView
-                .findViewById(R.id.iv_black_board_contact_full_name);
-        ivContactFullName.setImageDrawable(context.getDrawable(R.drawable.icon_name));
-
-        TextView txtContactEmail = (TextView) convertView
-                .findViewById(R.id.tv_black_board_contact_email);
-        txtContactEmail.setText(blackBoardItem.getContact().getEMailAddress());
-        ImageView ivContactEmail = (ImageView) convertView
-                .findViewById(R.id.iv_black_board_contact_email);
-        ivContactEmail.setImageDrawable(context.getDrawable(R.drawable.icon_email));
-
-        TextView txtContactTel= (TextView) convertView
-                .findViewById(R.id.tv_black_board_contact_tel);
-        txtContactTel.setText(blackBoardItem.getContact().getTelephone());
-        ImageView ivContactTel = (ImageView) convertView
-                .findViewById(R.id.iv_black_board_contact_tel);
-        ivContactTel.setImageDrawable(context.getDrawable(R.drawable.icon_telephone));
-
-        TextView txtContactFullAddress = (TextView) convertView
-                .findViewById(R.id.tv_black_board_contact_address);
-        txtContactFullAddress.setText(blackBoardItem.getContact().getContactAddress().getFullAddress());
-        ImageView ivContactFullAddress = (ImageView) convertView
-                .findViewById(R.id.iv_black_board_contact_address);
-        ivContactFullAddress.setImageDrawable(context.getDrawable(R.drawable.icon_address));
-
+        LinearLayout contactContainer = (LinearLayout) convertView.findViewById(R.id.ll_contact_container);
+        contactContainer.removeAllViews();
+        contactContainer.addView(new BlackBoardContactView(this.context, blackBoardItem.getContact()));
         return convertView;
     }
 

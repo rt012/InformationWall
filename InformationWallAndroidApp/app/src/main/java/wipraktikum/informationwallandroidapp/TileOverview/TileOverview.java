@@ -5,8 +5,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.GridView;
 
+import java.sql.SQLException;
+
 import wipraktikum.informationwallandroidapp.BaseActivity;
 import wipraktikum.informationwallandroidapp.Database.InformationWallORMHelper;
+import wipraktikum.informationwallandroidapp.HttpConnection.VolleyTest;
+import wipraktikum.informationwallandroidapp.InfoWallApplication;
 import wipraktikum.informationwallandroidapp.R;
 
 
@@ -26,12 +30,12 @@ public class TileOverview extends BaseActivity {
     @Override
     public void onResume(){
         super.onResume();
-      /*  try {
+       try {
             long id = 1;
             new VolleyTest().doAction(this, InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardItemDAO().queryForId(id));
         } catch (SQLException e) {
             e.printStackTrace();
-        }*/
+        }
     }
 
     @Override

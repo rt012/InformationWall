@@ -9,9 +9,7 @@ import com.android.volley.toolbox.Volley;
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoard;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardAttachment;
@@ -99,18 +97,35 @@ public class InfoWallApplication extends Application {
 
         //Blackboard
         Dao<BlackBoardItem, Long> blackBoardItemsDAO =databaseHelper.getBlackBoardItemDAO();
-        List<BlackBoardAttachment> attachmentList = new ArrayList<BlackBoardAttachment>();
+       /* List<BlackBoardAttachment> attachmentList = new ArrayList<BlackBoardAttachment>();
         attachmentList.add(new BlackBoardAttachment("http://localhost/imagestore/test.pdf", "C://temp/test/test1.pdf", BlackBoardAttachment.DataType.PDF));
         attachmentList.add(new BlackBoardAttachment("http://localhost/imagestore/test.pdf", "C://temp/test/test2.pdf", BlackBoardAttachment.DataType.PDF));
         attachmentList.add(new BlackBoardAttachment("http://localhost/imagestore/test.pdf", "C://temp/test/test3.pdf", BlackBoardAttachment.DataType.PDF));
         attachmentList.add(new BlackBoardAttachment("http://localhost/imagestore/test.pdf", "C://temp/test/test4.pdf", BlackBoardAttachment.DataType.IMG));
+*/
 
         Contact dummyContact = new Contact("Max", "Mustermann", "maxMustermann@test.de", "234242342345", "Wunschfirma XY", new ContactAddress(0, "Teststraße", "23", "242342", "Stuttgart"));
 
         BlackBoardItem item = new BlackBoardItem("Stellenanzeige", dummyContact, "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", new Date(), new Date());
         blackBoardItemsDAO.createIfNotExists(item);
-        blackBoardItemsDAO.queryForId(item.getBlackBoardItemID()).setBlackBoardAttachment(attachmentList);
+        BlackBoardAttachment ba1 = new BlackBoardAttachment("http://localhost/imagestore/test.pdf", "C://temp/test/test1.pdf", BlackBoardAttachment.DataType.PDF,item);
+        BlackBoardAttachment ba2 = new BlackBoardAttachment("http://localhost/imagestore/test.pdf", "C://temp/test/test1.pdf", BlackBoardAttachment.DataType.PDF,item);
+        BlackBoardAttachment ba3 = new BlackBoardAttachment("http://localhost/imagestore/test.pdf", "C://temp/test/test1.pdf", BlackBoardAttachment.DataType.PDF,item);
 
+        databaseHelper.getBlackBoardAttachmentDAO().createIfNotExists(ba1);
+        databaseHelper.getBlackBoardAttachmentDAO().createIfNotExists(ba2);
+        databaseHelper.getBlackBoardAttachmentDAO().createIfNotExists(ba3);
+
+        BlackBoardItem item2 = new BlackBoardItem("Praktikum", dummyContact, "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", new Date(), new Date());
+        blackBoardItemsDAO.createIfNotExists(item2);
+
+        BlackBoardAttachment ba4 = new BlackBoardAttachment("http://localhost/imagestore/test.pdf", "C://temp/test/test1.pdf", BlackBoardAttachment.DataType.PDF,item2);
+        BlackBoardAttachment ba5 = new BlackBoardAttachment("http://localhost/imagestore/test.pdf", "C://temp/test/test1.pdf", BlackBoardAttachment.DataType.PDF,item2);
+        databaseHelper.getBlackBoardAttachmentDAO().createIfNotExists(ba4);
+        databaseHelper.getBlackBoardAttachmentDAO().createIfNotExists(ba5);
+    }
+        //blackBoardItemsDAO.queryForId(item.getBlackBoardItemID()).setBlackBoardAttachment(attachmentList);
+/*
         item = new BlackBoardItem("Praktikum", dummyContact, "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", new Date(), new Date());
         blackBoardItemsDAO.createIfNotExists(item);
         blackBoardItemsDAO.queryForId(item.getBlackBoardItemID()).setBlackBoardAttachment(attachmentList);
@@ -123,6 +138,6 @@ public class InfoWallApplication extends Application {
         item = new BlackBoardItem("Handy zu verkaufen", dummyContact, "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", new Date(), new Date());
         blackBoardItemsDAO.createIfNotExists(item);
         blackBoardItemsDAO.queryForId(item.getBlackBoardItemID()).setBlackBoardAttachment(attachmentList);
+*/
 
-    }
 }

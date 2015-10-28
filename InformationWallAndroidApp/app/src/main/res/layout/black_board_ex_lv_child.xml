@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingLeft="10dp"
-    android:weightSum="3">
+    >
     <TextView
         android:id="@+id/tv_black_board_item_description"
         android:layout_width="match_parent"
@@ -13,18 +13,21 @@
         android:layout_weight="1"/>
     <View
         style="@style/Divider" />
-    <ListView
-        android:id="@+id/lv_black_board_item_attachment"
+
+    <LinearLayout
+        android:id="@+id/ll_attachment_container"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical"/>
+
     <View
         style="@style/Divider" />
 
-    <include
+    <LinearLayout
+        android:id="@+id/ll_contact_container"
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        layout="@layout/content_black_board_ex_lv_child_contact"
+        android:orientation="vertical"
         />
 </LinearLayout>
