@@ -12,12 +12,15 @@ import java.sql.SQLException;
 import java.util.Date;
 
 import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoard;
+import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardAttachment;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.DBContact;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.DBContactAddress;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.DBTile;
+import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.Database.InformationWallORMHelper;
+import wipraktikum.informationwallandroidapp.ServerCommunication.VolleyTest;
 import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
 
 /**
@@ -45,6 +48,9 @@ public class InfoWallApplication extends Application {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        long id = 1;
+        new VolleyTest().doAction(this, (BlackBoardItem) DAOHelper.getInstance().getBlackBoardItemDAO().queryForId(id));
     }
 
     public static InfoWallApplication getInstance() {

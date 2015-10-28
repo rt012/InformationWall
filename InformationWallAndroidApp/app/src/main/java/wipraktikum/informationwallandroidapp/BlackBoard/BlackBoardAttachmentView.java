@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import java.io.File;
 
+import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardAttachment;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardAttachment;
 import wipraktikum.informationwallandroidapp.R;
 
@@ -19,7 +20,7 @@ public class BlackBoardAttachmentView extends LinearLayout {
 
     private Context mContext;
 
-    public BlackBoardAttachmentView(Context context, DBBlackBoardAttachment attachment) {
+    public BlackBoardAttachmentView(Context context, BlackBoardAttachment attachment) {
         super(context);
         this.mContext = context;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

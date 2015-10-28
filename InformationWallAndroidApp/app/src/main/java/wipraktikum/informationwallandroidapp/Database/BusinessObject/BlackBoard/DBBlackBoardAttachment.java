@@ -19,7 +19,7 @@ public class DBBlackBoardAttachment {
     @DatabaseField(foreign = true, foreignAutoRefresh = true, columnName = "mBlackBoardItemID")
     private DBBlackBoardItem mBlackBoardItem;
 
-    DBBlackBoardAttachment(){};
+    public DBBlackBoardAttachment(){};
 
     public DBBlackBoardAttachment(String mRemoteDataPath, String mDeviceDataPath, DataType mDataType, DBBlackBoardItem blackboardItem) {
         this.mRemoteDataPath = mRemoteDataPath;
@@ -28,16 +28,36 @@ public class DBBlackBoardAttachment {
         this.mBlackBoardItem = blackboardItem;
     }
 
+    public long getBlackBoardAttachmentID() {
+        return mBlackBoardAttachmentID;
+    }
+
+    public void setBlackBoardAttachmentID(long mBlackBoardAttachmentID) {
+        this.mBlackBoardAttachmentID = mBlackBoardAttachmentID;
+    }
+
     public String getDeviceDataPath() {
         return mDeviceDataPath;
+    }
+
+    public void setDeviceDataPath(String mDeviceDataPath) {
+        this.mDeviceDataPath = mDeviceDataPath;
     }
 
     public String getRemoteDataPath() {
         return mRemoteDataPath;
     }
 
+    public void setRemoteDataPath(String mRemoteDataPath) {
+        this.mRemoteDataPath = mRemoteDataPath;
+    }
+
     public DataType getDataType() {
         return mDataType;
+    }
+
+    public void setDataType(DataType mDataType) {
+        this.mDataType = mDataType;
     }
 
     public enum DataType {

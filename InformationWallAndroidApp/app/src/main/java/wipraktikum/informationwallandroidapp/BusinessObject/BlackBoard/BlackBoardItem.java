@@ -2,8 +2,8 @@ package wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard;
 
 import com.j256.ormlite.table.DatabaseTable;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import wipraktikum.informationwallandroidapp.BusinessObject.Contact;
 
@@ -16,11 +16,11 @@ public class BlackBoardItem {
     private String mTitle;
     private Contact mContact;
     private String mDescriptionText;
-    private ArrayList<BlackBoardAttachment> mBlackBoardAttachment;
+    private List<BlackBoardAttachment> mBlackBoardAttachment;
     private Date mCreatedTimestamp;
     private Date mEditedTimestamp;
 
-    BlackBoardItem(){};
+    public BlackBoardItem(){};
 
     public BlackBoardItem(String mTitle, Contact mContact, String mDescriptionText, Date mCreatedTimestamp, Date mEditedTimestamp) {
         this.mTitle = mTitle;
@@ -32,6 +32,10 @@ public class BlackBoardItem {
 
     public long getBlackBoardItemID() {
         return mBlackBoardItemID;
+    }
+
+    public void setBlackBoardItemID(long mBlackBoardItemID) {
+        this.mBlackBoardItemID = mBlackBoardItemID;
     }
 
     public String getTitle() {
@@ -54,8 +58,16 @@ public class BlackBoardItem {
         return mCreatedTimestamp;
     }
 
-    public void setCreatedTimestamp(Date CreatedTimestamp) {
+    public void setCreatedTimestamp(Date mCreatedTimestamp) {
         this.mCreatedTimestamp = mCreatedTimestamp;
+    }
+
+    public Date getEditedTimestamp() {
+        return mEditedTimestamp;
+    }
+
+    public void setEditedTimestamp(Date mEditedTimestamp) {
+        this.mEditedTimestamp = mEditedTimestamp;
     }
 
     public Contact getContact() {
@@ -66,7 +78,11 @@ public class BlackBoardItem {
         this.mContact = mContact;
     }
 
-    public ArrayList<BlackBoardAttachment> getmBlackBoardAttachment() {
+    public List<BlackBoardAttachment> getBlackBoardAttachment() {
         return mBlackBoardAttachment;
+    }
+
+    public void setBlackBoardAttachment(List<BlackBoardAttachment> mBlackBoardAttachment) {
+        this.mBlackBoardAttachment = mBlackBoardAttachment;
     }
 }

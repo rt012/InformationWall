@@ -6,20 +6,30 @@ import java.util.List;
 
 import wipraktikum.informationwallandroidapp.BusinessObject.ContactAddress;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.DBContactAddress;
-import wipraktikum.informationwallandroidapp.Database.IDAO;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
 
 /**
  * Created by Remi on 28.10.2015.
  */
 public class ContactAddressDAO implements IDAO {
+    private static ContactAddressDAO instance = null;
+
+    private ContactAddressDAO(){}
+
+    public static ContactAddressDAO getInstance(){
+        if (instance == null){
+            instance = new ContactAddressDAO();
+        }
+        return instance;
+    }
+
     @Override
     public ArrayList queryForAll() {
-        ArrayList<ContactAddress> contactAddresses = null;
+        ArrayList<ContactAddress> contactAddresses = new ArrayList<>();;
         try {
             List<DBContactAddress> dbContactAddresses = InfoWallApplication.getInstance().getDatabaseHelper().getContactAdressDAO().queryForAll();
-            for(DBContactAddress dbContactAddresse : dbContactAddresses){
-                contactAddresses.add(mappDBContactAddressToContactAddress(dbContactAddresse));
+            for(DBContactAddress dbContactAddress : dbContactAddresses){
+                contactAddresses.add(mapDBContactAddressToContactAddress(dbContactAddress));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -32,7 +42,7 @@ public class ContactAddressDAO implements IDAO {
         ContactAddress contactAddress = null;
         try {
             DBContactAddress dbContactAddress = InfoWallApplication.getInstance().getDatabaseHelper().getContactAdressDAO().queryForId(iD);
-            contactAddress = mappDBContactAddressToContactAddress(dbContactAddress);
+            contactAddress = mapDBContactAddressToContactAddress(dbContactAddress);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -44,7 +54,19 @@ public class ContactAddressDAO implements IDAO {
     public boolean create(Object object) {
         boolean ok = false;
         try {
-            InfoWallApplication.getInstance().getDatabaseHelper().getContactAdressDAO().create(mappContactAdressToDBContractAdress((ContactAddress) object));
+            InfoWallApplication.getInstance().getDatabaseHelper().getContactAdressDAO().create(mapContactAddressToDBContractAddress((ContactAddress) object));
+            ok = true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ok;
+    }
+
+    @Override
+    public boolean update(Object object){
+        boolean ok = false;
+        try {
+            InfoWallApplication.getInstance().getDatabaseHelper().getContactAdressDAO().update(mapContactAddressToDBContractAddress((ContactAddress) object));
             ok = true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -55,7 +77,7 @@ public class ContactAddressDAO implements IDAO {
     @Override
     public boolean delete(Object object) {
         boolean ok = false;
-        // TODO falls nötig
+        // TODO falls nï¿½tig
         return ok;
     }
 
@@ -71,24 +93,23 @@ public class ContactAddressDAO implements IDAO {
         return ok;
     }
 
+    public ContactAddress mapDBContactAddressToContactAddress(DBContactAddress dbContactAddress) {
+        ContactAddress contactAddress = new ContactAddress();
 
-    private ContactAddress mappDBContactAddressToContactAddress(DBContactAddress dbContactAddress) {
-        ContactAddress contactAdress = new ContactAddress();
-        contactAdress.setmCity(dbContactAddress.getmCity());
-        contactAdress.setmContactAddressID(dbContactAddress.getmContactAddressID());
-        contactAdress.setmHouseNumber(dbContactAddress.getmHouseNumber());
-        contactAdress.setmZipCode(dbContactAddress.getmZipCode());
+        contactAddress.setCity(dbContactAddress.getCity());
+        contactAddress.setContactAddressID(dbContactAddress.getContactAddressID());
+        contactAddress.setHouseNumber(dbContactAddress.getHouseNumber());
+        contactAddress.setZipCode(dbContactAddress.getZipCode());
 
-        return contactAdress;
+        return contactAddress;
     }
-    private DBContactAddress mappContactAdressToDBContractAdress(ContactAddress contactAddress) {
+    public DBContactAddress mapContactAddressToDBContractAddress(ContactAddress contactAddress) {
+        DBContactAddress dbContactAddress = new DBContactAddress();
+        dbContactAddress.setCity(contactAddress.getCity());
+        dbContactAddress.setContactAddressID(contactAddress.getContactAddressID());
+        dbContactAddress.setHouseNumber(contactAddress.getHouseNumber());
+        dbContactAddress.setZipCode(contactAddress.getZipCode());
 
-        DBContactAddress dbContactAdress = new DBContactAddress();
-        dbContactAdress.setmCity(contactAddress.getmCity());
-        dbContactAdress.setmContactAddressID(contactAddress.getmContactAddressID());
-        dbContactAdress.setmHouseNumber(contactAddress.getmHouseNumber());
-        dbContactAdress.setmZipCode(contactAddress.getmZipCode());
-
-        return dbContactAdress;
+        return dbContactAddress;
     }
 }

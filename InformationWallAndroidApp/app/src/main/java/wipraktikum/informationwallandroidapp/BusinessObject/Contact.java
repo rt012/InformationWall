@@ -15,7 +15,7 @@ public class Contact {
     private String mCompany;
     public ContactAddress mContactAddress;
 
-    Contact(){};
+    public Contact(){};
 
     public Contact(String mName, String mSurname, String mEMailAddress,String mTelephone,  String mCompany, ContactAddress mContactAddress) {
         this.mContactAddress = mContactAddress;
@@ -26,8 +26,20 @@ public class Contact {
         this.mSurname = mSurname;
     }
 
+    public long getContactID() {
+        return mContactID;
+    }
+
     public String getFullName(){
         return mSurname + ", " + mName;
+    }
+
+    public String getSurname() {
+        return mSurname;
+    }
+
+    public String getName() {
+        return mName;
     }
 
     public String getEMailAddress() {
@@ -44,5 +56,33 @@ public class Contact {
 
     public ContactAddress getContactAddress() {
         return mContactAddress;
+    }
+
+    public void setContactID(long mContactID) {
+        this.mContactID = mContactID;
+    }
+
+    public void setSurname(String mSurname) {
+        this.mSurname = mSurname;
+    }
+
+    public void setName(String mName) {
+        this.mName = mName;
+    }
+
+    public void setEMailAddress(String mEMailAddress) {
+        this.mEMailAddress = mEMailAddress;
+    }
+
+    public void setTelephone(String mTelephone) {
+        this.mTelephone = mTelephone;
+    }
+
+    public void setCompany(String mCompany) {
+        this.mCompany = mCompany;
+    }
+
+    public void setContactAddress(ContactAddress mContactAddress) {
+        this.mContactAddress = mContactAddress;
     }
 }

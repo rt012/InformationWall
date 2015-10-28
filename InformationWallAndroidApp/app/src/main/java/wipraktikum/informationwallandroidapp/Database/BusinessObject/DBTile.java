@@ -30,60 +30,44 @@ public class DBTile {
         this.mTileSize = EnumTileSize.SMALL;
     }
 
-    public long getmTileID() {
+    public long getTileID() {
         return mTileID;
     }
 
-    public void setmTileID(long mTileID) {
+    public void setTileID(long mTileID) {
         this.mTileID = mTileID;
     }
 
-    public String getmName() {
+    public String getName() {
         return mName;
     }
 
-    public void setmName(String mName) {
+    public void setName(String mName) {
         this.mName = mName;
     }
 
-    public int getmDrawableId() {
+    public int getDrawableId() {
         return mDrawableId;
     }
 
-    public void setmDrawableId(int mDrawableId) {
+    public void setDrawableId(int mDrawableId) {
         this.mDrawableId = mDrawableId;
     }
 
-    public String getmScreen() {
+    public String getScreen() {
         return mScreen;
     }
 
-    public void setmScreen(String mScreen) {
+    public void setScreen(String mScreen) {
         this.mScreen = mScreen;
     }
 
-    public boolean ismIsActivated() {
+    public boolean isIsActivated() {
         return mIsActivated;
     }
 
-    public void setmIsActivated(boolean mIsActivated) {
+    public void setIsActivated(boolean mIsActivated) {
         this.mIsActivated = mIsActivated;
-    }
-
-    public EnumTileSize getmTileSize() {
-        return mTileSize;
-    }
-
-    public void setmTileSize(EnumTileSize mTileSize) {
-        this.mTileSize = mTileSize;
-    }
-
-    public void setIsActivated(boolean isActivated){
-        mIsActivated = isActivated;
-    }
-
-    public boolean getIsActivated(){
-        return mIsActivated;
     }
 
     public EnumTileSize getTileSize() {
@@ -94,20 +78,8 @@ public class DBTile {
         this.mTileSize = mTileSize;
     }
 
-    public int getDrawableId() {
-        return mDrawableId;
-    }
-
-    public String getScreen() {
-        return mScreen;
-    }
-
-    public String getName() {
-        return mName;
-    }
-
-    public long getTileID() {
-        return mTileID;
+    public boolean getIsActivated(){
+        return mIsActivated;
     }
 
     public enum EnumTileSize {

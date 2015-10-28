@@ -34,7 +34,7 @@ public class DBBlackBoardItem {
     @DatabaseField
     private Date mEditedTimestamp;
 
-    DBBlackBoardItem(){};
+    public DBBlackBoardItem(){};
 
     public DBBlackBoardItem(String mTitle, DBContact mContact, String mDescriptionText, Date mCreatedTimestamp, Date mEditedTimestamp) {
         this.mTitle = mTitle;
@@ -46,6 +46,10 @@ public class DBBlackBoardItem {
 
     public long getBlackBoardItemID() {
         return mBlackBoardItemID;
+    }
+
+    public void setBlackBoardItemID(long mBlackBoardItemID) {
+        this.mBlackBoardItemID = mBlackBoardItemID;
     }
 
     public String getTitle() {
@@ -68,8 +72,16 @@ public class DBBlackBoardItem {
         return mCreatedTimestamp;
     }
 
-    public void setCreatedTimestamp(Date CreatedTimestamp) {
+    public void setCreatedTimestamp(Date mCreatedTimestamp) {
         this.mCreatedTimestamp = mCreatedTimestamp;
+    }
+
+    public Date getEditedTimestamp() {
+        return mEditedTimestamp;
+    }
+
+    public void setEditedTimestamp(Date mEditedTimestamp) {
+        this.mEditedTimestamp = mEditedTimestamp;
     }
 
     public DBContact getContact() {

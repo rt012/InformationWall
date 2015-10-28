@@ -6,20 +6,30 @@ import java.util.List;
 
 import wipraktikum.informationwallandroidapp.BusinessObject.Tile;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.DBTile;
-import wipraktikum.informationwallandroidapp.Database.IDAO;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
 
 /**
  * Created by Eric Schmidt on 28.10.2015.
  */
 public class TileDAO implements IDAO{
+    private static TileDAO instance = null;
+
+    private TileDAO(){}
+
+    public static TileDAO getInstance(){
+        if (instance == null){
+            instance = new TileDAO();
+        }
+        return instance;
+    }
+
     @Override
     public ArrayList queryForAll() {
-        ArrayList<Tile> tiles = null;
+        ArrayList<Tile> tiles = new ArrayList<>();
         try {
             List<DBTile> dbTiles = InfoWallApplication.getInstance().getDatabaseHelper().getTileDAO().queryForAll();
             for(DBTile dbTile : dbTiles){
-                tiles.add(mappDBTiletoTile(dbTile));
+                tiles.add(mapDBTileToTile(dbTile));
             }
 
 
@@ -34,7 +44,7 @@ public class TileDAO implements IDAO{
         Tile tile = null;
         try {
             DBTile dbTile = InfoWallApplication.getInstance().getDatabaseHelper().getTileDAO().queryForId(iD);
-            tile = mappDBTiletoTile(dbTile);
+            tile = mapDBTileToTile(dbTile);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -46,7 +56,19 @@ public class TileDAO implements IDAO{
     public boolean create(Object object) {
         boolean ok = false;
         try {
-            InfoWallApplication.getInstance().getDatabaseHelper().getTileDAO().create(mappTiletoDBTile((Tile) object));
+            InfoWallApplication.getInstance().getDatabaseHelper().getTileDAO().create(mapTileToDBTile((Tile) object));
+            ok = true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ok;
+    }
+
+    @Override
+    public boolean update(Object object){
+        boolean ok = false;
+        try {
+            InfoWallApplication.getInstance().getDatabaseHelper().getTileDAO().update(mapTileToDBTile((Tile) object));
             ok = true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -57,7 +79,7 @@ public class TileDAO implements IDAO{
     @Override
     public boolean delete(Object object) {
         boolean ok = false;
-        // TODO falls nötig
+        // TODO falls nï¿½tig
         return ok;
     }
 
@@ -73,26 +95,27 @@ public class TileDAO implements IDAO{
         return ok;
     }
 
-
-    public Tile mappDBTiletoTile(DBTile dbTile) {
-
+    public Tile mapDBTileToTile(DBTile dbTile) {
         Tile tile = new Tile();
+
         tile.setTileSize(dbTile.getTileSize());
         tile.setIsActivated(dbTile.getIsActivated());
-        tile.setmDrawableId(dbTile.getDrawableId());
-        tile.setmName(dbTile.getName());
-        tile.setmTileID(dbTile.getTileID());
+        tile.setDrawableId(dbTile.getDrawableId());
+        tile.setName(dbTile.getName());
+        tile.setTileID(dbTile.getTileID());
+        tile.setScreen(dbTile.getScreen());
 
         return tile;
     }
-    public DBTile mappTiletoDBTile(Tile tile) {
-
+    public DBTile mapTileToDBTile(Tile tile) {
         DBTile dbTile = new DBTile();
+
+        dbTile.setTileID(tile.getTileID());
         dbTile.setTileSize(tile.getTileSize());
         dbTile.setIsActivated(tile.getIsActivated());
-        dbTile.setmDrawableId(tile.getDrawableId());
-        dbTile.setmName(tile.getName());
-
+        dbTile.setDrawableId(tile.getDrawableId());
+        dbTile.setName(tile.getName());
+        dbTile.setScreen(tile.getScreen());
 
         return dbTile;
     }

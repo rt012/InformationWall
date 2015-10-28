@@ -5,12 +5,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.GridView;
 
-import java.sql.SQLException;
-
 import wipraktikum.informationwallandroidapp.BaseActivity;
 import wipraktikum.informationwallandroidapp.Database.InformationWallORMHelper;
-import wipraktikum.informationwallandroidapp.ServerCommunication.VolleyTest;
-import wipraktikum.informationwallandroidapp.InfoWallApplication;
 import wipraktikum.informationwallandroidapp.R;
 
 
@@ -25,17 +21,6 @@ public class TileOverview extends BaseActivity {
         //Set Adapter for GridView
         GridView gridView = (GridView)findViewById(R.id.gridview);
         gridView.setAdapter(new GridViewAdapter(this));
-    }
-
-    @Override
-    public void onResume(){
-        super.onResume();
-       try {
-            long id = 1;
-            new VolleyTest().doAction(this, InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardItemDAO().queryForId(id));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override

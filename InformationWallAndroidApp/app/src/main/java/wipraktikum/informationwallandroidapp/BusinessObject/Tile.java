@@ -57,19 +57,19 @@ public class Tile {
         return mTileID;
     }
 
-    public void setmTileID(long mTileID) {
+    public void setTileID(long mTileID) {
         this.mTileID = mTileID;
     }
 
-    public void setmName(String mName) {
+    public void setName(String mName) {
         this.mName = mName;
     }
 
-    public void setmDrawableId(int mDrawableId) {
+    public void setDrawableId(int mDrawableId) {
         this.mDrawableId = mDrawableId;
     }
 
-    public void setmScreen(String mScreen) {
+    public void setScreen(String mScreen) {
         this.mScreen = mScreen;
     }
 }

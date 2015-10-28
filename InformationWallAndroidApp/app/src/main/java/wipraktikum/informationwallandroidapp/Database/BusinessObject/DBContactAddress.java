@@ -29,43 +29,43 @@ public class DBContactAddress {
         this.mCity = mCity;
     }
 
-    public long getmContactAddressID() {
+    public long getContactAddressID() {
         return mContactAddressID;
     }
 
-    public void setmContactAddressID(long mContactAddressID) {
+    public void setContactAddressID(long mContactAddressID) {
         this.mContactAddressID = mContactAddressID;
     }
 
-    public String getmStreetName() {
+    public String getStreetName() {
         return mStreetName;
     }
 
-    public void setmStreetName(String mStreetName) {
+    public void setStreetName(String mStreetName) {
         this.mStreetName = mStreetName;
     }
 
-    public String getmHouseNumber() {
+    public String getHouseNumber() {
         return mHouseNumber;
     }
 
-    public void setmHouseNumber(String mHouseNumber) {
+    public void setHouseNumber(String mHouseNumber) {
         this.mHouseNumber = mHouseNumber;
     }
 
-    public String getmZipCode() {
+    public String getZipCode() {
         return mZipCode;
     }
 
-    public void setmZipCode(String mZipCode) {
+    public void setZipCode(String mZipCode) {
         this.mZipCode = mZipCode;
     }
 
-    public String getmCity() {
+    public String getCity() {
         return mCity;
     }
 
-    public void setmCity(String mCity) {
+    public void setCity(String mCity) {
         this.mCity = mCity;
     }
 

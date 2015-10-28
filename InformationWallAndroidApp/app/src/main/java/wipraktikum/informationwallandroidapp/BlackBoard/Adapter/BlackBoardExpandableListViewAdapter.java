@@ -8,18 +8,14 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.j256.ormlite.android.apptools.OpenHelperManager;
-import com.j256.ormlite.dao.Dao;
-
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoardAttachmentView;
 import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoardContactView;
-import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem;
-import wipraktikum.informationwallandroidapp.Database.InformationWallORMHelper;
+import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
+import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.R;
 
 /**
@@ -28,20 +24,13 @@ import wipraktikum.informationwallandroidapp.R;
 public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapter{
 
     private final Context context;
-    private List<DBBlackBoardItem> mBlackBoardItems = new ArrayList<DBBlackBoardItem>();
-    private Dao<DBBlackBoardItem, Long> blackBoardItemDAO = null;
+    private List<BlackBoardItem> mBlackBoardItems = new ArrayList<BlackBoardItem>();
 
     public BlackBoardExpandableListViewAdapter(Context context) {
         this.context = context;
 
         // Get black board items from database
-        try {
-            blackBoardItemDAO = OpenHelperManager.getHelper(context,
-                    InformationWallORMHelper.class).getBlackBoardItemDAO();
-            mBlackBoardItems = blackBoardItemDAO.queryForAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        mBlackBoardItems = DAOHelper.getInstance().getBlackBoardItemDAO().queryForAll();
     }
     @Override
     public int getGroupCount() {
@@ -81,7 +70,7 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-        DBBlackBoardItem blackBoardItem = (DBBlackBoardItem) getGroup(groupPosition);
+        BlackBoardItem blackBoardItem = (BlackBoardItem) getGroup(groupPosition);
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -105,7 +94,7 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-        DBBlackBoardItem blackBoardItem = (DBBlackBoardItem) getChild(groupPosition, childPosition);
+        BlackBoardItem blackBoardItem = (BlackBoardItem) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context

@@ -23,7 +23,7 @@ public class DBContact {
     @DatabaseField(foreign = true,  foreignAutoCreate = true, foreignAutoRefresh = true)
     public DBContactAddress mContactAddress;
 
-    DBContact(){};
+    public DBContact(){};
 
     public DBContact(String mName, String mSurname, String mEMailAddress, String mTelephone, String mCompany, DBContactAddress mContactAddress) {
         this.mContactAddress = mContactAddress;
@@ -34,8 +34,20 @@ public class DBContact {
         this.mSurname = mSurname;
     }
 
+    public long getmContactID() {
+        return mContactID;
+    }
+
     public String getFullName(){
         return mSurname + ", " + mName;
+    }
+
+    public String getSurname() {
+        return mSurname;
+    }
+
+    public String getName() {
+        return mName;
     }
 
     public String getEMailAddress() {
@@ -52,5 +64,33 @@ public class DBContact {
 
     public DBContactAddress getContactAddress() {
         return mContactAddress;
+    }
+
+    public void setContactID(long mContactID) {
+        this.mContactID = mContactID;
+    }
+
+    public void setSurname(String mSurname) {
+        this.mSurname = mSurname;
+    }
+
+    public void setName(String mName) {
+        this.mName = mName;
+    }
+
+    public void setEMailAddress(String mEMailAddress) {
+        this.mEMailAddress = mEMailAddress;
+    }
+
+    public void setTelephone(String mTelephone) {
+        this.mTelephone = mTelephone;
+    }
+
+    public void setCompany(String mCompany) {
+        this.mCompany = mCompany;
+    }
+
+    public void setContactAddress(DBContactAddress mContactAddress) {
+        this.mContactAddress = mContactAddress;
     }
 }

@@ -11,16 +11,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.j256.ormlite.android.apptools.OpenHelperManager;
-import com.j256.ormlite.dao.Dao;
-
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import wipraktikum.informationwallandroidapp.BaseActivity;
+import wipraktikum.informationwallandroidapp.BusinessObject.Tile;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.DBTile;
-import wipraktikum.informationwallandroidapp.Database.InformationWallORMHelper;
+import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.R;
 
 /**
@@ -29,21 +26,14 @@ import wipraktikum.informationwallandroidapp.R;
 public final class GridViewAdapter extends BaseAdapter {
     private final BaseActivity context;
     private final LayoutInflater mInflater;
-    private List<DBTile> mTiles = new ArrayList<DBTile>();
-    private Dao<DBTile, Long> tileDAO = null;
+    private List<Tile> mTiles = new ArrayList<Tile>();
 
     public GridViewAdapter(BaseActivity context) {
         this.context = context;
         mInflater = LayoutInflater.from(context);
 
         // Get tiles from database
-        try {
-            tileDAO = OpenHelperManager.getHelper(context,
-                    InformationWallORMHelper.class).getTileDAO();
-            mTiles = tileDAO.queryForAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        mTiles = DAOHelper.getInstance().getTileDAO().queryForAll();
     }
 
     @Override
@@ -52,7 +42,7 @@ public final class GridViewAdapter extends BaseAdapter {
     }
 
     @Override
-    public DBTile getItem(int i) {
+    public Tile getItem(int i) {
         return mTiles.get(i);
     }
 
@@ -78,7 +68,7 @@ public final class GridViewAdapter extends BaseAdapter {
         name = (TextView) v.getTag(R.id.text);
         mRelativeLayout = (RelativeLayout) v.findViewById(R.id.tileBorder);
 
-        final DBTile tile = getItem(i);
+        final Tile tile = getItem(i);
 
         if(tile.getIsActivated()) {
             mRelativeLayout.setVisibility(View.VISIBLE);
@@ -126,7 +116,7 @@ public final class GridViewAdapter extends BaseAdapter {
                             mRelativeLayout.setVisibility(View.GONE);
                             tile.setIsActivated(false);
                         }
-                        updateTile(tile);
+                        DAOHelper.getInstance().getTileDAO().update(tile);
                     }
                 });
                 gridViewLongClickDialog.setOnRadioButtonChangeListener(new GridViewLongClickDialog.OnRadioButtonChangeListener() {
@@ -134,7 +124,7 @@ public final class GridViewAdapter extends BaseAdapter {
                     public void onRadioButtonChanged(int radioButtonPos) {
                         Log.i("GridViewAdapter", "Send message to Webserver - Tile changed Size");
                         tile.setTileSize(DBTile.EnumTileSize.values()[radioButtonPos]);
-                        updateTile(tile);
+                        DAOHelper.getInstance().getTileDAO().update(tile);
                     }
                 });
 
@@ -143,17 +133,6 @@ public final class GridViewAdapter extends BaseAdapter {
         });
 
         return v;
-    }
-
-    private void updateTile(DBTile tile){
-        // Update tile in database
-        if (tileDAO != null) {
-            try {
-                tileDAO.update(tile);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
     }
 }
 
