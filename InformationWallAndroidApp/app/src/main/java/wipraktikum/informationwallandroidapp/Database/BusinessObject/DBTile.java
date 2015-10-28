@@ -21,13 +21,61 @@ public class DBTile {
     @DatabaseField
     private EnumTileSize mTileSize;
 
-    DBTile(){}
+    public DBTile(){}
 
     public DBTile(String name, int drawableId, String screen) {
         this.mName = name;
         this.mDrawableId = drawableId;
         this.mScreen = screen;
         this.mTileSize = EnumTileSize.SMALL;
+    }
+
+    public long getmTileID() {
+        return mTileID;
+    }
+
+    public void setmTileID(long mTileID) {
+        this.mTileID = mTileID;
+    }
+
+    public String getmName() {
+        return mName;
+    }
+
+    public void setmName(String mName) {
+        this.mName = mName;
+    }
+
+    public int getmDrawableId() {
+        return mDrawableId;
+    }
+
+    public void setmDrawableId(int mDrawableId) {
+        this.mDrawableId = mDrawableId;
+    }
+
+    public String getmScreen() {
+        return mScreen;
+    }
+
+    public void setmScreen(String mScreen) {
+        this.mScreen = mScreen;
+    }
+
+    public boolean ismIsActivated() {
+        return mIsActivated;
+    }
+
+    public void setmIsActivated(boolean mIsActivated) {
+        this.mIsActivated = mIsActivated;
+    }
+
+    public EnumTileSize getmTileSize() {
+        return mTileSize;
+    }
+
+    public void setmTileSize(EnumTileSize mTileSize) {
+        this.mTileSize = mTileSize;
     }
 
     public void setIsActivated(boolean isActivated){

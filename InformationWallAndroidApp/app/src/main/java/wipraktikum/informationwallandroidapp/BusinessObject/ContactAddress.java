@@ -13,13 +13,53 @@ public class ContactAddress {
     private String mZipCode;
     private String mCity;
 
-    ContactAddress(){};
+    public ContactAddress(){};
 
     public ContactAddress(long mContactAddressID, String mStreetName, String mHouseNumber, String mZipCode, String mCity) {
         this.mContactAddressID = mContactAddressID;
         this.mStreetName = mStreetName;
         this.mHouseNumber = mHouseNumber;
         this.mZipCode = mZipCode;
+        this.mCity = mCity;
+    }
+
+    public long getmContactAddressID() {
+        return mContactAddressID;
+    }
+
+    public void setmContactAddressID(long mContactAddressID) {
+        this.mContactAddressID = mContactAddressID;
+    }
+
+    public String getmStreetName() {
+        return mStreetName;
+    }
+
+    public void setmStreetName(String mStreetName) {
+        this.mStreetName = mStreetName;
+    }
+
+    public String getmHouseNumber() {
+        return mHouseNumber;
+    }
+
+    public void setmHouseNumber(String mHouseNumber) {
+        this.mHouseNumber = mHouseNumber;
+    }
+
+    public String getmZipCode() {
+        return mZipCode;
+    }
+
+    public void setmZipCode(String mZipCode) {
+        this.mZipCode = mZipCode;
+    }
+
+    public String getmCity() {
+        return mCity;
+    }
+
+    public void setmCity(String mCity) {
         this.mCity = mCity;
     }
 

@@ -8,8 +8,7 @@ import java.util.ArrayList;
 public interface IDAO {
     public ArrayList queryForAll();
     public Object queryForId(long iD);
-    public void create(Object object);
-    public void delete(Object object);
-    public void deleteByID(long Id);
-    Object copyObject(E dbObject);
+    public boolean create(Object object);
+    public boolean delete(Object object);
+    public boolean deleteByID(long Id);
 }
