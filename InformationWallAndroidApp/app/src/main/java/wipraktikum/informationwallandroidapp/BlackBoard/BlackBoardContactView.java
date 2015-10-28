@@ -6,14 +6,14 @@ import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-import wipraktikum.informationwallandroidapp.BusinessObject.Contact;
+import wipraktikum.informationwallandroidapp.Database.BusinessObject.DBContact;
 import wipraktikum.informationwallandroidapp.R;
 
 /**
  * Created by Remi on 28.10.2015.
  */
 public class BlackBoardContactView extends TableLayout {
-    public BlackBoardContactView(Context context, Contact blackBoardContact) {
+    public BlackBoardContactView(Context context, DBContact blackBoardContact) {
         super(context);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.content_black_board_ex_lv_child_contact, this);

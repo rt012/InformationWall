@@ -1,45 +1,23 @@
 package wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard;
 
-import com.google.gson.annotations.Expose;
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.ForeignCollection;
-import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import wipraktikum.informationwallandroidapp.BusinessObject.Contact;
-import wipraktikum.informationwallandroidapp.InfoWallApplication;
 
 /**
  * Created by Eric Schmidt on 25.10.2015.
  */
 @DatabaseTable
 public class BlackBoardItem {
-    @Expose
-    @DatabaseField(generatedId = true)
     private long mBlackBoardItemID;
-    @Expose
-    @DatabaseField
     private String mTitle;
-    @Expose
-    @DatabaseField(foreign = true, foreignAutoCreate = true, foreignAutoRefresh = true)
     private Contact mContact;
-    @Expose
-    @DatabaseField
     private String mDescriptionText;
-    @Expose
-    @ForeignCollectionField(eager= true)
-    private ForeignCollection<BlackBoardAttachment> mBlackBoardAttachment;
-    @Expose
-    @DatabaseField
+    private ArrayList<BlackBoardAttachment> mBlackBoardAttachment;
     private Date mCreatedTimestamp;
-    @Expose
-    @DatabaseField
     private Date mEditedTimestamp;
 
     BlackBoardItem(){};
@@ -88,19 +66,7 @@ public class BlackBoardItem {
         this.mContact = mContact;
     }
 
-    public List<BlackBoardAttachment> getBlackBoardAttachment() {
-        List<BlackBoardAttachment> blackBoardAttachment = new ArrayList<BlackBoardAttachment>();
-        for (BlackBoardAttachment note : mBlackBoardAttachment) {
-            blackBoardAttachment.add(note);
-        }
-        return blackBoardAttachment;
-    }
-
-    public void setBlackBoardAttachment(List<BlackBoardAttachment> attachments) throws SQLException {
-        if (attachments == null) {
-            Dao<BlackBoardItem, Long> blackBoardItemsDAO = InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardItemDAO();
-            this.mBlackBoardAttachment = blackBoardItemsDAO.getEmptyForeignCollection("mBlackBoardAttachment");
-        }
-        this.mBlackBoardAttachment.addAll(attachments);
+    public ArrayList<BlackBoardAttachment> getmBlackBoardAttachment() {
+        return mBlackBoardAttachment;
     }
 }

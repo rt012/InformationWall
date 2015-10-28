@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import wipraktikum.informationwallandroidapp.BaseActivity;
-import wipraktikum.informationwallandroidapp.BusinessObject.Tile;
+import wipraktikum.informationwallandroidapp.Database.BusinessObject.DBTile;
 import wipraktikum.informationwallandroidapp.Database.InformationWallORMHelper;
 import wipraktikum.informationwallandroidapp.R;
 
@@ -29,8 +29,8 @@ import wipraktikum.informationwallandroidapp.R;
 public final class GridViewAdapter extends BaseAdapter {
     private final BaseActivity context;
     private final LayoutInflater mInflater;
-    private List<Tile> mTiles = new ArrayList<Tile>();
-    private Dao<Tile, Long> tileDAO = null;
+    private List<DBTile> mTiles = new ArrayList<DBTile>();
+    private Dao<DBTile, Long> tileDAO = null;
 
     public GridViewAdapter(BaseActivity context) {
         this.context = context;
@@ -52,7 +52,7 @@ public final class GridViewAdapter extends BaseAdapter {
     }
 
     @Override
-    public Tile getItem(int i) {
+    public DBTile getItem(int i) {
         return mTiles.get(i);
     }
 
@@ -78,7 +78,7 @@ public final class GridViewAdapter extends BaseAdapter {
         name = (TextView) v.getTag(R.id.text);
         mRelativeLayout = (RelativeLayout) v.findViewById(R.id.tileBorder);
 
-        final Tile tile = getItem(i);
+        final DBTile tile = getItem(i);
 
         if(tile.getIsActivated()) {
             mRelativeLayout.setVisibility(View.VISIBLE);
@@ -133,7 +133,7 @@ public final class GridViewAdapter extends BaseAdapter {
                     @Override
                     public void onRadioButtonChanged(int radioButtonPos) {
                         Log.i("GridViewAdapter", "Send message to Webserver - Tile changed Size");
-                        tile.setTileSize(Tile.EnumTileSize.values()[radioButtonPos]);
+                        tile.setTileSize(DBTile.EnumTileSize.values()[radioButtonPos]);
                         updateTile(tile);
                     }
                 });
@@ -145,7 +145,7 @@ public final class GridViewAdapter extends BaseAdapter {
         return v;
     }
 
-    private void updateTile(Tile tile){
+    private void updateTile(DBTile tile){
         // Update tile in database
         if (tileDAO != null) {
             try {

@@ -1,4 +1,4 @@
-package wipraktikum.informationwallandroidapp.HttpConnection;
+package wipraktikum.informationwallandroidapp.ServerCommunication;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -9,7 +9,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.google.gson.GsonBuilder;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,14 +17,14 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
+import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
 
 /**
  * Created by Eric Schmidt on 27.10.2015.
  */
 public class VolleyTest {
-    public void doAction(Context context, BlackBoardItem data) {
+    public void doAction(Context context, DBBlackBoardItem data) {
 
         // Tag used to cancel the request
         String tag_json_obj = "json_obj_req";
@@ -35,17 +35,24 @@ public class VolleyTest {
         pDialog.setMessage("Loading...");
         pDialog.show();
 
-        GsonBuilder gsonBuilder = new GsonBuilder();
+/*        GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.excludeFieldsWithoutExposeAnnotation();
+        String blackBoardItemAsJsonString = gsonBuilder.create().toJson(data);*/
 
-        String blackBoardItemAsJsonString = gsonBuilder.create().toJson(data);
-        BlackBoardItem item = gsonBuilder.create().fromJson(blackBoardItemAsJsonString, BlackBoardItem.class);
+        Gson gsonHandler = new Gson();
+
+        String blackBoardItemAsJsonString = gsonHandler.toJson(data);
+        String blackBoardAttachmentAsJsonString = gsonHandler.toJson(data.getBlackBoardAttachment());
+
+        DBBlackBoardItem item = new Gson().fromJson(blackBoardItemAsJsonString, DBBlackBoardItem.class);
+
         JSONObject blackBoardItemAsJsonObject = null;
         try {
             blackBoardItemAsJsonObject = new JSONObject(blackBoardItemAsJsonString);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST, url, blackBoardItemAsJsonObject,
                 new Response.Listener<JSONObject>() {
 

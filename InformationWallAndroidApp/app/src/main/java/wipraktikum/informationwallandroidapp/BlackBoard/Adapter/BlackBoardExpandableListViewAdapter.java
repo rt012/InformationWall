@@ -18,7 +18,7 @@ import java.util.List;
 
 import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoardAttachmentView;
 import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoardContactView;
-import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
+import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem;
 import wipraktikum.informationwallandroidapp.Database.InformationWallORMHelper;
 import wipraktikum.informationwallandroidapp.R;
 
@@ -28,8 +28,8 @@ import wipraktikum.informationwallandroidapp.R;
 public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapter{
 
     private final Context context;
-    private List<BlackBoardItem> mBlackBoardItems = new ArrayList<BlackBoardItem>();
-    private Dao<BlackBoardItem, Long> blackBoardItemDAO = null;
+    private List<DBBlackBoardItem> mBlackBoardItems = new ArrayList<DBBlackBoardItem>();
+    private Dao<DBBlackBoardItem, Long> blackBoardItemDAO = null;
 
     public BlackBoardExpandableListViewAdapter(Context context) {
         this.context = context;
@@ -81,7 +81,7 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-        BlackBoardItem blackBoardItem = (BlackBoardItem) getGroup(groupPosition);
+        DBBlackBoardItem blackBoardItem = (DBBlackBoardItem) getGroup(groupPosition);
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -105,7 +105,7 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-        BlackBoardItem blackBoardItem = (BlackBoardItem) getChild(groupPosition, childPosition);
+        DBBlackBoardItem blackBoardItem = (DBBlackBoardItem) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context

@@ -12,17 +12,17 @@ import android.widget.TextView;
 import java.io.File;
 import java.util.List;
 
-import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardAttachment;
+import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardAttachment;
 import wipraktikum.informationwallandroidapp.R;
 
 /**
  * Created by Eric Schmidt on 27.10.2015.
  */
-public class BlackBoardListViewAttachmentAdapter extends ArrayAdapter<BlackBoardAttachment> {
-    private List<BlackBoardAttachment> mAttachments;
+public class BlackBoardListViewAttachmentAdapter extends ArrayAdapter<DBBlackBoardAttachment> {
+    private List<DBBlackBoardAttachment> mAttachments;
     private Context mContext;
 
-    public BlackBoardListViewAttachmentAdapter(Context context, int resource, List<BlackBoardAttachment> attachments) {
+    public BlackBoardListViewAttachmentAdapter(Context context, int resource, List<DBBlackBoardAttachment> attachments) {
         super(context, resource, attachments);
         mAttachments = attachments;
         mContext = context;
@@ -35,7 +35,7 @@ public class BlackBoardListViewAttachmentAdapter extends ArrayAdapter<BlackBoard
             convertView = inflater.inflate(R.layout.black_board_lv_attachment_item, null);
         }
 
-        BlackBoardAttachment attachment = mAttachments.get(position);
+        DBBlackBoardAttachment attachment = mAttachments.get(position);
 
         //Image View
         ImageView attachmentIcon = (ImageView) convertView.
@@ -51,7 +51,7 @@ public class BlackBoardListViewAttachmentAdapter extends ArrayAdapter<BlackBoard
         return convertView;
     }
 
-    private Drawable getDrawableFromDataType(BlackBoardAttachment.DataType dataType){
+    private Drawable getDrawableFromDataType(DBBlackBoardAttachment.DataType dataType){
         Drawable drawable = null;
 
         switch (dataType){

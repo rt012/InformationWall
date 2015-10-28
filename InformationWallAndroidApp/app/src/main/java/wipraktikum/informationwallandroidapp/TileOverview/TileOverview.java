@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 import wipraktikum.informationwallandroidapp.BaseActivity;
 import wipraktikum.informationwallandroidapp.Database.InformationWallORMHelper;
-import wipraktikum.informationwallandroidapp.HttpConnection.VolleyTest;
+import wipraktikum.informationwallandroidapp.ServerCommunication.VolleyTest;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
 import wipraktikum.informationwallandroidapp.R;
 
@@ -20,7 +20,7 @@ public class TileOverview extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_tile_overview);
 
         //Set Adapter for GridView
         GridView gridView = (GridView)findViewById(R.id.gridview);
