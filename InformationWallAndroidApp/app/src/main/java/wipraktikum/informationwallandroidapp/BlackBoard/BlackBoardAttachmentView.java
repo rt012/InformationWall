@@ -3,6 +3,7 @@ package wipraktikum.informationwallandroidapp.BlackBoard;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,7 +21,7 @@ public class BlackBoardAttachmentView extends LinearLayout {
 
     private Context mContext;
 
-    public BlackBoardAttachmentView(Context context, BlackBoardAttachment attachment) {
+    public BlackBoardAttachmentView(final Context context, final BlackBoardAttachment attachment) {
         super(context);
         this.mContext = context;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -31,8 +32,21 @@ public class BlackBoardAttachmentView extends LinearLayout {
         //Attachment Name
         TextView attachmentName = (TextView)
                 findViewById(R.id.tv_black_board_attachment_item);
-        File attachmentFile = new File(attachment.getDeviceDataPath());
+        File attachmentFile = new File(attachment.getRemoteDataPath());
         attachmentName.setText(attachmentFile.getName());
+
+        this.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(attachment.getDeviceDataPath() == "") {
+
+                   // new DownloadFileFromURL(context).execute(file_url);
+
+                } else {
+                    //TODO �ffne Anhang
+                }
+            }
+        });
 
     }
 

@@ -14,9 +14,11 @@ import java.util.List;
 
 import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoardAttachmentView;
 import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoardContactView;
+import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardAttachment;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.R;
+import wipraktikum.informationwallandroidapp.ServerCommunication.DownloadManager;
 
 /**
  * Created by Eric Schmidt on 25.10.2015.
@@ -94,7 +96,7 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-        BlackBoardItem blackBoardItem = (BlackBoardItem) getChild(groupPosition, childPosition);
+        final BlackBoardItem blackBoardItem = (BlackBoardItem) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
@@ -110,7 +112,14 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
         LinearLayout attachmentContainer = (LinearLayout) convertView.findViewById(R.id.ll_attachment_container);
         attachmentContainer.removeAllViews();
         for(int i = 0; i < blackBoardItem.getBlackBoardAttachment().size(); i++) {
-            BlackBoardAttachmentView attachmentView = new BlackBoardAttachmentView(this.context, blackBoardItem.getBlackBoardAttachment().get(i));
+            final BlackBoardAttachment attachment = blackBoardItem.getBlackBoardAttachment().get(i);
+            BlackBoardAttachmentView attachmentView = new BlackBoardAttachmentView(this.context, attachment);
+            attachmentView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new DownloadManager(context).downloadFile(attachment);
+                }
+            });
             attachmentContainer.addView(attachmentView);
         }
 
