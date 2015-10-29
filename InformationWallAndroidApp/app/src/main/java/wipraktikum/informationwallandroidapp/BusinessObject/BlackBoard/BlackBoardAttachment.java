@@ -3,6 +3,7 @@ package wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard;
 import com.j256.ormlite.table.DatabaseTable;
 
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardAttachment;
+import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem;
 
 /**
  * Created by Eric Schmidt on 25.10.2015.
@@ -13,10 +14,11 @@ public class BlackBoardAttachment {
     private String mRemoteDataPath;
     private String mDeviceDataPath;
     private DBBlackBoardAttachment.DataType mDataType;
+    private transient DBBlackBoardItem mDBBlackBoardItem;
 
     public BlackBoardAttachment(){}
 
-    public BlackBoardAttachment(String mRemoteDataPath, String mDeviceDataPath, DBBlackBoardAttachment.DataType mDataType, BlackBoardItem blackboardItem) {
+    public BlackBoardAttachment(String mRemoteDataPath, String mDeviceDataPath, DBBlackBoardAttachment.DataType mDataType, DBBlackBoardItem mDBBlackBoardItem) {
         this.mRemoteDataPath = mRemoteDataPath;
         this.mDeviceDataPath = mDeviceDataPath;
         this.mDataType = mDataType;
@@ -28,6 +30,14 @@ public class BlackBoardAttachment {
 
     public void setBlackBoardAttachmentID(long mBlackBoardAttachmentID) {
         this.mBlackBoardAttachmentID = mBlackBoardAttachmentID;
+    }
+
+    public DBBlackBoardItem getBlackBoardItem() {
+        return mDBBlackBoardItem;
+    }
+
+    public void setBlackBoardItem(DBBlackBoardItem mDBBlackBoardItem) {
+        this.mDBBlackBoardItem = mDBBlackBoardItem;
     }
 
     public String getDeviceDataPath() {
@@ -53,4 +63,6 @@ public class BlackBoardAttachment {
     public void setDataType(DBBlackBoardAttachment.DataType mDataType) {
         this.mDataType = mDataType;
     }
+
+
 }

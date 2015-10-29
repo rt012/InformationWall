@@ -2,18 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:paddingTop="@dimen/black_board_ex_lv_padding"
     android:paddingBottom="@dimen/black_board_ex_lv_padding">
     <ImageView
         android:id="@+id/iv_black_board_attachment_item"
         android:layout_width="20dp"
-        android:layout_height="20dp "
-        android:layout_gravity="right" />
+        android:layout_height="20dp"
+        android:layout_gravity="left" />
     <TextView
         android:id="@+id/tv_black_board_attachment_item"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dp"/>
+        android:layout_height="match_parent"
+        android:paddingLeft="10dp"
+        android:layout_weight="1"/>
+
+    <android.support.v4.widget.ContentLoadingProgressBar
+        android:id="@+id/lp_black_board_attachment_item"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_gravity="right"
+        android:paddingLeft="20dp"
+        style="?android:attr/progressBarStyleLarge"/>
 
 </LinearLayout>

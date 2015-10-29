@@ -1,9 +1,9 @@
-package wipraktikum.informationwallandroidapp.BlackBoard;
+package wipraktikum.informationwallandroidapp.BlackBoard.CustomView;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -13,6 +13,7 @@ import java.io.File;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardAttachment;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardAttachment;
 import wipraktikum.informationwallandroidapp.R;
+import wipraktikum.informationwallandroidapp.Utils.FileHelper;
 
 /**
  * Created by Remi on 28.10.2015.
@@ -20,12 +21,18 @@ import wipraktikum.informationwallandroidapp.R;
 public class BlackBoardAttachmentView extends LinearLayout {
 
     private Context mContext;
+    private BlackBoardAttachment attachment;
+    private ContentLoadingProgressBar contentLoadingProgressBar = null;
 
     public BlackBoardAttachmentView(final Context context, final BlackBoardAttachment attachment) {
         super(context);
         this.mContext = context;
+        this.attachment = attachment;
+
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.black_board_lv_attachment_item, this);
+
+        //Attachment Icon
         ImageView attachmentIcon = (ImageView) findViewById(R.id.iv_black_board_attachment_item);
         attachmentIcon.setImageDrawable(getDrawableFromDataType(attachment.getDataType()));
 
@@ -35,19 +42,15 @@ public class BlackBoardAttachmentView extends LinearLayout {
         File attachmentFile = new File(attachment.getRemoteDataPath());
         attachmentName.setText(attachmentFile.getName());
 
-        this.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(attachment.getDeviceDataPath() == "") {
+        //Grey Field if no local Path
+        if (!FileHelper.getInstance(context).exists(attachment.getDeviceDataPath())){
+            this.setAlpha(0.5f);
+        }
 
-                   // new DownloadFileFromURL(context).execute(file_url);
-
-                } else {
-                    //TODO �ffne Anhang
-                }
-            }
-        });
-
+        //Content Loaded
+       contentLoadingProgressBar = (ContentLoadingProgressBar)
+                findViewById(R.id.lp_black_board_attachment_item);
+        contentLoadingProgressBar.hide();
     }
 
     private Drawable getDrawableFromDataType(DBBlackBoardAttachment.DataType dataType) {
@@ -66,5 +69,17 @@ public class BlackBoardAttachmentView extends LinearLayout {
         }
         return drawable;
 
+    }
+
+    public BlackBoardAttachment getItem(){
+        return attachment;
+    }
+
+    public void showProgressbar(boolean show){
+        if (show) {
+            contentLoadingProgressBar.show();
+        }else {
+            contentLoadingProgressBar.hide();
+        }
     }
 }

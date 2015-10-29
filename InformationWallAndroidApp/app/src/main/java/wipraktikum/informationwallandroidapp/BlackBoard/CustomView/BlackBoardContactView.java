@@ -1,4 +1,4 @@
-package wipraktikum.informationwallandroidapp.BlackBoard;
+package wipraktikum.informationwallandroidapp.BlackBoard.CustomView;
 
 import android.content.Context;
 import android.view.LayoutInflater;

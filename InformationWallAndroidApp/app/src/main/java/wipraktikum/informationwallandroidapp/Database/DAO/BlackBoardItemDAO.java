@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
-import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
 
 /**
@@ -27,8 +26,8 @@ public class BlackBoardItemDAO implements IDAO {
     public ArrayList queryForAll() {
         ArrayList<BlackBoardItem> blackBoardItems = new ArrayList<>();;
         try {
-            List<DBBlackBoardItem> dbBlackBoardItems = InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardItemDAO().queryForAll();
-            for(DBBlackBoardItem dbBlackBoardItem : dbBlackBoardItems){
+            List<wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem> dbBlackBoardItems = InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardItemDAO().queryForAll();
+            for(wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem dbBlackBoardItem : dbBlackBoardItems){
                 blackBoardItems.add(mapDBBlackBoardItemToBlackBoardItem(dbBlackBoardItem));
             }
         } catch (SQLException e) {
@@ -41,7 +40,7 @@ public class BlackBoardItemDAO implements IDAO {
     public Object queryForId(long iD) {
         BlackBoardItem blackBoardItem = null;
         try {
-            DBBlackBoardItem dbBlackBoardItem = InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardItemDAO().queryForId(iD);
+            wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem dbBlackBoardItem = InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardItemDAO().queryForId(iD);
             blackBoardItem = mapDBBlackBoardItemToBlackBoardItem(dbBlackBoardItem);
 
         } catch (SQLException e) {
@@ -91,7 +90,7 @@ public class BlackBoardItemDAO implements IDAO {
         return ok;
     }
 
-    public BlackBoardItem mapDBBlackBoardItemToBlackBoardItem(DBBlackBoardItem dbBlackBoardItem) {
+    public BlackBoardItem mapDBBlackBoardItemToBlackBoardItem(wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem dbBlackBoardItem) {
         BlackBoardItem blackBoardItem = new BlackBoardItem();
 
         blackBoardItem.setBlackBoardItemID(dbBlackBoardItem.getBlackBoardItemID());
@@ -107,8 +106,8 @@ public class BlackBoardItemDAO implements IDAO {
         return blackBoardItem;
     }
 
-    public DBBlackBoardItem mapBlackBoardItemToDBBlackBoardItem(BlackBoardItem blackBoardItem) {
-        DBBlackBoardItem dbBlackBoardItem = new DBBlackBoardItem();
+    public wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem mapBlackBoardItemToDBBlackBoardItem(BlackBoardItem blackBoardItem) {
+        wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem dbBlackBoardItem = new wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem();
 
         dbBlackBoardItem.setBlackBoardItemID(blackBoardItem.getBlackBoardItemID());
         dbBlackBoardItem.setTitle(blackBoardItem.getTitle());

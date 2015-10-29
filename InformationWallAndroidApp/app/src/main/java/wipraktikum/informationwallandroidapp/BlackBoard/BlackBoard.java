@@ -13,6 +13,8 @@ import wipraktikum.informationwallandroidapp.R;
 
 public class BlackBoard extends AppCompatActivity {
 
+    private BlackBoardExpandableListViewAdapter blackBoardExpandableListViewAdapter = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,9 +31,16 @@ public class BlackBoard extends AppCompatActivity {
             }
         });
         ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.ex_lv_black_board);
-        expandableListView.setAdapter(new BlackBoardExpandableListViewAdapter(this));
+        blackBoardExpandableListViewAdapter = new BlackBoardExpandableListViewAdapter(this);
+        expandableListView.setAdapter(blackBoardExpandableListViewAdapter);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        blackBoardExpandableListViewAdapter.notifyDataSetChanged();
     }
 
 }

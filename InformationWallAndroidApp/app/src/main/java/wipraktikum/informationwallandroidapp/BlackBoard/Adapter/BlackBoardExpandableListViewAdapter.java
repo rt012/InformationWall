@@ -1,6 +1,9 @@
 package wipraktikum.informationwallandroidapp.BlackBoard.Adapter;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,21 +15,23 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoardAttachmentView;
-import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoardContactView;
+import wipraktikum.informationwallandroidapp.BlackBoard.CustomView.BlackBoardAttachmentView;
+import wipraktikum.informationwallandroidapp.BlackBoard.CustomView.BlackBoardContactView;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardAttachment;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.ServerCommunication.DownloadManager;
+import wipraktikum.informationwallandroidapp.Utils.FileHelper;
 
 /**
  * Created by Eric Schmidt on 25.10.2015.
  */
-public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapter{
+public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapter implements View.OnClickListener{
 
     private final Context context;
     private List<BlackBoardItem> mBlackBoardItems = new ArrayList<BlackBoardItem>();
+    private ArrayList<BlackBoardAttachmentView> contentDownloadViews = new ArrayList<>();
 
     public BlackBoardExpandableListViewAdapter(Context context) {
         this.context = context;
@@ -34,6 +39,7 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
         // Get black board items from database
         mBlackBoardItems = DAOHelper.getInstance().getBlackBoardItemDAO().queryForAll();
     }
+
     @Override
     public int getGroupCount() {
         return mBlackBoardItems.size();
@@ -104,6 +110,8 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
             convertView = infalInflater.inflate(R.layout.black_board_ex_lv_child, null);
         }
 
+        resumeProgressbar();
+
         //Description Text
         TextView txtListChild = (TextView) convertView
                 .findViewById(R.id.tv_black_board_item_description);
@@ -114,12 +122,7 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
         for(int i = 0; i < blackBoardItem.getBlackBoardAttachment().size(); i++) {
             final BlackBoardAttachment attachment = blackBoardItem.getBlackBoardAttachment().get(i);
             BlackBoardAttachmentView attachmentView = new BlackBoardAttachmentView(this.context, attachment);
-            attachmentView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    new DownloadManager(context).downloadFile(attachment);
-                }
-            });
+            attachmentView.setOnClickListener(this);
             attachmentContainer.addView(attachmentView);
         }
 
@@ -132,5 +135,41 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
     @Override
     public boolean isChildSelectable(int i, int i1) {
         return false;
+    }
+
+    @Override
+    public void onClick(View v) {
+        final BlackBoardAttachmentView convertView = (BlackBoardAttachmentView) v;
+        final BlackBoardAttachment attachment = convertView.getItem();
+        final FileHelper fileHelper = FileHelper.getInstance(context);
+        //Download the file if does not exist
+        if (!fileHelper.exists(attachment.getDeviceDataPath())) {
+            convertView.showProgressbar(true);
+            contentDownloadViews.add(convertView);
+            //Start Download
+            final String filePath = DownloadManager.getInstance(context).downloadFile(attachment.getRemoteDataPath());
+            context.registerReceiver(new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    convertView.showProgressbar(false);
+                    contentDownloadViews.remove(convertView);
+                    //Update BlackBoardAttachment
+                    attachment.setDeviceDataPath(filePath);
+                    DAOHelper.getInstance().getBlackBoardAttachmentDAO().update(attachment);
+                    //Open File
+                    fileHelper.openFile(filePath, attachment.getDataType());
+                    notifyDataSetChanged();
+                }
+            }, new IntentFilter(android.app.DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+        }else{
+            //Open File
+            fileHelper.openFile(attachment.getDeviceDataPath(), attachment.getDataType());
+        }
+    }
+
+    private void resumeProgressbar(){
+        for(BlackBoardAttachmentView v : contentDownloadViews){
+            v.showProgressbar(true);
+        }
     }
 }

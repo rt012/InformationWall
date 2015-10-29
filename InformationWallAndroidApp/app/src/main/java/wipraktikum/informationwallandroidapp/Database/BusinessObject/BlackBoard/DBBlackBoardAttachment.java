@@ -36,6 +36,14 @@ public class DBBlackBoardAttachment {
         this.mBlackBoardAttachmentID = mBlackBoardAttachmentID;
     }
 
+    public DBBlackBoardItem getBlackBoardItem() {
+        return mBlackBoardItem;
+    }
+
+    public void setBlackBoardItem(DBBlackBoardItem mBlackBoardItem) {
+        this.mBlackBoardItem = mBlackBoardItem;
+    }
+
     public String getDeviceDataPath() {
         return mDeviceDataPath;
     }
