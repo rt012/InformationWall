@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="@dimen/black_board_ex_lv_padding">
+
     <TableRow
     android:paddingBottom="@dimen/black_board_ex_lv_padding">
-
     <ImageView
        android:id="@+id/iv_black_board_contact_company"
        android:layout_width="20dp"

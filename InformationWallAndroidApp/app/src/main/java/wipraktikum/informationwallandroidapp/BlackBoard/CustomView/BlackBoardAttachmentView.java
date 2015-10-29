@@ -24,7 +24,7 @@ public class BlackBoardAttachmentView extends LinearLayout {
     private BlackBoardAttachment attachment;
     private ContentLoadingProgressBar contentLoadingProgressBar = null;
 
-    public BlackBoardAttachmentView(final Context context, final BlackBoardAttachment attachment) {
+    public BlackBoardAttachmentView(final Context context, final BlackBoardAttachment attachment, boolean isDownloadInProgress) {
         super(context);
         this.mContext = context;
         this.attachment = attachment;
@@ -50,7 +50,11 @@ public class BlackBoardAttachmentView extends LinearLayout {
         //Content Loaded
        contentLoadingProgressBar = (ContentLoadingProgressBar)
                 findViewById(R.id.lp_black_board_attachment_item);
-        contentLoadingProgressBar.hide();
+        if(isDownloadInProgress){
+            contentLoadingProgressBar.show();
+        }else{
+            contentLoadingProgressBar.hide();
+        }
     }
 
     private Drawable getDrawableFromDataType(DBBlackBoardAttachment.DataType dataType) {

@@ -31,7 +31,7 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
 
     private final Context context;
     private List<BlackBoardItem> mBlackBoardItems = new ArrayList<BlackBoardItem>();
-    private ArrayList<BlackBoardAttachmentView> contentDownloadViews = new ArrayList<>();
+    private ArrayList<BlackBoardAttachment> downloadAttachments = new ArrayList<>();
 
     public BlackBoardExpandableListViewAdapter(Context context) {
         this.context = context;
@@ -110,8 +110,6 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
             convertView = infalInflater.inflate(R.layout.black_board_ex_lv_child, null);
         }
 
-        resumeProgressbar();
-
         //Description Text
         TextView txtListChild = (TextView) convertView
                 .findViewById(R.id.tv_black_board_item_description);
@@ -121,7 +119,7 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
         attachmentContainer.removeAllViews();
         for(int i = 0; i < blackBoardItem.getBlackBoardAttachment().size(); i++) {
             final BlackBoardAttachment attachment = blackBoardItem.getBlackBoardAttachment().get(i);
-            BlackBoardAttachmentView attachmentView = new BlackBoardAttachmentView(this.context, attachment);
+            BlackBoardAttachmentView attachmentView = new BlackBoardAttachmentView(this.context, attachment, isDownloadInProgress(attachment));
             attachmentView.setOnClickListener(this);
             attachmentContainer.addView(attachmentView);
         }
@@ -145,14 +143,14 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
         //Download the file if does not exist
         if (!fileHelper.exists(attachment.getDeviceDataPath())) {
             convertView.showProgressbar(true);
-            contentDownloadViews.add(convertView);
+            downloadAttachments.add(convertView.getItem());
             //Start Download
             final String filePath = DownloadManager.getInstance(context).downloadFile(attachment.getRemoteDataPath());
             context.registerReceiver(new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
                     convertView.showProgressbar(false);
-                    contentDownloadViews.remove(convertView);
+                    downloadAttachments.remove(convertView.getItem());
                     //Update BlackBoardAttachment
                     attachment.setDeviceDataPath(filePath);
                     DAOHelper.getInstance().getBlackBoardAttachmentDAO().update(attachment);
@@ -167,9 +165,11 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
         }
     }
 
-    private void resumeProgressbar(){
-        for(BlackBoardAttachmentView v : contentDownloadViews){
-            v.showProgressbar(true);
+    private boolean isDownloadInProgress(BlackBoardAttachment attachment){
+        boolean inProgress = false;
+        if(downloadAttachments.contains(attachment)){
+            inProgress = true;
         }
+        return inProgress;
     }
 }
