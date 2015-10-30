@@ -1,5 +1,6 @@
 package wipraktikum.informationwallandroidapp.Utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -7,32 +8,44 @@ import android.net.Uri;
 import java.io.File;
 
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardAttachment;
+import wipraktikum.informationwallandroidapp.InfoWallApplication;
 
 /**
  * Created by Eric Schmidt on 29.10.2015.
  */
 public class FileHelper {
     private static FileHelper instance = null;
-    private Context context;
+    private Context mContext;
 
-    private FileHelper(Context context){
-        this.context = context;
+    private FileHelper(){
+        mContext = InfoWallApplication.getInstance();
     }
 
-    public static FileHelper getInstance(Context context){
+    public static FileHelper getInstance(){
         if (instance == null){
-            instance = new FileHelper(context);
+            instance = new FileHelper();
         }
         return instance;
     }
 
-    public void openFile(String fullFileName, DBBlackBoardAttachment.DataType dataType) {
+    public void openFile(Context activity, String fullFileName, DBBlackBoardAttachment.DataType dataType) {
         File file = new File(fullFileName);
-        Intent i = new Intent();
-        i.setAction(android.content.Intent.ACTION_VIEW);
-        i.setDataAndType(Uri.fromFile(file), getDataTyp(dataType));
-        context.startActivity(i);
+        Intent intent = new Intent();
+        intent.setAction(android.content.Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.fromFile(file), getDataTyp(dataType));
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        activity.startActivity(intent);
     }
+
+    public void showFileChooser(Activity activity) {
+        int PICK_IMAGE_REQUEST = 1;
+
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        activity.startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+    }
+
 
     private String getDataTyp(DBBlackBoardAttachment.DataType dataType) {
         String fileType;

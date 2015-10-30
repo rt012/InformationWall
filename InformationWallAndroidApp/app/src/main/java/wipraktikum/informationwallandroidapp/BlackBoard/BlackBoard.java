@@ -6,14 +6,13 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ExpandableListView;
 
-import wipraktikum.informationwallandroidapp.BlackBoard.Adapter.BlackBoardExpandableListViewAdapter;
 import wipraktikum.informationwallandroidapp.R;
 
+/**
+ * Created by Eric Schmidt on 30.10.2015.
+ */
 public class BlackBoard extends AppCompatActivity {
-
-    private BlackBoardExpandableListViewAdapter blackBoardExpandableListViewAdapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +20,7 @@ public class BlackBoard extends AppCompatActivity {
         setContentView(R.layout.activity_black_board);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -28,19 +28,34 @@ public class BlackBoard extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                openAddBlackBoardItemFragment();
             }
         });
-        ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.ex_lv_black_board);
-        blackBoardExpandableListViewAdapter = new BlackBoardExpandableListViewAdapter(this);
-        expandableListView.setAdapter(blackBoardExpandableListViewAdapter);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        openBlackBoardOverview();
     }
 
     @Override
     public void onResume(){
         super.onResume();
-        blackBoardExpandableListViewAdapter.notifyDataSetChanged();
+    }
+
+    public void openAddBlackBoardItemFragment(){
+        android.app.FragmentManager fragmentManager = getFragmentManager();
+        android.app.FragmentTransaction fragmentTransaction = fragmentManager
+                .beginTransaction();
+        BlackBoardAddItem blackBoardAddItem = new BlackBoardAddItem();
+        fragmentTransaction.replace(R.id.black_board_fragment_container, blackBoardAddItem);
+        fragmentTransaction.commit();
+    }
+
+    public void openBlackBoardOverview(){
+        android.app.FragmentManager fragmentManager = getFragmentManager();
+        android.app.FragmentTransaction fragmentTransaction = fragmentManager
+                .beginTransaction();
+        BlackBoardOverview blackBoardOverview = new BlackBoardOverview();
+        fragmentTransaction.replace(R.id.black_board_fragment_container, blackBoardOverview);
+        fragmentTransaction.commit();
     }
 
 }

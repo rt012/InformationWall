@@ -43,7 +43,7 @@ public class BlackBoardAttachmentView extends LinearLayout {
         attachmentName.setText(attachmentFile.getName());
 
         //Grey Field if no local Path
-        if (!FileHelper.getInstance(context).exists(attachment.getDeviceDataPath())){
+        if (!FileHelper.getInstance().exists(attachment.getDeviceDataPath())){
             this.setAlpha(0.5f);
         }
 

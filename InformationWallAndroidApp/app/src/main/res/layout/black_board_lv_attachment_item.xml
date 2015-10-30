@@ -1,28 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/black_board_ex_lv_padding">
+    android:layout_height="50dp">
 
-    <ImageView
-        android:id="@+id/iv_black_board_attachment_item"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_gravity="left" />
-    <TextView
-        android:id="@+id/tv_black_board_attachment_item"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="10dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1">
 
-    <android.support.v4.widget.ContentLoadingProgressBar
-        android:id="@+id/lp_black_board_attachment_item"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_gravity="right"
-        android:paddingLeft="20dp"
-        style="?android:attr/progressBarStyleLarge"/>
+        <ImageView
+            android:id="@+id/iv_black_board_attachment_item"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:gravity="bottom"/>
+        <TextView
+            android:id="@+id/tv_black_board_attachment_item"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="10dp"
+            android:gravity="center_vertical"
+            android:layout_weight="1"/>
 
+        <android.support.v4.widget.ContentLoadingProgressBar
+            android:id="@+id/lp_black_board_attachment_item"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="right|center_vertical"
+            android:paddingLeft="20dp"
+            style="?android:attr/progressBarStyleLarge"/>
+    </LinearLayout>
+    <View
+        style="@style/Divider" />
 </LinearLayout>

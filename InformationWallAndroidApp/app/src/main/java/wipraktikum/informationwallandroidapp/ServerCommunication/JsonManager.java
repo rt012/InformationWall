@@ -18,7 +18,21 @@ import wipraktikum.informationwallandroidapp.InfoWallApplication;
 /**
  * Created by Eric Schmidt on 27.10.2015.
  */
-public class VolleyTest {
+public class JsonManager {
+    private static JsonManager instance = null;
+    private Context mContext;
+
+    private JsonManager(){
+        mContext = InfoWallApplication.getInstance();
+    }
+
+    public static JsonManager getInstance(){
+        if (instance == null){
+            instance = new JsonManager();
+        }
+        return instance;
+    }
+
     public void doAction(Context context, BlackBoardItem data) {
         final String volleyTag = "Volley Log";
 

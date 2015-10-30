@@ -22,4 +22,15 @@
     <string name="black_board_no_item_information">No Item Information</string>
     <string name="black_board_attachment">Attachment</string>
     <string name="black_board_description">Description</string>
+    <!--- BlackBoard Add Item -->
+    <string name="black_board_add_item_title">Title</string>
+    <string name="black_board_add_item_date">Date</string>
+    <string name="black_board_add_item_creator">Creator</string>
+    <string name="black_board_add_item_description">Description</string>
+    <string name="black_board_add_item_attachments">Attachments</string>
+
+
+    <!--- Util -->
+    <string name="notification_upload_progress">Upload file: </string>
+    <string name="notification_upload">Upload in progress</string>
 </resources>

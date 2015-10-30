@@ -139,13 +139,13 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
     public void onClick(View v) {
         final BlackBoardAttachmentView convertView = (BlackBoardAttachmentView) v;
         final BlackBoardAttachment attachment = convertView.getItem();
-        final FileHelper fileHelper = FileHelper.getInstance(context);
+        final FileHelper fileHelper = FileHelper.getInstance();
         //Download the file if does not exist
         if (!fileHelper.exists(attachment.getDeviceDataPath())) {
             convertView.showProgressbar(true);
             downloadAttachments.add(convertView.getItem());
             //Start Download
-            final String filePath = DownloadManager.getInstance(context).downloadFile(attachment.getRemoteDataPath());
+            final String filePath = DownloadManager.getInstance().downloadFile(attachment.getRemoteDataPath());
             context.registerReceiver(new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
@@ -155,13 +155,13 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
                     attachment.setDeviceDataPath(filePath);
                     DAOHelper.getInstance().getBlackBoardAttachmentDAO().update(attachment);
                     //Open File
-                    fileHelper.openFile(filePath, attachment.getDataType());
+                    fileHelper.openFile(context, filePath, attachment.getDataType());
                     notifyDataSetChanged();
                 }
             }, new IntentFilter(android.app.DownloadManager.ACTION_DOWNLOAD_COMPLETE));
         }else{
             //Open File
-            fileHelper.openFile(attachment.getDeviceDataPath(), attachment.getDataType());
+            fileHelper.openFile(context, attachment.getDeviceDataPath(), attachment.getDataType());
         }
     }
 

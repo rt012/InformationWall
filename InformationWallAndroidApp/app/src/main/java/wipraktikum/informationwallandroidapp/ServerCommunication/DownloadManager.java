@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Environment;
 
+import wipraktikum.informationwallandroidapp.InfoWallApplication;
 import wipraktikum.informationwallandroidapp.Utils.FileHelper;
 
 /**
@@ -14,19 +15,19 @@ public class DownloadManager {
     private Context mContext;
     private static DownloadManager instance = null;
 
-    private DownloadManager(Context context) {
-        this.mContext = context;
+    private DownloadManager() {
+        this.mContext = InfoWallApplication.getInstance();
     }
 
-    public static DownloadManager getInstance(Context context){
+    public static DownloadManager getInstance(){
         if(instance == null){
-            instance = new DownloadManager(context);
+            instance = new DownloadManager();
         }
         return instance;
     }
 
     public String downloadFile(String downloadUrl) {
-        final String fileName = FileHelper.getInstance(mContext).getFileName(downloadUrl);
+        final String fileName = FileHelper.getInstance().getFileName(downloadUrl);
 
         String file_url = downloadUrl;
         android.app.DownloadManager downloadManager = (android.app.DownloadManager)mContext.getSystemService(mContext.DOWNLOAD_SERVICE);

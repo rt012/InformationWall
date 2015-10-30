@@ -3,8 +3,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="10dp"
-    >
+    android:paddingLeft="@dimen/black_board_ex_lv_padding">
+
     <TextView
         android:id="@+id/tv_black_board_item_description"
         android:layout_width="match_parent"
@@ -18,7 +18,6 @@
         android:id="@+id/ll_attachment_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/black_board_ex_lv_padding"
         android:orientation="vertical"/>
 
     <View
@@ -29,6 +28,5 @@
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="vertical"
-        />
+        android:orientation="vertical"/>
 </LinearLayout>
