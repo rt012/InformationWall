@@ -24,7 +24,7 @@
     <!-- Fragment Container-->
     <FrameLayout
         android:id="@+id/black_board_fragment_container"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"></FrameLayout>
 
     <android.support.design.widget.FloatingActionButton

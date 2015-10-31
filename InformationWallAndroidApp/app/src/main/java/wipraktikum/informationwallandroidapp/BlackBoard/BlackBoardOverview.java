@@ -13,6 +13,14 @@ import wipraktikum.informationwallandroidapp.R;
 public class BlackBoardOverview extends Fragment {
 
     private BlackBoardExpandableListViewAdapter blackBoardExpandableListViewAdapter = null;
+    private static BlackBoardOverview instance = null;
+
+    public static BlackBoardOverview getInstance(){
+        if (instance==null){
+            instance = new BlackBoardOverview();
+        }
+        return instance;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup viewGroup, Bundle savedInstanceState) {

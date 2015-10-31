@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="wipraktikum.informationwallandroidapp.BlackBoard">
+    <item
+        android:id="@+id/menu_black_board_item_save"
+        android:title="@string/menu_black_board_save_item"
+        android:icon="@drawable/ic_save"
+        android:orderInCategory="100"
+        android:visible="false"
+        app:showAsAction="always" />
+</menu>

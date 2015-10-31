@@ -13,9 +13,18 @@ import wipraktikum.informationwallandroidapp.R;
  */
 public class BlackBoardAddItem extends Fragment {
 
+    private static BlackBoardAddItem instance = null;
+
+    public static BlackBoardAddItem getInstance(){
+        if (instance==null){
+            instance = new BlackBoardAddItem();
+        }
+        return instance;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup viewGroup, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_black_board_item, viewGroup, false);
+        View view = inflater.inflate(R.layout.fragment_black_board_add_item, viewGroup, false);
         return view;
     }
 

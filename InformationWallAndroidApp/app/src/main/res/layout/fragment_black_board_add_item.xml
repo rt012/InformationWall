@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="10"
+    tools:context="wipraktikum.informationwallandroidapp.BlackBoard.BlackBoard">
+    <android.support.design.widget.AppBarLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <!-- Title -->
+    <TableRow
+        android:paddingLeft="5dp"
+        android:layout_weight="1">
+        <TextView
+            style="@style/BlackBoardAddItemTextView"
+            android:text="@string/black_board_add_item_title" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:background="@android:color/transparent" />
+    </TableRow>
+    <View
+        style="@style/Divider" />
+    <!-- Date -->
+    <TableRow
+        android:paddingLeft="5dp"
+        android:layout_weight="1">
+        <TextView
+            style="@style/BlackBoardAddItemTextView"
+            android:text="@string/black_board_add_item_date" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:drawableRight="@drawable/ic_event"
+            android:layout_weight="1"
+            android:background="@android:color/transparent" />
+    </TableRow>
+    <View
+        style="@style/Divider" />
+    <!-- Creator -->
+    <TableRow
+        android:paddingLeft="5dp"
+        android:layout_weight="1">
+        <TextView
+            style="@style/BlackBoardAddItemTextView"
+            android:text="@string/black_board_add_item_creator" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:background="@android:color/transparent" />
+    </TableRow>
+    <View
+        style="@style/Divider" />
+    <!-- Attachments -->
+    <TableRow
+        android:paddingLeft="5dp"
+        android:layout_weight="1">
+        <TextView
+            style="@style/BlackBoardAddItemTextView"
+            android:text="@string/black_board_add_item_attachments"/>
+    </TableRow>
+    <View
+        style="@style/Divider" />
+    <!-- Description -->
+    <TableRow
+        android:paddingLeft="5dp"
+        android:layout_weight="5">
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:hint="@string/black_board_add_item_description"
+            android:gravity="top"
+            android:background="@android:color/transparent" />
+    </TableRow>
+
+    <LinearLayout
+        android:id="@+id/ll_attachment_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"/>
+
+</TableLayout>

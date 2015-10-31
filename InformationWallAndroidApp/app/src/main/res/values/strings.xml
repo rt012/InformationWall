@@ -23,6 +23,7 @@
     <string name="black_board_attachment">Attachment</string>
     <string name="black_board_description">Description</string>
     <!--- BlackBoard Add Item -->
+    <string name="menu_black_board_save_item">Save</string>
     <string name="black_board_add_item_title">Title</string>
     <string name="black_board_add_item_date">Date</string>
     <string name="black_board_add_item_creator">Creator</string>
