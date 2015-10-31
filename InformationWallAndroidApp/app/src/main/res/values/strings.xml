@@ -1,5 +1,8 @@
 <resources>
+    <!-- Application Titles -->
     <string name="app_name">Information Wall</string>
+    <string name="activity_black_board_title">Black Board</string>
+    <string name="activity_black_board_add_item_title">New Entry</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>

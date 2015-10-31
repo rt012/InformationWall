@@ -36,7 +36,7 @@ public class JsonManager {
     public void doAction(Context context, BlackBoardItem data) {
         final String volleyTag = "Volley Log";
 
-        String url = "http://myinfowall.ddns.net/blackboard.php";
+        String url = "http://myinfowall.ddns.net/apps/content/blackboard.php";
 
         JSONObject blackBoardItemAsJsonObject = null;
         try {

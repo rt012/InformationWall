@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <include layout="@layout/custom_app_bar_layout"></include>
 
     <GridView
         android:id="@+id/gridview"
@@ -10,7 +13,8 @@
         android:layout_height="match_parent"
         android:verticalSpacing="0dp"
         android:horizontalSpacing="0dp"
+        android:layout_marginTop="?attr/actionBarSize"
         android:stretchMode="columnWidth"
-        android:numColumns="2"/>
+        android:numColumns="2" />
 
-</FrameLayout>
+</android.support.design.widget.CoordinatorLayout>

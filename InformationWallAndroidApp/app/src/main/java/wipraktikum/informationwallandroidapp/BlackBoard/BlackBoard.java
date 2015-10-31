@@ -76,6 +76,8 @@ public class BlackBoard extends AppCompatActivity {
         BlackBoardAddItem blackBoardAddItem = BlackBoardAddItem.getInstance();
         fragmentTransaction.replace(R.id.black_board_fragment_container, blackBoardAddItem);
         fragmentTransaction.commit();
+
+        setTitle(getString(R.string.activity_black_board_add_item_title));
     }
 
     public void openBlackBoardOverview(){
@@ -86,6 +88,9 @@ public class BlackBoard extends AppCompatActivity {
         fragmentTransaction.replace(R.id.black_board_fragment_container, blackBoardOverview);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+
+        //Change Title of Actionbar
+        setTitle(getString(R.string.activity_black_board_title));
     }
 
 

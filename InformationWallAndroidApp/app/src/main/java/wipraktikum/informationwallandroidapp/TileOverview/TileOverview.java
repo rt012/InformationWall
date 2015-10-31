@@ -5,15 +5,20 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.GridView;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import wipraktikum.informationwallandroidapp.BaseActivity;
+import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
+import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.Database.InformationWallORMHelper;
 import wipraktikum.informationwallandroidapp.R;
+import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.UploadManager;
 
 
@@ -24,11 +29,18 @@ public class TileOverview extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tile_overview);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         //Set Adapter for GridView
         GridView gridView = (GridView)findViewById(R.id.gridview);
         gridView.setAdapter(new GridViewAdapter(this));
 
+        ArrayList<BlackBoardItem> blackBoardItems = DAOHelper.getInstance().getBlackBoardItemDAO().queryForAll();
+
+        for(BlackBoardItem blackBoardItem : blackBoardItems) {
+            JsonManager.getInstance().doAction(this, blackBoardItem);
+        }
         //FileHelper.getInstance().showFileChooser(this);
     }
 
