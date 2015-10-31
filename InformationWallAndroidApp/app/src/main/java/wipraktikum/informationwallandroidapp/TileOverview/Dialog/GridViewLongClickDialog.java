@@ -1,4 +1,4 @@
-package wipraktikum.informationwallandroidapp.TileOverview;
+package wipraktikum.informationwallandroidapp.TileOverview.Dialog;
 
 import android.app.Dialog;
 import android.content.DialogInterface;

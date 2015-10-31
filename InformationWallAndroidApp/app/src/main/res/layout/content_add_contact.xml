@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+    android:id ="@+id/tl_black_board_add_item_contact"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="15dp"
+    tools:context="wipraktikum.informationwallandroidapp.BlackBoard.BlackBoard">
+
+    <TableRow
+        android:paddingLeft="5dp"
+        android:layout_weight="1">
+        <EditText
+            android:id="@+id/ac_tv_black_board_add_item_contact_full_name"
+            style="@style/BlackBoardAddItemEditText"
+            android:hint="@string/black_board_add_item_contact_full_name"
+            android:layout_weight="1" />
+    </TableRow>
+    <View
+        style="@style/Divider" />
+    <TableRow
+        android:paddingLeft="5dp"
+        android:layout_weight="1">
+        <EditText
+            android:id="@+id/ac_tv_black_board_add_item_contact_email"
+            style="@style/BlackBoardAddItemEditText"
+            android:hint="@string/black_board_add_item_contact_email"
+            android:layout_weight="1" />
+    </TableRow>
+    <View
+        style="@style/Divider" />
+    <TableRow
+        android:paddingLeft="5dp"
+        android:layout_weight="1">
+        <EditText
+            android:id="@+id/ac_tv_black_board_add_item_contact_telephone"
+            style="@style/BlackBoardAddItemEditText"
+            android:hint="@string/black_board_add_item_contact_telephone"
+            android:layout_weight="1" />
+    </TableRow>
+    <View
+        style="@style/Divider" />
+    <TableRow
+        android:paddingLeft="5dp"
+        android:layout_weight="1">
+        <EditText
+            android:id="@+id/ac_tv_black_board_add_item_contact_company"
+            style="@style/BlackBoardAddItemEditText"
+            android:hint="@string/black_board_add_item_contact_company"
+            android:layout_weight="1" />
+    </TableRow>
+    <View
+        style="@style/Divider" />
+    <TableRow
+        android:paddingLeft="5dp"
+        android:layout_weight="1">
+        <EditText
+            android:id="@+id/ac_tv_black_board_add_item_contact_city"
+            style="@style/BlackBoardAddItemEditText"
+            android:hint="@string/black_board_add_item_contact_city"
+            android:layout_weight="1" />
+    </TableRow>
+    <View
+        style="@style/Divider" />
+    <TableRow
+        android:paddingLeft="5dp"
+        android:layout_weight="1">
+        <EditText
+            android:id="@+id/ac_tv_black_board_add_item_contact_street"
+            style="@style/BlackBoardAddItemEditText"
+            android:hint="@string/black_board_add_item_contact_street"
+            android:layout_weight="1" />
+    </TableRow>
+    <View
+        style="@style/Divider" />
+
+</TableLayout>

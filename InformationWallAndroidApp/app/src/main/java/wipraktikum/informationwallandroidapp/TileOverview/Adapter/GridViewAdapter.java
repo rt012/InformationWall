@@ -1,4 +1,4 @@
-package wipraktikum.informationwallandroidapp.TileOverview;
+package wipraktikum.informationwallandroidapp.TileOverview.Adapter;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +19,7 @@ import wipraktikum.informationwallandroidapp.BusinessObject.Tile;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.DBTile;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.R;
+import wipraktikum.informationwallandroidapp.TileOverview.Dialog.GridViewLongClickDialog;
 
 /**
  * Created by Remi on 18.10.2015.
@@ -59,7 +60,7 @@ public final class GridViewAdapter extends BaseAdapter {
         final RelativeLayout mRelativeLayout;
 
         if (v == null) {
-            v = mInflater.inflate(R.layout.grid_item, viewGroup, false);
+            v = mInflater.inflate(R.layout.tile_item, viewGroup, false);
             v.setTag(R.id.picture, v.findViewById(R.id.picture));
             v.setTag(R.id.text, v.findViewById(R.id.text));
         }

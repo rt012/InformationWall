@@ -6,13 +6,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TableLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import wipraktikum.informationwallandroidapp.BlackBoard.Adapter.BlackBoardAutoCompleteTextViewContactAdapter;
+import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.R;
 
 /**
@@ -24,6 +30,9 @@ public class BlackBoardAddItem extends Fragment {
     private Calendar calendar = null;
 
     private EditText editDate = null;
+    private TableLayout tlAddContact = null;
+    private AutoCompleteTextView autoCompleteTextViewContact = null;
+    private ImageButton imageButtonContact = null;
 
     public static BlackBoardAddItem getInstance(){
         if (instance==null){
@@ -40,16 +49,42 @@ public class BlackBoardAddItem extends Fragment {
         editDate.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-               openDatepicker();
+               getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+               openDatePicker();
            }
         });
-
         calendar = Calendar.getInstance();
+
+        autoCompleteTextViewContact = (AutoCompleteTextView) view.findViewById(R.id.ac_tv_black_board_add_item_contact);
+        autoCompleteTextViewContact.setAdapter(
+                new BlackBoardAutoCompleteTextViewContactAdapter(getActivity(), 0, DAOHelper.getInstance().getContactDAO().queryForAll()));
+
+        tlAddContact = (TableLayout) view.findViewById(R.id.tl_black_board_add_item_contact);
+        tlAddContact.setVisibility(View.GONE);
+
+        imageButtonContact = (ImageButton) view.findViewById(R.id.ib_tv_black_board_add_item_contact);
+        imageButtonContact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (tlAddContact.getVisibility() == View.GONE) {
+                    tlAddContact.setVisibility(View.VISIBLE);
+                    autoCompleteTextViewContact.setEnabled(false);
+                    autoCompleteTextViewContact.setText(getActivity().getString(R.string.black_board_add_item_new_contact));
+                    imageButtonContact.setImageDrawable(getActivity().getDrawable(R.drawable.ic_arrow_up));
+                }else{
+                    tlAddContact.setVisibility(View.GONE);
+                    autoCompleteTextViewContact.setEnabled(true);
+                    autoCompleteTextViewContact.setText("");
+                    autoCompleteTextViewContact.setHint(getActivity().getString(R.string.black_board_add_item_contact));
+                    imageButtonContact.setImageDrawable(getActivity().getDrawable(R.drawable.ic_arrow_down));
+                }
+            }
+        });
 
         return view;
     }
 
-    public void openDatepicker(){
+    public void openDatePicker(){
         DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
             @Override

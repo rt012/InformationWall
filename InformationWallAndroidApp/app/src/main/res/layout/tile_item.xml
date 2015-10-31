@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <wipraktikum.informationwallandroidapp.TileOverview.GridImageView
+    <wipraktikum.informationwallandroidapp.TileOverview.CustomView.GridImageView
         android:id="@+id/picture"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

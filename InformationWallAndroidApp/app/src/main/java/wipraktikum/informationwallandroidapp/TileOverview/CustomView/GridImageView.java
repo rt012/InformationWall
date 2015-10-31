@@ -1,4 +1,4 @@
-package wipraktikum.informationwallandroidapp.TileOverview;
+package wipraktikum.informationwallandroidapp.TileOverview.CustomView;
 
 import android.content.Context;
 import android.util.AttributeSet;

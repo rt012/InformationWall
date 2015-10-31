@@ -1,92 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="10"
     tools:context="wipraktikum.informationwallandroidapp.BlackBoard.BlackBoard">
 
-    <!-- Title -->
-    <TableRow
-        android:paddingLeft="5dp"
-        android:layout_weight="1">
-        <TextView
-            style="@style/BlackBoardAddItemTextView"
-            android:text="@string/black_board_add_item_title" />
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:layout_weight="1"
-            android:background="@android:color/transparent" />
-    </TableRow>
-    <View
-        style="@style/Divider" />
-    <!-- Date -->
-    <TableRow
-        android:paddingLeft="5dp"
-        android:layout_weight="1">
-        <TextView
-            style="@style/BlackBoardAddItemTextView"
-            android:text="@string/black_board_add_item_date" />
-        <EditText
-            android:id="@+id/edit_black_board_add_item_date"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:layout_weight="1"
-            android:background="@android:color/transparent" />
-
-    </TableRow>
-    <View
-        style="@style/Divider" />
-    <!-- Creator -->
-    <TableRow
-        android:paddingLeft="5dp"
-        android:layout_weight="1">
-        <TextView
-            style="@style/BlackBoardAddItemTextView"
-            android:text="@string/black_board_add_item_creator" />
-        <AutoCompleteTextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:layout_weight="1"
-            android:background="@android:color/transparent" />
-    </TableRow>
-    <View
-        style="@style/Divider" />
-    <!-- Attachments -->
-    <TableRow
-        android:paddingLeft="5dp"
-        android:layout_weight="1">
-        <TextView
-            style="@style/BlackBoardAddItemTextView"
-            android:layout_weight="1"
-            android:text="@string/black_board_add_item_attachments"/>
-    </TableRow>
-    <View
-        style="@style/Divider" />
-    <!-- Description -->
-    <TableRow
-        android:paddingLeft="5dp"
-        android:layout_weight="5">
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:hint="@string/black_board_add_item_description"
-            android:gravity="top"
-            android:layout_weight="1"
-            android:background="@android:color/transparent" />
-    </TableRow>
-
-    <LinearLayout
-        android:id="@+id/ll_attachment_container"
+    <TableLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical"/>
+        android:layout_height="match_parent"
+        android:weightSum="10">
 
-</TableLayout>
+        <!-- Title -->
+        <TableRow
+            android:paddingLeft="5dp"
+            android:layout_weight="1">
+            <EditText
+                style="@style/BlackBoardAddItemEditText"
+                android:hint="@string/black_board_add_item_title"
+                android:layout_weight="1"/>
+        </TableRow>
+        <View
+            style="@style/Divider" />
+        <!-- Date -->
+        <TableRow
+            android:paddingLeft="5dp"
+            android:layout_weight="1">
+            <EditText
+                android:id="@+id/edit_black_board_add_item_date"
+                android:hint="@string/black_board_add_item_date"
+                style="@style/BlackBoardAddItemEditText"
+                android:layout_weight="1" />
+
+        </TableRow>
+        <View
+            style="@style/Divider" />
+        <!-- Contact -->
+        <TableRow
+            android:paddingLeft="5dp"
+            android:layout_weight="1">
+            <AutoCompleteTextView
+                android:id="@+id/ac_tv_black_board_add_item_contact"
+                android:hint="@string/black_board_add_item_contact"
+                style="@style/BlackBoardAddItemEditText"
+                android:layout_weight="1" />
+            <ImageButton
+                android:id="@+id/ib_tv_black_board_add_item_contact"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_arrow_down"
+                android:background="@android:color/transparent"/>
+        </TableRow>
+        <View
+            style="@style/Divider" />
+
+        <include
+            layout="@layout/content_add_contact">
+
+        </include>
+
+        <!-- Description -->
+        <TableRow
+            android:paddingLeft="5dp"
+            android:layout_weight="3">
+            <EditText
+                style="@style/BlackBoardAddItemEditText"
+                android:hint="@string/black_board_add_item_description"
+                android:gravity="top"
+                android:layout_weight="1" />
+        </TableRow>
+        <View
+            style="@style/Divider" />
+        <!-- Attachments -->
+        <TableRow
+            android:paddingLeft="5dp"
+            android:layout_weight="1">
+            <Button
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:background="@android:color/transparent"
+                android:layout_weight="1"
+                android:text="@string/black_board_add_item_attachments"/>
+        </TableRow>
+        <View
+            style="@style/Divider" />
+        <LinearLayout
+            android:id="@+id/ll_attachment_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:orientation="vertical"/>
+    </TableLayout>
+
+</ScrollView>

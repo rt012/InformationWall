@@ -98,6 +98,7 @@ public class ContactAddressDAO implements IDAO {
 
         contactAddress.setCity(dbContactAddress.getCity());
         contactAddress.setContactAddressID(dbContactAddress.getContactAddressID());
+        contactAddress.setStreetName(dbContactAddress.getStreetName());
         contactAddress.setHouseNumber(dbContactAddress.getHouseNumber());
         contactAddress.setZipCode(dbContactAddress.getZipCode());
 
@@ -105,8 +106,10 @@ public class ContactAddressDAO implements IDAO {
     }
     public DBContactAddress mapContactAddressToDBContractAddress(ContactAddress contactAddress) {
         DBContactAddress dbContactAddress = new DBContactAddress();
+
         dbContactAddress.setCity(contactAddress.getCity());
         dbContactAddress.setContactAddressID(contactAddress.getContactAddressID());
+        dbContactAddress.setStreetName(contactAddress.getStreetName());
         dbContactAddress.setHouseNumber(contactAddress.getHouseNumber());
         dbContactAddress.setZipCode(contactAddress.getZipCode());
 

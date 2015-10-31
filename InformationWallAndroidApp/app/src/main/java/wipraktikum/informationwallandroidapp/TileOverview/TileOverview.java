@@ -18,8 +18,8 @@ import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoar
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.Database.InformationWallORMHelper;
 import wipraktikum.informationwallandroidapp.R;
-import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.UploadManager;
+import wipraktikum.informationwallandroidapp.TileOverview.Adapter.GridViewAdapter;
 
 
 public class TileOverview extends BaseActivity {
@@ -38,9 +38,11 @@ public class TileOverview extends BaseActivity {
 
         ArrayList<BlackBoardItem> blackBoardItems = DAOHelper.getInstance().getBlackBoardItemDAO().queryForAll();
 
-        for(BlackBoardItem blackBoardItem : blackBoardItems) {
+        //JSON Test
+        /*for(BlackBoardItem blackBoardItem : blackBoardItems) {
             JsonManager.getInstance().doAction(this, blackBoardItem);
-        }
+        }*/
+        //Upload Test
         //FileHelper.getInstance().showFileChooser(this);
     }
 
