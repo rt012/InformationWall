@@ -28,7 +28,6 @@
     <!--- BlackBoard Add Item -->
     <string name="menu_black_board_save_item">Save</string>
     <string name="black_board_add_item_title">Title</string>
-    <string name="black_board_add_item_date">Date</string>
     <string name="black_board_add_item_contact">Contact</string>
     <string name="black_board_add_item_new_contact">Create new contact</string>
     <string name="black_board_add_item_description">Description</string>
@@ -40,11 +39,6 @@
     <string name="black_board_add_item_contact_company">Company</string>
     <string name="black_board_add_item_contact_city">ZIP Code and City</string>
     <string name="black_board_add_item_contact_street">Street Name and Number</string>
-
-    this.mStreetName = mStreetName;
-    this.mHouseNumber = mHouseNumber;
-    this.mZipCode = mZipCode;
-    this.mCity = mCity;
 
     <!--- Util -->
     <string name="notification_upload_progress">Upload file: </string>

@@ -1,16 +1,11 @@
 package wipraktikum.informationwallandroidapp.TileOverview;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.GridView;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import wipraktikum.informationwallandroidapp.BaseActivity;
@@ -18,7 +13,6 @@ import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoar
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.Database.InformationWallORMHelper;
 import wipraktikum.informationwallandroidapp.R;
-import wipraktikum.informationwallandroidapp.ServerCommunication.UploadManager;
 import wipraktikum.informationwallandroidapp.TileOverview.Adapter.GridViewAdapter;
 
 
@@ -37,13 +31,6 @@ public class TileOverview extends BaseActivity {
         gridView.setAdapter(new GridViewAdapter(this));
 
         ArrayList<BlackBoardItem> blackBoardItems = DAOHelper.getInstance().getBlackBoardItemDAO().queryForAll();
-
-        //JSON Test
-        /*for(BlackBoardItem blackBoardItem : blackBoardItems) {
-            JsonManager.getInstance().doAction(this, blackBoardItem);
-        }*/
-        //Upload Test
-        //FileHelper.getInstance().showFileChooser(this);
     }
 
     @Override
@@ -66,22 +53,5 @@ public class TileOverview extends BaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        int PICK_IMAGE_REQUEST = 1;
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            Uri filePath = data.getData();
-            try {
-                Bitmap uploadImage = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                UploadManager.getInstance().uploadFile(uploadImage, "http://myinfowall.ddns.net/phpTest2.php");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 }

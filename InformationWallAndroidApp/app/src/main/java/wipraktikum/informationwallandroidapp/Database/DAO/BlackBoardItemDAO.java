@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
+import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardAttachment;
+import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
 
 /**
@@ -90,7 +92,7 @@ public class BlackBoardItemDAO implements IDAO {
         return ok;
     }
 
-    public BlackBoardItem mapDBBlackBoardItemToBlackBoardItem(wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem dbBlackBoardItem) {
+    public BlackBoardItem mapDBBlackBoardItemToBlackBoardItem(DBBlackBoardItem dbBlackBoardItem) {
         BlackBoardItem blackBoardItem = new BlackBoardItem();
 
         blackBoardItem.setBlackBoardItemID(dbBlackBoardItem.getBlackBoardItemID());
@@ -106,7 +108,7 @@ public class BlackBoardItemDAO implements IDAO {
         return blackBoardItem;
     }
 
-    public wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem mapBlackBoardItemToDBBlackBoardItem(BlackBoardItem blackBoardItem) {
+    public DBBlackBoardItem mapBlackBoardItemToDBBlackBoardItem(BlackBoardItem blackBoardItem) {
         wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem dbBlackBoardItem = new wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem();
 
         dbBlackBoardItem.setBlackBoardItemID(blackBoardItem.getBlackBoardItemID());
@@ -117,8 +119,11 @@ public class BlackBoardItemDAO implements IDAO {
         dbBlackBoardItem.setContact(DAOHelper.getInstance().
                 getContactDAO().mapContactToDBContact(blackBoardItem.getContact()));
         try {
-            dbBlackBoardItem.setBlackBoardAttachment(DAOHelper.getInstance().
-                    getBlackBoardAttachmentDAO().mapBlackBoardAttachmentToDBBlackBoardAttachment(blackBoardItem.getBlackBoardAttachment()));
+            List<DBBlackBoardAttachment> dbBlackBoardAttachments= DAOHelper.getInstance().
+                    getBlackBoardAttachmentDAO().mapBlackBoardAttachmentToDBBlackBoardAttachment(blackBoardItem.getBlackBoardAttachment());
+            if (dbBlackBoardAttachments != null) {
+                dbBlackBoardItem.setBlackBoardAttachment(dbBlackBoardAttachments);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

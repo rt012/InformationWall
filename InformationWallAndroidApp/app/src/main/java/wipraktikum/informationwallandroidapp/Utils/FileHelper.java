@@ -37,7 +37,7 @@ public class FileHelper {
         activity.startActivity(intent);
     }
 
-    public void showFileChooser(Activity activity) {
+    public void showPictureChooser(Activity activity) {
         int PICK_IMAGE_REQUEST = 1;
 
         Intent intent = new Intent();
@@ -45,7 +45,6 @@ public class FileHelper {
         intent.setAction(Intent.ACTION_GET_CONTENT);
         activity.startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }
-
 
     private String getDataTyp(DBBlackBoardAttachment.DataType dataType) {
         String fileType;

@@ -1,7 +1,5 @@
 package wipraktikum.informationwallandroidapp.ServerCommunication;
 
-import android.content.Context;
-
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -20,11 +18,10 @@ import wipraktikum.informationwallandroidapp.InfoWallApplication;
  */
 public class JsonManager {
     private static JsonManager instance = null;
-    private Context mContext;
 
-    private JsonManager(){
-        mContext = InfoWallApplication.getInstance();
-    }
+    public static final String NEW_BLACK_BOARD_ITEM_URL = "http://myinfowall.ddns.net/apps/content/blackboard.php";
+
+    private JsonManager(){}
 
     public static JsonManager getInstance(){
         if (instance == null){
@@ -33,15 +30,13 @@ public class JsonManager {
         return instance;
     }
 
-    public void doAction(Context context, BlackBoardItem data) {
+    public void sendJson(BlackBoardItem blackBoardItem, String url) {
         final String volleyTag = "Volley Log";
-
-        String url = "http://myinfowall.ddns.net/apps/content/blackboard.php";
 
         JSONObject blackBoardItemAsJsonObject = null;
         try {
             Gson gsonHandler = new Gson();
-            String blackBoardItemAsJsonString = gsonHandler.toJson(data);
+            String blackBoardItemAsJsonString = gsonHandler.toJson(blackBoardItem);
             blackBoardItemAsJsonObject = new JSONObject(blackBoardItemAsJsonString);
         } catch (JSONException e) {
             e.printStackTrace();

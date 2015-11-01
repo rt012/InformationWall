@@ -8,6 +8,5 @@
         android:title="@string/menu_black_board_save_item"
         android:icon="@drawable/ic_save"
         android:orderInCategory="100"
-        android:visible="false"
         app:showAsAction="always" />
 </menu>

@@ -1,6 +1,6 @@
 package wipraktikum.informationwallandroidapp.BlackBoard;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +10,8 @@ import android.widget.ExpandableListView;
 import wipraktikum.informationwallandroidapp.BlackBoard.Adapter.BlackBoardExpandableListViewAdapter;
 import wipraktikum.informationwallandroidapp.R;
 
-public class BlackBoardOverview extends Fragment {
+public class BlackBoardOverview extends Fragment implements IFragmentTag{
+    private final String FRAGMENT_TAG = "FRAGMENT_OVERVIEW";
 
     private BlackBoardExpandableListViewAdapter blackBoardExpandableListViewAdapter = null;
     private static BlackBoardOverview instance = null;
@@ -37,5 +38,9 @@ public class BlackBoardOverview extends Fragment {
     public void onResume(){
         super.onResume();
         blackBoardExpandableListViewAdapter.notifyDataSetChanged();
+    }
+
+    public String getCustomTag(){
+        return this.FRAGMENT_TAG;
     }
 }

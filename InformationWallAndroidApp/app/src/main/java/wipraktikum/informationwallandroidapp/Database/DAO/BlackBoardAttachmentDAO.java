@@ -116,6 +116,8 @@ public class BlackBoardAttachmentDAO implements IDAO {
     }
 
     public List mapDBBlackBoardAttachmentToBlackBoardAttachment(List<DBBlackBoardAttachment> dbBlackBoardAttachments) {
+        if (dbBlackBoardAttachments == null) return null;
+
         ArrayList<BlackBoardAttachment> blackBoardAttachments = new ArrayList();
 
         for(DBBlackBoardAttachment dbBlackBoardAttachment : dbBlackBoardAttachments){
@@ -126,6 +128,8 @@ public class BlackBoardAttachmentDAO implements IDAO {
     }
 
     public List mapBlackBoardAttachmentToDBBlackBoardAttachment(List<BlackBoardAttachment>  blackBoardAttachments) {
+        if (blackBoardAttachments == null) return null;
+
         ArrayList<DBBlackBoardAttachment> dbBlackBoardAttachments = new ArrayList();
 
         for(BlackBoardAttachment blackBoardAttachment : blackBoardAttachments){

@@ -17,22 +17,10 @@
             android:paddingLeft="5dp"
             android:layout_weight="1">
             <EditText
+                android:id="@+id/edit_black_board_add_item_title"
                 style="@style/BlackBoardAddItemEditText"
                 android:hint="@string/black_board_add_item_title"
                 android:layout_weight="1"/>
-        </TableRow>
-        <View
-            style="@style/Divider" />
-        <!-- Date -->
-        <TableRow
-            android:paddingLeft="5dp"
-            android:layout_weight="1">
-            <EditText
-                android:id="@+id/edit_black_board_add_item_date"
-                android:hint="@string/black_board_add_item_date"
-                style="@style/BlackBoardAddItemEditText"
-                android:layout_weight="1" />
-
         </TableRow>
         <View
             style="@style/Divider" />
@@ -57,7 +45,6 @@
 
         <include
             layout="@layout/content_add_contact">
-
         </include>
 
         <!-- Description -->
@@ -65,9 +52,11 @@
             android:paddingLeft="5dp"
             android:layout_weight="3">
             <EditText
+                android:id="@+id/edit_black_board_add_item_description"
                 style="@style/BlackBoardAddItemEditText"
                 android:hint="@string/black_board_add_item_description"
                 android:gravity="top"
+                android:maxLength="130"
                 android:layout_weight="1" />
         </TableRow>
         <View
@@ -77,6 +66,7 @@
             android:paddingLeft="5dp"
             android:layout_weight="1">
             <Button
+                android:id="@+id/b_black_board_add_item_attachment"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 android:background="@android:color/transparent"
@@ -89,6 +79,7 @@
             android:id="@+id/ll_attachment_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
             android:layout_weight="3"
             android:orientation="vertical"/>
     </TableLayout>

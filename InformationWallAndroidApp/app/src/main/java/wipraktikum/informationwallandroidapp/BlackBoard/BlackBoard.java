@@ -1,11 +1,12 @@
 package wipraktikum.informationwallandroidapp.BlackBoard;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
 import wipraktikum.informationwallandroidapp.R;
@@ -14,8 +15,13 @@ import wipraktikum.informationwallandroidapp.R;
  * Created by Eric Schmidt on 30.10.2015.
  */
 public class BlackBoard extends AppCompatActivity {
+    private final String FRAGMENT_TAG_OVERVIEW = "FRAGMENT_OVERVIEW";
+    private final String FRAGMENT_TAG_ADD_ITEM = "FRAGMENT_ADD_ITEM";
 
-    private MenuItem saveItem = null;
+    private OnActivityResultListener mOnActivityResultListener = null;
+    private static Fragment currentFragment = null;
+
+    private FloatingActionButton fab = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,73 +31,125 @@ public class BlackBoard extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openAddBlackBoardItemFragment();
-                fab.hide();
-                saveItem.setVisible(true);
+                BlackBoardAddItem blackBoardAddItem = BlackBoardAddItem.getInstance();
+                blackBoardAddItem.setOnSaveBlackBoardItem(new BlackBoardAddItem.OnSaveBlackBoardItemListener() {
+                    @Override
+                    public void onSaveBlackBoardItem() {
+                        onSupportNavigateUp();
+                    }
+                });
+                openFragment(blackBoardAddItem, true);
             }
         });
-
-        openBlackBoardOverview();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_black_board, menu);
-
-        saveItem = menu.findItem(R.id.menu_black_board_item_save);
-        saveItem.setVisible(false);
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onResume(){
         super.onResume();
+
+        if (currentFragment == null || currentFragment == BlackBoardOverview.getInstance()) {
+            openFragment(BlackBoardOverview.getInstance(), false);
+        }
+        //Show Fab
+        showFabByFragment(currentFragment);
+        //Change Title of Actionbar
+        setTitle(getActionBarTitleByFragment(currentFragment));
     }
 
-    public void openAddBlackBoardItemFragment(){
-        android.app.FragmentManager fragmentManager = getFragmentManager();
-        android.app.FragmentTransaction fragmentTransaction = fragmentManager
-                .beginTransaction();
-        BlackBoardAddItem blackBoardAddItem = BlackBoardAddItem.getInstance();
-        fragmentTransaction.replace(R.id.black_board_fragment_container, blackBoardAddItem);
-        fragmentTransaction.commit();
+    @Override
+    public boolean onSupportNavigateUp() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0){
+            getSupportFragmentManager().popBackStack();
+            //Get current Fragment
+            Fragment fragment = getActiveFragment();
+            currentFragment = fragment;
+            //Change Title of Actionbar
+            setTitle(getActionBarTitleByFragment(fragment));
+            //Show Fab
+            showFabByFragment(fragment);
 
-        setTitle(getString(R.string.activity_black_board_add_item_title));
+            return true;
+        }else {
+            return super.onSupportNavigateUp();
+        }
     }
 
-    public void openBlackBoardOverview(){
-        android.app.FragmentManager fragmentManager = getFragmentManager();
-        android.app.FragmentTransaction fragmentTransaction = fragmentManager
-                .beginTransaction();
-        BlackBoardOverview blackBoardOverview = BlackBoardOverview.getInstance();
-        fragmentTransaction.replace(R.id.black_board_fragment_container, blackBoardOverview);
-        fragmentTransaction.addToBackStack(null);
+    public void openFragment(Fragment fragment, boolean addToBackStack){
+        FragmentTransaction fragmentTransaction =  getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.black_board_fragment_container, fragment, ((IFragmentTag)fragment).getCustomTag());
+        if (addToBackStack)fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
 
         //Change Title of Actionbar
-        setTitle(getString(R.string.activity_black_board_title));
+        setTitle(getActionBarTitleByFragment(fragment));
+        //Show Fab
+        showFabByFragment(fragment);
+
+        currentFragment = fragment;
     }
 
+    private String getActionBarTitleByFragment(Fragment fragment){
+        if (fragment != null) {
+            switch (((IFragmentTag) fragment).getCustomTag()) {
+                case FRAGMENT_TAG_OVERVIEW:
+                    return getString(R.string.activity_black_board_title);
+                case FRAGMENT_TAG_ADD_ITEM:
+                    return getString(R.string.activity_black_board_add_item_title);
+                default:
+                    return null;
+            }
+        }
+        return getString(R.string.activity_black_board_title);
+    }
 
+    private void showFabByFragment(Fragment fragment){
+        if (fragment != null) {
+            switch (((IFragmentTag) fragment).getCustomTag()) {
+                case FRAGMENT_TAG_OVERVIEW:
+                    fab.show();
+                    break;
+                case FRAGMENT_TAG_ADD_ITEM:
+                    fab.hide();
+                    break;
+                default:
+                    fab.show();
+                    break;
+            }
+        }else{
+            fab.show();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        int PICK_IMAGE_REQUEST = 1;
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            if(mOnActivityResultListener != null){
+                mOnActivityResultListener.onActivityResult(data);
+            }
+        }
+    }
+
+    private Fragment getActiveFragment() {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            return null;
+        }
+        String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+        return getSupportFragmentManager().findFragmentByTag(tag);
+    }
+
+    public void setOnActivityResultListener(OnActivityResultListener onActivityResultListener){
+        mOnActivityResultListener = onActivityResultListener;
+    }
+
+    public interface OnActivityResultListener{
+        void onActivityResult(Intent data);
+    }
 }

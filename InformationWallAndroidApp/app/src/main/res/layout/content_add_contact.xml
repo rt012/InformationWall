@@ -13,7 +13,7 @@
         android:paddingLeft="5dp"
         android:layout_weight="1">
         <EditText
-            android:id="@+id/ac_tv_black_board_add_item_contact_full_name"
+            android:id="@+id/edit_black_board_add_item_contact_full_name"
             style="@style/BlackBoardAddItemEditText"
             android:hint="@string/black_board_add_item_contact_full_name"
             android:layout_weight="1" />
@@ -24,7 +24,7 @@
         android:paddingLeft="5dp"
         android:layout_weight="1">
         <EditText
-            android:id="@+id/ac_tv_black_board_add_item_contact_email"
+            android:id="@+id/edit_black_board_add_item_contact_email"
             style="@style/BlackBoardAddItemEditText"
             android:hint="@string/black_board_add_item_contact_email"
             android:layout_weight="1" />
@@ -35,7 +35,7 @@
         android:paddingLeft="5dp"
         android:layout_weight="1">
         <EditText
-            android:id="@+id/ac_tv_black_board_add_item_contact_telephone"
+            android:id="@+id/edit_black_board_add_item_contact_telephone"
             style="@style/BlackBoardAddItemEditText"
             android:hint="@string/black_board_add_item_contact_telephone"
             android:layout_weight="1" />
@@ -46,7 +46,7 @@
         android:paddingLeft="5dp"
         android:layout_weight="1">
         <EditText
-            android:id="@+id/ac_tv_black_board_add_item_contact_company"
+            android:id="@+id/edit_black_board_add_item_contact_company"
             style="@style/BlackBoardAddItemEditText"
             android:hint="@string/black_board_add_item_contact_company"
             android:layout_weight="1" />
@@ -57,9 +57,9 @@
         android:paddingLeft="5dp"
         android:layout_weight="1">
         <EditText
-            android:id="@+id/ac_tv_black_board_add_item_contact_city"
+            android:id="@+id/edit_black_board_add_item_contact_street"
             style="@style/BlackBoardAddItemEditText"
-            android:hint="@string/black_board_add_item_contact_city"
+            android:hint="@string/black_board_add_item_contact_street"
             android:layout_weight="1" />
     </TableRow>
     <View
@@ -68,9 +68,9 @@
         android:paddingLeft="5dp"
         android:layout_weight="1">
         <EditText
-            android:id="@+id/ac_tv_black_board_add_item_contact_street"
+            android:id="@+id/edit_black_board_add_item_contact_city"
             style="@style/BlackBoardAddItemEditText"
-            android:hint="@string/black_board_add_item_contact_street"
+            android:hint="@string/black_board_add_item_contact_city"
             android:layout_weight="1" />
     </TableRow>
     <View
