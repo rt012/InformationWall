@@ -176,6 +176,7 @@ public class BlackBoardAddItem extends Fragment implements IFragmentTag{
         newBlackBoardItem.setEditedTimestamp(new Date());
         newBlackBoardItem.setTitle(editTextTitle.getText().toString());
         newBlackBoardItem.setDescriptionText(editTextDescription.getText().toString());
+        newBlackBoardItem.setBlackBoardAttachment(blackBoardAttachments);
 
         //Check if a new contact was created (LinearLayout.View(Visible)) or a existing was selected
         if (tlAddContact.getVisibility() == View.VISIBLE){
@@ -188,15 +189,16 @@ public class BlackBoardAddItem extends Fragment implements IFragmentTag{
             newContact = selectedContact;
         }
         newBlackBoardItem.setContact(newContact);
+
         DAOHelper.getInstance().getBlackBoardItemDAO().create(newBlackBoardItem);
 
         //Create each Attachment and connect it to the black board item
-        for (BlackBoardAttachment blackBoardAttachment : blackBoardAttachments){
+       /* for (BlackBoardAttachment blackBoardAttachment : blackBoardAttachments){
             blackBoardAttachment.setBlackBoardItem(DAOHelper.getInstance().
                     getBlackBoardItemDAO().mapBlackBoardItemToDBBlackBoardItem(newBlackBoardItem));
             DAOHelper.getInstance().getBlackBoardAttachmentDAO().create(blackBoardAttachment);
         }
-
+        */
         JsonManager.getInstance().sendJson(newBlackBoardItem, JsonManager.NEW_BLACK_BOARD_ITEM_URL);
 
         if(mOnSaveBlackBoardItemListener != null){

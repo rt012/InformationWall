@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardAttachment;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardAttachment;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem;
@@ -55,7 +56,23 @@ public class BlackBoardItemDAO implements IDAO {
     public boolean create(Object object) {
         boolean ok = false;
         try {
-            InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardItemDAO().create(mapBlackBoardItemToDBBlackBoardItem((BlackBoardItem) object));
+            BlackBoardItem tempItem = (BlackBoardItem) object;
+            List<BlackBoardAttachment> tempAttachments = tempItem.getBlackBoardAttachment();
+
+            // Set AttachmentList to null because ORMLite need a empty list as a ForeignCollection
+            tempItem.setBlackBoardAttachment(null);
+            // Mapping to DB-Object
+            DBBlackBoardItem item = (DBBlackBoardItem) this.mapBlackBoardItemToDBBlackBoardItem(tempItem);
+
+            InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardItemDAO().create(item);
+
+            // Add  Item reference to Attachment Objects and add it to the db
+            for(int i = 0; i < tempAttachments.size(); i++) {
+                DBBlackBoardAttachment tempAttachment = DAOHelper.getInstance().getBlackBoardAttachmentDAO().mapBlackBoardAttachmentToDBBlackBoardAttachment(tempAttachments.get(i));
+                tempAttachment.setBlackBoardItem(item);
+                InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardAttachmentDAO().create(tempAttachment);
+            }
+
             ok = true;
         } catch (SQLException e) {
             e.printStackTrace();
