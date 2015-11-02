@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import wipraktikum.informationwallandroidapp.BusinessObject.Contact;
@@ -21,14 +20,14 @@ import wipraktikum.informationwallandroidapp.Utils.ContactFilter;
 public class BlackBoardAutoCompleteTextViewContactAdapter extends ArrayAdapter {
 
     private List<Contact> mContacts = null;
-    private List<Contact> suggestions = null;
+    private List<Contact> mContactsTemp = null;
     private Context mContext = null;
+    private ContactFilter mContactFilter = null;
 
     public BlackBoardAutoCompleteTextViewContactAdapter(Context context, int resource, List<Contact> contacts) {
         super(context, resource, contacts);
 
         this.mContacts = contacts;
-        suggestions = new ArrayList<Contact>();
         this.mContext = context;
     }
 
@@ -36,7 +35,6 @@ public class BlackBoardAutoCompleteTextViewContactAdapter extends ArrayAdapter {
     public View getView(int position, View view, ViewGroup viewGroup) {
         View convertView = view;
         Contact contact = (Contact) getItem(position);
-
 
         if (convertView == null){
             convertView =  LayoutInflater.from(mContext).inflate(R.layout.contact_item, viewGroup, false);
@@ -55,6 +53,9 @@ public class BlackBoardAutoCompleteTextViewContactAdapter extends ArrayAdapter {
 
     @Override
     public Filter getFilter() {
-        return new ContactFilter(this, mContacts);
+        if (mContactFilter == null)
+            mContactFilter = new ContactFilter(this, mContacts);
+
+        return mContactFilter;
     }
 }

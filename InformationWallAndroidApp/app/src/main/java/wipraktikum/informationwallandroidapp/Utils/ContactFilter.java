@@ -13,12 +13,14 @@ import wipraktikum.informationwallandroidapp.BusinessObject.Contact;
  */
 public class ContactFilter extends Filter{
     private List<Contact> mContacts = null;
+    private ArrayList<Contact> mContactsAll = null;
     private List<Contact> suggestions = null;
     private ArrayAdapter adapter = null;
 
     public ContactFilter(ArrayAdapter adapter, List<Contact> contacts){
         this.adapter = adapter;
         this.mContacts = contacts;
+        this.mContactsAll = new ArrayList<>(contacts);
         this.suggestions = new ArrayList<>();
     }
 
@@ -29,22 +31,23 @@ public class ContactFilter extends Filter{
     }
     @Override
     protected Filter.FilterResults performFiltering(CharSequence constraint) {
+        FilterResults filterResults = new FilterResults();
         if(constraint != null) {
             suggestions.clear();
 
-            for (Contact contact : mContacts) {
+            for (Contact contact : mContactsAll) {
                 if(contact.getFullName().toLowerCase().contains(constraint.toString().toLowerCase())){
                     suggestions.add(contact);
                 }
             }
 
-            Filter.FilterResults filterResults = new Filter.FilterResults();
             filterResults.values = suggestions;
             filterResults.count = suggestions.size();
-            return filterResults;
         } else {
-            return new Filter.FilterResults();
+            filterResults.values = mContactsAll;
+            filterResults.count = mContactsAll.size();
         }
+        return filterResults;
     }
     @Override
     protected void publishResults(CharSequence constraint, Filter.FilterResults results) {

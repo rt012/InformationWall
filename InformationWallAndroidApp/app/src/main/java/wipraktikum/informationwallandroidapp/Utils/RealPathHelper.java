@@ -6,10 +6,8 @@ package wipraktikum.informationwallandroidapp.Utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.CursorLoader;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
@@ -39,23 +37,26 @@ public class RealPathHelper{
         if (FileHelper.getInstance().exists(file.getAbsolutePath())){
             realPath = file.getAbsolutePath();
         }else {
-            // SDK < API11
-            if (Build.VERSION.SDK_INT < 11)
-                realPath = getRealPathFromURI_BelowAPI11(data);
-
-                // SDK >= 11 && SDK < 19
-            else if (Build.VERSION.SDK_INT < 19)
-                realPath = getRealPathFromURI_API11to18(data);
-
-                // SDK > 19 (Android 4.4)
-            else
-                realPath = getRealPathFromURI_API19(data);
+            //There are three cases (up till now): audio, video, otherwise (Documents and Images)
+            String[] mediaType = data.getPath().split("/"); //Get to the content type + ID
+            mediaType = mediaType[mediaType.length-1].split(":"); //Get tot the content type
+            switch (mediaType[0]){
+                case "audio":
+                    realPath = getRealPathFromURIAudio(data);
+                    break;
+                case "video":
+                    realPath = getRealPathFromURIVideo(data);
+                    break;
+                default:
+                    realPath = getRealPathFromURIDocument(data);
+                    break;
+            }
         }
         return realPath;
     }
 
     @SuppressLint("NewApi")
-    private String getRealPathFromURI_API19(Uri uri){
+    private String getRealPathFromURIDocument(Uri uri){
         String filePath = "";
         String wholeID = DocumentsContract.getDocumentId(uri);
 
@@ -79,32 +80,53 @@ public class RealPathHelper{
         return filePath;
     }
 
-
     @SuppressLint("NewApi")
-    private String getRealPathFromURI_API11to18(Uri contentUri) {
-        String[] proj = { MediaStore.Images.Media.DATA };
-        String result = null;
+    private String getRealPathFromURIVideo(Uri uri){
+        String filePath = "";
+        String wholeID = DocumentsContract.getDocumentId(uri);
 
-        CursorLoader cursorLoader = new CursorLoader(
-                mContext,
-                contentUri, proj, null, null, null);
-        Cursor cursor = cursorLoader.loadInBackground();
+        // Split at colon, use second item in the array
+        String id = wholeID.split(":")[1];
 
-        if(cursor != null){
-            int column_index =
-                    cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            result = cursor.getString(column_index);
+        String[] column = { MediaStore.Video.Media.DATA };
+
+        // where id is equal to
+        String sel = MediaStore.Video.Media._ID + "=?";
+
+        Cursor cursor = mContext.getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                column, sel, new String[]{ id }, null);
+
+        int columnIndex = cursor.getColumnIndex(column[0]);
+
+        if (cursor.moveToFirst()) {
+            filePath = cursor.getString(columnIndex);
         }
-        return result;
+        cursor.close();
+        return filePath;
     }
 
-    private String getRealPathFromURI_BelowAPI11(Uri contentUri){
-        String[] proj = { MediaStore.Images.Media.DATA };
-        Cursor cursor = mContext.getContentResolver().query(contentUri, proj, null, null, null);
-        int column_index
-                = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
+    @SuppressLint("NewApi")
+    private String getRealPathFromURIAudio(Uri uri){
+        String filePath = "";
+        String wholeID = DocumentsContract.getDocumentId(uri);
+
+        // Split at colon, use second item in the array
+        String id = wholeID.split(":")[1];
+
+        String[] column = { MediaStore.Audio.Media.DATA };
+
+        // where id is equal to
+        String sel = MediaStore.Audio.Media._ID + "=?";
+
+        Cursor cursor = mContext.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                column, sel, new String[]{ id }, null);
+
+        int columnIndex = cursor.getColumnIndex(column[0]);
+
+        if (cursor.moveToFirst()) {
+            filePath = cursor.getString(columnIndex);
+        }
+        cursor.close();
+        return filePath;
     }
 }

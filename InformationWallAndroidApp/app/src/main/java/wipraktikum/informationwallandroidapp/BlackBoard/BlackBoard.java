@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import wipraktikum.informationwallandroidapp.R;
+import wipraktikum.informationwallandroidapp.Utils.FileHelper;
 
 /**
  * Created by Eric Schmidt on 30.10.2015.
@@ -78,6 +79,22 @@ public class BlackBoard extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed(){
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0){
+            getSupportFragmentManager().popBackStack();
+            //Get current Fragment
+            Fragment fragment = getActiveFragment();
+            currentFragment = fragment;
+            //Change Title of Actionbar
+            setTitle(getActionBarTitleByFragment(fragment));
+            //Show Fab
+            showFabByFragment(fragment);
+        }else {
+            super.onBackPressed();
+        }
+    }
+
     public void openFragment(Fragment fragment, boolean addToBackStack){
         FragmentTransaction fragmentTransaction =  getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.black_board_fragment_container, fragment, ((IFragmentTag)fragment).getCustomTag());
@@ -128,9 +145,7 @@ public class BlackBoard extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        int PICK_IMAGE_REQUEST = 1;
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+        if (requestCode == FileHelper.PICK_ATTACHMENT_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             if(mOnActivityResultListener != null){
                 mOnActivityResultListener.onActivityResult(data);
             }

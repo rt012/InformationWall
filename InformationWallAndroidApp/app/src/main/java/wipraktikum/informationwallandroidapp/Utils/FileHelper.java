@@ -14,6 +14,8 @@ import wipraktikum.informationwallandroidapp.InfoWallApplication;
  * Created by Eric Schmidt on 29.10.2015.
  */
 public class FileHelper {
+    public static int PICK_ATTACHMENT_REQUEST = 1;
+
     private static FileHelper instance = null;
     private Context mContext;
 
@@ -38,12 +40,10 @@ public class FileHelper {
     }
 
     public void showPictureChooser(Activity activity) {
-        int PICK_IMAGE_REQUEST = 1;
-
         Intent intent = new Intent();
-        intent.setType("image/*");
+        intent.setType("*/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        activity.startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+        activity.startActivityForResult(Intent.createChooser(intent, "Select Attachment"), PICK_ATTACHMENT_REQUEST);
     }
 
     private String getDataTyp(DBBlackBoardAttachment.DataType dataType) {
