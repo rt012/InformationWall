@@ -2,6 +2,7 @@ package wipraktikum.informationwallandroidapp.BlackBoard;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -198,6 +199,10 @@ public class BlackBoardAddItem extends Fragment implements IFragmentTag, BlackBo
             if (mOnSaveBlackBoardItemListener != null) {
                 mOnSaveBlackBoardItemListener.onSaveBlackBoardItem();
             }
+        }else{
+            Snackbar
+                .make(getView(), R.string.black_board_add_item_snackbar_no_title, Snackbar.LENGTH_LONG)
+                .show();
         }
     }
 

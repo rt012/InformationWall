@@ -91,7 +91,7 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
         //Item Information
         TextView tvItemInfo =  (TextView) convertView
                 .findViewById(R.id.tv_black_board_item_info);
-        SimpleDateFormat formatter = new SimpleDateFormat("dd.mm.yyyy hh:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("mm.dd.yyyy hh:mm:ss");
         String createdTimestamp = formatter.format(blackBoardItem.getCreatedTimestamp());
         tvItemInfo.setText(createdTimestamp + " (" + blackBoardItem.getContact().getFullName() + ")");
 

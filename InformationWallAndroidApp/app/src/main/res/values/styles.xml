@@ -3,7 +3,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/ci_color</item>
-        <item name="colorPrimaryDark">@color/ci_color</item>
+        <item name="colorPrimaryDark">@color/ci_color_dark</item>
     </style>
 
     <!-- Devider -->

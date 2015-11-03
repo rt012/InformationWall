@@ -8,6 +8,7 @@
     <TextView
         android:id="@+id/tv_black_board_item_description"
         android:layout_width="match_parent"
+        android:hint="@string/black_board_no_description_information"
         android:layout_height="0dp"
         android:paddingBottom="@dimen/black_board_ex_lv_padding"
         android:layout_weight="1"/>

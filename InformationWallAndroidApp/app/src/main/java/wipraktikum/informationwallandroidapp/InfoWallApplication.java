@@ -90,9 +90,9 @@ public class InfoWallApplication extends Application {
     private void insertTestData() throws SQLException {
         //Tiles
         Dao<DBTile, Long> tileDao =  databaseHelper.getTileDAO();
-        tileDao.createIfNotExists(new DBTile("Example Tile 1", R.drawable.slide_1, BlackBoard.class.getName()));
-        tileDao.createIfNotExists(new DBTile("Example Tile 2", R.drawable.slide_2, TileOverview.class.getName()));
-        tileDao.createIfNotExists(new DBTile("Example Tile 3", R.drawable.slide_3, TileOverview.class.getName()));
+        tileDao.createIfNotExists(new DBTile("Black Board", R.drawable.slide_1, BlackBoard.class.getName()));
+        tileDao.createIfNotExists(new DBTile("Example Tile 1", R.drawable.slide_2, TileOverview.class.getName()));
+        tileDao.createIfNotExists(new DBTile("Example Tile 2", R.drawable.slide_3, TileOverview.class.getName()));
 
         //Blackboard
         Dao<wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem, Long> blackBoardItemsDAO =databaseHelper.getBlackBoardItemDAO();

@@ -25,13 +25,16 @@
     <string name="black_board_no_item_information">No Item Information</string>
     <string name="black_board_attachment">Attachment</string>
     <string name="black_board_description">Description</string>
+    <string name="black_board_no_description_information">No description available</string>
     <!--- BlackBoard Add Item -->
     <string name="menu_black_board_save_item">Save</string>
     <string name="black_board_add_item_title">Title</string>
     <string name="black_board_add_item_contact">Contact</string>
     <string name="black_board_add_item_new_contact">Create new contact</string>
     <string name="black_board_add_item_description">Description</string>
-    <string name="black_board_add_item_attachments">Add Attachments</string>
+    <string name="black_board_add_item_attachments">ADD ATTACHMENT</string>
+
+    <string name="black_board_add_item_snackbar_no_title">Please enter at least the title</string>
     <!--- BlackBoard Add Contact -->
     <string name="black_board_add_item_contact_full_name">Surname and Name</string>
     <string name="black_board_add_item_contact_email">E-Mail Address</string>
