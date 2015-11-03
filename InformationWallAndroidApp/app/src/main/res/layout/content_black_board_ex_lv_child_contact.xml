@@ -2,37 +2,46 @@
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingTop="@dimen/black_board_ex_lv_padding">
+    android:layout_height="match_parent">
 
     <TableRow
-    android:paddingBottom="@dimen/black_board_ex_lv_padding">
-    <ImageView
-       android:id="@+id/iv_black_board_contact_company"
-       android:layout_width="20dp"
-       android:layout_height="20dp"
-       android:layout_gravity="right" />
-    <TextView
-       android:id="@+id/tv_black_board_contact_company"
-       android:layout_width="wrap_content"
-       android:layout_height="match_parent"
-       android:paddingLeft="@dimen/black_board_ex_lv_padding"/>
+        android:id="@+id/tr_black_board_contact_company"
+        android:paddingBottom="@dimen/black_board_ex_lv_padding"
+        android:paddingTop="@dimen/black_board_ex_lv_padding">
+        <ImageView
+           android:id="@+id/iv_black_board_contact_company"
+           android:layout_width="20dp"
+           android:layout_height="20dp"
+           android:layout_gravity="right" />
+        <TextView
+           android:id="@+id/tv_black_board_contact_company"
+           android:layout_width="wrap_content"
+           android:layout_height="match_parent"
+           android:paddingLeft="@dimen/black_board_ex_lv_padding"/>
     </TableRow>
+    <View
+        style="@style/Divider" />
     <TableRow
-    android:paddingBottom="@dimen/black_board_ex_lv_padding">
-    <ImageView
-        android:id="@+id/iv_black_board_contact_full_name"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_gravity="right" />
-    <TextView
-        android:id="@+id/tv_black_board_contact_full_name"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:paddingLeft="@dimen/black_board_ex_lv_padding"/>
+        android:id="@+id/tr_black_board_contact_full_name"
+        android:paddingBottom="@dimen/black_board_ex_lv_padding"
+        android:paddingTop="@dimen/black_board_ex_lv_padding">
+        <ImageView
+            android:id="@+id/iv_black_board_contact_full_name"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="right" />
+        <TextView
+            android:id="@+id/tv_black_board_contact_full_name"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/black_board_ex_lv_padding"/>
     </TableRow>
+    <View
+        style="@style/Divider" />
     <TableRow
-        android:paddingBottom="@dimen/black_board_ex_lv_padding">
+        android:id="@+id/tr_black_board_contact_email"
+        android:paddingBottom="@dimen/black_board_ex_lv_padding"
+        android:paddingTop="@dimen/black_board_ex_lv_padding">
         <ImageView
             android:id="@+id/iv_black_board_contact_email"
             android:layout_width="20dp"
@@ -44,8 +53,12 @@
             android:layout_height="match_parent"
             android:paddingLeft="@dimen/black_board_ex_lv_padding"/>
     </TableRow>
+    <View
+        style="@style/Divider" />
     <TableRow
-        android:paddingBottom="@dimen/black_board_ex_lv_padding">
+        android:id="@+id/tr_black_board_contact_tel"
+        android:paddingBottom="@dimen/black_board_ex_lv_padding"
+        android:paddingTop="@dimen/black_board_ex_lv_padding">
         <ImageView
             android:id="@+id/iv_black_board_contact_tel"
             android:layout_width="20dp"
@@ -57,8 +70,12 @@
             android:layout_height="match_parent"
             android:paddingLeft="@dimen/black_board_ex_lv_padding"/>
     </TableRow>
+    <View
+        style="@style/Divider" />
     <TableRow
-        android:paddingBottom="@dimen/black_board_ex_lv_padding">
+        android:id="@+id/tr_black_board_contact_address"
+        android:paddingBottom="@dimen/black_board_ex_lv_padding"
+        android:paddingTop="@dimen/black_board_ex_lv_padding">
         <ImageView
             android:id="@+id/iv_black_board_contact_address"
             android:layout_width="20dp"
@@ -70,4 +87,6 @@
             android:layout_height="match_parent"
             android:paddingLeft="@dimen/black_board_ex_lv_padding"/>
     </TableRow>
+    <View
+        style="@style/Divider" />
 </TableLayout>

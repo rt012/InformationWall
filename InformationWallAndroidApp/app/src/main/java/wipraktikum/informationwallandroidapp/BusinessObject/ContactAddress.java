@@ -64,7 +64,15 @@ public class ContactAddress {
     }
 
     public String getFullAddress(){
-        return mStreetName + " " + mHouseNumber + ", " + mCity;
+        if (mStreetName != null && mHouseNumber != null && mCity != null) {
+            return mStreetName + " " + mHouseNumber + ", " + mCity;
+        }else if (mStreetName == null && mCity != null){
+            return mCity;
+        }else if (mStreetName != null && mHouseNumber == null && mCity != null){
+            return mStreetName + ", " + mCity;
+        }
+
+        return null;
     }
 
 }

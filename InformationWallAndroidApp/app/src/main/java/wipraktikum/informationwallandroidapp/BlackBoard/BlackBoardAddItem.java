@@ -38,7 +38,7 @@ import wipraktikum.informationwallandroidapp.Utils.RealPathHelper;
 /**
  * Created by Eric Schmidt on 30.10.2015.
  */
-public class BlackBoardAddItem extends Fragment implements IFragmentTag{
+public class BlackBoardAddItem extends Fragment implements IFragmentTag, BlackBoard.OnActivityResultListener{
     private final String FRAGMENT_TAG = "FRAGMENT_ADD_ITEM";
     private OnSaveBlackBoardItemListener mOnSaveBlackBoardItemListener = null;
 
@@ -75,18 +75,7 @@ public class BlackBoardAddItem extends Fragment implements IFragmentTag{
         setUpGUI(view);
 
         //Add Attachment to View
-        ((BlackBoard)getActivity()).setOnActivityResultListener(new BlackBoard.OnActivityResultListener() {
-            @Override
-            public void onActivityResult(Intent data) {
-                String filePath = RealPathHelper.getInstance().getRealPathFromURI(data.getData());
-                //Add filePath to LinearLayout below
-                BlackBoardAttachment blackBoardAttachment = createNewAttachment(filePath);
-                View attachmentView = addAttachmentToView(blackBoardAttachment);
-                uploadAttachment(blackBoardAttachment, attachmentView);
-                blackBoardAttachments.add(blackBoardAttachment);
-                blackBoardAttachmentViews.add(attachmentView);
-            }
-        });
+        ((BlackBoard)getActivity()).setOnActivityResultListener(this);
 
         blackBoardAttachments = new ArrayList<>();
 
@@ -112,6 +101,17 @@ public class BlackBoardAddItem extends Fragment implements IFragmentTag{
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(Intent data) {
+        String filePath = RealPathHelper.getInstance().getRealPathFromURI(data.getData());
+        //Add filePath to LinearLayout below
+        BlackBoardAttachment blackBoardAttachment = createNewAttachment(filePath);
+        View attachmentView = addAttachmentToView(blackBoardAttachment);
+        uploadAttachment(blackBoardAttachment, attachmentView);
+        blackBoardAttachments.add(blackBoardAttachment);
+        blackBoardAttachmentViews.add(attachmentView);
     }
 
     private void setUpGUI(View view){
@@ -169,40 +169,35 @@ public class BlackBoardAddItem extends Fragment implements IFragmentTag{
     }
 
     public void saveBlackBoardItem(){
-        BlackBoardItem newBlackBoardItem = new BlackBoardItem();
-        Contact newContact;
+        if (!isEditTextEmpty(editTextTitle)) {
+            BlackBoardItem newBlackBoardItem = new BlackBoardItem();
+            Contact newContact;
 
-        newBlackBoardItem.setCreatedTimestamp(new Date());
-        newBlackBoardItem.setEditedTimestamp(new Date());
-        newBlackBoardItem.setTitle(editTextTitle.getText().toString());
-        newBlackBoardItem.setDescriptionText(editTextDescription.getText().toString());
-        newBlackBoardItem.setBlackBoardAttachment(blackBoardAttachments);
+            newBlackBoardItem.setCreatedTimestamp(new Date());
+            newBlackBoardItem.setEditedTimestamp(new Date());
+            newBlackBoardItem.setTitle(editTextTitle.getText().toString());
+            newBlackBoardItem.setDescriptionText(editTextDescription.getText().toString());
+            newBlackBoardItem.setBlackBoardAttachment(blackBoardAttachments);
 
-        //Check if a new contact was created (LinearLayout.View(Visible)) or a existing was selected
-        if (tlAddContact.getVisibility() == View.VISIBLE){
-            newContact = createNewContact();
-        }else{
-            if (selectedContact == null){
-                selectedContact = new Contact();
-                selectedContact.setContactAddress(new ContactAddress());
+            //Check if a new contact was created (LinearLayout.View(Visible)) or a existing was selected
+            if (tlAddContact.getVisibility() == View.VISIBLE) {
+                newContact = createNewContact();
+            } else {
+                if (selectedContact == null) {
+                    selectedContact = new Contact();
+                    selectedContact.setContactAddress(new ContactAddress());
+                }
+                newContact = selectedContact;
             }
-            newContact = selectedContact;
-        }
-        newBlackBoardItem.setContact(newContact);
+            newBlackBoardItem.setContact(newContact);
 
-        DAOHelper.getInstance().getBlackBoardItemDAO().create(newBlackBoardItem);
+            DAOHelper.getInstance().getBlackBoardItemDAO().create(newBlackBoardItem);
 
-        //Create each Attachment and connect it to the black board item
-       /* for (BlackBoardAttachment blackBoardAttachment : blackBoardAttachments){
-            blackBoardAttachment.setBlackBoardItem(DAOHelper.getInstance().
-                    getBlackBoardItemDAO().mapBlackBoardItemToDBBlackBoardItem(newBlackBoardItem));
-            DAOHelper.getInstance().getBlackBoardAttachmentDAO().create(blackBoardAttachment);
-        }
-        */
-        JsonManager.getInstance().sendJson(newBlackBoardItem, JsonManager.NEW_BLACK_BOARD_ITEM_URL);
+            JsonManager.getInstance().sendJson(newBlackBoardItem, JsonManager.NEW_BLACK_BOARD_ITEM_URL);
 
-        if(mOnSaveBlackBoardItemListener != null){
-            mOnSaveBlackBoardItemListener.onSaveBlackBoardItem();
+            if (mOnSaveBlackBoardItemListener != null) {
+                mOnSaveBlackBoardItemListener.onSaveBlackBoardItem();
+            }
         }
     }
 
@@ -231,34 +226,40 @@ public class BlackBoardAddItem extends Fragment implements IFragmentTag{
     private Contact createNewContact(){
         Contact newContact = new Contact();
 
-        String[] splitFullName = editTextFullName.getText().toString().split(" ");
-        if (splitFullName.length == 2) {
-            newContact.setSurname(splitFullName[0]);
-            newContact.setName(splitFullName[1]);
-        }else{
-            newContact.setSurname(splitFullName[0]);
+        if (!isEditTextEmpty(editTextFullName)) {
+            String[] splitFullName = editTextFullName.getText().toString().split(" ");
+            if (splitFullName.length == 2) {
+                newContact.setSurname(splitFullName[0]);
+                newContact.setName(splitFullName[1]);
+            } else {
+                newContact.setSurname(splitFullName[0]);
+            }
         }
 
-        newContact.setTelephone(editTextTelephone.getText().toString());
-        newContact.setEMailAddress(editTextEmail.getText().toString());
-        newContact.setCompany(editTextCompany.getText().toString());
+        if (!isEditTextEmpty(editTextFullName)) newContact.setTelephone(editTextTelephone.getText().toString());
+        if (!isEditTextEmpty(editTextEmail))    newContact.setEMailAddress(editTextEmail.getText().toString());
+        if (!isEditTextEmpty(editTextCompany))  newContact.setCompany(editTextCompany.getText().toString());
 
         ContactAddress newContactAddress = new ContactAddress();
 
-        String[] splitStreet = editTextStreet.getText().toString().split(" ");
-        if (splitStreet.length == 2) {
-            newContactAddress.setStreetName(splitStreet[0]);
-            newContactAddress.setHouseNumber(splitStreet[1]);
-        }else{
-            newContactAddress.setStreetName(splitStreet[0]);
+        if (!isEditTextEmpty(editTextStreet)) {
+            String[] splitStreet = editTextStreet.getText().toString().split(" ");
+            if (splitStreet.length == 2) {
+                newContactAddress.setStreetName(splitStreet[0]);
+                newContactAddress.setHouseNumber(splitStreet[1]);
+            } else {
+                newContactAddress.setStreetName(splitStreet[0]);
+            }
         }
 
-        String[] splitCity = editTextCity.getText().toString().split(" ");
-        if (splitStreet.length == 2) {
-            newContactAddress.setZipCode(splitCity[0]);
-            newContactAddress.setCity(splitCity[1]);
-        }else{
-            newContactAddress.setCity(splitCity[0]);
+        if (!isEditTextEmpty(editTextCity)) {
+            String[] splitCity = editTextCity.getText().toString().split(" ");
+            if (splitCity.length == 2) {
+                newContactAddress.setZipCode(splitCity[0]);
+                newContactAddress.setCity(splitCity[1]);
+            } else {
+                newContactAddress.setCity(splitCity[0]);
+            }
         }
 
         newContact.setContactAddress(newContactAddress);
@@ -271,6 +272,14 @@ public class BlackBoardAddItem extends Fragment implements IFragmentTag{
         blackBoardAttachment.setDeviceDataPath(filePath);
         blackBoardAttachment.setDataType(DBBlackBoardAttachment.DataType.IMG);
         return blackBoardAttachment;
+    }
+
+    private boolean isEditTextEmpty(EditText editText){
+        String editString = editText.getText().toString();
+        if (editString.matches("")) {
+            return true;
+        }
+        return false;
     }
 
     public String getCustomTag(){

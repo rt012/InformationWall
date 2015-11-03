@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="@dimen/black_board_ex_lv_padding">
+    android:paddingLeft="40dp">
 
     <TextView
         android:id="@+id/tv_black_board_item_description"

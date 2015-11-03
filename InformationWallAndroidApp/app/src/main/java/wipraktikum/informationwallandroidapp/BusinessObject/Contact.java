@@ -31,7 +31,13 @@ public class Contact {
     }
 
     public String getFullName(){
-        return mSurname + ", " + mName;
+        if (mName != null && mSurname != null) {
+            return mSurname + ", " + mName;
+        }else if (mSurname != null){
+            return mSurname;
+        }
+        return null;
+
     }
 
     public String getSurname() {

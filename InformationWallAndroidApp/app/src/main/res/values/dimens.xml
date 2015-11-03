@@ -5,6 +5,9 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="black_board_ex_lv_padding">10dp</dimen>
 
+    <!-- Items -->
+    <dimen name="list_item_height">50dp</dimen>
+
     <!-- BlackBoard Item Add -->
     <dimen name="black_board_add_item_label">80dp</dimen>
 </resources>

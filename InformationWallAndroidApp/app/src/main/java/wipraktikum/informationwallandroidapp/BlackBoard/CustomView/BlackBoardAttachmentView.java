@@ -30,7 +30,7 @@ public class BlackBoardAttachmentView extends LinearLayout {
         this.attachment = attachment;
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.black_board_lv_attachment_item, this);
+        inflater.inflate(R.layout.content_black_board_lv_attachment_item, this);
 
         //Attachment Icon
         ImageView attachmentIcon = (ImageView) findViewById(R.id.iv_black_board_attachment_item);

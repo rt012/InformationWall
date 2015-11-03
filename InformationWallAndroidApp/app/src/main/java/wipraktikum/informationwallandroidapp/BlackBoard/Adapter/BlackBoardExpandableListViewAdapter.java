@@ -114,6 +114,10 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
         TextView txtListChild = (TextView) convertView
                 .findViewById(R.id.tv_black_board_item_description);
         txtListChild.setText(blackBoardItem.getDescriptionText());
+        ViewGroup.LayoutParams params = txtListChild.getLayoutParams();
+        params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+        txtListChild.setLayoutParams(params);
+
         //Attachment Information
         LinearLayout attachmentContainer = (LinearLayout) convertView.findViewById(R.id.ll_attachment_container);
         attachmentContainer.removeAllViews();
@@ -124,6 +128,7 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
             attachmentContainer.addView(attachmentView);
         }
 
+        //Contact Information
         LinearLayout contactContainer = (LinearLayout) convertView.findViewById(R.id.ll_contact_container);
         contactContainer.removeAllViews();
         contactContainer.addView(new BlackBoardContactView(this.context, blackBoardItem.getContact()));
