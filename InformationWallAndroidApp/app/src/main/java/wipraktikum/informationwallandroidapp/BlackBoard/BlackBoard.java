@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import wipraktikum.informationwallandroidapp.R;
+import wipraktikum.informationwallandroidapp.ServerCommunication.PhpRequestManager;
 import wipraktikum.informationwallandroidapp.Utils.FileHelper;
 
 /**
@@ -52,13 +53,25 @@ public class BlackBoard extends AppCompatActivity {
     public void onResume(){
         super.onResume();
 
+        //Call php script to set focus on tile
+        PhpRequestManager.getInstance().phpRequest("http://myinfowall.ddns.net/apps/blackboard/openBlackBoardOverview.php", "status", "open");
+
         if (currentFragment == null || currentFragment == BlackBoardOverview.getInstance()) {
             openFragment(BlackBoardOverview.getInstance(), false);
         }
+
         //Show Fab
         showFabByFragment(currentFragment);
         //Change Title of Actionbar
         setTitle(getActionBarTitleByFragment(currentFragment));
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+
+        //Call php script to remove focus on tile
+        PhpRequestManager.getInstance().phpRequest("http://myinfowall.ddns.net/apps/blackboard/openBlackBoardOverview.php", "status", "close");
     }
 
     @Override

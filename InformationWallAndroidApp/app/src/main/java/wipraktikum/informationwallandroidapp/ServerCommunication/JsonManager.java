@@ -19,6 +19,7 @@ import wipraktikum.informationwallandroidapp.InfoWallApplication;
 public class JsonManager {
     private static JsonManager instance = null;
 
+    final String VOLLEY_TAG = "Volley Log";
     public static final String NEW_BLACK_BOARD_ITEM_URL = "http://myinfowall.ddns.net/apps/content/blackboard.php";
 
     private JsonManager(){}
@@ -31,8 +32,6 @@ public class JsonManager {
     }
 
     public void sendJson(BlackBoardItem blackBoardItem, String url) {
-        final String volleyTag = "Volley Log";
-
         JSONObject blackBoardItemAsJsonObject = null;
         try {
             Gson gsonHandler = new Gson();
@@ -47,13 +46,13 @@ public class JsonManager {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        VolleyLog.d(volleyTag, "Success: " + response.toString());
+                        VolleyLog.d(VOLLEY_TAG, "Success: " + response.toString());
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        VolleyLog.d(volleyTag, "Error: " + error.getMessage());
+                        VolleyLog.d(VOLLEY_TAG, "Error: " + error.getMessage());
                     }
                 }) {
         };
