@@ -20,7 +20,7 @@ import android.widget.TableLayout;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 
 import wipraktikum.informationwallandroidapp.BlackBoard.Adapter.BlackBoardAutoCompleteTextViewContactAdapter;
 import wipraktikum.informationwallandroidapp.BlackBoard.CustomView.BlackBoardAttachmentView;
@@ -174,8 +174,8 @@ public class BlackBoardAddItem extends Fragment implements IFragmentTag, BlackBo
             BlackBoardItem newBlackBoardItem = new BlackBoardItem();
             Contact newContact;
 
-            newBlackBoardItem.setCreatedTimestamp(new Date());
-            newBlackBoardItem.setEditedTimestamp(new Date());
+            newBlackBoardItem.setCreatedTimestamp(Calendar.getInstance().getTime());
+            newBlackBoardItem.setEditedTimestamp(Calendar.getInstance().getTime());
             newBlackBoardItem.setTitle(editTextTitle.getText().toString());
             newBlackBoardItem.setDescriptionText(editTextDescription.getText().toString());
             newBlackBoardItem.setBlackBoardAttachment(blackBoardAttachments);

@@ -6,14 +6,27 @@
     android:paddingTop="10dp"
     android:paddingBottom="10dp"
     android:layout_height="wrap_content">
-    <TextView
-        android:id="@+id/tv_black_board_item_title"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:paddingBottom="5dp"
-        android:text="@string/black_board_no_title" />
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tv_black_board_item_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textAppearance="@android:style/TextAppearance.Material.Title"
+            android:paddingBottom="5dp"
+            android:text="@string/black_board_no_title" />
+
+        <TextView
+            android:id="@+id/tv_black_board_item_last_edited"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAppearance="@android:style/TextAppearance.Material.Caption"
+            android:text="@string/black_board_no_item_information"
+            android:gravity="bottom|right" />
+    </LinearLayout>
     <View
         style="@style/Divider" />
     <TextView

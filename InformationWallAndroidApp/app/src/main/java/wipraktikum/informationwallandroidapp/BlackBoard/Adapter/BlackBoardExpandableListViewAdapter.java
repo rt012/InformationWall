@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import wipraktikum.informationwallandroidapp.BlackBoard.CustomView.BlackBoardAttachmentView;
@@ -38,6 +40,12 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
 
         // Get black board items from database
         mBlackBoardItems = DAOHelper.getInstance().getBlackBoardItemDAO().queryForAll();
+        Collections.sort(mBlackBoardItems, new Comparator<BlackBoardItem>() {
+            @Override
+            public int compare(BlackBoardItem lhs, BlackBoardItem rhs) {
+                return rhs.getEditedTimestamp().compareTo(lhs.getEditedTimestamp());
+            }
+        });
     }
 
     @Override
@@ -84,14 +92,20 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.black_board_ex_lv_group, null);
         }
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+
         //Item Title
         TextView tvItemTitle = (TextView) convertView
                 .findViewById(R.id.tv_black_board_item_title);
         tvItemTitle.setText(blackBoardItem.getTitle());
+        //Item last edited
+        TextView tvItemLastEdited = (TextView) convertView
+                .findViewById(R.id.tv_black_board_item_last_edited);
+        String editedTimestamp = formatter.format(blackBoardItem.getEditedTimestamp());
+        tvItemLastEdited.setText(context.getString(R.string.black_board_last_edited) + " " + editedTimestamp);
         //Item Information
         TextView tvItemInfo =  (TextView) convertView
                 .findViewById(R.id.tv_black_board_item_info);
-        SimpleDateFormat formatter = new SimpleDateFormat("mm.dd.yyyy hh:mm:ss");
         String createdTimestamp = formatter.format(blackBoardItem.getCreatedTimestamp());
         tvItemInfo.setText(createdTimestamp + " (" + blackBoardItem.getContact().getFullName() + ")");
 
