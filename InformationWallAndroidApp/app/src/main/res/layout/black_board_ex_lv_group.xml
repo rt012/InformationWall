@@ -25,6 +25,7 @@
             android:layout_height="match_parent"
             android:textAppearance="@android:style/TextAppearance.Material.Caption"
             android:text="@string/black_board_no_item_information"
+            android:paddingRight="5dp"
             android:gravity="bottom|right" />
     </LinearLayout>
     <View
