@@ -20,6 +20,8 @@ public class DBTile {
     private boolean mIsActivated = false;
     @DatabaseField
     private EnumTileSize mTileSize;
+    @DatabaseField
+    private boolean mSyncStatus;
 
     public DBTile(){}
 
@@ -80,6 +82,14 @@ public class DBTile {
 
     public boolean getIsActivated(){
         return mIsActivated;
+    }
+
+    public boolean isSyncStatus() {
+        return mSyncStatus;
+    }
+
+    public void setSyncStatus(boolean mSyncStatus) {
+        this.mSyncStatus = mSyncStatus;
     }
 
     public enum EnumTileSize {

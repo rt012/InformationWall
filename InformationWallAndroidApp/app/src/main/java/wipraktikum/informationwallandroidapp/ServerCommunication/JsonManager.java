@@ -10,7 +10,6 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
 
 /**
@@ -18,9 +17,11 @@ import wipraktikum.informationwallandroidapp.InfoWallApplication;
  */
 public class JsonManager {
     private static JsonManager instance = null;
-
+    private OnResponseListener mOnResponseListener;
+    private OnErrorListener mOnErrorListener;
     final String VOLLEY_TAG = "Volley Log";
     public static final String NEW_BLACK_BOARD_ITEM_URL = "http://myinfowall.ddns.net/apps/content/blackboard.php";
+    public static final String GET_ALL_ITEMS_URL = "http://myinfowall.ddns.net/apps/content/getALLBlackBoardItems.php";
 
     private JsonManager(){}
 
@@ -31,33 +32,58 @@ public class JsonManager {
         return instance;
     }
 
-    public void sendJson(BlackBoardItem blackBoardItem, String url) {
-        JSONObject blackBoardItemAsJsonObject = null;
-        try {
-            Gson gsonHandler = new Gson();
-            String blackBoardItemAsJsonString = gsonHandler.toJson(blackBoardItem);
-            blackBoardItemAsJsonObject = new JSONObject(blackBoardItemAsJsonString);
-        } catch (JSONException e) {
-            e.printStackTrace();
+    public void sendJson(String url, Object object) {
+        JSONObject objectAsJsonObject = null;
+        if(object != null) {
+            try {
+                Gson gsonHandler = new Gson();
+                String blackBoardItemAsJsonString = gsonHandler.toJson(object);
+                objectAsJsonObject = new JSONObject(blackBoardItemAsJsonString);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST, url,  blackBoardItemAsJsonObject,
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST, url,  objectAsJsonObject,
                 new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
                         VolleyLog.d(VOLLEY_TAG, "Success: " + response.toString());
+                        if(mOnResponseListener != null){
+                            mOnResponseListener.OnResponse(response);
+                        }
+
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.d(VOLLEY_TAG, "Error: " + error.getMessage());
+                        if(mOnErrorListener != null){
+                            mOnErrorListener.OnResponse(error);
+                        }
                     }
                 }) {
         };
 
         // Adding request to request queue
         InfoWallApplication.getInstance().addToRequestQueue(jsonObjReq, "Test");
+    }
+
+    public void setOnResponseReceiveListener(OnResponseListener onResponseListener){
+        mOnResponseListener = onResponseListener;
+    }
+
+    public interface OnResponseListener {
+        void OnResponse(JSONObject response);
+    }
+
+    public void setOnErrorReceiveListener(OnErrorListener onErrorListener){
+        mOnErrorListener = onErrorListener;
+    }
+
+    public interface OnErrorListener {
+        void OnResponse(VolleyError error);
     }
 }

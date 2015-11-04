@@ -18,6 +18,8 @@ public class DBContactAddress {
     private String mZipCode;
     @DatabaseField
     private String mCity;
+    @DatabaseField
+    private boolean mSyncStatus;
 
     public DBContactAddress(){};
 
@@ -73,4 +75,11 @@ public class DBContactAddress {
         return mStreetName + " " + mHouseNumber + ", " + mCity;
     }
 
+    public boolean isSyncStatus() {
+        return mSyncStatus;
+    }
+
+    public void setSyncStatus(boolean mSyncStatus) {
+        this.mSyncStatus = mSyncStatus;
+    }
 }

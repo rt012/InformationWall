@@ -22,6 +22,8 @@ public class DBContact {
     private String mCompany;
     @DatabaseField(foreign = true,  foreignAutoCreate = true, foreignAutoRefresh = true)
     public DBContactAddress mContactAddress;
+    @DatabaseField
+    private boolean mSyncStatus;
 
     public DBContact(){};
 
@@ -92,5 +94,13 @@ public class DBContact {
 
     public void setContactAddress(DBContactAddress mContactAddress) {
         this.mContactAddress = mContactAddress;
+    }
+
+    public boolean isSyncStatus() {
+        return mSyncStatus;
+    }
+
+    public void setSyncStatus(boolean mSyncStatus) {
+        this.mSyncStatus = mSyncStatus;
     }
 }

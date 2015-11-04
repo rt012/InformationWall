@@ -85,4 +85,13 @@ public class BlackBoardItem {
     public void setBlackBoardAttachment(List<BlackBoardAttachment> mBlackBoardAttachment) {
         this.mBlackBoardAttachment = mBlackBoardAttachment;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        BlackBoardItem compareBlackBoardItem = (BlackBoardItem) o;
+        if(this.getCreatedTimestamp().equals(compareBlackBoardItem.getCreatedTimestamp()) && this.getTitle().equals(compareBlackBoardItem.getTitle())) {
+            return true;
+        }
+        return false;
+    }
 }

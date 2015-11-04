@@ -194,7 +194,7 @@ public class BlackBoardAddItem extends Fragment implements IFragmentTag, BlackBo
 
             DAOHelper.getInstance().getBlackBoardItemDAO().create(newBlackBoardItem);
 
-            JsonManager.getInstance().sendJson(newBlackBoardItem, JsonManager.NEW_BLACK_BOARD_ITEM_URL);
+            JsonManager.getInstance().sendJson(JsonManager.NEW_BLACK_BOARD_ITEM_URL, newBlackBoardItem);
 
             if (mOnSaveBlackBoardItemListener != null) {
                 mOnSaveBlackBoardItemListener.onSaveBlackBoardItem();

@@ -33,6 +33,8 @@ public class DBBlackBoardItem {
     private Date mCreatedTimestamp;
     @DatabaseField
     private Date mEditedTimestamp;
+    @DatabaseField
+    private boolean mSyncStatus;
 
     public DBBlackBoardItem(){};
 
@@ -106,5 +108,13 @@ public class DBBlackBoardItem {
             this.mBlackBoardAttachment = blackBoardItemsDAO.getEmptyForeignCollection("mBlackBoardAttachment");
         }
         this.mBlackBoardAttachment.addAll(attachments);
+    }
+
+    public boolean isSyncStatus() {
+        return mSyncStatus;
+    }
+
+    public void setSyncStatus(boolean mSyncStatus) {
+        this.mSyncStatus = mSyncStatus;
     }
 }

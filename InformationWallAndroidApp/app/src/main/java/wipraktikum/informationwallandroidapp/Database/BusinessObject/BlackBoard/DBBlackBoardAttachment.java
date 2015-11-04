@@ -18,6 +18,8 @@ public class DBBlackBoardAttachment {
     private DataType mDataType;
     @DatabaseField(foreign = true, foreignAutoRefresh = true, columnName = "mBlackBoardItemID")
     private DBBlackBoardItem mBlackBoardItem;
+    @DatabaseField
+    private boolean mSyncStatus;
 
     public DBBlackBoardAttachment(){};
 
@@ -66,6 +68,14 @@ public class DBBlackBoardAttachment {
 
     public void setDataType(DataType mDataType) {
         this.mDataType = mDataType;
+    }
+
+    public boolean isSyncStatus() {
+        return mSyncStatus;
+    }
+
+    public void setSyncStatus(boolean mSyncStatus) {
+        this.mSyncStatus = mSyncStatus;
     }
 
     public enum DataType {
