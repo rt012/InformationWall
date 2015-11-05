@@ -1,5 +1,9 @@
 package wipraktikum.informationwallandroidapp.Database.DAO;
 
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +61,7 @@ public class BlackBoardItemDAO implements IDAO {
         boolean ok = false;
         try {
             BlackBoardItem tempItem = (BlackBoardItem) object;
+
             List<BlackBoardAttachment> tempAttachments = tempItem.getBlackBoardAttachment();
 
             // Set AttachmentList to null because ORMLite need a empty list as a ForeignCollection
@@ -109,6 +114,24 @@ public class BlackBoardItemDAO implements IDAO {
         return ok;
     }
 
+    public ArrayList<BlackBoardItem> getUnsyncedItems() throws SQLException{
+        Dao<DBBlackBoardItem, Long> blackBoardItemDAO = InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardItemDAO();
+        // get our query builder from the DAO
+        QueryBuilder<DBBlackBoardItem, Long> queryBuilder =
+                blackBoardItemDAO.queryBuilder();
+        queryBuilder.where().eq(DBBlackBoardItem.SYNCSTATUS_FIELD_NAME, false);
+        PreparedQuery<DBBlackBoardItem> preparedQuery = queryBuilder.prepare();
+        List<DBBlackBoardItem> dbBlackBoardItems = blackBoardItemDAO.query(preparedQuery);
+
+        ArrayList<BlackBoardItem> unsycedBlackBoardItem = new ArrayList<BlackBoardItem>();
+        if(dbBlackBoardItems != null || !dbBlackBoardItems.isEmpty()) {
+            for(DBBlackBoardItem dbBlackBoardItem : dbBlackBoardItems) {
+                unsycedBlackBoardItem.add(mapDBBlackBoardItemToBlackBoardItem(dbBlackBoardItem));
+            }
+        }
+       return unsycedBlackBoardItem;
+    }
+
     public BlackBoardItem mapDBBlackBoardItemToBlackBoardItem(DBBlackBoardItem dbBlackBoardItem) {
         BlackBoardItem blackBoardItem = new BlackBoardItem();
 
@@ -121,6 +144,7 @@ public class BlackBoardItemDAO implements IDAO {
                 getContactDAO().mapDBContactToContact(dbBlackBoardItem.getContact()));
         blackBoardItem.setBlackBoardAttachment(DAOHelper.getInstance().
                 getBlackBoardAttachmentDAO().mapDBBlackBoardAttachmentToBlackBoardAttachment(dbBlackBoardItem.getBlackBoardAttachment()));
+        blackBoardItem.setSyncStatus(dbBlackBoardItem.isSyncStatus());
 
         return blackBoardItem;
     }
@@ -144,6 +168,7 @@ public class BlackBoardItemDAO implements IDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        dbBlackBoardItem.setSyncStatus(blackBoardItem.isSyncStatus());
 
         return dbBlackBoardItem;
     }

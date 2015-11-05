@@ -69,7 +69,11 @@ public class BlackBoard extends AppCompatActivity {
     @Override
     public void onDestroy(){
         super.onDestroy();
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
         //Call php script to remove focus on tile
         PhpRequestManager.getInstance().phpRequest("http://myinfowall.ddns.net/apps/blackboard/openBlackBoardOverview.php", "status", "close");
     }

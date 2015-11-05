@@ -88,6 +88,7 @@ public class InfoWallApplication extends Application {
      * @throws SQLException
      */
     private void insertTestData() throws SQLException {
+        //SyncManager.getInstance().syncBlackBoardItems();
         //Tiles
         Dao<DBTile, Long> tileDao =  databaseHelper.getTileDAO();
         tileDao.createIfNotExists(new DBTile("Black Board", R.drawable.slide_1, BlackBoard.class.getName()));
@@ -116,5 +117,7 @@ public class InfoWallApplication extends Application {
         DBBlackBoardAttachment ba5 = new DBBlackBoardAttachment("http://localhost/imagestore/test.pdf", "C://temp/test/test1.pdf", DBBlackBoardAttachment.DataType.PDF,item2);
         databaseHelper.getBlackBoardAttachmentDAO().createIfNotExists(ba4);
         databaseHelper.getBlackBoardAttachmentDAO().createIfNotExists(ba5);
+
+
     }
 }

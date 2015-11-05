@@ -33,8 +33,10 @@ public class DBBlackBoardItem {
     private Date mCreatedTimestamp;
     @DatabaseField
     private Date mEditedTimestamp;
-    @DatabaseField
+    @DatabaseField(columnName = SYNCSTATUS_FIELD_NAME)
     private boolean mSyncStatus;
+
+    public static final String SYNCSTATUS_FIELD_NAME = "syncStatus";
 
     public DBBlackBoardItem(){};
 

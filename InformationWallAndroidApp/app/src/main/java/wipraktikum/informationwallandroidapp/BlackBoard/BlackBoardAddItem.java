@@ -193,7 +193,8 @@ public class BlackBoardAddItem extends Fragment implements IFragmentTag, BlackBo
             newBlackBoardItem.setContact(newContact);
 
             DAOHelper.getInstance().getBlackBoardItemDAO().create(newBlackBoardItem);
-
+            // Set Attachments to the item again bacause in the create method we have to clean erease this reference ( because of ORMLite )
+            newBlackBoardItem.setBlackBoardAttachment(blackBoardAttachments);
             JsonManager.getInstance().sendJson(JsonManager.NEW_BLACK_BOARD_ITEM_URL, newBlackBoardItem);
 
             if (mOnSaveBlackBoardItemListener != null) {

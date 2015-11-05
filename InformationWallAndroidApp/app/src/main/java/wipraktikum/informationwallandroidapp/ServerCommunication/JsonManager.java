@@ -4,9 +4,11 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,11 +19,12 @@ import wipraktikum.informationwallandroidapp.InfoWallApplication;
  */
 public class JsonManager {
     private static JsonManager instance = null;
-    private OnResponseListener mOnResponseListener;
+    private OnObjectResponseListener mOnObjectResponseListener;
+    private OnArrayResponseListener mOnArrayResponseListener;
     private OnErrorListener mOnErrorListener;
     final String VOLLEY_TAG = "Volley Log";
     public static final String NEW_BLACK_BOARD_ITEM_URL = "http://myinfowall.ddns.net/apps/content/blackboard.php";
-    public static final String GET_ALL_ITEMS_URL = "http://myinfowall.ddns.net/apps/content/getALLBlackBoardItems.php";
+    public static final String GET_ALL_ITEMS_URL = "http://myinfowall.ddns.net/apps/blackboard/getAllBlackBoardItems.php";
 
     private JsonManager(){}
 
@@ -50,8 +53,8 @@ public class JsonManager {
                     @Override
                     public void onResponse(JSONObject response) {
                         VolleyLog.d(VOLLEY_TAG, "Success: " + response.toString());
-                        if(mOnResponseListener != null){
-                            mOnResponseListener.OnResponse(response);
+                        if(mOnObjectResponseListener != null){
+                            mOnObjectResponseListener.OnResponse(response);
                         }
 
                     }
@@ -71,12 +74,48 @@ public class JsonManager {
         InfoWallApplication.getInstance().addToRequestQueue(jsonObjReq, "Test");
     }
 
-    public void setOnResponseReceiveListener(OnResponseListener onResponseListener){
-        mOnResponseListener = onResponseListener;
+    public void getJson(String url) {
+        JsonArrayRequest jsonObjReq = new JsonArrayRequest(url,
+                new Response.Listener<JSONArray>() {
+
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        VolleyLog.d(VOLLEY_TAG, "Success: " + response.toString());
+                        if(mOnArrayResponseListener != null){
+                            mOnArrayResponseListener.OnResponse(response);
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(VOLLEY_TAG, "Error: " + error.getMessage());
+                if(mOnErrorListener != null){
+                    mOnErrorListener.OnResponse(error);
+                }
+            }
+        }) {
+        };
+
+        // Adding request to request queue
+        InfoWallApplication.getInstance().addToRequestQueue(jsonObjReq, "Test");
     }
 
-    public interface OnResponseListener {
+    public void setOnObjectResponseReceiveListener(OnObjectResponseListener onObjectResponseListener){
+        mOnObjectResponseListener = onObjectResponseListener;
+    }
+
+    public interface OnObjectResponseListener {
         void OnResponse(JSONObject response);
+    }
+
+    public void setOnArrayResponseReceiveListener(OnArrayResponseListener onArrayResponseListener){
+        mOnArrayResponseListener = onArrayResponseListener;
+    }
+
+    public interface OnArrayResponseListener {
+        void OnResponse(JSONArray response);
     }
 
     public void setOnErrorReceiveListener(OnErrorListener onErrorListener){

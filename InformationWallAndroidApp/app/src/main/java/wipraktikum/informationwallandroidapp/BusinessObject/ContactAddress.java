@@ -12,6 +12,7 @@ public class ContactAddress {
     private String mHouseNumber;
     private String mZipCode;
     private String mCity;
+    private transient boolean mSyncStatus;
 
     public ContactAddress(){};
 
@@ -75,4 +76,11 @@ public class ContactAddress {
         return null;
     }
 
+    public boolean isSyncStatus() {
+        return mSyncStatus;
+    }
+
+    public void setSyncStatus(boolean mSyncStatus) {
+        this.mSyncStatus = mSyncStatus;
+    }
 }

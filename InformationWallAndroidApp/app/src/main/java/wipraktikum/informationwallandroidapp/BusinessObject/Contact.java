@@ -14,6 +14,7 @@ public class Contact {
     private String mTelephone;
     private String mCompany;
     public ContactAddress mContactAddress;
+    private transient boolean mSyncStatus;
 
     public Contact(){};
 
@@ -90,5 +91,13 @@ public class Contact {
 
     public void setContactAddress(ContactAddress mContactAddress) {
         this.mContactAddress = mContactAddress;
+    }
+
+    public boolean isSyncStatus() {
+        return mSyncStatus;
+    }
+
+    public void setSyncStatus(boolean mSyncStatus) {
+        this.mSyncStatus = mSyncStatus;
     }
 }

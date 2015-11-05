@@ -104,6 +104,7 @@ public class TileDAO implements IDAO{
         tile.setName(dbTile.getName());
         tile.setTileID(dbTile.getTileID());
         tile.setScreen(dbTile.getScreen());
+        tile.setSyncStatus(dbTile.isSyncStatus());
 
         return tile;
     }
@@ -116,6 +117,7 @@ public class TileDAO implements IDAO{
         dbTile.setDrawableId(tile.getDrawableId());
         dbTile.setName(tile.getName());
         dbTile.setScreen(tile.getScreen());
+        dbTile.setSyncStatus(tile.isSyncStatus());
 
         return dbTile;
     }

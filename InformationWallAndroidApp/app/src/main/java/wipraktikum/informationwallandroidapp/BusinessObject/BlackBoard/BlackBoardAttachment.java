@@ -15,6 +15,7 @@ public class BlackBoardAttachment {
     private String mDeviceDataPath;
     private DBBlackBoardAttachment.DataType mDataType;
     private transient DBBlackBoardItem mDBBlackBoardItem;
+    private transient boolean mSyncStatus;
 
     public BlackBoardAttachment(){}
 
@@ -64,5 +65,11 @@ public class BlackBoardAttachment {
         this.mDataType = mDataType;
     }
 
+    public boolean isSyncStatus() {
+        return mSyncStatus;
+    }
 
+    public void setSyncStatus(boolean mSyncStatus) {
+        this.mSyncStatus = mSyncStatus;
+    }
 }

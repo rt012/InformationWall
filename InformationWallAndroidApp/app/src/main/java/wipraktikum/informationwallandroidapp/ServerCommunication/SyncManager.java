@@ -6,8 +6,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONObject;
+import org.json.JSONArray;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
@@ -36,9 +38,24 @@ public class SyncManager {
 
     public void syncBlackBoardItems() {
 
-        jsonManager.setOnResponseReceiveListener(new JsonManager.OnResponseListener() {
+        Gson gsonInstance = new Gson();
+
+        ArrayList<BlackBoardItem> unsyncedItems = null;
+        try {
+            unsyncedItems = DAOHelper.getInstance().getBlackBoardItemDAO().getUnsyncedItems();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if(unsyncedItems != null && !unsyncedItems.isEmpty()) {
+            for(BlackBoardItem item : unsyncedItems) {
+                String jsonString =  gsonInstance.toJson(item);
+                jsonManager.sendJson(JsonManager.NEW_BLACK_BOARD_ITEM_URL, jsonString);
+            }
+        }
+
+        jsonManager.setOnArrayResponseReceiveListener(new JsonManager.OnArrayResponseListener() {
             @Override
-            public void OnResponse(JSONObject response) {
+            public void OnResponse(JSONArray response) {
                 compareBlackBoardItems(new JsonParser().parse(response.toString()));
             }
         });
@@ -46,9 +63,10 @@ public class SyncManager {
             @Override
             public void OnResponse(VolleyError error) {
                 // TODO
+                 System.out.print("asdasd");
             }
         });
-        jsonManager.sendJson(JsonManager.GET_ALL_ITEMS_URL, null);
+        jsonManager.getJson(JsonManager.GET_ALL_ITEMS_URL);
     }
 
     private void compareBlackBoardItems(JsonElement response) {

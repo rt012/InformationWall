@@ -15,6 +15,7 @@ public class Tile {
     private String mScreen;
     private boolean mIsActivated = false;
     private DBTile.EnumTileSize mTileSize;
+    private transient boolean mSyncStatus;
 
     public Tile(){}
 
@@ -71,5 +72,13 @@ public class Tile {
 
     public void setScreen(String mScreen) {
         this.mScreen = mScreen;
+    }
+
+    public boolean isSyncStatus() {
+        return mSyncStatus;
+    }
+
+    public void setSyncStatus(boolean mSyncStatus) {
+        this.mSyncStatus = mSyncStatus;
     }
 }

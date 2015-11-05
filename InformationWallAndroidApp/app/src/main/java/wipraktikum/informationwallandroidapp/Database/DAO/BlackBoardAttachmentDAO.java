@@ -99,6 +99,7 @@ public class BlackBoardAttachmentDAO implements IDAO {
         blackBoardAttachment.setDeviceDataPath(dbBlackBoardAttachment.getDeviceDataPath());
         blackBoardAttachment.setRemoteDataPath(dbBlackBoardAttachment.getRemoteDataPath());
         blackBoardAttachment.setBlackBoardItem(dbBlackBoardAttachment.getBlackBoardItem());
+        blackBoardAttachment.setSyncStatus(dbBlackBoardAttachment.isSyncStatus());
 
         return blackBoardAttachment;
     }
@@ -111,6 +112,7 @@ public class BlackBoardAttachmentDAO implements IDAO {
         dbBlackBoardAttachment.setDeviceDataPath(blackBoardAttachment.getDeviceDataPath());
         dbBlackBoardAttachment.setRemoteDataPath(blackBoardAttachment.getRemoteDataPath());
         dbBlackBoardAttachment.setBlackBoardItem(blackBoardAttachment.getBlackBoardItem());
+        dbBlackBoardAttachment.setSyncStatus(blackBoardAttachment.isSyncStatus());
 
         return dbBlackBoardAttachment;
     }

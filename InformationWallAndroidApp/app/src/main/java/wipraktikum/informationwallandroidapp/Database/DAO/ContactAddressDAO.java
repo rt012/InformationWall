@@ -101,6 +101,7 @@ public class ContactAddressDAO implements IDAO {
         contactAddress.setStreetName(dbContactAddress.getStreetName());
         contactAddress.setHouseNumber(dbContactAddress.getHouseNumber());
         contactAddress.setZipCode(dbContactAddress.getZipCode());
+        contactAddress.setSyncStatus(dbContactAddress.isSyncStatus());
 
         return contactAddress;
     }
@@ -112,6 +113,7 @@ public class ContactAddressDAO implements IDAO {
         dbContactAddress.setStreetName(contactAddress.getStreetName());
         dbContactAddress.setHouseNumber(contactAddress.getHouseNumber());
         dbContactAddress.setZipCode(contactAddress.getZipCode());
+        dbContactAddress.setSyncStatus(contactAddress.isSyncStatus());
 
         return dbContactAddress;
     }

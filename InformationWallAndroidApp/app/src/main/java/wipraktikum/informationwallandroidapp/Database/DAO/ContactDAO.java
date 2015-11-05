@@ -104,7 +104,7 @@ public class ContactDAO implements IDAO {
         contact.setTelephone(dbContact.getTelephone());
         contact.setContactAddress((ContactAddress) DAOHelper.getInstance().
                 getContactAddressDAO().mapDBContactAddressToContactAddress(dbContact.getContactAddress()));
-
+        contact.setSyncStatus(dbContact.isSyncStatus());
         return contact;
     }
 
@@ -119,7 +119,7 @@ public class ContactDAO implements IDAO {
         dbContact.setContactID(contact.getContactID());
         dbContact.setContactAddress((DBContactAddress) DAOHelper.getInstance().
                 getContactAddressDAO().mapContactAddressToDBContractAddress(contact.getContactAddress()));
-
+        dbContact.setSyncStatus(contact.isSyncStatus());
         return dbContact;
     }
 }

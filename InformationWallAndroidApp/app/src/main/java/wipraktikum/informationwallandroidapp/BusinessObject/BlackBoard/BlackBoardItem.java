@@ -19,6 +19,7 @@ public class BlackBoardItem {
     private List<BlackBoardAttachment> mBlackBoardAttachment;
     private Date mCreatedTimestamp;
     private Date mEditedTimestamp;
+    private transient boolean mSyncStatus;
 
     public BlackBoardItem(){};
 
@@ -84,6 +85,14 @@ public class BlackBoardItem {
 
     public void setBlackBoardAttachment(List<BlackBoardAttachment> mBlackBoardAttachment) {
         this.mBlackBoardAttachment = mBlackBoardAttachment;
+    }
+
+    public boolean isSyncStatus() {
+        return mSyncStatus;
+    }
+
+    public void setSyncStatus(boolean mSyncStatus) {
+        this.mSyncStatus = mSyncStatus;
     }
 
     @Override
