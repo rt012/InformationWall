@@ -40,4 +40,9 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:background">@android:color/transparent</item>
     </style>
+
+    <style name="LoginEditText" parent="BlackBoardAddItemEditText">
+
+
+    </style>
 </resources>
