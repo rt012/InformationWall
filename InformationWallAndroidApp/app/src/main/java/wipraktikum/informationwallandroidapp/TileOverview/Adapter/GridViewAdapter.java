@@ -19,6 +19,7 @@ import wipraktikum.informationwallandroidapp.BusinessObject.Tile;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.DBTile;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.R;
+import wipraktikum.informationwallandroidapp.ServerCommunication.PhpRequestManager;
 import wipraktikum.informationwallandroidapp.TileOverview.Dialog.GridViewLongClickDialog;
 
 /**
@@ -113,9 +114,13 @@ public final class GridViewAdapter extends BaseAdapter {
                         if (isChecked) {
                             mRelativeLayout.setVisibility(View.VISIBLE);
                             tile.setIsActivated(true);
+                            PhpRequestManager.getInstance().phpRequest(
+                                    "http://myinfowall.ddns.net/apps/blackboard/activateTile.php", "activated", "active");
                         } else {
                             mRelativeLayout.setVisibility(View.GONE);
                             tile.setIsActivated(false);
+                            PhpRequestManager.getInstance().phpRequest(
+                                    "http://myinfowall.ddns.net/apps/blackboard/activateTile.php", "activated", "notactivated");
                         }
                         DAOHelper.getInstance().getTileDAO().update(tile);
                     }

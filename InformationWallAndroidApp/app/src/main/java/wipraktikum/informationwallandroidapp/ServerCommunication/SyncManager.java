@@ -2,6 +2,7 @@ package wipraktikum.informationwallandroidapp.ServerCommunication;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
@@ -10,6 +11,7 @@ import org.json.JSONArray;
 
 import java.util.List;
 
+import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardAttachment;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
 import wipraktikum.informationwallandroidapp.Database.DAO.BlackBoardItemDAO;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
@@ -71,16 +73,39 @@ public class SyncManager {
 
     private void compareBlackBoardItems(JsonElement response) {
         BlackBoardItemDAO blackBoardItemDAO = DAOHelper.getInstance().getBlackBoardItemDAO();
-        Gson gsonInstance = new Gson();
+        Gson gsonInstance = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
         List<BlackBoardItem> serverItemList = gsonInstance.fromJson(response, new TypeToken<List<BlackBoardItem>>(){}.getType());
         List<BlackBoardItem> clientItemList = blackBoardItemDAO.queryForAll();
         for(BlackBoardItem serverBlackBoardItem : serverItemList) {
             if(clientItemList.contains(serverBlackBoardItem)) {
+                //BlackBoardItem ID
                 serverBlackBoardItem.setBlackBoardItemID(clientItemList.
                         get(clientItemList.indexOf(serverBlackBoardItem)).getBlackBoardItemID());
+                //Contact ID
+                if (serverBlackBoardItem.getContact() != null) {
+                    serverBlackBoardItem.getContact().setContactID(clientItemList.
+                            get(clientItemList.indexOf(serverBlackBoardItem)).getContact().getContactID());
+                    //ContactAddress
+                    serverBlackBoardItem.getContact().getContactAddress().setContactAddressID(clientItemList.
+                            get(clientItemList.indexOf(serverBlackBoardItem)).getContact().getContactAddress().getContactAddressID());
+                }
+                //Attachment ID
+                int i = 0;
+                for (BlackBoardAttachment blackBoardAttachment : serverBlackBoardItem.getBlackBoardAttachment()) {
+                    blackBoardAttachment.setBlackBoardAttachmentID(clientItemList.
+                            get(clientItemList.indexOf(serverBlackBoardItem)).getBlackBoardAttachment().get(i).getBlackBoardAttachmentID());
+                    i++;
+                }
                 blackBoardItemDAO.update(serverBlackBoardItem);
             } else {
                 serverBlackBoardItem.setBlackBoardItemID(0);
+                if (serverBlackBoardItem.getContact() != null) {
+                    serverBlackBoardItem.getContact().setContactID(0);
+                    serverBlackBoardItem.getContact().getContactAddress().setContactAddressID(0);
+                }
+                for (BlackBoardAttachment blackBoardAttachment : serverBlackBoardItem.getBlackBoardAttachment()){
+                    blackBoardAttachment.setBlackBoardAttachmentID(0);
+                }
                 blackBoardItemDAO.create(serverBlackBoardItem);
             }
         }

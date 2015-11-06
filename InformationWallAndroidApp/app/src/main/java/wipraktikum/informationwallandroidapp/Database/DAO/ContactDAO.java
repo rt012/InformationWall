@@ -96,30 +96,34 @@ public class ContactDAO implements IDAO {
     public Contact mapDBContactToContact(DBContact dbContact) {
         Contact contact = new Contact();
 
-        contact.setCompany(dbContact.getCompany());
-        contact.setContactID(dbContact.getmContactID());
-        contact.setEMailAddress(dbContact.getEMailAddress());
-        contact.setName(dbContact.getName());
-        contact.setSurname(dbContact.getSurname());
-        contact.setTelephone(dbContact.getTelephone());
-        contact.setContactAddress((ContactAddress) DAOHelper.getInstance().
-                getContactAddressDAO().mapDBContactAddressToContactAddress(dbContact.getContactAddress()));
-        contact.setSyncStatus(dbContact.isSyncStatus());
+        if (dbContact != null) {
+            contact.setCompany(dbContact.getCompany());
+            contact.setContactID(dbContact.getmContactID());
+            contact.setEMailAddress(dbContact.getEMailAddress());
+            contact.setName(dbContact.getName());
+            contact.setSurname(dbContact.getSurname());
+            contact.setTelephone(dbContact.getTelephone());
+            contact.setContactAddress((ContactAddress) DAOHelper.getInstance().
+                    getContactAddressDAO().mapDBContactAddressToContactAddress(dbContact.getContactAddress()));
+            contact.setSyncStatus(dbContact.isSyncStatus());
+        }
         return contact;
     }
 
     public DBContact mapContactToDBContact(Contact contact) {
         DBContact dbContact = new DBContact();
 
-        dbContact.setTelephone(contact.getTelephone());
-        dbContact.setSurname(contact.getSurname());
-        dbContact.setName(contact.getName());
-        dbContact.setEMailAddress(contact.getEMailAddress());
-        dbContact.setCompany(contact.getCompany());
-        dbContact.setContactID(contact.getContactID());
-        dbContact.setContactAddress((DBContactAddress) DAOHelper.getInstance().
-                getContactAddressDAO().mapContactAddressToDBContractAddress(contact.getContactAddress()));
-        dbContact.setSyncStatus(contact.isSyncStatus());
+        if (contact != null) {
+            dbContact.setTelephone(contact.getTelephone());
+            dbContact.setSurname(contact.getSurname());
+            dbContact.setName(contact.getName());
+            dbContact.setEMailAddress(contact.getEMailAddress());
+            dbContact.setCompany(contact.getCompany());
+            dbContact.setContactID(contact.getContactID());
+            dbContact.setContactAddress((DBContactAddress) DAOHelper.getInstance().
+                    getContactAddressDAO().mapContactAddressToDBContractAddress(contact.getContactAddress()));
+            dbContact.setSyncStatus(contact.isSyncStatus());
+        }
         return dbContact;
     }
 }

@@ -96,25 +96,27 @@ public class ContactAddressDAO implements IDAO {
     public ContactAddress mapDBContactAddressToContactAddress(DBContactAddress dbContactAddress) {
         ContactAddress contactAddress = new ContactAddress();
 
-        contactAddress.setCity(dbContactAddress.getCity());
-        contactAddress.setContactAddressID(dbContactAddress.getContactAddressID());
-        contactAddress.setStreetName(dbContactAddress.getStreetName());
-        contactAddress.setHouseNumber(dbContactAddress.getHouseNumber());
-        contactAddress.setZipCode(dbContactAddress.getZipCode());
-        contactAddress.setSyncStatus(dbContactAddress.isSyncStatus());
-
+        if (dbContactAddress != null) {
+            contactAddress.setCity(dbContactAddress.getCity());
+            contactAddress.setContactAddressID(dbContactAddress.getContactAddressID());
+            contactAddress.setStreetName(dbContactAddress.getStreetName());
+            contactAddress.setHouseNumber(dbContactAddress.getHouseNumber());
+            contactAddress.setZipCode(dbContactAddress.getZipCode());
+            contactAddress.setSyncStatus(dbContactAddress.isSyncStatus());
+        }
         return contactAddress;
     }
     public DBContactAddress mapContactAddressToDBContractAddress(ContactAddress contactAddress) {
         DBContactAddress dbContactAddress = new DBContactAddress();
 
-        dbContactAddress.setCity(contactAddress.getCity());
-        dbContactAddress.setContactAddressID(contactAddress.getContactAddressID());
-        dbContactAddress.setStreetName(contactAddress.getStreetName());
-        dbContactAddress.setHouseNumber(contactAddress.getHouseNumber());
-        dbContactAddress.setZipCode(contactAddress.getZipCode());
-        dbContactAddress.setSyncStatus(contactAddress.isSyncStatus());
-
+        if (contactAddress != null) {
+            dbContactAddress.setCity(contactAddress.getCity());
+            dbContactAddress.setContactAddressID(contactAddress.getContactAddressID());
+            dbContactAddress.setStreetName(contactAddress.getStreetName());
+            dbContactAddress.setHouseNumber(contactAddress.getHouseNumber());
+            dbContactAddress.setZipCode(contactAddress.getZipCode());
+            dbContactAddress.setSyncStatus(contactAddress.isSyncStatus());
+        }
         return dbContactAddress;
     }
 }

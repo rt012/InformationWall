@@ -86,7 +86,7 @@ public class BlackBoardContactView extends TableLayout {
         TextView txtContactFullAddress = (TextView) findViewById(R.id.tv_black_board_contact_address);
         ImageView ivContactFullAddress = (ImageView) findViewById(R.id.iv_black_board_contact_address);
         TableRow trContactFullAddress = (TableRow) findViewById(R.id.tr_black_board_contact_address);
-        if (blackBoardContact.getContactAddress().getFullAddress() != null) {
+        if (blackBoardContact.getContactAddress() != null && blackBoardContact.getContactAddress().getFullAddress() != null) {
             txtContactFullAddress.setText(blackBoardContact.getContactAddress().getFullAddress());
             ivContactFullAddress.setImageDrawable(context.getDrawable(R.drawable.icon_address));
         }else{

@@ -89,7 +89,24 @@ public class BlackBoardItemDAO implements IDAO {
     public boolean update(Object object){
         boolean ok = false;
         try {
-            InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardItemDAO().update(mapBlackBoardItemToDBBlackBoardItem((BlackBoardItem) object));
+            BlackBoardItem tempItem = (BlackBoardItem) object;
+
+            List<BlackBoardAttachment> tempAttachments = tempItem.getBlackBoardAttachment();
+
+            // Set AttachmentList to null because ORMLite need a empty list as a ForeignCollection
+            tempItem.setBlackBoardAttachment(null);
+            // Mapping to DB-Object
+            DBBlackBoardItem item = (DBBlackBoardItem) this.mapBlackBoardItemToDBBlackBoardItem(tempItem);
+
+            InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardItemDAO().update(item);
+
+            // Add  Item reference to Attachment Objects and add it to the db
+            for(int i = 0; i < tempAttachments.size(); i++) {
+                DBBlackBoardAttachment tempAttachment = DAOHelper.getInstance().getBlackBoardAttachmentDAO().mapBlackBoardAttachmentToDBBlackBoardAttachment(tempAttachments.get(i));
+                tempAttachment.setBlackBoardItem(item);
+                InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardAttachmentDAO().update(tempAttachment);
+            }
+
             ok = true;
         } catch (SQLException e) {
             e.printStackTrace();

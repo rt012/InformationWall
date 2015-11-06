@@ -94,26 +94,32 @@ public class BlackBoardAttachmentDAO implements IDAO {
     public BlackBoardAttachment mapDBBlackBoardAttachmentToBlackBoardAttachment(DBBlackBoardAttachment dbBlackBoardAttachment) {
         BlackBoardAttachment blackBoardAttachment = new BlackBoardAttachment();
 
-        blackBoardAttachment.setBlackBoardAttachmentID(dbBlackBoardAttachment.getBlackBoardAttachmentID());
-        blackBoardAttachment.setDataType(dbBlackBoardAttachment.getDataType());
-        blackBoardAttachment.setDeviceDataPath(dbBlackBoardAttachment.getDeviceDataPath());
-        blackBoardAttachment.setRemoteDataPath(dbBlackBoardAttachment.getRemoteDataPath());
-        blackBoardAttachment.setBlackBoardItem(dbBlackBoardAttachment.getBlackBoardItem());
-        blackBoardAttachment.setSyncStatus(dbBlackBoardAttachment.isSyncStatus());
-
+        if (dbBlackBoardAttachment != null) {
+            blackBoardAttachment.setBlackBoardAttachmentID(dbBlackBoardAttachment.getBlackBoardAttachmentID());
+            if (dbBlackBoardAttachment.getDataType() != null) {
+                blackBoardAttachment.setDataType(dbBlackBoardAttachment.getDataType());
+            }else{
+                blackBoardAttachment.setDataType(DBBlackBoardAttachment.DataType.OTHER);
+            }
+            blackBoardAttachment.setDeviceDataPath(dbBlackBoardAttachment.getDeviceDataPath());
+            blackBoardAttachment.setRemoteDataPath(dbBlackBoardAttachment.getRemoteDataPath());
+            blackBoardAttachment.setBlackBoardItem(dbBlackBoardAttachment.getBlackBoardItem());
+            blackBoardAttachment.setSyncStatus(dbBlackBoardAttachment.isSyncStatus());
+        }
         return blackBoardAttachment;
     }
 
     public DBBlackBoardAttachment mapBlackBoardAttachmentToDBBlackBoardAttachment(BlackBoardAttachment blackBoardAttachment) {
         DBBlackBoardAttachment dbBlackBoardAttachment = new DBBlackBoardAttachment();
 
-        dbBlackBoardAttachment.setBlackBoardAttachmentID(blackBoardAttachment.getBlackBoardAttachmentID());
-        dbBlackBoardAttachment.setDataType(blackBoardAttachment.getDataType());
-        dbBlackBoardAttachment.setDeviceDataPath(blackBoardAttachment.getDeviceDataPath());
-        dbBlackBoardAttachment.setRemoteDataPath(blackBoardAttachment.getRemoteDataPath());
-        dbBlackBoardAttachment.setBlackBoardItem(blackBoardAttachment.getBlackBoardItem());
-        dbBlackBoardAttachment.setSyncStatus(blackBoardAttachment.isSyncStatus());
-
+        if (blackBoardAttachment != null) {
+            dbBlackBoardAttachment.setBlackBoardAttachmentID(blackBoardAttachment.getBlackBoardAttachmentID());
+            dbBlackBoardAttachment.setDataType(blackBoardAttachment.getDataType());
+            dbBlackBoardAttachment.setDeviceDataPath(blackBoardAttachment.getDeviceDataPath());
+            dbBlackBoardAttachment.setRemoteDataPath(blackBoardAttachment.getRemoteDataPath());
+            dbBlackBoardAttachment.setBlackBoardItem(blackBoardAttachment.getBlackBoardItem());
+            dbBlackBoardAttachment.setSyncStatus(blackBoardAttachment.isSyncStatus());
+        }
         return dbBlackBoardAttachment;
     }
 
