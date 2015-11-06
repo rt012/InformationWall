@@ -20,22 +20,22 @@ import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
 
-    private EditText _emailText;
-    private EditText _passwordText;
-    private Button _loginButton;
-    private EditText _serverURL;
+    private EditText mEmailText;
+    private EditText mPasswordText;
+    private Button mLoginButton;
+    private EditText mServerURL;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        _loginButton = (Button) findViewById(R.id.btn_login);
-        _emailText = (EditText) findViewById(R.id.input_email);
-        _passwordText = (EditText) findViewById(R.id.input_password);
-        _serverURL = (EditText) findViewById(R.id.input_server);
+        mLoginButton = (Button) findViewById(R.id.btn_login);
+        mEmailText = (EditText) findViewById(R.id.input_email);
+        mPasswordText = (EditText) findViewById(R.id.input_password);
+        mServerURL = (EditText) findViewById(R.id.input_server);
 
-        _loginButton.setOnClickListener(new View.OnClickListener() {
+        mLoginButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        _loginButton.setEnabled(false);
+        mLoginButton.setEnabled(false);
 
         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
                 R.style.Base_Theme_AppCompat_Dialog);
@@ -60,8 +60,8 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
 
-        String email = _emailText.getText().toString();
-        String password = _passwordText.getText().toString();
+        String email = mEmailText.getText().toString();
+        String password = mPasswordText.getText().toString();
 
         // TODO: Implement your own authentication logic here.
 
@@ -84,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onLoginSuccess() {
-        _loginButton.setEnabled(true);
+        mLoginButton.setEnabled(true);
         Intent intent = new Intent(getApplicationContext(), TileOverview.class);
         startActivity(intent);
     }
@@ -92,35 +92,35 @@ public class LoginActivity extends AppCompatActivity {
     public void onLoginFailed() {
         Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
 
-        _loginButton.setEnabled(true);
+        mLoginButton.setEnabled(true);
     }
 
     public boolean validate() {
         boolean valid = true;
 
-        String email = _emailText.getText().toString();
-        String password = _passwordText.getText().toString();
-        String serverURL = _serverURL.getText().toString();
+        String email = mEmailText.getText().toString();
+        String password = mPasswordText.getText().toString();
+        String serverURL = mServerURL.getText().toString();
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            _emailText.setError("enter a valid email address");
+            mEmailText.setError("enter a valid email address");
             valid = false;
         } else {
-            _emailText.setError(null);
+            mEmailText.setError(null);
         }
 
         if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            _passwordText.setError("between 4 and 10 alphanumeric characters");
+            mPasswordText.setError("between 4 and 10 alphanumeric characters");
             valid = false;
         } else {
-            _passwordText.setError(null);
+            mPasswordText.setError(null);
         }
 
         if(serverURL.isEmpty()) {
-            _serverURL.setError("enter a valid server URL");
+            mServerURL.setError("enter a valid server URL");
             valid = false;
         } else {
-            _serverURL.setError(null);
+            mServerURL.setError(null);
         }
 
         return valid;

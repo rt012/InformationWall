@@ -7,6 +7,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,7 +24,7 @@ public class JsonManager {
     private OnArrayResponseListener mOnArrayResponseListener;
     private OnErrorListener mOnErrorListener;
     final String VOLLEY_TAG = "Volley Log";
-    public static final String NEW_BLACK_BOARD_ITEM_URL = "http://myinfowall.ddns.net/apps/content/blackboard.php";
+    public static final String NEW_BLACK_BOARD_ITEM_URL = "http://myinfowall.ddns.net/apps/blackboard/blackBoardGetJSON.php";
     public static final String GET_ALL_ITEMS_URL = "http://myinfowall.ddns.net/apps/blackboard/getAllBlackBoardItems.php";
 
     private JsonManager(){}
@@ -39,7 +40,7 @@ public class JsonManager {
         JSONObject objectAsJsonObject = null;
         if(object != null) {
             try {
-                Gson gsonHandler = new Gson();
+                Gson gsonHandler = new GsonBuilder().setDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz").create();
                 String blackBoardItemAsJsonString = gsonHandler.toJson(object);
                 objectAsJsonObject = new JSONObject(blackBoardItemAsJsonString);
             } catch (JSONException e) {
