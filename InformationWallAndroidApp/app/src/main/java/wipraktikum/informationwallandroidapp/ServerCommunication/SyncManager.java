@@ -8,8 +8,6 @@ import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
@@ -39,6 +37,7 @@ public class SyncManager {
     public void syncBlackBoardItems() {
 
         Gson gsonInstance = new Gson();
+/*
 
         ArrayList<BlackBoardItem> unsyncedItems = null;
         try {
@@ -52,6 +51,7 @@ public class SyncManager {
                 jsonManager.sendJson(JsonManager.NEW_BLACK_BOARD_ITEM_URL, jsonString);
             }
         }
+*/
 
         jsonManager.setOnArrayResponseReceiveListener(new JsonManager.OnArrayResponseListener() {
             @Override

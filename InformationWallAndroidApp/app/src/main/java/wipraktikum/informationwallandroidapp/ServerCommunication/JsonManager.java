@@ -40,7 +40,7 @@ public class JsonManager {
         JSONObject objectAsJsonObject = null;
         if(object != null) {
             try {
-                Gson gsonHandler = new GsonBuilder().setDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz").create();
+                Gson gsonHandler = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
                 String blackBoardItemAsJsonString = gsonHandler.toJson(object);
                 objectAsJsonObject = new JSONObject(blackBoardItemAsJsonString);
             } catch (JSONException e) {
