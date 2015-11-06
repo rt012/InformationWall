@@ -6,7 +6,9 @@ package wipraktikum.informationwallandroidapp.Login;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -85,6 +87,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onLoginSuccess() {
         mLoginButton.setEnabled(true);
+        saveLoginInSharedPrefs();
         Intent intent = new Intent(getApplicationContext(), TileOverview.class);
         startActivity(intent);
     }
@@ -124,5 +127,14 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         return valid;
+    }
+
+    private void saveLoginInSharedPrefs() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean("loggedIn", true);
+        editor.putString("username", mEmailText.getText().toString());
+        editor.putString("serverURL",mServerURL.getText().toString());
+        editor.commit();
     }
 }

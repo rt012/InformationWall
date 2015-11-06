@@ -1,6 +1,9 @@
 package wipraktikum.informationwallandroidapp;
 
 import android.app.Application;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
 import com.android.volley.Request;
@@ -17,6 +20,7 @@ import wipraktikum.informationwallandroidapp.Database.BusinessObject.DBContact;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.DBContactAddress;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.DBTile;
 import wipraktikum.informationwallandroidapp.Database.InformationWallORMHelper;
+import wipraktikum.informationwallandroidapp.Login.LoginActivity;
 import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
 
 /**
@@ -44,6 +48,8 @@ public class InfoWallApplication extends Application {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        startActivity();
     }
 
     public static InfoWallApplication getInstance() {
@@ -118,6 +124,24 @@ public class InfoWallApplication extends Application {
         databaseHelper.getBlackBoardAttachmentDAO().createIfNotExists(ba4);
         databaseHelper.getBlackBoardAttachmentDAO().createIfNotExists(ba5);
 
+    }
 
+    private void startActivity() {
+        if(checkIfUserIsLoggedIn()){
+            // Start Tile Overview
+            Intent intent = new Intent(this, TileOverview.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        } else {
+            // Start Login Screen
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+    }
+
+    private boolean checkIfUserIsLoggedIn() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        return sharedPref.getBoolean("loggedIn", false);
     }
 }
