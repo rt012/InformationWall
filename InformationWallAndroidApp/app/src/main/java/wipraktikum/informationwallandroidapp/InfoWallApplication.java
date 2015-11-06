@@ -1,6 +1,9 @@
 package wipraktikum.informationwallandroidapp;
 
 import android.app.Application;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
 import com.android.volley.Request;
@@ -9,14 +12,12 @@ import com.android.volley.toolbox.Volley;
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
-import java.util.Date;
 
 import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoard;
-import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardAttachment;
-import wipraktikum.informationwallandroidapp.Database.BusinessObject.DBContact;
-import wipraktikum.informationwallandroidapp.Database.BusinessObject.DBContactAddress;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.DBTile;
 import wipraktikum.informationwallandroidapp.Database.InformationWallORMHelper;
+import wipraktikum.informationwallandroidapp.Login.LoginActivity;
+import wipraktikum.informationwallandroidapp.ServerCommunication.SyncManager;
 import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
 
 /**
@@ -44,6 +45,8 @@ public class InfoWallApplication extends Application {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        startActivity();
     }
 
     public static InfoWallApplication getInstance() {
@@ -88,14 +91,14 @@ public class InfoWallApplication extends Application {
      * @throws SQLException
      */
     private void insertTestData() throws SQLException {
-        //SyncManager.getInstance().syncBlackBoardItems();
+        SyncManager.getInstance().syncBlackBoardItems();
         //Tiles
         Dao<DBTile, Long> tileDao =  databaseHelper.getTileDAO();
         tileDao.createIfNotExists(new DBTile("Black Board", R.drawable.slide_1, BlackBoard.class.getName()));
         tileDao.createIfNotExists(new DBTile("Example Tile 1", R.drawable.slide_2, TileOverview.class.getName()));
         tileDao.createIfNotExists(new DBTile("Example Tile 2", R.drawable.slide_3, TileOverview.class.getName()));
 
-        //Blackboard
+       /* //Blackboard
         Dao<wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem, Long> blackBoardItemsDAO =databaseHelper.getBlackBoardItemDAO();
         DBContact dummyContact = new DBContact("Max", "Mustermann", "maxMustermann@test.de", "234242342345", "Wunschfirma XY", new DBContactAddress(0, "Teststraße", "23", "242342", "Stuttgart"));
         DBContact dummyContact2 = new DBContact("Matthilda", "Musterfrau", "matthildaMusterfrau@test.de", "234242342345", "Wunschfirma XY", new DBContactAddress(0, "Teststraße", "23", "242342", "Stuttgart"));
@@ -116,8 +119,25 @@ public class InfoWallApplication extends Application {
         DBBlackBoardAttachment ba4 = new DBBlackBoardAttachment("http://localhost/imagestore/test.pdf", "C://temp/test/test1.pdf", DBBlackBoardAttachment.DataType.PDF,item2);
         DBBlackBoardAttachment ba5 = new DBBlackBoardAttachment("http://localhost/imagestore/test.pdf", "C://temp/test/test1.pdf", DBBlackBoardAttachment.DataType.PDF,item2);
         databaseHelper.getBlackBoardAttachmentDAO().createIfNotExists(ba4);
-        databaseHelper.getBlackBoardAttachmentDAO().createIfNotExists(ba5);
+        databaseHelper.getBlackBoardAttachmentDAO().createIfNotExists(ba5);*/
+    }
 
+    private void startActivity() {
+        if(checkIfUserIsLoggedIn()){
+            // Start Tile Overview
+            Intent intent = new Intent(this, TileOverview.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        } else {
+            // Start Login Screen
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+    }
 
+    private boolean checkIfUserIsLoggedIn() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        return sharedPref.getBoolean("loggedIn", false);
     }
 }
