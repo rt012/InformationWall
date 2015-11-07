@@ -67,6 +67,27 @@ public class FileHelper {
         return attachmentFile.getName();
     }
 
+    public String getFileExtension(String fullFileName){
+        String filenameArray[] = fullFileName.split("\\.");
+        String extension = filenameArray[filenameArray.length-1];
+        return extension;
+    }
+
+    public DBBlackBoardAttachment.DataType getBlackBoardAttachmentDataType(String fullFileName){
+        String extension = getFileExtension(fullFileName);
+
+        switch (extension){
+            case "pdf":
+                return DBBlackBoardAttachment.DataType.PDF;
+            case "png":
+            case "jpg":
+            case "bmp":
+                return DBBlackBoardAttachment.DataType.IMG;
+            default:
+                return DBBlackBoardAttachment.DataType.OTHER;
+        }
+    }
+
     public boolean exists(String fullFileName){
         boolean exist = false;
         if (fullFileName != null) {

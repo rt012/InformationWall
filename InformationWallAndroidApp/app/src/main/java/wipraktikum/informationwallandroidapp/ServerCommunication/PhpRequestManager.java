@@ -11,7 +11,6 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import java.util.Hashtable;
 import java.util.Map;
 
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
@@ -36,7 +35,7 @@ public class PhpRequestManager {
         return instance;
     }
 
-    public boolean phpRequest(String uploadUrl, final String paramKey, final String paramValue){
+    public boolean phpRequest(String uploadUrl, final Map<String,String> params){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, uploadUrl,
                 new Response.Listener<String>() {
                     @Override
@@ -53,13 +52,10 @@ public class PhpRequestManager {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 //Creating parameters
-                Map<String,String> params = new Hashtable<String, String>();
-
-                //Adding parameters
-                params.put(paramKey, paramValue);
+                Map<String,String> mParams = params;
 
                 //returning parameters
-                return params;
+                return mParams;
             }
         };
 

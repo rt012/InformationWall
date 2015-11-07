@@ -12,7 +12,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import wipraktikum.informationwallandroidapp.BaseActivity;
 import wipraktikum.informationwallandroidapp.BusinessObject.Tile;
@@ -20,17 +22,18 @@ import wipraktikum.informationwallandroidapp.Database.BusinessObject.DBTile;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.ServerCommunication.PhpRequestManager;
+import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
 import wipraktikum.informationwallandroidapp.TileOverview.Dialog.GridViewLongClickDialog;
 
 /**
  * Created by Remi on 18.10.2015.
  */
-public final class GridViewAdapter extends BaseAdapter {
+public final class GridViewTileOverviewAdapter extends BaseAdapter {
     private final BaseActivity context;
     private final LayoutInflater mInflater;
     private List<Tile> mTiles = new ArrayList<Tile>();
 
-    public GridViewAdapter(BaseActivity context) {
+    public GridViewTileOverviewAdapter(BaseActivity context) {
         this.context = context;
         mInflater = LayoutInflater.from(context);
 
@@ -112,15 +115,9 @@ public final class GridViewAdapter extends BaseAdapter {
                     public void onSwitchChanged(boolean isChecked) {
                         Log.i("GridViewAdapter", "Send message to Webserver - Tile activated");
                         if (isChecked) {
-                            mRelativeLayout.setVisibility(View.VISIBLE);
-                            tile.setIsActivated(true);
-                            PhpRequestManager.getInstance().phpRequest(
-                                    "http://myinfowall.ddns.net/apps/blackboard/activateTile.php", "activated", "active");
+                            activateTile(true, mRelativeLayout, tile);
                         } else {
-                            mRelativeLayout.setVisibility(View.GONE);
-                            tile.setIsActivated(false);
-                            PhpRequestManager.getInstance().phpRequest(
-                                    "http://myinfowall.ddns.net/apps/blackboard/activateTile.php", "activated", "notactivated");
+                            activateTile(false, mRelativeLayout, tile);
                         }
                         DAOHelper.getInstance().getTileDAO().update(tile);
                     }
@@ -139,6 +136,26 @@ public final class GridViewAdapter extends BaseAdapter {
         });
 
         return v;
+    }
+
+    private void activateTile(boolean isActivated, RelativeLayout activatedWrapper, Tile tile){
+        if(isActivated) {
+            activatedWrapper.setVisibility(View.VISIBLE);
+            tile.setIsActivated(true);
+
+            //Show Tile on information wall
+            Map<String,String> params = new HashMap<>();
+            params.put(ServerURLManager.SHOW_BLACK_BOARD_PARAM_KEY, ServerURLManager.SHOW_BLACK_BOARD_PARAM_ACTIVE);
+            PhpRequestManager.getInstance().phpRequest(ServerURLManager.SHOW_BLACK_BOARD_URL, params);
+        }else{
+            activatedWrapper.setVisibility(View.GONE);
+            tile.setIsActivated(false);
+
+            //Hide Tile on information wall
+            Map<String,String> params = new HashMap<>();
+            params.put(ServerURLManager.SHOW_BLACK_BOARD_PARAM_KEY, ServerURLManager.SHOW_BLACK_BOARD_PARAM_NOT_ACTIVE);
+            PhpRequestManager.getInstance().phpRequest(ServerURLManager.SHOW_BLACK_BOARD_URL, params);
+        }
     }
 }
 

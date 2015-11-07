@@ -24,8 +24,6 @@ public class JsonManager {
     private OnArrayResponseListener mOnArrayResponseListener;
     private OnErrorListener mOnErrorListener;
     final String VOLLEY_TAG = "Volley Log";
-    public static final String NEW_BLACK_BOARD_ITEM_URL = "http://myinfowall.ddns.net/apps/blackboard/blackBoardGetJSON.php";
-    public static final String GET_ALL_ITEMS_URL = "http://myinfowall.ddns.net/apps/blackboard/getAllBlackBoardItems.php";
 
     private JsonManager(){}
 
@@ -75,7 +73,7 @@ public class JsonManager {
         InfoWallApplication.getInstance().addToRequestQueue(jsonObjReq, "Test");
     }
 
-    public void getJson(String url) {
+    public void getJsonArray(String url) {
         JsonArrayRequest jsonObjReq = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {
 

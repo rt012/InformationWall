@@ -13,7 +13,7 @@ import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoar
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.Database.InformationWallORMHelper;
 import wipraktikum.informationwallandroidapp.R;
-import wipraktikum.informationwallandroidapp.TileOverview.Adapter.GridViewAdapter;
+import wipraktikum.informationwallandroidapp.TileOverview.Adapter.GridViewTileOverviewAdapter;
 
 
 public class TileOverview extends BaseActivity {
@@ -28,7 +28,7 @@ public class TileOverview extends BaseActivity {
 
         //Set Adapter for GridView
         GridView gridView = (GridView)findViewById(R.id.gridview);
-        gridView.setAdapter(new GridViewAdapter(this));
+        gridView.setAdapter(new GridViewTileOverviewAdapter(this));
 
         ArrayList<BlackBoardItem> blackBoardItems = DAOHelper.getInstance().getBlackBoardItemDAO().queryForAll();
     }

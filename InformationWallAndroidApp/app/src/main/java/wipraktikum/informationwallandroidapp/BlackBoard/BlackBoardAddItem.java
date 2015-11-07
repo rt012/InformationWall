@@ -21,6 +21,7 @@ import android.widget.TableLayout;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import wipraktikum.informationwallandroidapp.BlackBoard.Adapter.BlackBoardAutoCompleteTextViewContactAdapter;
 import wipraktikum.informationwallandroidapp.BlackBoard.CustomView.BlackBoardAttachmentView;
@@ -28,10 +29,10 @@ import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoar
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
 import wipraktikum.informationwallandroidapp.BusinessObject.Contact;
 import wipraktikum.informationwallandroidapp.BusinessObject.ContactAddress;
-import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardAttachment;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
+import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.UploadManager;
 import wipraktikum.informationwallandroidapp.Utils.FileHelper;
 import wipraktikum.informationwallandroidapp.Utils.RealPathHelper;
@@ -61,6 +62,8 @@ public class BlackBoardAddItem extends Fragment implements IFragmentTag, BlackBo
     private EditText editTextDescription = null;
     private ImageButton imageButtonExpandContact = null;
     private Button buttonAttachment = null;
+
+    private static List<BlackBoardAttachment> uploadList = new ArrayList<>();
 
     public static BlackBoardAddItem getInstance(){
         if (instance==null){
@@ -170,7 +173,7 @@ public class BlackBoardAddItem extends Fragment implements IFragmentTag, BlackBo
     }
 
     public void saveBlackBoardItem(){
-        if (!isEditTextEmpty(editTextTitle)) {
+        if (!isEditTextEmpty(editTextTitle) && uploadList.isEmpty()) {
             BlackBoardItem newBlackBoardItem = new BlackBoardItem();
             Contact newContact;
 
@@ -193,38 +196,53 @@ public class BlackBoardAddItem extends Fragment implements IFragmentTag, BlackBo
             newBlackBoardItem.setContact(newContact);
 
             DAOHelper.getInstance().getBlackBoardItemDAO().create(newBlackBoardItem);
-            // Set Attachments to the item again bacause in the create method we have to clean erease this reference ( because of ORMLite )
+            // Set Attachments to the item again because in the create method we have to clean erase this reference ( because of ORMLite )
             newBlackBoardItem.setBlackBoardAttachment(blackBoardAttachments);
-            JsonManager.getInstance().sendJson(JsonManager.NEW_BLACK_BOARD_ITEM_URL, newBlackBoardItem);
+            JsonManager.getInstance().sendJson(ServerURLManager.NEW_BLACK_BOARD_ITEM_URL, newBlackBoardItem);
 
             if (mOnSaveBlackBoardItemListener != null) {
                 mOnSaveBlackBoardItemListener.onSaveBlackBoardItem();
             }
         }else{
+            int snackBarStringID = R.string.black_board_add_item_snackbar_upload_failure;
+
+            if(isEditTextEmpty(editTextTitle)){
+                snackBarStringID = R.string.black_board_add_item_snackbar_no_title;
+            }else if (!uploadList.isEmpty()){
+                snackBarStringID = R.string.black_board_add_item_snackbar_upload_in_progress;
+            }
+
             Snackbar
-                .make(getView(), R.string.black_board_add_item_snackbar_no_title, Snackbar.LENGTH_LONG)
+                .make(getView(), snackBarStringID, Snackbar.LENGTH_LONG)
                 .show();
         }
     }
 
     private View addAttachmentToView(BlackBoardAttachment attachment){
         LinearLayout attachmentContainer = (LinearLayout) getView().findViewById(R.id.ll_attachment_container);
-        attachmentContainer.removeAllViews();
         BlackBoardAttachmentView attachmentView = new BlackBoardAttachmentView(getActivity(), attachment, false);
         attachmentContainer.addView(attachmentView);
 
         return attachmentView;
     }
 
-    private void uploadAttachment(BlackBoardAttachment blackBoardAttachment, final View attachmentView){
+    private void uploadAttachment(final BlackBoardAttachment blackBoardAttachment, final View attachmentView){
         UploadManager uploadManager =  UploadManager.getInstance();
+
+        //Show Upload Progress
         ((BlackBoardAttachmentView)attachmentView).showProgressbar(true);
+        uploadList.add(blackBoardAttachment);
+        //Upload File
         File attachmentFile = new File(blackBoardAttachment.getDeviceDataPath());
-        uploadManager.uploadFile(attachmentFile, "http://myinfowall.ddns.net/phpTest2.php");
+        uploadManager.uploadFile(attachmentFile, ServerURLManager.UPLOAD_BLACK_BOARD_ATTACHMENT_URL);
         uploadManager.setOnUploadFinishedListener(new UploadManager.OnUploadFinishedListener() {
             @Override
-            public void onUploadFinished(boolean success) {
+            public void onUploadFinished(String remoteDataPath) {
+                //Show Upload has finished
                 ((BlackBoardAttachmentView) attachmentView).showProgressbar(false);
+                uploadList.remove(blackBoardAttachment);
+                //Save remoteDataPath to attachment
+                blackBoardAttachment.setRemoteDataPath(remoteDataPath);
             }
         });
     }
@@ -276,7 +294,7 @@ public class BlackBoardAddItem extends Fragment implements IFragmentTag, BlackBo
     private BlackBoardAttachment createNewAttachment(String filePath){
         BlackBoardAttachment blackBoardAttachment = new BlackBoardAttachment();
         blackBoardAttachment.setDeviceDataPath(filePath);
-        blackBoardAttachment.setDataType(DBBlackBoardAttachment.DataType.IMG);
+        blackBoardAttachment.setDataType(FileHelper.getInstance().getBlackBoardAttachmentDataType(filePath));
         return blackBoardAttachment;
     }
 

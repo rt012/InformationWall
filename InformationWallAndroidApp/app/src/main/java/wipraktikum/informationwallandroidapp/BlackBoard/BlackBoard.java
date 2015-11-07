@@ -9,8 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import java.util.Hashtable;
+import java.util.Map;
+
 import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.ServerCommunication.PhpRequestManager;
+import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
 import wipraktikum.informationwallandroidapp.Utils.FileHelper;
 
 /**
@@ -52,9 +56,11 @@ public class BlackBoard extends AppCompatActivity {
     @Override
     public void onResume(){
         super.onResume();
-
+        //Creating parameters
+        Map<String,String> params = new Hashtable<String, String>();
+        params.put(ServerURLManager.OPEN_BLACK_BOARD_PARAM_KEY, ServerURLManager.OPEN_BLACK_BOARD_PARAM_OPEN);
         //Call php script to set focus on tile
-        PhpRequestManager.getInstance().phpRequest("http://myinfowall.ddns.net/apps/blackboard/openBlackBoardOverview.php", "status", "open");
+        PhpRequestManager.getInstance().phpRequest(ServerURLManager.OPEN_BLACK_BOARD_URL, params);
 
         if (currentFragment == null || currentFragment == BlackBoardOverview.getInstance()) {
             openFragment(BlackBoardOverview.getInstance(), false);
@@ -74,8 +80,11 @@ public class BlackBoard extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
+        //Creating parameters
+        Map<String,String> params = new Hashtable<String, String>();
+        params.put(ServerURLManager.OPEN_BLACK_BOARD_PARAM_KEY, ServerURLManager.OPEN_BLACK_BOARD_PARAM_CLOSE);
         //Call php script to remove focus on tile
-        PhpRequestManager.getInstance().phpRequest("http://myinfowall.ddns.net/apps/blackboard/openBlackBoardOverview.php", "status", "close");
+        PhpRequestManager.getInstance().phpRequest(ServerURLManager.OPEN_BLACK_BOARD_URL, params);
     }
 
     @Override

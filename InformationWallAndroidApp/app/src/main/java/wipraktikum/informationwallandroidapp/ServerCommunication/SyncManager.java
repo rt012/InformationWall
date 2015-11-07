@@ -65,10 +65,9 @@ public class SyncManager {
             @Override
             public void OnResponse(VolleyError error) {
                 // TODO
-                 System.out.print("asdasd");
             }
         });
-        jsonManager.getJson(JsonManager.GET_ALL_ITEMS_URL);
+        jsonManager.getJsonArray(ServerURLManager.GET_ALL_ITEMS_URL);
     }
 
     private void compareBlackBoardItems(JsonElement response) {
@@ -82,27 +81,29 @@ public class SyncManager {
                 serverBlackBoardItem.setBlackBoardItemID(clientItemList.
                         get(clientItemList.indexOf(serverBlackBoardItem)).getBlackBoardItemID());
                 //Contact ID
-                if (serverBlackBoardItem.getContact() != null) {
-                    serverBlackBoardItem.getContact().setContactID(clientItemList.
-                            get(clientItemList.indexOf(serverBlackBoardItem)).getContact().getContactID());
-                    //ContactAddress
-                    serverBlackBoardItem.getContact().getContactAddress().setContactAddressID(clientItemList.
-                            get(clientItemList.indexOf(serverBlackBoardItem)).getContact().getContactAddress().getContactAddressID());
-                }
+                serverBlackBoardItem.getContact().setContactID(clientItemList.
+                        get(clientItemList.indexOf(serverBlackBoardItem)).getContact().getContactID());
+                //ContactAddress
+                serverBlackBoardItem.getContact().getContactAddress().setContactAddressID(clientItemList.
+                        get(clientItemList.indexOf(serverBlackBoardItem)).getContact().getContactAddress().getContactAddressID());
                 //Attachment ID
-                int i = 0;
                 for (BlackBoardAttachment blackBoardAttachment : serverBlackBoardItem.getBlackBoardAttachment()) {
-                    blackBoardAttachment.setBlackBoardAttachmentID(clientItemList.
-                            get(clientItemList.indexOf(serverBlackBoardItem)).getBlackBoardAttachment().get(i).getBlackBoardAttachmentID());
-                    i++;
+                    List<BlackBoardAttachment> clientBlackBoardAttachments = clientItemList.
+                            get(clientItemList.indexOf(serverBlackBoardItem)).getBlackBoardAttachment();
+
+                    if(clientBlackBoardAttachments.contains(blackBoardAttachment)){
+                        blackBoardAttachment.setBlackBoardAttachmentID(clientBlackBoardAttachments.
+                                get(clientBlackBoardAttachments.indexOf(blackBoardAttachment)).getBlackBoardAttachmentID());
+                    }else{
+                        blackBoardAttachment.setBlackBoardAttachmentID(0);
+                    }
                 }
                 blackBoardItemDAO.update(serverBlackBoardItem);
             } else {
                 serverBlackBoardItem.setBlackBoardItemID(0);
-                if (serverBlackBoardItem.getContact() != null) {
-                    serverBlackBoardItem.getContact().setContactID(0);
-                    serverBlackBoardItem.getContact().getContactAddress().setContactAddressID(0);
-                }
+                serverBlackBoardItem.getContact().setContactID(0);
+                serverBlackBoardItem.getContact().getContactAddress().setContactAddressID(0);
+
                 for (BlackBoardAttachment blackBoardAttachment : serverBlackBoardItem.getBlackBoardAttachment()){
                     blackBoardAttachment.setBlackBoardAttachmentID(0);
                 }

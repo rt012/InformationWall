@@ -65,6 +65,21 @@ public class BlackBoardAttachment {
         this.mDataType = mDataType;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        BlackBoardAttachment compareBlackBoardAttachment = (BlackBoardAttachment) o;
+        if (this.getRemoteDataPath() != null) {
+            if (this.getRemoteDataPath().equals(compareBlackBoardAttachment.getRemoteDataPath())) {
+                return true;
+            }
+        }else{
+            if (this.getDeviceDataPath().equals(compareBlackBoardAttachment.getDeviceDataPath())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean isSyncStatus() {
         return mSyncStatus;
     }

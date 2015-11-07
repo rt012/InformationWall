@@ -56,10 +56,10 @@ public class UploadManager{
         StringRequest stringRequest = new StringRequest(Request.Method.POST, uploadUrl,
                 new Response.Listener<String>() {
                     @Override
-                    public void onResponse(String s) {
+                    public void onResponse(String response) {
                         notifyHelper.closeNotification(notifyID);
                         if(mOnUploadFinishedListener != null){
-                            mOnUploadFinishedListener.onUploadFinished(true);
+                            mOnUploadFinishedListener.onUploadFinished(response);
                         }
                     }
                 },
@@ -68,7 +68,7 @@ public class UploadManager{
                     public void onErrorResponse(VolleyError volleyError) {
                         notifyHelper.closeNotification(notifyID);
                         if(mOnUploadFinishedListener != null){
-                            mOnUploadFinishedListener.onUploadFinished(false);
+                            mOnUploadFinishedListener.onUploadFinished(null);
                         }
                     }
                 }){
@@ -94,6 +94,7 @@ public class UploadManager{
 
         //Adding request to the queue
         requestQueue.add(stringRequest);
+
         return false;
     }
 
@@ -137,6 +138,6 @@ public class UploadManager{
     }
 
     public interface OnUploadFinishedListener{
-        void onUploadFinished(boolean success);
+        void onUploadFinished(String uploadResponse);
     }
 }

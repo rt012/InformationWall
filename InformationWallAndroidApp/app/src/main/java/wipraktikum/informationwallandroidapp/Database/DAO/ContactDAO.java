@@ -106,7 +106,11 @@ public class ContactDAO implements IDAO {
             contact.setContactAddress((ContactAddress) DAOHelper.getInstance().
                     getContactAddressDAO().mapDBContactAddressToContactAddress(dbContact.getContactAddress()));
             contact.setSyncStatus(dbContact.isSyncStatus());
+        }else{
+            //create a empty ContactAddress
+            contact.setContactAddress(new ContactAddress());
         }
+
         return contact;
     }
 
@@ -123,7 +127,11 @@ public class ContactDAO implements IDAO {
             dbContact.setContactAddress((DBContactAddress) DAOHelper.getInstance().
                     getContactAddressDAO().mapContactAddressToDBContractAddress(contact.getContactAddress()));
             dbContact.setSyncStatus(contact.isSyncStatus());
+        }else{
+            //create a empty ContactAddress
+            dbContact.setContactAddress(new DBContactAddress());
         }
+
         return dbContact;
     }
 }

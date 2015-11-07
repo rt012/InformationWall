@@ -36,6 +36,8 @@
     <string name="black_board_add_item_attachments">ADD ATTACHMENT</string>
 
     <string name="black_board_add_item_snackbar_no_title">Please enter at least the title</string>
+    <string name="black_board_add_item_snackbar_upload_in_progress">Please wait until the upload is finished</string>
+    <string name="black_board_add_item_snackbar_upload_failure">Ups! Something went wrong</string>
     <!--- BlackBoard Add Contact -->
     <string name="black_board_add_item_contact_full_name">Surname and Name</string>
     <string name="black_board_add_item_contact_email">E-Mail Address</string>
