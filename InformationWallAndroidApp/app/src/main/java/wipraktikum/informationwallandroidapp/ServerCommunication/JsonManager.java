@@ -39,8 +39,8 @@ public class JsonManager {
         if(object != null) {
             try {
                 Gson gsonHandler = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-                String blackBoardItemAsJsonString = gsonHandler.toJson(object);
-                objectAsJsonObject = new JSONObject(blackBoardItemAsJsonString);
+                String objectAsJsonString = gsonHandler.toJson(object);
+                objectAsJsonObject = new JSONObject(objectAsJsonString);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

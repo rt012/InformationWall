@@ -32,8 +32,6 @@ public class TileDAO implements IDAO {
             for(DBTile dbTile : dbTiles){
                 tiles.add(mapDBTileToTile(dbTile));
             }
-
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -46,7 +44,6 @@ public class TileDAO implements IDAO {
         try {
             DBTile dbTile = InfoWallApplication.getInstance().getDatabaseHelper().getTileDAO().queryForId(iD);
             tile = mapDBTileToTile(dbTile);
-
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -16,7 +16,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
+
+import org.json.JSONObject;
+
+import wipraktikum.informationwallandroidapp.BusinessObject.User.User;
 import wipraktikum.informationwallandroidapp.R;
+import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
+import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
 import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
 
 public class LoginActivity extends AppCompatActivity {
@@ -59,13 +66,32 @@ public class LoginActivity extends AppCompatActivity {
         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
                 R.style.Base_Theme_AppCompat_Dialog);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Authenticating...");
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage(getString(R.string.login_authenticating_progress_bar));
         progressDialog.show();
 
         String email = mEmailText.getText().toString();
         String password = mPasswordText.getText().toString();
 
-        // TODO: Implement your own authentication logic here.
+        User loginUser = new User();
+        loginUser.setEmailAddress(email);
+        loginUser.setPassword(password);
+
+        JsonManager.getInstance().sendJson(ServerURLManager.NEW_BLACK_BOARD_ITEM_URL, loginUser);
+        JsonManager.getInstance().setOnObjectResponseReceiveListener(new JsonManager.OnObjectResponseListener() {
+            @Override
+            public void OnResponse(JSONObject response) {
+                progressDialog.dismiss();
+                onLoginSuccess();
+            }
+        });
+        JsonManager.getInstance().setOnErrorReceiveListener(new JsonManager.OnErrorListener() {
+            @Override
+            public void OnResponse(VolleyError error) {
+                progressDialog.dismiss();
+                onLoginFailed();
+            }
+        });
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
