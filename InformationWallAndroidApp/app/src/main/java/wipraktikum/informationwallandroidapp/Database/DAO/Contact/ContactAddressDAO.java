@@ -28,7 +28,7 @@ public class ContactAddressDAO implements IDAO {
     public ArrayList queryForAll() {
         ArrayList<ContactAddress> contactAddresses = new ArrayList<>();;
         try {
-            List<DBContactAddress> dbContactAddresses = InfoWallApplication.getInstance().getDatabaseHelper().getContactAdressDAO().queryForAll();
+            List<DBContactAddress> dbContactAddresses = InfoWallApplication.getInstance().getDatabaseHelper().getContactAddressDAO().queryForAll();
             for(DBContactAddress dbContactAddress : dbContactAddresses){
                 contactAddresses.add(mapDBContactAddressToContactAddress(dbContactAddress));
             }
@@ -42,7 +42,7 @@ public class ContactAddressDAO implements IDAO {
     public Object queryForId(long iD) {
         ContactAddress contactAddress = null;
         try {
-            DBContactAddress dbContactAddress = InfoWallApplication.getInstance().getDatabaseHelper().getContactAdressDAO().queryForId(iD);
+            DBContactAddress dbContactAddress = InfoWallApplication.getInstance().getDatabaseHelper().getContactAddressDAO().queryForId(iD);
             contactAddress = mapDBContactAddressToContactAddress(dbContactAddress);
 
         } catch (SQLException e) {
@@ -55,7 +55,7 @@ public class ContactAddressDAO implements IDAO {
     public boolean create(Object object) {
         boolean ok = false;
         try {
-            InfoWallApplication.getInstance().getDatabaseHelper().getContactAdressDAO().create(mapContactAddressToDBContractAddress((ContactAddress) object));
+            InfoWallApplication.getInstance().getDatabaseHelper().getContactAddressDAO().create(mapContactAddressToDBContractAddress((ContactAddress) object));
             ok = true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -67,7 +67,7 @@ public class ContactAddressDAO implements IDAO {
     public boolean update(Object object){
         boolean ok = false;
         try {
-            InfoWallApplication.getInstance().getDatabaseHelper().getContactAdressDAO().update(mapContactAddressToDBContractAddress((ContactAddress) object));
+            InfoWallApplication.getInstance().getDatabaseHelper().getContactAddressDAO().update(mapContactAddressToDBContractAddress((ContactAddress) object));
             ok = true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -86,7 +86,7 @@ public class ContactAddressDAO implements IDAO {
     public boolean deleteByID(long Id) {
         boolean ok = false;
         try {
-            InfoWallApplication.getInstance().getDatabaseHelper().getContactAdressDAO().deleteById(Id);
+            InfoWallApplication.getInstance().getDatabaseHelper().getContactAddressDAO().deleteById(Id);
             ok = true;
         } catch (SQLException e) {
             e.printStackTrace();
