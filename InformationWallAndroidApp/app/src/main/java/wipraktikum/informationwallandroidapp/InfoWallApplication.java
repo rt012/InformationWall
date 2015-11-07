@@ -14,10 +14,9 @@ import com.j256.ormlite.dao.Dao;
 import java.sql.SQLException;
 
 import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoard;
-import wipraktikum.informationwallandroidapp.Database.BusinessObject.DBTile;
+import wipraktikum.informationwallandroidapp.Database.BusinessObject.Tile.DBTile;
 import wipraktikum.informationwallandroidapp.Database.InformationWallORMHelper;
 import wipraktikum.informationwallandroidapp.Login.LoginActivity;
-import wipraktikum.informationwallandroidapp.ServerCommunication.SyncManager;
 import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
 
 /**
@@ -91,35 +90,11 @@ public class InfoWallApplication extends Application {
      * @throws SQLException
      */
     private void insertTestData() throws SQLException {
-        SyncManager.getInstance().syncBlackBoardItems();
         //Tiles
         Dao<DBTile, Long> tileDao =  databaseHelper.getTileDAO();
         tileDao.createIfNotExists(new DBTile("Black Board", R.drawable.slide_1, BlackBoard.class.getName()));
         tileDao.createIfNotExists(new DBTile("Example Tile 1", R.drawable.slide_2, TileOverview.class.getName()));
         tileDao.createIfNotExists(new DBTile("Example Tile 2", R.drawable.slide_3, TileOverview.class.getName()));
-
-       /* //Blackboard
-        Dao<wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem, Long> blackBoardItemsDAO =databaseHelper.getBlackBoardItemDAO();
-        DBContact dummyContact = new DBContact("Max", "Mustermann", "maxMustermann@test.de", "234242342345", "Wunschfirma XY", new DBContactAddress(0, "Teststraße", "23", "242342", "Stuttgart"));
-        DBContact dummyContact2 = new DBContact("Matthilda", "Musterfrau", "matthildaMusterfrau@test.de", "234242342345", "Wunschfirma XY", new DBContactAddress(0, "Teststraße", "23", "242342", "Stuttgart"));
-
-        wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem item = new wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem("Stellenanzeige", dummyContact, "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", new Date(), new Date());
-        blackBoardItemsDAO.createIfNotExists(item);
-        DBBlackBoardAttachment ba1 = new DBBlackBoardAttachment("http://www.iso.org/iso/annual_report_2009.pdf", null, DBBlackBoardAttachment.DataType.PDF,item);
-        DBBlackBoardAttachment ba2 = new DBBlackBoardAttachment("http://cppstudio.com/wp-content/images/article/test.jpg", null, DBBlackBoardAttachment.DataType.IMG,item);
-        DBBlackBoardAttachment ba3 = new DBBlackBoardAttachment("http://localhost/imagestore/test.pdf", "C://temp/test/test1.pdf", DBBlackBoardAttachment.DataType.PDF,item);
-
-        databaseHelper.getBlackBoardAttachmentDAO().createIfNotExists(ba1);
-        databaseHelper.getBlackBoardAttachmentDAO().createIfNotExists(ba2);
-        databaseHelper.getBlackBoardAttachmentDAO().createIfNotExists(ba3);
-
-        wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem item2 = new wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem("Praktikum", dummyContact2, "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", new Date(), new Date());
-        blackBoardItemsDAO.createIfNotExists(item2);
-
-        DBBlackBoardAttachment ba4 = new DBBlackBoardAttachment("http://localhost/imagestore/test.pdf", "C://temp/test/test1.pdf", DBBlackBoardAttachment.DataType.PDF,item2);
-        DBBlackBoardAttachment ba5 = new DBBlackBoardAttachment("http://localhost/imagestore/test.pdf", "C://temp/test/test1.pdf", DBBlackBoardAttachment.DataType.PDF,item2);
-        databaseHelper.getBlackBoardAttachmentDAO().createIfNotExists(ba4);
-        databaseHelper.getBlackBoardAttachmentDAO().createIfNotExists(ba5);*/
     }
 
     private void startActivity() {

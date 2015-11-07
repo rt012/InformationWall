@@ -1,11 +1,12 @@
-package wipraktikum.informationwallandroidapp.Database.DAO;
+package wipraktikum.informationwallandroidapp.Database.DAO.Contact;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import wipraktikum.informationwallandroidapp.BusinessObject.ContactAddress;
-import wipraktikum.informationwallandroidapp.Database.BusinessObject.DBContactAddress;
+import wipraktikum.informationwallandroidapp.BusinessObject.Contact.ContactAddress;
+import wipraktikum.informationwallandroidapp.Database.BusinessObject.Contact.DBContactAddress;
+import wipraktikum.informationwallandroidapp.Database.DAO.IDAO;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
 
 /**

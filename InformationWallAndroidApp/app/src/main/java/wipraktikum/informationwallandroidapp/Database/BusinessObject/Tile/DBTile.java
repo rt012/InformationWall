@@ -1,4 +1,4 @@
-package wipraktikum.informationwallandroidapp.Database.BusinessObject;
+package wipraktikum.informationwallandroidapp.Database.BusinessObject.Tile;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;

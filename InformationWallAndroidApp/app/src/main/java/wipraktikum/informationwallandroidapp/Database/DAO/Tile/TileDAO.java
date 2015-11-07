@@ -1,17 +1,18 @@
-package wipraktikum.informationwallandroidapp.Database.DAO;
+package wipraktikum.informationwallandroidapp.Database.DAO.Tile;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import wipraktikum.informationwallandroidapp.BusinessObject.Tile;
-import wipraktikum.informationwallandroidapp.Database.BusinessObject.DBTile;
+import wipraktikum.informationwallandroidapp.BusinessObject.Tile.Tile;
+import wipraktikum.informationwallandroidapp.Database.BusinessObject.Tile.DBTile;
+import wipraktikum.informationwallandroidapp.Database.DAO.IDAO;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
 
 /**
  * Created by Eric Schmidt on 28.10.2015.
  */
-public class TileDAO implements IDAO{
+public class TileDAO implements IDAO {
     private static TileDAO instance = null;
 
     private TileDAO(){}

@@ -1,29 +1,22 @@
-package wipraktikum.informationwallandroidapp.Database.BusinessObject;
+package wipraktikum.informationwallandroidapp.BusinessObject.Contact;
 
-import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 /**
  * Created by Eric Schmidt on 25.10.2015.
  */
 @DatabaseTable
-public class DBContactAddress {
-    @DatabaseField(generatedId = true)
+public class ContactAddress {
     private long mContactAddressID;
-    @DatabaseField
     private String mStreetName;
-    @DatabaseField
     private String mHouseNumber;
-    @DatabaseField
     private String mZipCode;
-    @DatabaseField
     private String mCity;
-    @DatabaseField
-    private boolean mSyncStatus;
+    private transient boolean mSyncStatus;
 
-    public DBContactAddress(){};
+    public ContactAddress(){};
 
-    public DBContactAddress(long mContactAddressID, String mStreetName, String mHouseNumber, String mZipCode, String mCity) {
+    public ContactAddress(long mContactAddressID, String mStreetName, String mHouseNumber, String mZipCode, String mCity) {
         this.mContactAddressID = mContactAddressID;
         this.mStreetName = mStreetName;
         this.mHouseNumber = mHouseNumber;
@@ -72,7 +65,15 @@ public class DBContactAddress {
     }
 
     public String getFullAddress(){
-        return mStreetName + " " + mHouseNumber + ", " + mCity;
+        if (mStreetName != null && mHouseNumber != null && mCity != null) {
+            return mStreetName + " " + mHouseNumber + ", " + mCity;
+        }else if (mStreetName == null && mCity != null){
+            return mCity;
+        }else if (mStreetName != null && mHouseNumber == null && mCity != null){
+            return mStreetName + ", " + mCity;
+        }
+
+        return null;
     }
 
     public boolean isSyncStatus() {

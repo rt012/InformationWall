@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import wipraktikum.informationwallandroidapp.BusinessObject.Contact;
+import wipraktikum.informationwallandroidapp.BusinessObject.Contact.Contact;
 import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.Utils.ContactFilter;
 

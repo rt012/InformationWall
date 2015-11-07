@@ -1,4 +1,4 @@
-package wipraktikum.informationwallandroidapp.Database.DAO;
+package wipraktikum.informationwallandroidapp.Database.DAO.BlackBoard;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
@@ -12,6 +12,8 @@ import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoar
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardAttachment;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem;
+import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
+import wipraktikum.informationwallandroidapp.Database.DAO.IDAO;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
 
 /**

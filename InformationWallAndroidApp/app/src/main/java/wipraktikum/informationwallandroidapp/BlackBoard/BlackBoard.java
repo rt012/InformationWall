@@ -15,6 +15,7 @@ import java.util.Map;
 import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.ServerCommunication.PhpRequestManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
+import wipraktikum.informationwallandroidapp.ServerCommunication.SyncManager;
 import wipraktikum.informationwallandroidapp.Utils.FileHelper;
 
 /**
@@ -51,6 +52,9 @@ public class BlackBoard extends AppCompatActivity {
                 openFragment(blackBoardAddItem, true);
             }
         });
+
+        //Sync Black Board Items from server and send unsynced items to it
+        SyncManager.getInstance().syncBlackBoardItems();
     }
 
     @Override

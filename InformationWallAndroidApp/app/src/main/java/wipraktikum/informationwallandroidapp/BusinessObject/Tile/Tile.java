@@ -1,8 +1,8 @@
-package wipraktikum.informationwallandroidapp.BusinessObject;
+package wipraktikum.informationwallandroidapp.BusinessObject.Tile;
 
 import com.j256.ormlite.table.DatabaseTable;
 
-import wipraktikum.informationwallandroidapp.Database.BusinessObject.DBTile;
+import wipraktikum.informationwallandroidapp.Database.BusinessObject.Tile.DBTile;
 
 /**
  * Created by Eric Schmidt on 21.10.2015.

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import wipraktikum.informationwallandroidapp.Database.BusinessObject.DBContact;
+import wipraktikum.informationwallandroidapp.Database.BusinessObject.Contact.DBContact;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
 
 /**

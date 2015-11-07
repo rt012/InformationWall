@@ -6,7 +6,7 @@ import android.widget.Filter;
 import java.util.ArrayList;
 import java.util.List;
 
-import wipraktikum.informationwallandroidapp.BusinessObject.Contact;
+import wipraktikum.informationwallandroidapp.BusinessObject.Contact.Contact;
 
 /**
  * Created by Eric Schmidt on 31.10.2015.

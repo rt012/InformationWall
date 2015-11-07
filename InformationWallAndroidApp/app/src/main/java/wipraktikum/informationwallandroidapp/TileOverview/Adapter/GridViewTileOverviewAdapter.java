@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 import wipraktikum.informationwallandroidapp.BaseActivity;
-import wipraktikum.informationwallandroidapp.BusinessObject.Tile;
-import wipraktikum.informationwallandroidapp.Database.BusinessObject.DBTile;
+import wipraktikum.informationwallandroidapp.BusinessObject.Tile.Tile;
+import wipraktikum.informationwallandroidapp.Database.BusinessObject.Tile.DBTile;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.ServerCommunication.PhpRequestManager;

@@ -5,7 +5,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.Date;
 import java.util.List;
 
-import wipraktikum.informationwallandroidapp.BusinessObject.Contact;
+import wipraktikum.informationwallandroidapp.BusinessObject.Contact.Contact;
 
 /**
  * Created by Eric Schmidt on 25.10.2015.

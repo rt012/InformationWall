@@ -27,8 +27,8 @@ import wipraktikum.informationwallandroidapp.BlackBoard.Adapter.BlackBoardAutoCo
 import wipraktikum.informationwallandroidapp.BlackBoard.CustomView.BlackBoardAttachmentView;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardAttachment;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
-import wipraktikum.informationwallandroidapp.BusinessObject.Contact;
-import wipraktikum.informationwallandroidapp.BusinessObject.ContactAddress;
+import wipraktikum.informationwallandroidapp.BusinessObject.Contact.Contact;
+import wipraktikum.informationwallandroidapp.BusinessObject.Contact.ContactAddress;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;

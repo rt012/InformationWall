@@ -1,4 +1,4 @@
-package wipraktikum.informationwallandroidapp.Database.DAO;
+package wipraktikum.informationwallandroidapp.Database.DAO.BlackBoard;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -6,6 +6,7 @@ import java.util.List;
 
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardAttachment;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardAttachment;
+import wipraktikum.informationwallandroidapp.Database.DAO.IDAO;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
 
 /**

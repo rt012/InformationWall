@@ -12,9 +12,9 @@ import java.sql.SQLException;
 
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardAttachment;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem;
-import wipraktikum.informationwallandroidapp.Database.BusinessObject.DBContact;
-import wipraktikum.informationwallandroidapp.Database.BusinessObject.DBContactAddress;
-import wipraktikum.informationwallandroidapp.Database.BusinessObject.DBTile;
+import wipraktikum.informationwallandroidapp.Database.BusinessObject.Contact.DBContact;
+import wipraktikum.informationwallandroidapp.Database.BusinessObject.Contact.DBContactAddress;
+import wipraktikum.informationwallandroidapp.Database.BusinessObject.Tile.DBTile;
 
 /**
  * Created by Eric Schmidt on 22.10.2015.

@@ -1,5 +1,11 @@
 package wipraktikum.informationwallandroidapp.Database.DAO;
 
+import wipraktikum.informationwallandroidapp.Database.DAO.BlackBoard.BlackBoardAttachmentDAO;
+import wipraktikum.informationwallandroidapp.Database.DAO.BlackBoard.BlackBoardItemDAO;
+import wipraktikum.informationwallandroidapp.Database.DAO.Contact.ContactAddressDAO;
+import wipraktikum.informationwallandroidapp.Database.DAO.Contact.ContactDAO;
+import wipraktikum.informationwallandroidapp.Database.DAO.Tile.TileDAO;
+
 /**
  * Created by Eric Schmidt on 28.10.2015.
  */

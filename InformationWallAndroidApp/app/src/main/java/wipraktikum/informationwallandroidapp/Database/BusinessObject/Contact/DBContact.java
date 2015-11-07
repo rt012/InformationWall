@@ -1,24 +1,33 @@
-package wipraktikum.informationwallandroidapp.BusinessObject;
+package wipraktikum.informationwallandroidapp.Database.BusinessObject.Contact;
 
+import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 /**
  * Created by Eric Schmidt on 25.10.2015.
  */
 @DatabaseTable
-public class Contact {
+public class DBContact {
+    @DatabaseField(generatedId = true)
     private long mContactID;
+    @DatabaseField
     private String mSurname;
+    @DatabaseField
     private String mName;
+    @DatabaseField
     private String mEMailAddress;
+    @DatabaseField
     private String mTelephone;
+    @DatabaseField
     private String mCompany;
-    public ContactAddress mContactAddress;
-    private transient boolean mSyncStatus;
+    @DatabaseField(foreign = true,  foreignAutoCreate = true, foreignAutoRefresh = true)
+    public DBContactAddress mContactAddress;
+    @DatabaseField
+    private boolean mSyncStatus;
 
-    public Contact(){};
+    public DBContact(){};
 
-    public Contact(String mName, String mSurname, String mEMailAddress,String mTelephone,  String mCompany, ContactAddress mContactAddress) {
+    public DBContact(String mName, String mSurname, String mEMailAddress, String mTelephone, String mCompany, DBContactAddress mContactAddress) {
         this.mContactAddress = mContactAddress;
         this.mCompany = mCompany;
         this.mTelephone = mTelephone;
@@ -27,18 +36,12 @@ public class Contact {
         this.mSurname = mSurname;
     }
 
-    public long getContactID() {
+    public long getmContactID() {
         return mContactID;
     }
 
     public String getFullName(){
-        if (mName != null && mSurname != null) {
-            return mSurname + ", " + mName;
-        }else if (mSurname != null){
-            return mSurname;
-        }
-        return null;
-
+        return mSurname + ", " + mName;
     }
 
     public String getSurname() {
@@ -61,7 +64,7 @@ public class Contact {
         return mCompany;
     }
 
-    public ContactAddress getContactAddress() {
+    public DBContactAddress getContactAddress() {
         return mContactAddress;
     }
 
@@ -89,7 +92,7 @@ public class Contact {
         this.mCompany = mCompany;
     }
 
-    public void setContactAddress(ContactAddress mContactAddress) {
+    public void setContactAddress(DBContactAddress mContactAddress) {
         this.mContactAddress = mContactAddress;
     }
 
