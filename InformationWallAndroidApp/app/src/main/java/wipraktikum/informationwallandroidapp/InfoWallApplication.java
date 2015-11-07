@@ -17,6 +17,7 @@ import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoard;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.Tile.DBTile;
 import wipraktikum.informationwallandroidapp.Database.InformationWallORMHelper;
 import wipraktikum.informationwallandroidapp.Login.LoginActivity;
+import wipraktikum.informationwallandroidapp.ServerCommunication.SyncManager;
 import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
 
 /**
@@ -90,6 +91,8 @@ public class InfoWallApplication extends Application {
      * @throws SQLException
      */
     private void insertTestData() throws SQLException {
+        //Sync Black Board Items from server and send unsynced items to it
+        SyncManager.getInstance().syncBlackBoardItems();
         //Tiles
         Dao<DBTile, Long> tileDao =  databaseHelper.getTileDAO();
         tileDao.createIfNotExists(new DBTile("Black Board", R.drawable.slide_1, BlackBoard.class.getName()));

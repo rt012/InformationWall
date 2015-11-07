@@ -77,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
         loginUser.setEmailAddress(email);
         loginUser.setPassword(password);
 
-        JsonManager.getInstance().sendJson(ServerURLManager.NEW_BLACK_BOARD_ITEM_URL, loginUser);
+        JsonManager.getInstance().sendJson(ServerURLManager.LOG_IN_AUTHENTICATION_URL, loginUser);
         JsonManager.getInstance().setOnObjectResponseReceiveListener(new JsonManager.OnObjectResponseListener() {
             @Override
             public void OnResponse(JSONObject response) {
@@ -92,16 +92,6 @@ public class LoginActivity extends AppCompatActivity {
                 onLoginFailed();
             }
         });
-
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        // On complete call either onLoginSuccess or onLoginFailed
-                        onLoginSuccess();
-                        // onLoginFailed();
-                        progressDialog.dismiss();
-                    }
-                }, 3000);
     }
 
 
