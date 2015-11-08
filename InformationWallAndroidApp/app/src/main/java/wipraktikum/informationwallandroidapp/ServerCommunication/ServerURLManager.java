@@ -20,4 +20,8 @@ public class ServerURLManager {
     public static final String LOG_IN_AUTHENTICATION_URL = "http://myinfowall.ddns.net/apps/blackboard/checkUser.php";
 
     public static final String UPLOAD_BLACK_BOARD_ATTACHMENT_URL = "http://myinfowall.ddns.net/phpTest2.php";
+
+    // Update User with GCM ID
+    public static final String UPDATE_USER = "http://myinfowall.ddns.net/updateUser.php";
+
 }

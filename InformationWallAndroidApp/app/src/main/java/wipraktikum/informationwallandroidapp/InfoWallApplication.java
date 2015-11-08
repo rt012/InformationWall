@@ -19,6 +19,7 @@ import wipraktikum.informationwallandroidapp.Database.InformationWallORMHelper;
 import wipraktikum.informationwallandroidapp.Login.LoginActivity;
 import wipraktikum.informationwallandroidapp.ServerCommunication.SyncManager;
 import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
+import wipraktikum.informationwallandroidapp.gcm.GCMHelper;
 
 /**
  * Created by Remi on 26.10.2015.
@@ -30,6 +31,7 @@ public class InfoWallApplication extends Application {
     public static final String TAG = InfoWallApplication.class
             .getSimpleName();
 
+
     private RequestQueue mRequestQueue;
 
     @Override
@@ -37,6 +39,7 @@ public class InfoWallApplication extends Application {
         super.onCreate();
         instance = this;
 
+        GCMHelper.getInstance().registerToGCM("asda");
         //Insert Database dummy date
         databaseHelper = InfoWallApplication.getInstance().getDatabaseHelper();
 
