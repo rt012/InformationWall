@@ -95,26 +95,26 @@ public class UserGroupDAO implements IDAO {
 
     public UserGroup mapDBUserGroupToUserGroup(DBUserGroup dbUserGroup) {
         UserGroup userGroup = new UserGroup();
-
-        userGroup.setUserGroupID(dbUserGroup.getUserGroupID());
-        userGroup.setUserGroupName(dbUserGroup.getUserGroupName());
-        userGroup.setDelete(dbUserGroup.isDelete());
-        userGroup.setEdit(dbUserGroup.isEdit());
-        userGroup.setWrite(dbUserGroup.isWrite());
-        userGroup.setRead(dbUserGroup.isRead());
-
+        if(dbUserGroup != null) {
+            userGroup.setUserGroupID(dbUserGroup.getUserGroupID());
+            userGroup.setUserGroupName(dbUserGroup.getUserGroupName());
+            userGroup.setDelete(dbUserGroup.isDelete());
+            userGroup.setEdit(dbUserGroup.isEdit());
+            userGroup.setWrite(dbUserGroup.isWrite());
+            userGroup.setRead(dbUserGroup.isRead());
+        }
         return userGroup;
     }
     public DBUserGroup mapUserGroupToDBUserGroup(UserGroup userGroup) {
         DBUserGroup dbUserGroup = new DBUserGroup();
-
-        dbUserGroup.setUserGroupID(userGroup.getUserGroupID());
-        dbUserGroup.setUserGroupName(userGroup.getUserGroupName());
-        dbUserGroup.setDelete(userGroup.isDelete());
-        dbUserGroup.setEdit(userGroup.isEdit());
-        dbUserGroup.setWrite(userGroup.isWrite());
-        dbUserGroup.setRead(userGroup.isRead());
-
+        if(userGroup != null) {
+            dbUserGroup.setUserGroupID(userGroup.getUserGroupID());
+            dbUserGroup.setUserGroupName(userGroup.getUserGroupName());
+            dbUserGroup.setDelete(userGroup.isDelete());
+            dbUserGroup.setEdit(userGroup.isEdit());
+            dbUserGroup.setWrite(userGroup.isWrite());
+            dbUserGroup.setRead(userGroup.isRead());
+        }
         return dbUserGroup;
     }
 }

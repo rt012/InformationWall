@@ -17,10 +17,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
+import com.google.gson.JsonParser;
 
 import org.json.JSONObject;
 
 import wipraktikum.informationwallandroidapp.BusinessObject.User.User;
+import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
@@ -82,6 +85,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void OnResponse(JSONObject response) {
                 progressDialog.dismiss();
+                User currentUser = new Gson().fromJson(new JsonParser().parse(response.toString()),User.class );
+                currentUser.setLoggedIn(true);
+                DAOHelper.getInstance().getUserDAO().update(currentUser);
                 onLoginSuccess();
             }
         });

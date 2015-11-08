@@ -30,6 +30,7 @@ import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoar
 import wipraktikum.informationwallandroidapp.BusinessObject.Contact.Contact;
 import wipraktikum.informationwallandroidapp.BusinessObject.Contact.ContactAddress;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
+import wipraktikum.informationwallandroidapp.InfoWallApplication;
 import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
@@ -182,6 +183,7 @@ public class BlackBoardAddItem extends Fragment implements IFragmentTag, BlackBo
             newBlackBoardItem.setTitle(editTextTitle.getText().toString());
             newBlackBoardItem.setDescriptionText(editTextDescription.getText().toString());
             newBlackBoardItem.setBlackBoardAttachment(blackBoardAttachments);
+            newBlackBoardItem.setUser(InfoWallApplication.currentUser);
 
             //Check if a new contact was created (LinearLayout.View(Visible)) or a existing was selected
             if (tlAddContact.getVisibility() == View.VISIBLE) {

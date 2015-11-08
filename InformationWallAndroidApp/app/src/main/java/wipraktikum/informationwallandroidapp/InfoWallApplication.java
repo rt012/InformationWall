@@ -14,12 +14,13 @@ import com.j256.ormlite.dao.Dao;
 import java.sql.SQLException;
 
 import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoard;
+import wipraktikum.informationwallandroidapp.BusinessObject.User.User;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.Tile.DBTile;
+import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.Database.InformationWallORMHelper;
 import wipraktikum.informationwallandroidapp.Login.LoginActivity;
 import wipraktikum.informationwallandroidapp.ServerCommunication.SyncManager;
 import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
-import wipraktikum.informationwallandroidapp.gcm.GCMHelper;
 
 /**
  * Created by Remi on 26.10.2015.
@@ -31,6 +32,8 @@ public class InfoWallApplication extends Application {
     public static final String TAG = InfoWallApplication.class
             .getSimpleName();
 
+    public static User currentUser;
+
 
     private RequestQueue mRequestQueue;
 
@@ -39,9 +42,11 @@ public class InfoWallApplication extends Application {
         super.onCreate();
         instance = this;
 
-        GCMHelper.getInstance().registerToGCM("asda");
+        //GCMHelper.getInstance().registerToGCM("asda");
         //Insert Database dummy date
         databaseHelper = InfoWallApplication.getInstance().getDatabaseHelper();
+
+        currentUser = DAOHelper.getInstance().getUserDAO().getCurrentUser();
 
         try {
             insertTestData();
@@ -101,6 +106,11 @@ public class InfoWallApplication extends Application {
         tileDao.createIfNotExists(new DBTile("Black Board", R.drawable.slide_1, BlackBoard.class.getName()));
         tileDao.createIfNotExists(new DBTile("Example Tile 1", R.drawable.slide_2, TileOverview.class.getName()));
         tileDao.createIfNotExists(new DBTile("Example Tile 2", R.drawable.slide_3, TileOverview.class.getName()));
+
+        User user = new User();
+        user.setLoggedIn(true);
+        user.setEmailAddress("remasico@gmail.com");
+        DAOHelper.getInstance().getUserDAO().create(user);
     }
 
     private void startActivity() {

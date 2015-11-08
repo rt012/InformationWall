@@ -16,6 +16,8 @@ public class DBUser {
     private String mPassword;
     @DatabaseField(foreign = true, foreignAutoCreate = true, foreignAutoRefresh = true)
     private DBUserGroup mUserGroup;
+    @DatabaseField
+    private boolean mLoggedIn;
 
     public DBUser(){}
 
@@ -49,5 +51,13 @@ public class DBUser {
 
     public void setUserGroup(DBUserGroup mUserGroup) {
         this.mUserGroup = mUserGroup;
+    }
+
+    public boolean isLoggedIn() {
+        return mLoggedIn;
+    }
+
+    public void setLoggedIn(boolean mLoggedIn) {
+        this.mLoggedIn = mLoggedIn;
     }
 }

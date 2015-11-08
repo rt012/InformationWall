@@ -8,6 +8,7 @@ public class User {
     private String mEmailAddress;
     private String mPassword;
     private UserGroup mUserGroup;
+    private boolean mLoggedIn;
 
     public User(){}
 
@@ -41,5 +42,21 @@ public class User {
 
     public void setUserGroup(UserGroup mUserGroup) {
         this.mUserGroup = mUserGroup;
+    }
+
+    public boolean isLoggedIn() {
+        return mLoggedIn;
+    }
+
+    public void setLoggedIn(boolean mLoggedIn) {
+        this.mLoggedIn = mLoggedIn;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(this.getEmailAddress().equals(((User) o).getEmailAddress())) {
+            return true;
+        }
+        return false;
     }
 }

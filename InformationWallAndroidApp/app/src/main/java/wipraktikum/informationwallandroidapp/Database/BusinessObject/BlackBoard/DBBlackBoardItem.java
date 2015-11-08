@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.Contact.DBContact;
+import wipraktikum.informationwallandroidapp.Database.BusinessObject.User.DBUser;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
 
 /**
@@ -35,6 +36,8 @@ public class DBBlackBoardItem {
     private Date mEditedTimestamp;
     @DatabaseField(columnName = SYNCSTATUS_FIELD_NAME)
     private boolean mSyncStatus;
+    @DatabaseField(foreign = true, foreignAutoCreate = true, foreignAutoRefresh = true)
+    private DBUser mUser;
 
     public static final String SYNCSTATUS_FIELD_NAME = "syncStatus";
 
@@ -118,5 +121,13 @@ public class DBBlackBoardItem {
 
     public void setSyncStatus(boolean mSyncStatus) {
         this.mSyncStatus = mSyncStatus;
+    }
+
+    public DBUser getUser() {
+        return mUser;
+    }
+
+    public void setUser(DBUser mUser) {
+        this.mUser = mUser;
     }
 }

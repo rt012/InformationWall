@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import wipraktikum.informationwallandroidapp.BusinessObject.Contact.Contact;
+import wipraktikum.informationwallandroidapp.BusinessObject.User.User;
 
 /**
  * Created by Eric Schmidt on 25.10.2015.
@@ -20,6 +21,7 @@ public class BlackBoardItem {
     private Date mCreatedTimestamp;
     private Date mEditedTimestamp;
     private transient boolean mSyncStatus;
+    private User mUser;
 
     public BlackBoardItem(){};
 
@@ -102,5 +104,13 @@ public class BlackBoardItem {
             return true;
         }
         return false;
+    }
+
+    public User getUser() {
+        return mUser;
+    }
+
+    public void setUser(User mUser) {
+        this.mUser = mUser;
     }
 }

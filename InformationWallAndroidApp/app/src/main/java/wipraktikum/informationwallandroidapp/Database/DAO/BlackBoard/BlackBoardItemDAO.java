@@ -164,7 +164,7 @@ public class BlackBoardItemDAO implements IDAO {
         blackBoardItem.setBlackBoardAttachment(DAOHelper.getInstance().
                 getBlackBoardAttachmentDAO().mapDBBlackBoardAttachmentToBlackBoardAttachment(dbBlackBoardItem.getBlackBoardAttachment()));
         blackBoardItem.setSyncStatus(dbBlackBoardItem.isSyncStatus());
-
+        blackBoardItem.setUser(DAOHelper.getInstance().getUserDAO().mapDBUserToUser(dbBlackBoardItem.getUser()));
         return blackBoardItem;
     }
 
@@ -188,6 +188,7 @@ public class BlackBoardItemDAO implements IDAO {
             e.printStackTrace();
         }
         dbBlackBoardItem.setSyncStatus(blackBoardItem.isSyncStatus());
+        dbBlackBoardItem.setUser(DAOHelper.getInstance().getUserDAO().mapUserToDBUser(blackBoardItem.getUser()));
 
         return dbBlackBoardItem;
     }

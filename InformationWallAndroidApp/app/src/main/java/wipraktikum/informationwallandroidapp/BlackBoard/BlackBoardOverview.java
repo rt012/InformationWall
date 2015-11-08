@@ -31,6 +31,13 @@ public class BlackBoardOverview extends Fragment implements IFragmentTag{
         blackBoardExpandableListViewAdapter = new BlackBoardExpandableListViewAdapter(getActivity());
         expandableListView.setAdapter(blackBoardExpandableListViewAdapter);
 
+        expandableListView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                return false;
+            }
+        });
+
         return view;
     }
 

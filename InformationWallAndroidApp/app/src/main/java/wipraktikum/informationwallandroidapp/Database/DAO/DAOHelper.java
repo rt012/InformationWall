@@ -5,6 +5,8 @@ import wipraktikum.informationwallandroidapp.Database.DAO.BlackBoard.BlackBoardI
 import wipraktikum.informationwallandroidapp.Database.DAO.Contact.ContactAddressDAO;
 import wipraktikum.informationwallandroidapp.Database.DAO.Contact.ContactDAO;
 import wipraktikum.informationwallandroidapp.Database.DAO.Tile.TileDAO;
+import wipraktikum.informationwallandroidapp.Database.DAO.User.UserDAO;
+import wipraktikum.informationwallandroidapp.Database.DAO.User.UserGroupDAO;
 
 /**
  * Created by Eric Schmidt on 28.10.2015.
@@ -40,4 +42,8 @@ public class DAOHelper {
     public BlackBoardAttachmentDAO getBlackBoardAttachmentDAO(){
         return BlackBoardAttachmentDAO.getInstance();
     }
+
+    public UserDAO getUserDAO() {return UserDAO.getInstance();}
+
+    public UserGroupDAO getUserGroupDAO() {return UserGroupDAO.getInstance();}
 }
