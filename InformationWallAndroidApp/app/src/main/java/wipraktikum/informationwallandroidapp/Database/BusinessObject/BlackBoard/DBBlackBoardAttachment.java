@@ -15,7 +15,7 @@ public class DBBlackBoardAttachment {
     @DatabaseField
     private String mDeviceDataPath;
     @DatabaseField
-    private DataType mDataType;
+    private DataType mDataType = DataType.OTHER;
     @DatabaseField(foreign = true, foreignAutoRefresh = true, columnName = "mBlackBoardItemID")
     private DBBlackBoardItem mBlackBoardItem;
     @DatabaseField

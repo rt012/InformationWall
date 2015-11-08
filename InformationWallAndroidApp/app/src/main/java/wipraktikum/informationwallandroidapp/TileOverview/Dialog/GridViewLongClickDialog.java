@@ -39,8 +39,8 @@ public class GridViewLongClickDialog extends DialogFragment {
         int radioButtonPos = getArguments().getInt("radioButtonPos");
 
         // Inflate and set the layouts for the dialog
-        final View customDialogView = inflater.inflate(R.layout.dialog_gridviewlongclick, null);
-        View customDialogTitle = inflater.inflate(R.layout.dialog_gridviewlongclick_title, null);
+        final View customDialogView = inflater.inflate(R.layout.dialog_tile_long_click, null);
+        View customDialogTitle = inflater.inflate(R.layout.dialog_tile_long_click_title, null);
 
         RadioGroup radioGroupSize = (RadioGroup) customDialogView.findViewById(R.id.radioGroup_itemSize);
 

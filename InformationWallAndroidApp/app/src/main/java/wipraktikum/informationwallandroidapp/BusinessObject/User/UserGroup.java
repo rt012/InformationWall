@@ -29,7 +29,7 @@ public class UserGroup {
         this.mUserGroupName = mUserGroupName;
     }
 
-    public boolean isEdit() {
+    public boolean canEdit() {
         return mEdit;
     }
 
@@ -37,7 +37,7 @@ public class UserGroup {
         this.mEdit = mEdit;
     }
 
-    public boolean isWrite() {
+    public boolean canWrite() {
         return mWrite;
     }
 
@@ -45,7 +45,7 @@ public class UserGroup {
         this.mWrite = mWrite;
     }
 
-    public boolean isRead() {
+    public boolean canRead() {
         return mRead;
     }
 
@@ -53,7 +53,7 @@ public class UserGroup {
         this.mRead = mRead;
     }
 
-    public boolean isDelete() {
+    public boolean canDelete() {
         return mDelete;
     }
 

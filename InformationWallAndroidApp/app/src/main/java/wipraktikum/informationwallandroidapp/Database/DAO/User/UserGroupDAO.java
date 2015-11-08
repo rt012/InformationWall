@@ -98,10 +98,10 @@ public class UserGroupDAO implements IDAO {
         if(dbUserGroup != null) {
             userGroup.setUserGroupID(dbUserGroup.getUserGroupID());
             userGroup.setUserGroupName(dbUserGroup.getUserGroupName());
-            userGroup.setDelete(dbUserGroup.isDelete());
-            userGroup.setEdit(dbUserGroup.isEdit());
-            userGroup.setWrite(dbUserGroup.isWrite());
-            userGroup.setRead(dbUserGroup.isRead());
+            userGroup.setDelete(dbUserGroup.canDelete());
+            userGroup.setEdit(dbUserGroup.canEdit());
+            userGroup.setWrite(dbUserGroup.canWrite());
+            userGroup.setRead(dbUserGroup.canRead());
         }
         return userGroup;
     }
@@ -110,10 +110,10 @@ public class UserGroupDAO implements IDAO {
         if(userGroup != null) {
             dbUserGroup.setUserGroupID(userGroup.getUserGroupID());
             dbUserGroup.setUserGroupName(userGroup.getUserGroupName());
-            dbUserGroup.setDelete(userGroup.isDelete());
-            dbUserGroup.setEdit(userGroup.isEdit());
-            dbUserGroup.setWrite(userGroup.isWrite());
-            dbUserGroup.setRead(userGroup.isRead());
+            dbUserGroup.setDelete(userGroup.canDelete());
+            dbUserGroup.setEdit(userGroup.canEdit());
+            dbUserGroup.setWrite(userGroup.canWrite());
+            dbUserGroup.setRead(userGroup.canRead());
         }
         return dbUserGroup;
     }

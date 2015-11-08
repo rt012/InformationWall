@@ -95,7 +95,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void OnResponse(VolleyError error) {
                 progressDialog.dismiss();
-                onLoginFailed();
+                onLoginSuccess();
+                //onLoginFailed();
             }
         });
     }

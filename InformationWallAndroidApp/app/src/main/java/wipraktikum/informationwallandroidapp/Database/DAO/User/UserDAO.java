@@ -74,7 +74,9 @@ public class UserDAO implements IDAO {
             Dao<DBUser, Long> userDAO = InfoWallApplication.getInstance().getDatabaseHelper().getUserDAO();
             List<User> userList = queryForAll();
             if(userList.contains((User) object)) {
-                userDAO.update(mapUserToDBUser(userList.get(userList.indexOf((User) object))));
+                //Set User to same ID
+                ((User) object).setUserID(userList.get(userList.indexOf((User) object)).getUserID());
+                userDAO.update(mapUserToDBUser((User) object));
             } else {
                 create(object);
             }

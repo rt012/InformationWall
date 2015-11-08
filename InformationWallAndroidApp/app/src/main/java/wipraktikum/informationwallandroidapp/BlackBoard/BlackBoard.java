@@ -12,6 +12,7 @@ import android.view.View;
 import java.util.Hashtable;
 import java.util.Map;
 
+import wipraktikum.informationwallandroidapp.InfoWallApplication;
 import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.ServerCommunication.PhpRequestManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
@@ -150,20 +151,26 @@ public class BlackBoard extends AppCompatActivity {
     }
 
     private void showFabByFragment(Fragment fragment){
-        if (fragment != null) {
-            switch (((IFragmentTag) fragment).getCustomTag()) {
-                case FRAGMENT_TAG_OVERVIEW:
-                    fab.show();
-                    break;
-                case FRAGMENT_TAG_ADD_ITEM:
-                    fab.hide();
-                    break;
-                default:
-                    fab.show();
-                    break;
+        //By User
+        if (InfoWallApplication.currentUser.getUserGroup().canWrite()) {
+            //By Fragment
+            if (fragment != null) {
+                switch (((IFragmentTag) fragment).getCustomTag()) {
+                    case FRAGMENT_TAG_OVERVIEW:
+                        fab.show();
+                        break;
+                    case FRAGMENT_TAG_ADD_ITEM:
+                        fab.hide();
+                        break;
+                    default:
+                        fab.show();
+                        break;
+                }
+            } else {
+                fab.show();
             }
         }else{
-            fab.show();
+            fab.hide();
         }
     }
 

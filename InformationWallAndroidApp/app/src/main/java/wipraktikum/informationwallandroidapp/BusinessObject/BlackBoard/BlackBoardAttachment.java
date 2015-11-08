@@ -13,7 +13,7 @@ public class BlackBoardAttachment {
     private long mBlackBoardAttachmentID;
     private String mRemoteDataPath;
     private String mDeviceDataPath;
-    private DBBlackBoardAttachment.DataType mDataType;
+    private DBBlackBoardAttachment.DataType mDataType = DBBlackBoardAttachment.DataType.OTHER;
     private transient DBBlackBoardItem mDBBlackBoardItem;
     private transient boolean mSyncStatus;
 
