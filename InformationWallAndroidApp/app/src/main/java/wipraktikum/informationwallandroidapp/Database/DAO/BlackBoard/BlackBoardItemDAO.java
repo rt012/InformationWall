@@ -49,7 +49,7 @@ public class BlackBoardItemDAO implements IDAO {
     public Object queryForId(long iD) {
         BlackBoardItem blackBoardItem = null;
         try {
-            wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem dbBlackBoardItem = InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardItemDAO().queryForId(iD);
+            DBBlackBoardItem dbBlackBoardItem = InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardItemDAO().queryForId(iD);
             blackBoardItem = mapDBBlackBoardItemToBlackBoardItem(dbBlackBoardItem);
 
         } catch (SQLException e) {

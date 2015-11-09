@@ -18,7 +18,7 @@ import wipraktikum.informationwallandroidapp.R;
 /**
  * Created by Remi on 18.10.2015.
  */
-public class GridViewLongClickDialog extends DialogFragment {
+public class TileLongClickDialog extends DialogFragment {
 
     private RadioGroup radioGroup;
     private Switch switchActivate;
@@ -40,13 +40,13 @@ public class GridViewLongClickDialog extends DialogFragment {
 
         // Inflate and set the layouts for the dialog
         final View customDialogView = inflater.inflate(R.layout.dialog_tile_long_click, null);
-        View customDialogTitle = inflater.inflate(R.layout.dialog_tile_long_click_title, null);
+        final View customDialogTitle = inflater.inflate(R.layout.dialog_tile_long_click_title, null);
 
-        RadioGroup radioGroupSize = (RadioGroup) customDialogView.findViewById(R.id.radioGroup_itemSize);
+        final RadioGroup radioGroupSize = (RadioGroup) customDialogView.findViewById(R.id.radioGroup_itemSize);
 
-        Switch switchActivate = (Switch) customDialogTitle.findViewById(R.id.switch_showItem);
-        TextView titleText = (TextView) customDialogTitle.findViewById(R.id.dialogTitleText);
-        RadioGroup radioGroupItemSize = (RadioGroup) customDialogView.findViewById(R.id.radioGroup_itemSize);
+        final Switch switchActivate = (Switch) customDialogTitle.findViewById(R.id.switch_showItem);
+        final TextView titleText = (TextView) customDialogTitle.findViewById(R.id.dialogTitleText);
+        final RadioGroup radioGroupItemSize = (RadioGroup) customDialogView.findViewById(R.id.radioGroup_itemSize);
 
         //Use Arguments to configure Dialog (Title, RadioButton, Activated)
         titleText.setText(tileTitle);
@@ -73,6 +73,7 @@ public class GridViewLongClickDialog extends DialogFragment {
 
         // Pass null as the parent view because its going in the dialog layout
         builder.setView(customDialogView)
+                .setCancelable(false)
                 // Set title
                 .setCustomTitle(customDialogTitle)
                 // Add action buttons

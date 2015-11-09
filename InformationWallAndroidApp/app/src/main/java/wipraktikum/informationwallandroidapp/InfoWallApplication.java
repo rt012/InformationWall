@@ -28,14 +28,10 @@ import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
  */
 public class InfoWallApplication extends Application {
     private static InfoWallApplication instance;
+    private static User currentUser;
     private InformationWallORMHelper databaseHelper;
 
-    public static final String TAG = InfoWallApplication.class
-            .getSimpleName();
-
-    public static User currentUser;
-
-
+    public static final String TAG = InfoWallApplication.class.getSimpleName();
     private RequestQueue mRequestQueue;
 
     @Override
@@ -59,6 +55,10 @@ public class InfoWallApplication extends Application {
 
     public static InfoWallApplication getInstance() {
         return instance;
+    }
+
+    public static User getCurrentUser(){
+        return currentUser;
     }
 
     public RequestQueue getRequestQueue() {

@@ -54,8 +54,10 @@ public class User {
 
     @Override
     public boolean equals(Object o) {
-        if(this.getEmailAddress().equals(((User) o).getEmailAddress())) {
-            return true;
+        if (this.getEmailAddress() != null) {
+            if (this.getEmailAddress().equals(((User) o).getEmailAddress())) {
+                return true;
+            }
         }
         return false;
     }

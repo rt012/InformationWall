@@ -20,7 +20,6 @@
 
     <string name="dialog_fire_missiles">Test</string>
     <string name="title_activity_black_board">BlackBoard</string>
-
     <!--- BlackBoard  -->
     <string name="black_board_no_title">No Title</string>
     <string name="black_board_no_item_information">No Item Information</string>
@@ -29,9 +28,8 @@
     <string name="black_board_no_description_information">No description available</string>
     <string name="black_board_last_edited">Edited:</string>
     <!-- BlackBoard Long Click Dialog-->
-    <string name="black_board_long_click_dialog_title">Change</string>
-    <string name="black_board_long_click_dialog_edit">EDIT ITEM</string>
-    <string name="black_board_long_click_dialog_delete">DELETE ITEM</string>
+    <string name="black_board_long_click_dialog_edit">EDIT</string>
+    <string name="black_board_long_click_dialog_delete">DELETE</string>
     <!--- BlackBoard Add Item -->
     <string name="menu_black_board_save_item">Save</string>
     <string name="black_board_add_item_title">Title</string>

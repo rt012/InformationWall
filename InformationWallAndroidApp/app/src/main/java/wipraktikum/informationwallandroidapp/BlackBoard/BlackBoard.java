@@ -152,7 +152,7 @@ public class BlackBoard extends AppCompatActivity {
 
     private void showFabByFragment(Fragment fragment){
         //By User
-        if (InfoWallApplication.currentUser.getUserGroup().canWrite()) {
+        if (InfoWallApplication.getCurrentUser().getUserGroup().canWrite()) {
             //By Fragment
             if (fragment != null) {
                 switch (((IFragmentTag) fragment).getCustomTag()) {

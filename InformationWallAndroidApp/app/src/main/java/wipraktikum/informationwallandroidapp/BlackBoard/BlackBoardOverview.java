@@ -56,13 +56,10 @@ public class BlackBoardOverview extends Fragment implements IFragmentTag{
     }
 
     public void showDialogFragmentByItem(BlackBoardItem blackBoardItem){
-        // Supply num input as an argument.
-        Bundle args = new Bundle();
-        args.putLong(BlackBoardItemDialogBuilder.BLACK_BOARD_ITEM_ID_KEY,
-                blackBoardItem.getBlackBoardItemID());
-
-        BlackBoardItemDialogBuilder blackBoardItemDialogBuilder = new BlackBoardItemDialogBuilder();
-        blackBoardItemDialogBuilder.setArguments(args);
-        blackBoardItemDialogBuilder.show(getFragmentManager(), "BlackBoardItemDialogBuilder");
+        BlackBoardItemDialogBuilder blackBoardItemDialogBuilder = BlackBoardItemDialogBuilder.newInstance(blackBoardItem);
+        //If the user is able to do anything with the item
+        if (blackBoardItemDialogBuilder.hasRights()) {
+            blackBoardItemDialogBuilder.show(getFragmentManager(), BlackBoardItemDialogBuilder.class.getSimpleName());
+        }
     }
 }

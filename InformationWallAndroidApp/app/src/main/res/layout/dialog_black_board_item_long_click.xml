@@ -8,11 +8,20 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:text="@string/black_board_long_click_dialog_edit"
+        android:gravity="left|center_vertical"
+        android:textAlignment="gravity"
+        android:paddingLeft="10dp"
+        android:background="@android:color/transparent"
         android:id="@+id/bt_black_board_item_edit_dialog"/>
 
     <Button
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:text="@string/black_board_long_click_dialog_delete"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="10dp"
+        android:background="@android:color/transparent"
         android:id="@+id/bt_black_board_item_delete_dialog"/>
+    <View
+        style="@style/Divider" />
 </TableLayout>

@@ -183,7 +183,7 @@ public class BlackBoardAddItem extends Fragment implements IFragmentTag, BlackBo
             newBlackBoardItem.setTitle(editTextTitle.getText().toString());
             newBlackBoardItem.setDescriptionText(editTextDescription.getText().toString());
             newBlackBoardItem.setBlackBoardAttachment(blackBoardAttachments);
-            newBlackBoardItem.setUser(InfoWallApplication.currentUser);
+            newBlackBoardItem.setUser(InfoWallApplication.getCurrentUser());
 
             //Check if a new contact was created (LinearLayout.View(Visible)) or a existing was selected
             if (tlAddContact.getVisibility() == View.VISIBLE) {
