@@ -26,6 +26,8 @@ public class BlackBoardItemDialogBuilder extends DialogFragment {
     private static boolean canDelete;
     private static boolean hasRights;
     private static BlackBoardItem mBlackBoardItem;
+    //Interfaces
+    private OnItemChangeListener mOnItemChangeListener;
 
     public static BlackBoardItemDialogBuilder newInstance(BlackBoardItem blackBoardItem){
         User currentUser = InfoWallApplication.getCurrentUser();
@@ -64,6 +66,24 @@ public class BlackBoardItemDialogBuilder extends DialogFragment {
         final Button btEdit = (Button) customDialogView.findViewById(R.id.bt_black_board_item_edit_dialog);
         final TextView titleText = (TextView) customDialogTitle.findViewById(R.id.dialogTitleText);
 
+        btDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mOnItemChangeListener != null){
+                    mOnItemChangeListener.onDelete(mBlackBoardItem);
+                }
+            }
+        });
+
+        btEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mOnItemChangeListener != null){
+                    mOnItemChangeListener.onEdit(mBlackBoardItem);
+                }
+            }
+        });
+
         titleText.setText(mBlackBoardItem.getTitle());
 
         //Rights management
@@ -90,5 +110,14 @@ public class BlackBoardItemDialogBuilder extends DialogFragment {
     //Must be called before calling show
     public boolean hasRights(){
         return  hasRights;
+    }
+
+    public void setOnItemDeleteListener(OnItemChangeListener onItemChangeListener){
+        mOnItemChangeListener = onItemChangeListener;
+    }
+
+    public interface OnItemChangeListener {
+        public void onDelete(BlackBoardItem blackBoardItem);
+        public void onEdit(BlackBoardItem blackBoardItem);
     }
 }

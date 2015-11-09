@@ -11,9 +11,10 @@ import android.widget.ExpandableListView;
 import wipraktikum.informationwallandroidapp.BlackBoard.Adapter.BlackBoardExpandableListViewAdapter;
 import wipraktikum.informationwallandroidapp.BlackBoard.Dialog.BlackBoardItemDialogBuilder;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
+import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.R;
 
-public class BlackBoardOverview extends Fragment implements IFragmentTag{
+public class BlackBoardOverview extends Fragment implements BlackBoardItemDialogBuilder.OnItemChangeListener{
     private final String FRAGMENT_TAG = "FRAGMENT_OVERVIEW";
 
     private BlackBoardExpandableListViewAdapter blackBoardExpandableListViewAdapter = null;
@@ -51,15 +52,32 @@ public class BlackBoardOverview extends Fragment implements IFragmentTag{
         blackBoardExpandableListViewAdapter.notifyDataSetChanged();
     }
 
-    public String getCustomTag(){
-        return this.FRAGMENT_TAG;
-    }
-
     public void showDialogFragmentByItem(BlackBoardItem blackBoardItem){
         BlackBoardItemDialogBuilder blackBoardItemDialogBuilder = BlackBoardItemDialogBuilder.newInstance(blackBoardItem);
         //If the user is able to do anything with the item
         if (blackBoardItemDialogBuilder.hasRights()) {
             blackBoardItemDialogBuilder.show(getFragmentManager(), BlackBoardItemDialogBuilder.class.getSimpleName());
         }
+
+        blackBoardItemDialogBuilder.setOnItemDeleteListener(this);
+    }
+
+    @Override
+    public void onDelete(BlackBoardItem blackBoardItem) {
+        DAOHelper.getInstance().getBlackBoardItemDAO().delete(blackBoardItem);
+        //TODO DELETE FROM SERVER
+    }
+
+    @Override
+    public void onEdit(BlackBoardItem blackBoardItem) {
+        //Open BlackBoardAddItem with arguments
+        Bundle params = new Bundle();
+        params.putLong(BlackBoardAddItem.BLACK_BOARD_ITEM_ID_TAG, blackBoardItem.getBlackBoardItemID());
+
+        BlackBoardAddItem blackBoardAddItem = new BlackBoardAddItem();
+        blackBoardAddItem.setArguments(params);
+
+        ((BlackBoard)getActivity()).openFragment(blackBoardAddItem, true);
+        //TODO EDIT FROM SERVER
     }
 }

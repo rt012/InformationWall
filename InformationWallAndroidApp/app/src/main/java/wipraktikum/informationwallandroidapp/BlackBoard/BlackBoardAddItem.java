@@ -41,8 +41,8 @@ import wipraktikum.informationwallandroidapp.Utils.RealPathHelper;
 /**
  * Created by Eric Schmidt on 30.10.2015.
  */
-public class BlackBoardAddItem extends Fragment implements IFragmentTag, BlackBoard.OnActivityResultListener{
-    private final String FRAGMENT_TAG = "FRAGMENT_ADD_ITEM";
+public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivityResultListener{
+    public static final String BLACK_BOARD_ITEM_ID_TAG = "blackBoardItemID";
     private OnSaveBlackBoardItemListener mOnSaveBlackBoardItemListener = null;
 
     private static BlackBoardAddItem instance = null;
@@ -50,6 +50,7 @@ public class BlackBoardAddItem extends Fragment implements IFragmentTag, BlackBo
     private Contact selectedContact = null;
     private ArrayList<BlackBoardAttachment> blackBoardAttachments = new ArrayList<>();
     private ArrayList<View> blackBoardAttachmentViews = new ArrayList<>();
+    private boolean isEditedItem = false;
 
     private TableLayout tlAddContact = null;
     private AutoCompleteTextView autoCompleteTextViewContact = null;
@@ -81,10 +82,21 @@ public class BlackBoardAddItem extends Fragment implements IFragmentTag, BlackBo
 
         //Add Attachment to View
         ((BlackBoard)getActivity()).setOnActivityResultListener(this);
-
         blackBoardAttachments = new ArrayList<>();
 
         return view;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        //Write BlackBoardItem Information to View
+        if (getArguments().getLong(BLACK_BOARD_ITEM_ID_TAG) != 0){
+            BlackBoardItem editBlackBoardItem = (BlackBoardItem) DAOHelper.getInstance().getBlackBoardItemDAO().queryForId(
+                    getArguments().getLong(BLACK_BOARD_ITEM_ID_TAG));
+            setBlackBoardItemInformation(editBlackBoardItem);
+            isEditedItem = true;
+        }
     }
 
     @Override
@@ -173,6 +185,16 @@ public class BlackBoardAddItem extends Fragment implements IFragmentTag, BlackBo
 
     }
 
+    public void setBlackBoardItemInformation(BlackBoardItem blackBoardItem){
+        editTextTitle.setText(blackBoardItem.getTitle());
+        //autoCompleteTextViewContact.setSelection(autoCompleteTextViewContactAdapter.
+        //        getPosition(blackBoardItem.getContact()));
+        editTextDescription.setText(blackBoardItem.getDescriptionText());
+        for (BlackBoardAttachment blackBoardAttachment : blackBoardItem.getBlackBoardAttachment()) {
+            addAttachmentToView(blackBoardAttachment);
+        }
+    }
+
     public void saveBlackBoardItem(){
         if (!isEditTextEmpty(editTextTitle) && uploadList.isEmpty()) {
             BlackBoardItem newBlackBoardItem = new BlackBoardItem();
@@ -197,7 +219,13 @@ public class BlackBoardAddItem extends Fragment implements IFragmentTag, BlackBo
             }
             newBlackBoardItem.setContact(newContact);
 
-            DAOHelper.getInstance().getBlackBoardItemDAO().create(newBlackBoardItem);
+            //Check if item is new or a edit
+            if (isEditedItem){
+                newBlackBoardItem.setBlackBoardItemID(getArguments().getLong(BLACK_BOARD_ITEM_ID_TAG));
+                DAOHelper.getInstance().getBlackBoardItemDAO().update(newBlackBoardItem);
+            }else {
+                DAOHelper.getInstance().getBlackBoardItemDAO().create(newBlackBoardItem);
+            }
             // Set Attachments to the item again because in the create method we have to clean erase this reference ( because of ORMLite )
             newBlackBoardItem.setBlackBoardAttachment(blackBoardAttachments);
             JsonManager.getInstance().sendJson(ServerURLManager.NEW_BLACK_BOARD_ITEM_URL, newBlackBoardItem);
@@ -306,10 +334,6 @@ public class BlackBoardAddItem extends Fragment implements IFragmentTag, BlackBo
             return true;
         }
         return false;
-    }
-
-    public String getCustomTag(){
-        return this.FRAGMENT_TAG;
     }
 
     public void setOnSaveBlackBoardItem(OnSaveBlackBoardItemListener OnSaveBlackBoardItemListener){

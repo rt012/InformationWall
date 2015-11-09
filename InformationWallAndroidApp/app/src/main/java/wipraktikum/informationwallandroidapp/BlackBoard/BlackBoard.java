@@ -22,9 +22,6 @@ import wipraktikum.informationwallandroidapp.Utils.FileHelper;
  * Created by Eric Schmidt on 30.10.2015.
  */
 public class BlackBoard extends AppCompatActivity {
-    private final String FRAGMENT_TAG_OVERVIEW = "FRAGMENT_OVERVIEW";
-    private final String FRAGMENT_TAG_ADD_ITEM = "FRAGMENT_ADD_ITEM";
-
     private OnActivityResultListener mOnActivityResultListener = null;
     private static Fragment currentFragment = null;
 
@@ -124,7 +121,8 @@ public class BlackBoard extends AppCompatActivity {
 
     public void openFragment(Fragment fragment, boolean addToBackStack){
         FragmentTransaction fragmentTransaction =  getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.black_board_fragment_container, fragment, ((IFragmentTag)fragment).getCustomTag());
+        fragmentTransaction.replace(R.id.black_board_fragment_container, fragment,
+                fragment.getClass().getSimpleName());
         if (addToBackStack)fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
 
@@ -138,13 +136,15 @@ public class BlackBoard extends AppCompatActivity {
 
     private String getActionBarTitleByFragment(Fragment fragment){
         if (fragment != null) {
-            switch (((IFragmentTag) fragment).getCustomTag()) {
-                case FRAGMENT_TAG_OVERVIEW:
-                    return getString(R.string.activity_black_board_title);
-                case FRAGMENT_TAG_ADD_ITEM:
+            if (fragment.getClass().getSimpleName().equals(BlackBoardAddItem.class.getSimpleName())){
+                //Check if a item is edited or a new one is created
+                if (fragment.getArguments() != null){
+                    return getString(R.string.activity_black_board_edit_item_title);
+                }else {
                     return getString(R.string.activity_black_board_add_item_title);
-                default:
-                    return null;
+                }
+            }else if(fragment.getClass().getSimpleName().equals(BlackBoardOverview.class.getSimpleName())){
+                return getString(R.string.activity_black_board_title);
             }
         }
         return getString(R.string.activity_black_board_title);
@@ -155,16 +155,10 @@ public class BlackBoard extends AppCompatActivity {
         if (InfoWallApplication.getCurrentUser().getUserGroup().canWrite()) {
             //By Fragment
             if (fragment != null) {
-                switch (((IFragmentTag) fragment).getCustomTag()) {
-                    case FRAGMENT_TAG_OVERVIEW:
-                        fab.show();
-                        break;
-                    case FRAGMENT_TAG_ADD_ITEM:
-                        fab.hide();
-                        break;
-                    default:
-                        fab.show();
-                        break;
+                if (fragment.getClass().getSimpleName().equals(BlackBoardAddItem.class.getSimpleName())){
+                    fab.hide();
+                }else if(fragment.getClass().getSimpleName().equals(BlackBoardOverview.class.getSimpleName())){
+                    fab.show();
                 }
             } else {
                 fab.show();
