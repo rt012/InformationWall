@@ -18,6 +18,7 @@ public class BlackBoardOverview extends Fragment implements BlackBoardItemDialog
     private final String FRAGMENT_TAG = "FRAGMENT_OVERVIEW";
 
     private BlackBoardExpandableListViewAdapter blackBoardExpandableListViewAdapter = null;
+    private BlackBoardItemDialogBuilder blackBoardItemDialogBuilder = null;
     private static BlackBoardOverview instance = null;
 
     public static BlackBoardOverview getInstance(){
@@ -53,23 +54,26 @@ public class BlackBoardOverview extends Fragment implements BlackBoardItemDialog
     }
 
     public void showDialogFragmentByItem(BlackBoardItem blackBoardItem){
-        BlackBoardItemDialogBuilder blackBoardItemDialogBuilder = BlackBoardItemDialogBuilder.newInstance(blackBoardItem);
+        blackBoardItemDialogBuilder = BlackBoardItemDialogBuilder.newInstance(blackBoardItem);
         //If the user is able to do anything with the item
         if (blackBoardItemDialogBuilder.hasRights()) {
             blackBoardItemDialogBuilder.show(getFragmentManager(), BlackBoardItemDialogBuilder.class.getSimpleName());
         }
-
         blackBoardItemDialogBuilder.setOnItemDeleteListener(this);
     }
 
     @Override
     public void onDelete(BlackBoardItem blackBoardItem) {
+        //Close Dialog
+        blackBoardItemDialogBuilder.dismiss();
         DAOHelper.getInstance().getBlackBoardItemDAO().delete(blackBoardItem);
         //TODO DELETE FROM SERVER
     }
 
     @Override
     public void onEdit(BlackBoardItem blackBoardItem) {
+        //Close Dialog
+        blackBoardItemDialogBuilder.dismiss();
         //Open BlackBoardAddItem with arguments
         Bundle params = new Bundle();
         params.putLong(BlackBoardAddItem.BLACK_BOARD_ITEM_ID_TAG, blackBoardItem.getBlackBoardItemID());

@@ -39,7 +39,7 @@ public class FileHelper {
         activity.startActivity(intent);
     }
 
-    public void showPictureChooser(Activity activity) {
+    public void showFileChooser(Activity activity) {
         Intent intent = new Intent();
         intent.setType("*/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);

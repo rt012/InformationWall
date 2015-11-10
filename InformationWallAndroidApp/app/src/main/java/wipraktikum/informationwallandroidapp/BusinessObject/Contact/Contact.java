@@ -38,7 +38,6 @@ public class Contact {
             return mSurname;
         }
         return null;
-
     }
 
     public String getSurname() {
@@ -99,5 +98,15 @@ public class Contact {
 
     public void setSyncStatus(boolean mSyncStatus) {
         this.mSyncStatus = mSyncStatus;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if (o != null) {
+            if (((Contact) o).getEMailAddress().equals(this.getEMailAddress())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

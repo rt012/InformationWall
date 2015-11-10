@@ -24,7 +24,6 @@ import wipraktikum.informationwallandroidapp.Utils.FileHelper;
 public class BlackBoard extends AppCompatActivity {
     private OnActivityResultListener mOnActivityResultListener = null;
     private static Fragment currentFragment = null;
-
     private FloatingActionButton fab = null;
 
     @Override
@@ -34,6 +33,8 @@ public class BlackBoard extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -68,11 +69,6 @@ public class BlackBoard extends AppCompatActivity {
         showFabByFragment(currentFragment);
         //Change Title of Actionbar
         setTitle(getActionBarTitleByFragment(currentFragment));
-    }
-
-    @Override
-    public void onDestroy(){
-        super.onDestroy();
     }
 
     @Override
@@ -116,6 +112,17 @@ public class BlackBoard extends AppCompatActivity {
             showFabByFragment(fragment);
         }else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == FileHelper.PICK_ATTACHMENT_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            if(mOnActivityResultListener != null){
+                mOnActivityResultListener.onActivityResult(data);
+            }
         }
     }
 
@@ -168,17 +175,6 @@ public class BlackBoard extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == FileHelper.PICK_ATTACHMENT_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            if(mOnActivityResultListener != null){
-                mOnActivityResultListener.onActivityResult(data);
-            }
-        }
-    }
-
     private Fragment getActiveFragment() {
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
             return null;
@@ -187,6 +183,7 @@ public class BlackBoard extends AppCompatActivity {
         return getSupportFragmentManager().findFragmentByTag(tag);
     }
 
+    //Listener for OnActivityResult Event
     public void setOnActivityResultListener(OnActivityResultListener onActivityResultListener){
         mOnActivityResultListener = onActivityResultListener;
     }

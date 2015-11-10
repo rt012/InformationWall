@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,7 +23,9 @@ import android.widget.TableLayout;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import wipraktikum.informationwallandroidapp.BlackBoard.Adapter.BlackBoardAutoCompleteTextViewContactAdapter;
 import wipraktikum.informationwallandroidapp.BlackBoard.CustomView.BlackBoardAttachmentView;
@@ -33,6 +37,7 @@ import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
 import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
+import wipraktikum.informationwallandroidapp.ServerCommunication.PhpRequestManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.UploadManager;
 import wipraktikum.informationwallandroidapp.Utils.FileHelper;
@@ -41,13 +46,16 @@ import wipraktikum.informationwallandroidapp.Utils.RealPathHelper;
 /**
  * Created by Eric Schmidt on 30.10.2015.
  */
-public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivityResultListener{
+public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivityResultListener, TextWatcher{
     public static final String BLACK_BOARD_ITEM_ID_TAG = "blackBoardItemID";
     private OnSaveBlackBoardItemListener mOnSaveBlackBoardItemListener = null;
 
     private static BlackBoardAddItem instance = null;
-    private BlackBoardAutoCompleteTextViewContactAdapter autoCompleteTextViewContactAdapter = null;
+    private static List<BlackBoardAttachment> uploadList = new ArrayList<>();
+
+    private BlackBoardItem blackBoardItem = null;
     private Contact selectedContact = null;
+    private BlackBoardAutoCompleteTextViewContactAdapter autoCompleteTextViewContactAdapter = null;
     private ArrayList<BlackBoardAttachment> blackBoardAttachments = new ArrayList<>();
     private ArrayList<View> blackBoardAttachmentViews = new ArrayList<>();
     private boolean isEditedItem = false;
@@ -63,9 +71,9 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     private EditText editTextTitle = null;
     private EditText editTextDescription = null;
     private ImageButton imageButtonExpandContact = null;
+    private LinearLayout attachmentContainer = null;
     private Button buttonAttachment = null;
 
-    private static List<BlackBoardAttachment> uploadList = new ArrayList<>();
 
     public static BlackBoardAddItem getInstance(){
         if (instance==null){
@@ -78,11 +86,8 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     public View onCreateView(LayoutInflater inflater,ViewGroup viewGroup, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_black_board_add_item, viewGroup, false);
         setHasOptionsMenu(true);
-        setUpGUI(view);
 
-        //Add Attachment to View
         ((BlackBoard)getActivity()).setOnActivityResultListener(this);
-        blackBoardAttachments = new ArrayList<>();
 
         return view;
     }
@@ -90,13 +95,35 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     @Override
     public void onResume(){
         super.onResume();
+        setUpGUI(getView());
+        //Tell Server to open Live Preview
+        Map<String, String> params = new HashMap<>();
+        params.put(ServerURLManager.SHOW_LIVE_PREVIEW_BLACK_BOARD_ITEM_KEY, ServerURLManager.SHOW_LIVE_PREVIEW_BLACK_BOARD_ITEM_SHOW);
+
+        PhpRequestManager.getInstance().phpRequest(ServerURLManager.SHOW_LIVE_PREVIEW_BLACK_BOARD_ITEM_URL, params);
+
         //Write BlackBoardItem Information to View
-        if (getArguments().getLong(BLACK_BOARD_ITEM_ID_TAG) != 0){
-            BlackBoardItem editBlackBoardItem = (BlackBoardItem) DAOHelper.getInstance().getBlackBoardItemDAO().queryForId(
+        if (getArguments() != null){
+            blackBoardItem = (BlackBoardItem) DAOHelper.getInstance().getBlackBoardItemDAO().queryForId(
                     getArguments().getLong(BLACK_BOARD_ITEM_ID_TAG));
-            setBlackBoardItemInformation(editBlackBoardItem);
+            setBlackBoardItemInformation();
             isEditedItem = true;
+        }else{
+            blackBoardItem = new BlackBoardItem();
         }
+        //Handle initial Live Preview
+        sendLivePreviewToServer();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        //Tell Server to close Live Preview
+        Map<String, String> params = new HashMap<>();
+        params.put(ServerURLManager.SHOW_LIVE_PREVIEW_BLACK_BOARD_ITEM_KEY, ServerURLManager.SHOW_LIVE_PREVIEW_BLACK_BOARD_ITEM_HIDE);
+
+        PhpRequestManager.getInstance().phpRequest(ServerURLManager.SHOW_LIVE_PREVIEW_BLACK_BOARD_ITEM_URL, params);
     }
 
     @Override
@@ -113,7 +140,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.menu_black_board_item_save) {
-            saveBlackBoardItem();
+            saveBlackBoardItem(fillBlackBoardItem());
             return true;
         }
 
@@ -132,14 +159,24 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     }
 
     private void setUpGUI(View view){
+        editTextTitle = (EditText) view.findViewById(R.id.edit_black_board_add_item_title);
+        editTextTitle.addTextChangedListener(this);
+        editTextTitle.setText("");
+
+        editTextDescription = (EditText) view.findViewById(R.id.edit_black_board_add_item_description);
+        editTextDescription.addTextChangedListener(this);
+        editTextDescription.setText("");
+
         autoCompleteTextViewContactAdapter = new BlackBoardAutoCompleteTextViewContactAdapter(
                 getActivity(), 0, DAOHelper.getInstance().getContactDAO().queryForAll());
         autoCompleteTextViewContact = (AutoCompleteTextView) view.findViewById(R.id.ac_tv_black_board_add_item_contact);
         autoCompleteTextViewContact.setAdapter(autoCompleteTextViewContactAdapter);
+        autoCompleteTextViewContact.setText("");
         autoCompleteTextViewContact.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectedContact = (Contact) autoCompleteTextViewContactAdapter.getItem(position);
+                sendLivePreviewToServer();
             }
         });
 
@@ -147,14 +184,28 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         tlAddContact.setVisibility(View.GONE);
 
         editTextFullName = (EditText) view.findViewById(R.id.edit_black_board_add_item_contact_full_name);
-        editTextEmail= (EditText) view.findViewById(R.id.edit_black_board_add_item_contact_email);
-        editTextTelephone = (EditText) view.findViewById(R.id.edit_black_board_add_item_contact_telephone);
-        editTextCompany = (EditText) view.findViewById(R.id.edit_black_board_add_item_contact_company);
-        editTextStreet = (EditText) view.findViewById(R.id.edit_black_board_add_item_contact_street);
-        editTextCity = (EditText) view.findViewById(R.id.edit_black_board_add_item_contact_city);
+        editTextFullName.addTextChangedListener(this);
+        editTextFullName.setText("");
 
-        editTextTitle = (EditText) view.findViewById(R.id.edit_black_board_add_item_title);
-        editTextDescription = (EditText) view.findViewById(R.id.edit_black_board_add_item_description);
+        editTextEmail= (EditText) view.findViewById(R.id.edit_black_board_add_item_contact_email);
+        editTextEmail.addTextChangedListener(this);
+        editTextEmail.setText("");
+
+        editTextTelephone = (EditText) view.findViewById(R.id.edit_black_board_add_item_contact_telephone);
+        editTextTelephone.addTextChangedListener(this);
+        editTextTelephone.setText("");
+
+        editTextCompany = (EditText) view.findViewById(R.id.edit_black_board_add_item_contact_company);
+        editTextCompany.addTextChangedListener(this);
+        editTextCompany.setText("");
+
+        editTextStreet = (EditText) view.findViewById(R.id.edit_black_board_add_item_contact_street);
+        editTextStreet.addTextChangedListener(this);
+        editTextStreet.setText("");
+
+        editTextCity = (EditText) view.findViewById(R.id.edit_black_board_add_item_contact_city);
+        editTextCity.addTextChangedListener(this);
+        editTextCity.setText("");
 
         imageButtonExpandContact = (ImageButton) view.findViewById(R.id.ib_tv_black_board_add_item_contact);
         imageButtonExpandContact.setOnClickListener(new View.OnClickListener() {
@@ -179,56 +230,89 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         buttonAttachment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FileHelper.getInstance().showPictureChooser(getActivity());
+                FileHelper.getInstance().showFileChooser(getActivity());
             }
         });
 
+        attachmentContainer = (LinearLayout) getView().findViewById(R.id.ll_attachment_container);
+        attachmentContainer.removeAllViews();
     }
 
-    public void setBlackBoardItemInformation(BlackBoardItem blackBoardItem){
-        editTextTitle.setText(blackBoardItem.getTitle());
-        //autoCompleteTextViewContact.setSelection(autoCompleteTextViewContactAdapter.
-        //        getPosition(blackBoardItem.getContact()));
-        editTextDescription.setText(blackBoardItem.getDescriptionText());
-        for (BlackBoardAttachment blackBoardAttachment : blackBoardItem.getBlackBoardAttachment()) {
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        sendLivePreviewToServer();
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {}
+
+    public void setBlackBoardItemInformation() {
+        String title = getBlackBoardItem().getTitle();
+        String descriptionText = getBlackBoardItem().getDescriptionText();
+        Contact contact = getBlackBoardItem().getContact();
+        List<BlackBoardAttachment> blackBoardAttachments = getBlackBoardItem().getBlackBoardAttachment();
+
+        editTextTitle.setText(title);
+        editTextDescription.setText(descriptionText);
+
+        //int contactPos = autoCompleteTextViewContactAdapter.getPosition(contact);
+        //if (contactPos != -1) autoCompleteTextViewContact.setSelection(contactPos);
+
+        for (BlackBoardAttachment blackBoardAttachment : blackBoardAttachments) {
             addAttachmentToView(blackBoardAttachment);
         }
     }
 
-    public void saveBlackBoardItem(){
-        if (!isEditTextEmpty(editTextTitle) && uploadList.isEmpty()) {
-            BlackBoardItem newBlackBoardItem = new BlackBoardItem();
-            Contact newContact;
+    private void sendLivePreviewToServer(){
+        if (blackBoardItem != null) {
+            JsonManager.getInstance().sendJson(ServerURLManager.LIVE_PREVIEW_BLACK_BOARD_ITEM_JSON_URL, fillBlackBoardItem());
+        }
+    }
 
-            newBlackBoardItem.setCreatedTimestamp(Calendar.getInstance().getTime());
-            newBlackBoardItem.setEditedTimestamp(Calendar.getInstance().getTime());
-            newBlackBoardItem.setTitle(editTextTitle.getText().toString());
-            newBlackBoardItem.setDescriptionText(editTextDescription.getText().toString());
-            newBlackBoardItem.setBlackBoardAttachment(blackBoardAttachments);
-            newBlackBoardItem.setUser(InfoWallApplication.getCurrentUser());
+    private BlackBoardItem getBlackBoardItem(){
+        return blackBoardItem;
+    }
 
-            //Check if a new contact was created (LinearLayout.View(Visible)) or a existing was selected
-            if (tlAddContact.getVisibility() == View.VISIBLE) {
-                newContact = createNewContact();
-            } else {
-                if (selectedContact == null) {
-                    selectedContact = new Contact();
-                    selectedContact.setContactAddress(new ContactAddress());
-                }
-                newContact = selectedContact;
+    private BlackBoardItem fillBlackBoardItem(){
+        Contact newContact;
+
+        blackBoardItem.setCreatedTimestamp(Calendar.getInstance().getTime());
+        blackBoardItem.setEditedTimestamp(Calendar.getInstance().getTime());
+        blackBoardItem.setTitle(editTextTitle.getText().toString());
+        blackBoardItem.setDescriptionText(editTextDescription.getText().toString());
+        blackBoardItem.setBlackBoardAttachment(blackBoardAttachments);
+        blackBoardItem.setUser(InfoWallApplication.getCurrentUser());
+
+        //Check if a new contact was created (LinearLayout.View(Visible)) or a existing was selected
+        if (tlAddContact.getVisibility() == View.VISIBLE) {
+            newContact = createNewContact();
+        } else {
+            if (selectedContact == null) {
+                selectedContact = new Contact();
+                selectedContact.setContactAddress(new ContactAddress());
             }
-            newBlackBoardItem.setContact(newContact);
+            newContact = selectedContact;
+        }
+        blackBoardItem.setContact(newContact);
 
-            //Check if item is new or a edit
+        return blackBoardItem;
+    }
+
+    private void saveBlackBoardItem(BlackBoardItem blackBoardItem){
+        if (!isEditTextEmpty(editTextTitle) && uploadList.isEmpty()) {
+            //Check if item is new (create) or a edit (update)
             if (isEditedItem){
-                newBlackBoardItem.setBlackBoardItemID(getArguments().getLong(BLACK_BOARD_ITEM_ID_TAG));
-                DAOHelper.getInstance().getBlackBoardItemDAO().update(newBlackBoardItem);
+                blackBoardItem.setBlackBoardItemID(getArguments().getLong(BLACK_BOARD_ITEM_ID_TAG));
+                DAOHelper.getInstance().getBlackBoardItemDAO().update(blackBoardItem);
             }else {
-                DAOHelper.getInstance().getBlackBoardItemDAO().create(newBlackBoardItem);
+                DAOHelper.getInstance().getBlackBoardItemDAO().create(blackBoardItem);
             }
             // Set Attachments to the item again because in the create method we have to clean erase this reference ( because of ORMLite )
-            newBlackBoardItem.setBlackBoardAttachment(blackBoardAttachments);
-            JsonManager.getInstance().sendJson(ServerURLManager.NEW_BLACK_BOARD_ITEM_URL, newBlackBoardItem);
+            blackBoardItem.setBlackBoardAttachment(blackBoardAttachments);
+            JsonManager.getInstance().sendJson(ServerURLManager.NEW_BLACK_BOARD_ITEM_URL, blackBoardItem);
 
             if (mOnSaveBlackBoardItemListener != null) {
                 mOnSaveBlackBoardItemListener.onSaveBlackBoardItem();
@@ -243,13 +327,12 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
             }
 
             Snackbar
-                .make(getView(), snackBarStringID, Snackbar.LENGTH_LONG)
-                .show();
+                    .make(getView(), snackBarStringID, Snackbar.LENGTH_LONG)
+                    .show();
         }
     }
 
     private View addAttachmentToView(BlackBoardAttachment attachment){
-        LinearLayout attachmentContainer = (LinearLayout) getView().findViewById(R.id.ll_attachment_container);
         BlackBoardAttachmentView attachmentView = new BlackBoardAttachmentView(getActivity(), attachment, false);
         attachmentContainer.addView(attachmentView);
 
