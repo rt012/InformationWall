@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import wipraktikum.informationwallandroidapp.BaseActivity;
@@ -26,6 +27,8 @@ import wipraktikum.informationwallandroidapp.TileOverview.Dialog.TileLongClickDi
 
 
 public class TileOverview extends BaseActivity {
+    public final static String TILE_ID_KEY_PARAM = "tileID";
+
     private InformationWallORMHelper databaseHelper = null;
 
     @Override
@@ -56,6 +59,21 @@ public class TileOverview extends BaseActivity {
     }
 
     @Override
+    public void onResume(){
+        super.onResume();
+
+        //Show Tile if activated. Hide if not
+        List<Tile> tileList = DAOHelper.getInstance().getTileDAO().queryForAll();
+        for (Tile tile : tileList){
+            if(tile.getIsActivated()){
+                activateTileOnServer(ServerURLManager.SHOW_BLACK_BOARD_PARAM_ACTIVE);
+            }else{
+                activateTileOnServer(ServerURLManager.SHOW_BLACK_BOARD_PARAM_NOT_ACTIVE);
+            }
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         //getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -79,7 +97,13 @@ public class TileOverview extends BaseActivity {
 
     private void startActivityByTile(Tile tile){
         try {
-            startActivity(new Intent(this, Class.forName(tile.getScreen())));
+            //Put the Tile ID for reference to the tile
+            Intent intent = new Intent(this, Class.forName(tile.getScreen()));
+            Bundle params = new Bundle();
+            params.putLong(TILE_ID_KEY_PARAM, tile.getTileID());
+            intent.putExtras(params);
+
+            startActivity(intent);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -126,17 +150,20 @@ public class TileOverview extends BaseActivity {
             tile.setIsActivated(true);
 
             //Show Tile on information wall
-            Map<String,String> params = new HashMap<>();
-            params.put(ServerURLManager.SHOW_BLACK_BOARD_PARAM_KEY, ServerURLManager.SHOW_BLACK_BOARD_PARAM_ACTIVE);
-            PhpRequestManager.getInstance().phpRequest(ServerURLManager.SHOW_BLACK_BOARD_URL, params);
+            activateTileOnServer(ServerURLManager.SHOW_BLACK_BOARD_PARAM_ACTIVE);
         }else{
             isActivatedWrapper.setVisibility(View.GONE);
             tile.setIsActivated(false);
 
             //Hide Tile on information wall
-            Map<String,String> params = new HashMap<>();
-            params.put(ServerURLManager.SHOW_BLACK_BOARD_PARAM_KEY, ServerURLManager.SHOW_BLACK_BOARD_PARAM_NOT_ACTIVE);
-            PhpRequestManager.getInstance().phpRequest(ServerURLManager.SHOW_BLACK_BOARD_URL, params);
+            activateTileOnServer(ServerURLManager.SHOW_BLACK_BOARD_PARAM_NOT_ACTIVE);
         }
+    }
+
+    //Only Blackboard is currently working (--> No more Tiles at the moment)
+    private void activateTileOnServer(String actionParam){
+        Map<String,String> params = new HashMap<>();
+        params.put(ServerURLManager.SHOW_BLACK_BOARD_PARAM_KEY, actionParam);
+        PhpRequestManager.getInstance().phpRequest(ServerURLManager.SHOW_BLACK_BOARD_URL, params);
     }
 }

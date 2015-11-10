@@ -95,11 +95,11 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     @Override
     public void onResume(){
         super.onResume();
+
         setUpGUI(getView());
         //Tell Server to open Live Preview
         Map<String, String> params = new HashMap<>();
         params.put(ServerURLManager.SHOW_LIVE_PREVIEW_BLACK_BOARD_ITEM_KEY, ServerURLManager.SHOW_LIVE_PREVIEW_BLACK_BOARD_ITEM_SHOW);
-
         PhpRequestManager.getInstance().phpRequest(ServerURLManager.SHOW_LIVE_PREVIEW_BLACK_BOARD_ITEM_URL, params);
 
         //Write BlackBoardItem Information to View
@@ -111,6 +111,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         }else{
             blackBoardItem = new BlackBoardItem();
         }
+
         //Handle initial Live Preview
         sendLivePreviewToServer();
     }
@@ -257,9 +258,8 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
 
         editTextTitle.setText(title);
         editTextDescription.setText(descriptionText);
-
-        //int contactPos = autoCompleteTextViewContactAdapter.getPosition(contact);
-        //if (contactPos != -1) autoCompleteTextViewContact.setSelection(contactPos);
+        autoCompleteTextViewContact.setText(contact.getFullName());
+        selectedContact = contact;
 
         for (BlackBoardAttachment blackBoardAttachment : blackBoardAttachments) {
             addAttachmentToView(blackBoardAttachment);

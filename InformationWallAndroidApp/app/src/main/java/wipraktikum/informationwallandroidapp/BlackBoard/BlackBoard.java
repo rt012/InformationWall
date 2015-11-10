@@ -12,10 +12,13 @@ import android.view.View;
 import java.util.Hashtable;
 import java.util.Map;
 
+import wipraktikum.informationwallandroidapp.BusinessObject.Tile.Tile;
+import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
 import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.ServerCommunication.PhpRequestManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
+import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
 import wipraktikum.informationwallandroidapp.Utils.FileHelper;
 
 /**
@@ -33,8 +36,6 @@ public class BlackBoard extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -55,11 +56,16 @@ public class BlackBoard extends AppCompatActivity {
     @Override
     public void onResume(){
         super.onResume();
-        //Creating parameters
-        Map<String,String> params = new Hashtable<String, String>();
-        params.put(ServerURLManager.OPEN_BLACK_BOARD_PARAM_KEY, ServerURLManager.OPEN_BLACK_BOARD_PARAM_OPEN);
-        //Call php script to set focus on tile
-        PhpRequestManager.getInstance().phpRequest(ServerURLManager.OPEN_BLACK_BOARD_URL, params);
+
+        if (getIntent().getExtras() != null){
+            Tile currentTile = (Tile) DAOHelper.getInstance().getTileDAO().queryForId(
+                    getIntent().getExtras().getLong(TileOverview.TILE_ID_KEY_PARAM));
+            if (currentTile.getIsActivated()) {
+                openBlackBoardOnServer(ServerURLManager.OPEN_BLACK_BOARD_PARAM_OPEN);
+            }else{
+                openBlackBoardOnServer(ServerURLManager.OPEN_BLACK_BOARD_PARAM_CLOSE);
+            }
+        }
 
         if (currentFragment == null || currentFragment == BlackBoardOverview.getInstance()) {
             openFragment(BlackBoardOverview.getInstance(), false);
@@ -74,11 +80,7 @@ public class BlackBoard extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
-        //Creating parameters
-        Map<String,String> params = new Hashtable<String, String>();
-        params.put(ServerURLManager.OPEN_BLACK_BOARD_PARAM_KEY, ServerURLManager.OPEN_BLACK_BOARD_PARAM_CLOSE);
-        //Call php script to remove focus on tile
-        PhpRequestManager.getInstance().phpRequest(ServerURLManager.OPEN_BLACK_BOARD_URL, params);
+        openBlackBoardOnServer(ServerURLManager.OPEN_BLACK_BOARD_PARAM_CLOSE);
     }
 
     @Override
@@ -124,6 +126,14 @@ public class BlackBoard extends AppCompatActivity {
                 mOnActivityResultListener.onActivityResult(data);
             }
         }
+    }
+
+    public void openBlackBoardOnServer(String actionParam){
+        //Creating parameters
+        Map<String,String> params = new Hashtable<String, String>();
+        params.put(ServerURLManager.OPEN_BLACK_BOARD_PARAM_KEY, actionParam);
+        //Call php script to remove focus on tile
+        PhpRequestManager.getInstance().phpRequest(ServerURLManager.OPEN_BLACK_BOARD_URL, params);
     }
 
     public void openFragment(Fragment fragment, boolean addToBackStack){
