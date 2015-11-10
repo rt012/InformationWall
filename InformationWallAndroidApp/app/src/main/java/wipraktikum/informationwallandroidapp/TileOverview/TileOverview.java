@@ -65,9 +65,9 @@ public class TileOverview extends BaseActivity {
         //Show Tile if activated. Hide if not
         List<Tile> tileList = DAOHelper.getInstance().getTileDAO().queryForAll();
         for (Tile tile : tileList){
-            if(tile.getIsActivated()){
+            if(tile.getName().equals("Black Board") && tile.getIsActivated()){
                 activateTileOnServer(ServerURLManager.SHOW_BLACK_BOARD_PARAM_ACTIVE);
-            }else{
+            }else if (tile.getName().equals("Black Board") && !tile.getIsActivated()){
                 activateTileOnServer(ServerURLManager.SHOW_BLACK_BOARD_PARAM_NOT_ACTIVE);
             }
         }

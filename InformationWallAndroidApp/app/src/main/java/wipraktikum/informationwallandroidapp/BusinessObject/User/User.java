@@ -8,7 +8,7 @@ public class User {
     private String mEmailAddress;
     private String mPassword;
     private UserGroup mUserGroup;
-    private boolean mLoggedIn;
+    private transient boolean mLoggedIn;
 
     public User(){}
 

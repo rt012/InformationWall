@@ -129,10 +129,8 @@ public class BlackBoard extends AppCompatActivity {
     }
 
     public void openBlackBoardOnServer(String actionParam){
-        //Creating parameters
         Map<String,String> params = new Hashtable<String, String>();
         params.put(ServerURLManager.OPEN_BLACK_BOARD_PARAM_KEY, actionParam);
-        //Call php script to remove focus on tile
         PhpRequestManager.getInstance().phpRequest(ServerURLManager.OPEN_BLACK_BOARD_URL, params);
     }
 

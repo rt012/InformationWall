@@ -64,6 +64,7 @@ public class SyncManager {
         jsonManager.setOnErrorReceiveListener(new JsonManager.OnErrorListener() {
             @Override
             public void OnResponse(VolleyError error) {
+                int a = 1;
                 // TODO
             }
         });
@@ -80,6 +81,13 @@ public class SyncManager {
                 //BlackBoardItem ID
                 serverBlackBoardItem.setBlackBoardItemID(clientItemList.
                         get(clientItemList.indexOf(serverBlackBoardItem)).getBlackBoardItemID());
+                //User ID
+                serverBlackBoardItem.getUser().setUserID(clientItemList.
+                        get(clientItemList.indexOf(serverBlackBoardItem)).getUser().getUserID());
+                //User Group ID
+                serverBlackBoardItem.getUser().getUserGroup().setUserGroupID(clientItemList.
+                        get(clientItemList.indexOf(serverBlackBoardItem)).getUser().getUserGroup().
+                        getUserGroupID());
                 //Contact ID
                 serverBlackBoardItem.getContact().setContactID(clientItemList.
                         get(clientItemList.indexOf(serverBlackBoardItem)).getContact().getContactID());
@@ -102,6 +110,8 @@ public class SyncManager {
             } else {
                 serverBlackBoardItem.setBlackBoardItemID(0);
                 serverBlackBoardItem.getContact().setContactID(0);
+                serverBlackBoardItem.getUser().setUserID(0);
+                serverBlackBoardItem.getUser().getUserGroup().setUserGroupID(0);
                 serverBlackBoardItem.getContact().getContactAddress().setContactAddressID(0);
 
                 for (BlackBoardAttachment blackBoardAttachment : serverBlackBoardItem.getBlackBoardAttachment()){

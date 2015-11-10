@@ -159,6 +159,17 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         blackBoardAttachmentViews.add(attachmentView);
     }
 
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        sendLivePreviewToServer();
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {}
+
     private void setUpGUI(View view){
         editTextTitle = (EditText) view.findViewById(R.id.edit_black_board_add_item_title);
         editTextTitle.addTextChangedListener(this);
@@ -238,17 +249,6 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         attachmentContainer = (LinearLayout) getView().findViewById(R.id.ll_attachment_container);
         attachmentContainer.removeAllViews();
     }
-
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-        sendLivePreviewToServer();
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {}
 
     public void setBlackBoardItemInformation() {
         String title = getBlackBoardItem().getTitle();

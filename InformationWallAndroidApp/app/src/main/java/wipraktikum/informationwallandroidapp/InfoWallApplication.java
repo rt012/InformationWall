@@ -15,7 +15,6 @@ import java.sql.SQLException;
 
 import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoard;
 import wipraktikum.informationwallandroidapp.BusinessObject.User.User;
-import wipraktikum.informationwallandroidapp.BusinessObject.User.UserGroup;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.Tile.DBTile;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.Database.InformationWallORMHelper;
@@ -49,7 +48,6 @@ public class InfoWallApplication extends Application {
             e.printStackTrace();
         }
 
-        currentUser = DAOHelper.getInstance().getUserDAO().getCurrentUser();
         startActivity();
     }
 
@@ -58,6 +56,9 @@ public class InfoWallApplication extends Application {
     }
 
     public static User getCurrentUser(){
+        if (currentUser == null){
+            currentUser = DAOHelper.getInstance().getUserDAO().getCurrentUser();
+        }
         return currentUser;
     }
 
@@ -101,18 +102,7 @@ public class InfoWallApplication extends Application {
     private void insertTestData() throws SQLException {
         //Sync Black Board Items from server and send unsynced items to it
         SyncManager.getInstance().syncBlackBoardItems();
-        //User
-        UserGroup userGroup = new UserGroup();
-        userGroup.setEdit(true);
-        userGroup.setDelete(true);
-        userGroup.setRead(true);
-        userGroup.setWrite(true);
 
-        User user = new User();
-        user.setLoggedIn(true);
-        user.setEmailAddress("remasico@gmail.com");
-        user.setUserGroup(userGroup);
-        DAOHelper.getInstance().getUserDAO().update(user);
         //Tiles
         Dao<DBTile, Long> tileDao =  databaseHelper.getTileDAO();
         tileDao.createIfNotExists(new DBTile("Black Board", R.drawable.slide_1, BlackBoard.class.getName()));
