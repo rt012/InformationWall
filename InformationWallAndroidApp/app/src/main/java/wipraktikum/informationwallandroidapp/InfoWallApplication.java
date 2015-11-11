@@ -1,10 +1,13 @@
 package wipraktikum.informationwallandroidapp;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -21,6 +24,7 @@ import wipraktikum.informationwallandroidapp.Database.InformationWallORMHelper;
 import wipraktikum.informationwallandroidapp.Login.LoginActivity;
 import wipraktikum.informationwallandroidapp.ServerCommunication.SyncManager;
 import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
+import wipraktikum.informationwallandroidapp.Utils.ParseUtils;
 
 /**
  * Created by Remi on 26.10.2015.
@@ -33,11 +37,16 @@ public class InfoWallApplication extends Application {
     public static final String TAG = InfoWallApplication.class.getSimpleName();
     private RequestQueue mRequestQueue;
 
+    private static Activity activeActivity;
+
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
+        registerActivityLifecycleCallbacks(new MyActivityLifecycleCallbacks());
 
+        // register with parse
+        ParseUtils.registerParse(this);
         //GCMHelper.getInstance().registerToGCM("asda");
         //Insert Database dummy date
         databaseHelper = InfoWallApplication.getInstance().getDatabaseHelper();
@@ -53,6 +62,13 @@ public class InfoWallApplication extends Application {
 
     public static InfoWallApplication getInstance() {
         return instance;
+    }
+
+    public static Activity getActiveActivity() {
+        if(activeActivity != null) {
+            return activeActivity
+        }
+        return null;
     }
 
     public static User getCurrentUser(){
@@ -127,5 +143,38 @@ public class InfoWallApplication extends Application {
     private boolean checkIfUserIsLoggedIn() {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         return sharedPref.getBoolean("loggedIn", false);
+    }
+
+    private static final class MyActivityLifecycleCallbacks implements ActivityLifecycleCallbacks {
+
+        public void onActivityCreated(Activity activity, Bundle bundle) {
+            Log.e("","onActivityCreated:" + activity.getLocalClassName());
+            activeActivity = activity;
+        }
+
+        public void onActivityDestroyed(Activity activity) {
+            Log.e("", "onActivityDestroyed:" + activity.getLocalClassName());
+        }
+
+        public void onActivityPaused(Activity activity) {
+            Log.e("","onActivityPaused:" + activity.getLocalClassName());
+        }
+
+        public void onActivityResumed(Activity activity) {
+            Log.e("","onActivityResumed:" + activity.getLocalClassName());
+        }
+
+        public void onActivitySaveInstanceState(Activity activity,
+                                                Bundle outState) {
+            Log.e("","onActivitySaveInstanceState:" + activity.getLocalClassName());
+        }
+
+        public void onActivityStarted(Activity activity) {
+            Log.e("","onActivityStarted:" + activity.getLocalClassName());
+        }
+
+        public void onActivityStopped(Activity activity) {
+            Log.e("","onActivityStopped:" + activity.getLocalClassName());
+        }
     }
 }

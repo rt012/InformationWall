@@ -199,4 +199,8 @@ public class BlackBoard extends AppCompatActivity {
     public interface OnActivityResultListener{
         void onActivityResult(Intent data);
     }
+
+    public void ShowSnakeMessage() {
+
+    }
 }

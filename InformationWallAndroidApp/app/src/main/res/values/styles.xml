@@ -45,4 +45,8 @@
 
 
     </style>
+
+    <style name="AppTheme.Button" parent="Base.Widget.AppCompat.Button">
+        <item name="colorButtonNormal">@color/loginButton</item>
+    </style>
 </resources>

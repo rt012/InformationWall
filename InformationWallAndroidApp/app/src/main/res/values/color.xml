@@ -2,4 +2,5 @@
 <resources>
     <item name="ci_color" type="color">#163f50</item>
     <item name="ci_color_dark" type="color">#F2163f50</item>
+    <color name="loginButton">#218eed</color>
 </resources>
