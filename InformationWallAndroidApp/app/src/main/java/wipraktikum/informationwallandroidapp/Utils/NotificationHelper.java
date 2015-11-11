@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.os.Build;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
@@ -28,8 +27,10 @@ import wipraktikum.informationwallandroidapp.R;
  */
 public class NotificationHelper {
     private static NotificationHelper instance = null;
+
     private Context mContext =null;
     private static int notifyID = 0;
+    private OnNotificationReceiveListener mOnNotificationReceiveListener = null;
 
     private NotificationHelper(){
         mContext = InfoWallApplication.getInstance();
@@ -101,6 +102,10 @@ public class NotificationHelper {
             NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.notify(mNotificationId, notification);
         } else {
+            if (mOnNotificationReceiveListener != null) {
+                mOnNotificationReceiveListener.onNotificationReceive();
+            }
+
             Toast.makeText(InfoWallApplication.getInstance(), new Gson().toJson(blackBoardItem).toString(), Toast.LENGTH_SHORT);
             //intent.putExtra("title", title);
             //intent.putExtra("message", message);
@@ -139,6 +144,14 @@ public class NotificationHelper {
         }
 
         return isInBackground;
+    }
+
+    public void setOnNotificationReceiveListener(OnNotificationReceiveListener onNotificationReceiveListener){
+        mOnNotificationReceiveListener = onNotificationReceiveListener;
+    }
+
+    public interface OnNotificationReceiveListener{
+        public void onNotificationReceive();
     }
 
 }

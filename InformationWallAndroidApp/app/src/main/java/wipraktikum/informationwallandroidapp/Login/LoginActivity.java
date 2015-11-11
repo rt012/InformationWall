@@ -22,6 +22,7 @@ import com.google.gson.JsonParser;
 
 import org.json.JSONObject;
 
+import wipraktikum.informationwallandroidapp.BaseActivity;
 import wipraktikum.informationwallandroidapp.BusinessObject.User.User;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.R;
@@ -29,7 +30,7 @@ import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
 import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
     private static final String TAG = "LoginActivity";
 
     private EditText mEmailText;
@@ -85,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void OnResponse(JSONObject response) {
                 progressDialog.dismiss();
-                User currentUser = new Gson().fromJson(new JsonParser().parse(response.toString()),User.class );
+                User currentUser = new Gson().fromJson(new JsonParser().parse(response.toString()), User.class);
                 currentUser.setLoggedIn(true);
                 DAOHelper.getInstance().getUserDAO().update(currentUser);
                 onLoginSuccess();

@@ -5,13 +5,13 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import java.util.Hashtable;
 import java.util.Map;
 
+import wipraktikum.informationwallandroidapp.BaseActivity;
 import wipraktikum.informationwallandroidapp.BusinessObject.Tile.Tile;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
@@ -24,7 +24,7 @@ import wipraktikum.informationwallandroidapp.Utils.FileHelper;
 /**
  * Created by Eric Schmidt on 30.10.2015.
  */
-public class BlackBoard extends AppCompatActivity {
+public class BlackBoard extends BaseActivity {
     private OnActivityResultListener mOnActivityResultListener = null;
     private static Fragment currentFragment = null;
     private FloatingActionButton fab = null;

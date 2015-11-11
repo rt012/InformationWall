@@ -327,8 +327,8 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
             }
 
             Snackbar
-                    .make(getView(), snackBarStringID, Snackbar.LENGTH_LONG)
-                    .show();
+                .make(getView(), snackBarStringID, Snackbar.LENGTH_LONG)
+                .show();
         }
     }
 
@@ -419,8 +419,8 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         return false;
     }
 
-    public void setOnSaveBlackBoardItem(OnSaveBlackBoardItemListener OnSaveBlackBoardItemListener){
-        mOnSaveBlackBoardItemListener = OnSaveBlackBoardItemListener;
+    public void setOnSaveBlackBoardItem(OnSaveBlackBoardItemListener onSaveBlackBoardItemListener){
+        mOnSaveBlackBoardItemListener = onSaveBlackBoardItemListener;
     }
 
     public interface OnSaveBlackBoardItemListener{
