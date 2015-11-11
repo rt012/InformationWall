@@ -66,7 +66,7 @@ public class InfoWallApplication extends Application {
 
     public static Activity getActiveActivity() {
         if(activeActivity != null) {
-            return activeActivity
+            return activeActivity;
         }
         return null;
     }

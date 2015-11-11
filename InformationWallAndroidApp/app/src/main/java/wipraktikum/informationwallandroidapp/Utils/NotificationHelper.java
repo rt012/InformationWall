@@ -106,9 +106,7 @@ public class NotificationHelper {
             //intent.putExtra("message", message);
             //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             //mContext.startActivity(intent);
-            Snackbar
-                    .make(InfoWallApplication.getActiveActivity(), R.string.common_signin_button_text, Snackbar.LENGTH_LONG)
-                    .show();
+
         }
     }
 
