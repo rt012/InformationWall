@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/pref_general">
+    <SwitchPreference
+        android:key="pref_pushNoti"
+        android:title="@string/pref_pushNoti"
+        android:summary="@string/pref_pushNoti_summary"
+        android:defaultValue="true" />
+    </PreferenceCategory>
+</PreferenceScreen>

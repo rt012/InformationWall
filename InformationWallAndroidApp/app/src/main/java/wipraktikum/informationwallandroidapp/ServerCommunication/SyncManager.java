@@ -1,6 +1,5 @@
 package wipraktikum.informationwallandroidapp.ServerCommunication;
 
-import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -8,10 +7,12 @@ import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
-import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardAttachment;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
 import wipraktikum.informationwallandroidapp.Database.DAO.BlackBoard.BlackBoardItemDAO;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
@@ -20,13 +21,17 @@ import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
  * Created by Remi on 04.11.2015.
  */
 
-public class SyncManager {
+public class SyncManager implements JsonManager.OnObjectResponseListener, JsonManager.OnArrayResponseListener {
 
     private JsonManager jsonManager;
     private static SyncManager instance;
+    private BlackBoardItem currentUnsyncedBlackBoardItem;
+    private Gson gsonInstance;
 
     private SyncManager() {
         jsonManager = JsonManager.getInstance();
+        jsonManager.setOnObjectResponseReceiveListener(this);
+        gsonInstance = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
     }
 
     public static SyncManager getInstance(){
@@ -37,88 +42,56 @@ public class SyncManager {
     }
 
     public void syncBlackBoardItems() {
+        syncBlackBoardItemToServer();
+    }
 
-        Gson gsonInstance = new Gson();
-/*
-
-        ArrayList<BlackBoardItem> unsyncedItems = null;
+    private void syncBlackBoardItemToServer() {
         try {
-            unsyncedItems = DAOHelper.getInstance().getBlackBoardItemDAO().getUnsyncedItems();
+            ArrayList<BlackBoardItem> unsyncedItems = DAOHelper.getInstance().getBlackBoardItemDAO().getUnsyncedItems();
+            if(!unsyncedItems.isEmpty()) {
+
+                currentUnsyncedBlackBoardItem = unsyncedItems.get(0);
+                String jsonString =  gsonInstance.toJson(currentUnsyncedBlackBoardItem);
+                jsonManager.sendJson(ServerURLManager.NEW_BLACK_BOARD_ITEM_URL, jsonString);
+            } else {
+                syncBlackBoardItemsFromServer();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        if(unsyncedItems != null && !unsyncedItems.isEmpty()) {
-            for(BlackBoardItem item : unsyncedItems) {
-                String jsonString =  gsonInstance.toJson(item);
-                jsonManager.sendJson(JsonManager.NEW_BLACK_BOARD_ITEM_URL, jsonString);
-            }
-        }
-*/
+    }
 
-        jsonManager.setOnArrayResponseReceiveListener(new JsonManager.OnArrayResponseListener() {
-            @Override
-            public void OnResponse(JSONArray response) {
-                compareBlackBoardItems(new JsonParser().parse(response.toString()));
-            }
-        });
-        jsonManager.setOnErrorReceiveListener(new JsonManager.OnErrorListener() {
-            @Override
-            public void OnResponse(VolleyError error) {
-                int a = 1;
-                // TODO
-            }
-        });
+    private void syncBlackBoardItemsFromServer() {
         jsonManager.getJsonArray(ServerURLManager.GET_ALL_ITEMS_URL);
     }
 
-    private void compareBlackBoardItems(JsonElement response) {
+    private void UpdateOrCreateBlackBoardItems(JsonElement response) {
         BlackBoardItemDAO blackBoardItemDAO = DAOHelper.getInstance().getBlackBoardItemDAO();
         Gson gsonInstance = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
         List<BlackBoardItem> serverItemList = gsonInstance.fromJson(response, new TypeToken<List<BlackBoardItem>>(){}.getType());
         List<BlackBoardItem> clientItemList = blackBoardItemDAO.queryForAll();
         for(BlackBoardItem serverBlackBoardItem : serverItemList) {
             if(clientItemList.contains(serverBlackBoardItem)) {
-                //BlackBoardItem ID
-                serverBlackBoardItem.setBlackBoardItemID(clientItemList.
-                        get(clientItemList.indexOf(serverBlackBoardItem)).getBlackBoardItemID());
-                //User ID
-                serverBlackBoardItem.getUser().setUserID(clientItemList.
-                        get(clientItemList.indexOf(serverBlackBoardItem)).getUser().getUserID());
-                //User Group ID
-                serverBlackBoardItem.getUser().getUserGroup().setUserGroupID(clientItemList.
-                        get(clientItemList.indexOf(serverBlackBoardItem)).getUser().getUserGroup().
-                        getUserGroupID());
-                //Contact ID
-                serverBlackBoardItem.getContact().setContactID(clientItemList.
-                        get(clientItemList.indexOf(serverBlackBoardItem)).getContact().getContactID());
-                //ContactAddress
-                serverBlackBoardItem.getContact().getContactAddress().setContactAddressID(clientItemList.
-                        get(clientItemList.indexOf(serverBlackBoardItem)).getContact().getContactAddress().getContactAddressID());
-                //Attachment ID
-                for (BlackBoardAttachment blackBoardAttachment : serverBlackBoardItem.getBlackBoardAttachment()) {
-                    List<BlackBoardAttachment> clientBlackBoardAttachments = clientItemList.
-                            get(clientItemList.indexOf(serverBlackBoardItem)).getBlackBoardAttachment();
-
-                    if(clientBlackBoardAttachments.contains(blackBoardAttachment)){
-                        blackBoardAttachment.setBlackBoardAttachmentID(clientBlackBoardAttachments.
-                                get(clientBlackBoardAttachments.indexOf(blackBoardAttachment)).getBlackBoardAttachmentID());
-                    }else{
-                        blackBoardAttachment.setBlackBoardAttachmentID(0);
-                    }
-                }
                 blackBoardItemDAO.update(serverBlackBoardItem);
             } else {
-                serverBlackBoardItem.setBlackBoardItemID(0);
-                serverBlackBoardItem.getContact().setContactID(0);
-                serverBlackBoardItem.getUser().setUserID(0);
-                serverBlackBoardItem.getUser().getUserGroup().setUserGroupID(0);
-                serverBlackBoardItem.getContact().getContactAddress().setContactAddressID(0);
-
-                for (BlackBoardAttachment blackBoardAttachment : serverBlackBoardItem.getBlackBoardAttachment()){
-                    blackBoardAttachment.setBlackBoardAttachmentID(0);
-                }
                 blackBoardItemDAO.create(serverBlackBoardItem);
             }
         }
+    }
+
+    @Override
+    public void OnResponse(JSONObject response) {
+        BlackBoardItem serverBlackBoardItem = new Gson().fromJson(new JsonParser().parse(response.toString()), BlackBoardItem.class);
+        serverBlackBoardItem.setSyncStatus(true);
+        BlackBoardItemDAO blackBoardItemDAO = DAOHelper.getInstance().getBlackBoardItemDAO();
+        blackBoardItemDAO.deleteByID(currentUnsyncedBlackBoardItem.getBlackBoardItemID());
+        blackBoardItemDAO.create(serverBlackBoardItem);
+
+        syncBlackBoardItems();
+    }
+
+    @Override
+    public void OnResponse(JSONArray response) {
+        UpdateOrCreateBlackBoardItems(new JsonParser().parse(response.toString()));
     }
 }

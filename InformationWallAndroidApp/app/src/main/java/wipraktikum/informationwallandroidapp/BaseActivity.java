@@ -1,6 +1,9 @@
 package wipraktikum.informationwallandroidapp;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +11,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import wipraktikum.informationwallandroidapp.Login.LoginActivity;
+import wipraktikum.informationwallandroidapp.Preferences.AppPreferences;
 import wipraktikum.informationwallandroidapp.Utils.NotificationHelper;
 
 
@@ -20,16 +25,15 @@ public class BaseActivity extends AppCompatActivity implements NotificationHelpe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
         mRootView = (CoordinatorLayout) findViewById(R.id.cl_root_layout);
+
+        //Register Listener
+        NotificationHelper.getInstance().setOnNotificationReceiveListener(this);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_base, menu);
-
-        //Register Listener
-        NotificationHelper.getInstance().setOnNotificationReceiveListener(this);
-
         return true;
     }
 
@@ -39,13 +43,25 @@ public class BaseActivity extends AppCompatActivity implements NotificationHelpe
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch(id) {
+            case R.id.action_settings:
+                Intent intent = new Intent(this, AppPreferences.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_logout:
+                performLogout();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void performLogout() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean("loggedIn", true);
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 
     @Override

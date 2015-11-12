@@ -100,7 +100,7 @@ public class BlackBoardItem {
     @Override
     public boolean equals(Object o) {
         BlackBoardItem compareBlackBoardItem = (BlackBoardItem) o;
-        if(this.getCreatedTimestamp().equals(compareBlackBoardItem.getCreatedTimestamp()) && this.getTitle().equals(compareBlackBoardItem.getTitle())) {
+        if(this.getBlackBoardItemID() == compareBlackBoardItem.getBlackBoardItemID()) {
             return true;
         }
         return false;

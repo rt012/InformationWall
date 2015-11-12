@@ -32,9 +32,9 @@ public class ParseUtils {
         }
     }
 
-    public static void registerParse(Context context) {
+    public static void registerParse() {
         // initializing parse library
-        Parse.initialize(context, AppConfig.PARSE_APPLICATION_ID, AppConfig.PARSE_CLIENT_KEY);
+        Parse.initialize(InfoWallApplication.getInstance(), AppConfig.PARSE_APPLICATION_ID, AppConfig.PARSE_CLIENT_KEY);
         ParseInstallation.getCurrentInstallation().saveInBackground();
 
         ParsePush.subscribeInBackground(AppConfig.PARSE_CHANNEL, new SaveCallback() {
@@ -46,9 +46,9 @@ public class ParseUtils {
         });
     }
 
-    public static void unregisterParse(Context context) {
+    public static void unregisterParse() {
         // initializing parse library
-        Parse.initialize(context, AppConfig.PARSE_APPLICATION_ID, AppConfig.PARSE_CLIENT_KEY);
+        Parse.initialize(InfoWallApplication.getInstance(), AppConfig.PARSE_APPLICATION_ID, AppConfig.PARSE_CLIENT_KEY);
         ParseInstallation.getCurrentInstallation().saveInBackground();
 
         ParsePush.unsubscribeInBackground(AppConfig.PARSE_CHANNEL, new SaveCallback() {
@@ -58,6 +58,14 @@ public class ParseUtils {
                 Toast.makeText(InfoWallApplication.getInstance(), "Successfully unsubscribed to Parse!", Toast.LENGTH_SHORT);
             }
         });
+    }
+
+    public static void enableDisablePushNotification(boolean isActivated) {
+        if(isActivated) {
+            registerParse();
+        } else {
+            unregisterParse();
+        }
     }
 
     public static void subscribeWithEmail(String email) {

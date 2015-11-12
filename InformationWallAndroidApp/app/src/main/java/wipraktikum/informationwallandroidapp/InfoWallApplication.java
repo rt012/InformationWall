@@ -46,7 +46,7 @@ public class InfoWallApplication extends Application {
         registerActivityLifecycleCallbacks(new MyActivityLifecycleCallbacks());
 
         // register with parse
-        ParseUtils.registerParse(this);
+        ParseUtils.registerParse();
         //GCMHelper.getInstance().registerToGCM("asda");
         //Insert Database dummy date
         databaseHelper = InfoWallApplication.getInstance().getDatabaseHelper();

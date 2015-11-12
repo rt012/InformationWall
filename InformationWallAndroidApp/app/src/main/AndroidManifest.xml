@@ -63,6 +63,14 @@
                 android:value=".TileOverview.TileOverview" />
         </activity>
 
+        <activity
+            android:name=".Preferences.AppPreferences"
+            android:label="@string/title_activity_preferences"
+            android:theme="@style/AppTheme.NoActionBar"
+             />
+
+
+
         <!-- Added for Parse push notifications -->
 
         <service android:name="com.parse.PushService" />
