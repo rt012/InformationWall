@@ -25,15 +25,6 @@ public class JsonManager {
     private OnErrorListener mOnErrorListener;
     final String VOLLEY_TAG = "Volley Log";
 
-    private JsonManager(){}
-
-    public static JsonManager getInstance(){
-        if (instance == null){
-            instance = new JsonManager();
-        }
-        return instance;
-    }
-
     public void sendJson(String url, Object object) {
         JSONObject objectAsJsonObject = null;
         if(object != null) {

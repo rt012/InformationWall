@@ -95,24 +95,6 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         setHasOptionsMenu(true);
 
         ((BlackBoard)getActivity()).setOnActivityResultListener(this);
-
-        JsonManager.getInstance().setOnObjectResponseReceiveListener(new JsonManager.OnObjectResponseListener() {
-            @Override
-            public void OnResponse(JSONObject response) {
-                BlackBoardItem serverBlackBoardItem = new Gson().fromJson(new JsonParser().parse(response.toString()), BlackBoardItem.class);
-                serverBlackBoardItem.setSyncStatus(true);
-                BlackBoardItemDAO blackBoardItemDAO = DAOHelper.getInstance().getBlackBoardItemDAO();
-                blackBoardItemDAO.deleteByID(blackBoardItem.getBlackBoardItemID());
-                blackBoardItemDAO.create(serverBlackBoardItem);
-            }
-        });
-        JsonManager.getInstance().setOnErrorReceiveListener(new JsonManager.OnErrorListener() {
-            @Override
-            public void OnResponse(VolleyError error) {
-
-            }
-        });
-
         return view;
     }
 
@@ -282,7 +264,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
 
     private void sendLivePreviewToServer(){
         if (blackBoardItem != null) {
-            JsonManager.getInstance().sendJson(ServerURLManager.LIVE_PREVIEW_BLACK_BOARD_ITEM_JSON_URL, fillBlackBoardItem());
+            new JsonManager().sendJson(ServerURLManager.LIVE_PREVIEW_BLACK_BOARD_ITEM_JSON_URL, fillBlackBoardItem());
         }
     }
 
@@ -315,7 +297,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         return blackBoardItem;
     }
 
-    private void saveBlackBoardItem(BlackBoardItem blackBoardItem){
+    private void saveBlackBoardItem(final BlackBoardItem blackBoardItem){
         if (!isEditTextEmpty(editTextTitle) && uploadList.isEmpty()) {
             //Check if item is new (create) or a edit (update)
             if (isEditedItem){
@@ -327,7 +309,24 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
             }
             // Set Attachments to the item again because in the create method we have to clean erase this reference ( because of ORMLite )
             blackBoardItem.setBlackBoardAttachment(blackBoardAttachments);
-            JsonManager.getInstance().sendJson(ServerURLManager.NEW_BLACK_BOARD_ITEM_URL, blackBoardItem);
+            JsonManager jsonManager  = new JsonManager();
+            jsonManager.setOnObjectResponseReceiveListener(new JsonManager.OnObjectResponseListener() {
+                @Override
+                public void OnResponse(JSONObject response) {
+                    BlackBoardItem serverBlackBoardItem = new Gson().fromJson(new JsonParser().parse(response.toString()), BlackBoardItem.class);
+                    serverBlackBoardItem.setSyncStatus(true);
+                    BlackBoardItemDAO blackBoardItemDAO = DAOHelper.getInstance().getBlackBoardItemDAO();
+                    blackBoardItemDAO.deleteByID(blackBoardItem.getBlackBoardItemID());
+                    blackBoardItemDAO.create(serverBlackBoardItem);
+                }
+            });
+            jsonManager.setOnErrorReceiveListener(new JsonManager.OnErrorListener() {
+                @Override
+                public void OnResponse(VolleyError error) {
+
+                }
+            });
+            jsonManager.sendJson(ServerURLManager.NEW_BLACK_BOARD_ITEM_URL, blackBoardItem);
 
             if (mOnSaveBlackBoardItemListener != null) {
                 mOnSaveBlackBoardItemListener.onSaveBlackBoardItem();

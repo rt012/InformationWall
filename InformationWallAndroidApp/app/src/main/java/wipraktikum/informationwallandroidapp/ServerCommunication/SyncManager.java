@@ -29,7 +29,7 @@ public class SyncManager implements JsonManager.OnObjectResponseListener, JsonMa
     private Gson gsonInstance;
 
     private SyncManager() {
-        jsonManager = JsonManager.getInstance();
+        jsonManager = new JsonManager();
         jsonManager.setOnObjectResponseReceiveListener(this);
         gsonInstance = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
     }
