@@ -160,7 +160,6 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         //Add filePath to LinearLayout below
         BlackBoardAttachment blackBoardAttachment = createNewAttachment(filePath);
         View attachmentView = addAttachmentToView(blackBoardAttachment);
-        uploadAttachment(blackBoardAttachment, attachmentView);
         blackBoardAttachments.add(blackBoardAttachment);
         blackBoardAttachmentViews.add(attachmentView);
     }
@@ -299,6 +298,10 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
 
     private void saveBlackBoardItem(final BlackBoardItem blackBoardItem){
         if (!isEditTextEmpty(editTextTitle) && uploadList.isEmpty()) {
+
+            //TODO Upload Attachments recursive
+            //uploadAttachment(blackBoardAttachment, attachmentView);
+
             //Check if item is new (create) or a edit (update)
             if (isEditedItem){
                 blackBoardItem.setSyncStatus(false);
@@ -309,7 +312,9 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
             }
             // Set Attachments to the item again because in the create method we have to clean erase this reference ( because of ORMLite )
             blackBoardItem.setBlackBoardAttachment(blackBoardAttachments);
+
             JsonManager jsonManager  = new JsonManager();
+            jsonManager.sendJson(ServerURLManager.NEW_BLACK_BOARD_ITEM_URL, blackBoardItem);
             jsonManager.setOnObjectResponseReceiveListener(new JsonManager.OnObjectResponseListener() {
                 @Override
                 public void OnResponse(JSONObject response) {
@@ -326,7 +331,6 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
 
                 }
             });
-            jsonManager.sendJson(ServerURLManager.NEW_BLACK_BOARD_ITEM_URL, blackBoardItem);
 
             if (mOnSaveBlackBoardItemListener != null) {
                 mOnSaveBlackBoardItemListener.onSaveBlackBoardItem();
@@ -458,6 +462,6 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     }
 
     public interface OnSaveBlackBoardItemListener{
-        public void onSaveBlackBoardItem();
+        void onSaveBlackBoardItem();
     }
 }

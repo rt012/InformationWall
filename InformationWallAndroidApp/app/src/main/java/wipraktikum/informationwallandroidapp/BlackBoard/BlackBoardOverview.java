@@ -13,6 +13,8 @@ import wipraktikum.informationwallandroidapp.BlackBoard.Dialog.BlackBoardItemDia
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.R;
+import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
+import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
 
 public class BlackBoardOverview extends Fragment implements BlackBoardItemDialogBuilder.OnItemChangeListener{
     private final String FRAGMENT_TAG = "FRAGMENT_OVERVIEW";
@@ -67,7 +69,8 @@ public class BlackBoardOverview extends Fragment implements BlackBoardItemDialog
         //Close Dialog
         blackBoardItemDialogBuilder.dismiss();
         DAOHelper.getInstance().getBlackBoardItemDAO().delete(blackBoardItem);
-        //TODO DELETE FROM SERVER
+        blackBoardExpandableListViewAdapter.notifyDataSetChanged();
+        new JsonManager().sendJson(ServerURLManager.DELETE_BLACK_BOARD_ITEM_URL, blackBoardItem);
     }
 
     @Override

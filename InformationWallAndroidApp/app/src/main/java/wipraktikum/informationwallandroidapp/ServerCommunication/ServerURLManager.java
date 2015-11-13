@@ -29,6 +29,9 @@ public class ServerURLManager {
 
     public static final String LIVE_PREVIEW_BLACK_BOARD_ITEM_JSON_URL = "http://myinfowall.ddns.net/apps/blackboard/addBlackboardGetJSON.php";
 
+    //Delete BlackBoardItem
+    public static final String DELETE_BLACK_BOARD_ITEM_URL = "http://myinfowall.ddns.net/apps/blackboard/deleteBlackBoardItem.php";
+
     // Update User with GCM ID
     public static final String UPDATE_USER = "http://myinfowall.ddns.net/updateUser.php";
 
