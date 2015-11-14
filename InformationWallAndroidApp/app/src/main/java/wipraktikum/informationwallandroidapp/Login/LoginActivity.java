@@ -6,9 +6,7 @@ package wipraktikum.informationwallandroidapp.Login;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,21 +14,11 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.VolleyError;
-import com.google.gson.Gson;
-import com.google.gson.JsonParser;
-
-import org.json.JSONObject;
-
 import wipraktikum.informationwallandroidapp.BaseActivity;
-import wipraktikum.informationwallandroidapp.BusinessObject.User.User;
-import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.R;
-import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
-import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
 import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
 
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity implements LoginManager.OnRequestLoginResponsReceived {
     private static final String TAG = "LoginActivity";
 
     private EditText mEmailText;
@@ -40,20 +28,32 @@ public class LoginActivity extends BaseActivity {
     private CheckBox mAutoLogin;
 
     private ProgressDialog progressDialog = null;
+    private LoginManager mLoginManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        initViews();
+        initLoginManager();
+        setLoginButtonClickListener();
+    }
+
+    private void initViews() {
         mLoginButton = (Button) findViewById(R.id.btn_login);
         mEmailText = (EditText) findViewById(R.id.input_email);
         mPasswordText = (EditText) findViewById(R.id.input_password);
         mServerURL = (EditText) findViewById(R.id.input_server);
         mAutoLogin = (CheckBox) findViewById(R.id.checkbox_autoLogin);
+    }
 
+    private void initLoginManager() {
+        mLoginManager = new LoginManager();
+    }
+
+    private void setLoginButtonClickListener() {
         mLoginButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 login();
@@ -63,86 +63,16 @@ public class LoginActivity extends BaseActivity {
 
     public void login() {
         Log.d(TAG, "Login");
-        if (!validate()) {
-            onLoginFailed();
-            return;
-        }
-
         mLoginButton.setEnabled(false);
-
-        requestLogin(createLoginUser());
+        if (validateInputFields()) {
+            showProgressDialog();
+            mLoginManager.requestLogin(mEmailText.getText().toString(), mPasswordText.getText().toString());
+        } else  {
+            onLoginFailed();
+        }
     }
 
-    private User createLoginUser() {
-        String email = mEmailText.getText().toString();
-        String password = mPasswordText.getText().toString();
-
-        User loginUser = new User();
-        loginUser.setEmailAddress(email);
-        loginUser.setPassword(password);
-
-        return loginUser;
-    }
-
-    private void requestLogin(User loginUser) {
-        showProgressDialog();
-        JsonManager jsonManager = new JsonManager();
-        jsonManager.sendJson(ServerURLManager.LOG_IN_AUTHENTICATION_URL, loginUser);
-        jsonManager.setOnObjectResponseReceiveListener(new JsonManager.OnObjectResponseListener() {
-            @Override
-            public void OnResponse(JSONObject response) {
-                dissmissProgressDialog();
-                saveUser2DB(response);
-                onLoginSuccess();
-            }
-        });
-        jsonManager.setOnErrorReceiveListener(new JsonManager.OnErrorListener() {
-            @Override
-            public void OnResponse(VolleyError error) {
-                dissmissProgressDialog();
-                onLoginFailed();
-            }
-        });
-    }
-
-    private void showProgressDialog() {
-        progressDialog = new ProgressDialog(LoginActivity.this,
-                R.style.Base_Theme_AppCompat_Dialog);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage(getString(R.string.login_authenticating_progress_bar));
-        progressDialog.show();
-    }
-
-    private void dissmissProgressDialog() {
-        progressDialog.dismiss();
-    }
-
-    @Override
-    public void onBackPressed() {
-        // Disable going back to the MainActivity
-        moveTaskToBack(true);
-    }
-
-    private void onLoginSuccess() {
-        mLoginButton.setEnabled(true);
-        saveLoginInSharedPrefs();
-        Intent intent = new Intent(getApplicationContext(), TileOverview.class);
-        startActivity(intent);
-    }
-
-    private void saveUser2DB(JSONObject response) {
-        User currentUser = new Gson().fromJson(new JsonParser().parse(response.toString()), User.class);
-        currentUser.setLoggedIn(true);
-        DAOHelper.getInstance().getUserDAO().updateOrCreate(currentUser);
-    }
-
-    private void onLoginFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
-        mLoginButton.setEnabled(true);
-    }
-
-    public boolean validate() {
+    public boolean validateInputFields() {
         boolean valid = true;
 
         String email = mEmailText.getText().toString();
@@ -173,14 +103,50 @@ public class LoginActivity extends BaseActivity {
         return valid;
     }
 
-    private void saveLoginInSharedPrefs() {
-        if(mAutoLogin.isChecked()) {
-            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putBoolean("loggedIn", true);
-            editor.putString("username", mEmailText.getText().toString());
-            editor.putString("serverURL",mServerURL.getText().toString());
-            editor.commit();
+    private void showProgressDialog() {
+        progressDialog = new ProgressDialog(LoginActivity.this,
+                R.style.Base_Theme_AppCompat_Dialog);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage(getString(R.string.login_authenticating_progress_bar));
+        progressDialog.show();
+    }
+
+    private void dissmissProgressDialog() {
+        progressDialog.dismiss();
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Disable going back to the MainActivity
+        moveTaskToBack(true);
+    }
+
+    private void openTileOverview() {
+        Intent intent = new Intent(getApplicationContext(), TileOverview.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void OnRequestLoginResponsReceived(boolean successfull) {
+        dissmissProgressDialog();
+        if(successfull) {
+            onLoginSuccess();
+        } else {
+            onLoginFailed();
         }
+    }
+
+    private void onLoginSuccess() {
+        mLoginButton.setEnabled(true);
+        if(mAutoLogin.isChecked()) {
+            mLoginManager.saveLoginInSharedPrefs(mEmailText.getText().toString(), mServerURL.getText().toString());
+        }
+        openTileOverview();
+    }
+
+    private void onLoginFailed() {
+        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+        mLoginButton.setEnabled(true);
     }
 }
