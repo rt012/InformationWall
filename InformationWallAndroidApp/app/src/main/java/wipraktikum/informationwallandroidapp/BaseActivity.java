@@ -11,8 +11,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import wipraktikum.informationwallandroidapp.Login.LoginActivity;
+import wipraktikum.informationwallandroidapp.BusinessObject.User.User;
+import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.Preferences.AppPreferences;
+import wipraktikum.informationwallandroidapp.Utils.ActivityHelper;
 import wipraktikum.informationwallandroidapp.Utils.NotificationHelper;
 
 
@@ -57,11 +59,25 @@ public class BaseActivity extends AppCompatActivity implements NotificationHelpe
     }
 
     private void performLogout() {
+        editLoggedInState();
+        setCurrentUserToLoggedOut();
+        openLoginActivity();
+    }
+
+    private void editLoggedInState() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sp.edit();
-        editor.putBoolean("loggedIn", true);
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+        editor.putBoolean("loggedIn", false);
+    }
+
+    private void setCurrentUserToLoggedOut() {
+        User currentUser = InfoWallApplication.getCurrentUser();
+        currentUser.setLoggedIn(false);
+        DAOHelper.getInstance().getUserDAO().update(currentUser);
+    }
+
+    private void openLoginActivity() {
+        ActivityHelper.openLoginActivity(this);
     }
 
     @Override

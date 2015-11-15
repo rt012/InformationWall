@@ -2,7 +2,6 @@ package wipraktikum.informationwallandroidapp;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -21,9 +20,9 @@ import wipraktikum.informationwallandroidapp.BusinessObject.User.User;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.Tile.DBTile;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.Database.InformationWallORMHelper;
-import wipraktikum.informationwallandroidapp.Login.LoginActivity;
 import wipraktikum.informationwallandroidapp.ServerCommunication.SyncManager;
 import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
+import wipraktikum.informationwallandroidapp.Utils.ActivityHelper;
 import wipraktikum.informationwallandroidapp.Utils.ParseUtils;
 
 /**
@@ -78,6 +77,10 @@ public class InfoWallApplication extends Application {
         return currentUser;
     }
 
+    public static void updateCurrentUser() {
+        currentUser = DAOHelper.getInstance().getUserDAO().getCurrentUser();
+    }
+
     public RequestQueue getRequestQueue() {
         if (mRequestQueue == null) {
             mRequestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -129,14 +132,10 @@ public class InfoWallApplication extends Application {
     private void startActivity() {
         if(checkIfUserIsLoggedIn()){
             // Start Tile Overview
-            Intent intent = new Intent(this, TileOverview.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+            ActivityHelper.openTileOverviewActivity(this);
         } else {
             // Start Login Screen
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+            ActivityHelper.openLoginActivity(this);
         }
     }
 

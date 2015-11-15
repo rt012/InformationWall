@@ -34,6 +34,7 @@ public class LoginManager {
                     mOnRequestLoginResponsReceived.OnRequestLoginResponsReceived(true);
                 }
                 saveUser2DB(response);
+                InfoWallApplication.updateCurrentUser();
             }
         });
         jsonManager.setOnErrorReceiveListener(new JsonManager.OnErrorListener() {
