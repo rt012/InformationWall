@@ -38,7 +38,7 @@ public class LoginManager {
         });
         jsonManager.setOnErrorReceiveListener(new JsonManager.OnErrorListener() {
             @Override
-            public void OnResponse(VolleyError error) {
+            public void OnErrorResponse(VolleyError error) {
                 if (mOnRequestLoginResponseReceived != null) {
                     mOnRequestLoginResponseReceived.OnRequestLoginResponseReceived(false);
                 }

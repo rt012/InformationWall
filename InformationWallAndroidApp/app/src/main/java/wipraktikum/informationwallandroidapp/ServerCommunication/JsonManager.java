@@ -54,7 +54,7 @@ public class JsonManager {
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.d(VOLLEY_TAG, "Error: " + error.getMessage());
                         if(mOnErrorListener != null){
-                            mOnErrorListener.OnResponse(error);
+                            mOnErrorListener.OnErrorResponse(error);
                         }
                     }
                 }) {
@@ -82,7 +82,7 @@ public class JsonManager {
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(VOLLEY_TAG, "Error: " + error.getMessage());
                 if(mOnErrorListener != null){
-                    mOnErrorListener.OnResponse(error);
+                    mOnErrorListener.OnErrorResponse(error);
                 }
             }
         }) {
@@ -113,6 +113,6 @@ public class JsonManager {
     }
 
     public interface OnErrorListener {
-        void OnResponse(VolleyError error);
+        void OnErrorResponse(VolleyError error);
     }
 }

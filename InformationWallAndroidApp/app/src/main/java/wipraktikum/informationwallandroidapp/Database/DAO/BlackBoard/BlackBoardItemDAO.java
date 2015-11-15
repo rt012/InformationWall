@@ -161,6 +161,9 @@ public class BlackBoardItemDAO implements IDAO {
                     InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardAttachmentDAO().deleteById(blackBoardAttachment.getBlackBoardAttachmentID());
                 }
             }
+            blackBoardItem.setUser(null);
+            blackBoardItem.setContact(null);
+            blackBoardItem.setBlackBoardAttachment(null);
             InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardItemDAO().delete(mapBlackBoardItemToDBBlackBoardItem(blackBoardItem));
             ok = true;
         } catch (SQLException e) {

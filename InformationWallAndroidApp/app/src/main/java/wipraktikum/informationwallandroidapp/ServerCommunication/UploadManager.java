@@ -30,9 +30,6 @@ public class UploadManager{
     private static UploadManager instance = null;
     private Context mContext = null;
 
-    private String KEY_FILE = "file";
-    private String KEY_NAME = "fileName";
-
     private OnUploadFinishedListener mOnUploadFinishedListener = null;
 
     public UploadManager(){
@@ -69,13 +66,14 @@ public class UploadManager{
                 protected Map<String, String> getParams() throws AuthFailureError {
                     //Converting Bitmap to String
                     String image = getStringFile(uploadFile);
+                    String fileName = FileHelper.getInstance().getFileName(uploadFile.getAbsolutePath());
 
                     //Creating parameters
                     Map<String,String> params = new Hashtable<String, String>();
 
                     //Adding parameters
-                    params.put(KEY_FILE, image);
-                    params.put(KEY_NAME, FileHelper.getInstance().getFileName(uploadFile.getAbsolutePath()));
+                    params.put(ServerURLManager.UPLOAD_BLACK_BOARD_ATTACHMENT_FILE_KEY, image);
+                    params.put(ServerURLManager.UPLOAD_BLACK_BOARD_ATTACHMENT_FILE_NAME_KEY, fileName);
 
                     //returning parameters
                     return params;

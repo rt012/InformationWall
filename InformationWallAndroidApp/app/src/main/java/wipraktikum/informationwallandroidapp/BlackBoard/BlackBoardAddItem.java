@@ -22,6 +22,7 @@ import android.widget.TableLayout;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
 
 import org.json.JSONObject;
@@ -53,7 +54,8 @@ import wipraktikum.informationwallandroidapp.Utils.RealPathHelper;
 /**
  * Created by Eric Schmidt on 30.10.2015.
  */
-public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivityResultListener, TextWatcher{
+public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivityResultListener, TextWatcher,
+        JsonManager.OnObjectResponseListener, JsonManager.OnErrorListener {
     public static final String BLACK_BOARD_ITEM_ID_TAG = "blackBoardItemID";
     private OnSaveBlackBoardItemListener mOnSaveBlackBoardItemListener = null;
 
@@ -62,7 +64,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     private BlackBoardItem blackBoardItem = null;
     private Contact selectedContact = null;
     private BlackBoardAutoCompleteTextViewContactAdapter autoCompleteTextViewContactAdapter = null;
-    private ArrayList<BlackBoardAttachment> blackBoardAttachments = new ArrayList<>();
+    private List<BlackBoardAttachment> blackBoardAttachments = new ArrayList<>();
     private ArrayList<View> blackBoardAttachmentViews = new ArrayList<>();
     private boolean isEditedItem = false;
 
@@ -318,35 +320,16 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
             blackBoardItem.setSyncStatus(false);
             blackBoardItem.setBlackBoardItemID(getArguments().getLong(BLACK_BOARD_ITEM_ID_TAG));
         }
+        blackBoardAttachments = blackBoardItem.getBlackBoardAttachment();
         DAOHelper.getInstance().getBlackBoardItemDAO().createOrUpdate(blackBoardItem);
 
         // Set Attachments to the item again because in the create method we have to clean erase this reference ( because of ORMLite )
         blackBoardItem.setBlackBoardAttachment(blackBoardAttachments);
 
-        JsonManager jsonManager  = new JsonManager();
+        JsonManager jsonManager = new JsonManager();
+        jsonManager.setOnObjectResponseReceiveListener(this);
+        jsonManager.setOnErrorReceiveListener(this);
         jsonManager.sendJson(ServerURLManager.NEW_BLACK_BOARD_ITEM_URL, blackBoardItem);
-        jsonManager.setOnObjectResponseReceiveListener(new JsonManager.OnObjectResponseListener() {
-            @Override
-            public void OnResponse(JSONObject response) {
-                BlackBoardItem serverBlackBoardItem = new Gson().fromJson(new JsonParser().parse(response.toString()), BlackBoardItem.class);
-                serverBlackBoardItem.setSyncStatus(true);
-                BlackBoardItemDAO blackBoardItemDAO = DAOHelper.getInstance().getBlackBoardItemDAO();
-                blackBoardItemDAO.deleteByID(blackBoardItem.getBlackBoardItemID());
-                blackBoardItemDAO.createOrUpdate(serverBlackBoardItem);
-            }
-        });
-        jsonManager.setOnErrorReceiveListener(new JsonManager.OnErrorListener() {
-            @Override
-            public void OnResponse(VolleyError error) {
-                Snackbar
-                        .make(getView(), R.string.black_board_add_item_snackbar_connection_error, Snackbar.LENGTH_LONG)
-                        .show();
-            }
-        });
-
-        if (mOnSaveBlackBoardItemListener != null) {
-            mOnSaveBlackBoardItemListener.onSaveBlackBoardItem();
-        }
     }
 
     //Needs a better name
@@ -440,10 +423,6 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         return false;
     }
 
-    public void setOnSaveBlackBoardItem(OnSaveBlackBoardItemListener onSaveBlackBoardItemListener){
-        mOnSaveBlackBoardItemListener = onSaveBlackBoardItemListener;
-    }
-
     private void resetGui() {
         editTextTitle.setText("");
         editTextDescription.setText("");
@@ -464,7 +443,32 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         resetGui();
     }
 
+    @Override
+    public void OnResponse(JSONObject response) {
+        Gson gsonInstance = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+        BlackBoardItem serverBlackBoardItem = gsonInstance.fromJson(new JsonParser().parse(response.toString()), BlackBoardItem.class);
+        serverBlackBoardItem.setSyncStatus(true);
+        BlackBoardItemDAO blackBoardItemDAO = DAOHelper.getInstance().getBlackBoardItemDAO();
+        blackBoardItemDAO.deleteByID(blackBoardItem.getBlackBoardItemID());
+        blackBoardItemDAO.createOrUpdate(serverBlackBoardItem);
+
+        if (mOnSaveBlackBoardItemListener != null) {
+            mOnSaveBlackBoardItemListener.onSaveBlackBoardItem(true);
+        }
+    }
+
+    @Override
+    public void OnErrorResponse(VolleyError error) {
+        if (mOnSaveBlackBoardItemListener != null) {
+            mOnSaveBlackBoardItemListener.onSaveBlackBoardItem(false);
+        }
+    }
+
+    public void setOnSaveBlackBoardItem(OnSaveBlackBoardItemListener onSaveBlackBoardItemListener){
+        mOnSaveBlackBoardItemListener = onSaveBlackBoardItemListener;
+    }
+
     public interface OnSaveBlackBoardItemListener{
-        void onSaveBlackBoardItem();
+        void onSaveBlackBoardItem(boolean isSuccessful);
     }
 }

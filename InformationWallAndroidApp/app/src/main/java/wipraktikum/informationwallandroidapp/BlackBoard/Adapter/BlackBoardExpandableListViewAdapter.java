@@ -49,6 +49,12 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
     }
 
     @Override
+    public void notifyDataSetChanged() {
+        mBlackBoardItems = DAOHelper.getInstance().getBlackBoardItemDAO().queryForAll();
+        super.notifyDataSetChanged();
+    }
+
+    @Override
     public int getGroupCount() {
         return mBlackBoardItems.size();
     }
