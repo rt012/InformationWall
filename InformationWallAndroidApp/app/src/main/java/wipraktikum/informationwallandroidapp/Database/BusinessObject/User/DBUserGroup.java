@@ -8,7 +8,7 @@ import com.j256.ormlite.table.DatabaseTable;
  */
 @DatabaseTable
 public class DBUserGroup {
-    @DatabaseField(generatedId = true)
+    @DatabaseField(id = true)
     private long mUserGroupID;
     @DatabaseField
     private String mUserGroupName;

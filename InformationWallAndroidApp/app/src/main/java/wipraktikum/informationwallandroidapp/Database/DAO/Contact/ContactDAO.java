@@ -1,5 +1,7 @@
 package wipraktikum.informationwallandroidapp.Database.DAO.Contact;
 
+import com.j256.ormlite.dao.Dao;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +60,7 @@ public class ContactDAO implements IDAO {
     public boolean create(Object object) {
         boolean ok = false;
         try {
-            InfoWallApplication.getInstance().getDatabaseHelper().getContactDAO().create(mapContactToDBContact((Contact) object));
+            InfoWallApplication.getInstance().getDatabaseHelper().getContactDAO().createOrUpdate(mapContactToDBContact((Contact) object));
             ok = true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -70,7 +72,22 @@ public class ContactDAO implements IDAO {
     public boolean update(Object object){
         boolean ok = false;
         try {
-            InfoWallApplication.getInstance().getDatabaseHelper().getContactDAO().update(mapContactToDBContact((Contact) object));
+            InfoWallApplication.getInstance().getDatabaseHelper().getContactDAO().createOrUpdate(mapContactToDBContact((Contact) object));
+            ok = true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ok;
+    }
+
+    public boolean createOrUpdate(Object object) {
+        boolean ok = false;
+        try {
+            Dao<DBContact, Long> contactDAO = InfoWallApplication.getInstance().getDatabaseHelper().getContactDAO();
+            Contact contact = (Contact) object;
+            DAOHelper.getInstance().getContactAddressDAO().createOrUpdate(contact.getContactAddress());
+            contactDAO.createOrUpdate(mapContactToDBContact(contact));
+
             ok = true;
         } catch (SQLException e) {
             e.printStackTrace();

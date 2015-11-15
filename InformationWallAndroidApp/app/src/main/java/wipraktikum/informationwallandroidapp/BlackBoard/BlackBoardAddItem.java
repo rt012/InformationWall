@@ -306,10 +306,9 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
             if (isEditedItem){
                 blackBoardItem.setSyncStatus(false);
                 blackBoardItem.setBlackBoardItemID(getArguments().getLong(BLACK_BOARD_ITEM_ID_TAG));
-                DAOHelper.getInstance().getBlackBoardItemDAO().update(blackBoardItem);
-            }else {
-                DAOHelper.getInstance().getBlackBoardItemDAO().create(blackBoardItem);
             }
+            DAOHelper.getInstance().getBlackBoardItemDAO().createOrUpdate(blackBoardItem);
+
             // Set Attachments to the item again because in the create method we have to clean erase this reference ( because of ORMLite )
             blackBoardItem.setBlackBoardAttachment(blackBoardAttachments);
 
@@ -322,7 +321,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
                     serverBlackBoardItem.setSyncStatus(true);
                     BlackBoardItemDAO blackBoardItemDAO = DAOHelper.getInstance().getBlackBoardItemDAO();
                     blackBoardItemDAO.deleteByID(blackBoardItem.getBlackBoardItemID());
-                    blackBoardItemDAO.create(serverBlackBoardItem);
+                    blackBoardItemDAO.createOrUpdate(serverBlackBoardItem);
                 }
             });
             jsonManager.setOnErrorReceiveListener(new JsonManager.OnErrorListener() {

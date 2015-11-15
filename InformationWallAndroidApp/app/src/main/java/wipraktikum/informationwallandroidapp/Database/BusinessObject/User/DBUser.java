@@ -8,13 +8,13 @@ import com.j256.ormlite.table.DatabaseTable;
  */
 @DatabaseTable
 public class DBUser {
-    @DatabaseField(generatedId = true)
+    @DatabaseField(id = true)
     private long mUserID;
     @DatabaseField(unique = true)
     private String mEmailAddress;
     @DatabaseField
     private String mPassword;
-    @DatabaseField(foreign = true, foreignAutoCreate = true, foreignAutoRefresh = true)
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private DBUserGroup mUserGroup;
     @DatabaseField
     private boolean mLoggedIn;

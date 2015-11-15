@@ -68,15 +68,12 @@ public class SyncManager implements JsonManager.OnObjectResponseListener, JsonMa
 
     private void UpdateOrCreateBlackBoardItems(JsonElement response) {
         BlackBoardItemDAO blackBoardItemDAO = DAOHelper.getInstance().getBlackBoardItemDAO();
+
         Gson gsonInstance = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
         List<BlackBoardItem> serverItemList = gsonInstance.fromJson(response, new TypeToken<List<BlackBoardItem>>(){}.getType());
-        List<BlackBoardItem> clientItemList = blackBoardItemDAO.queryForAll();
         for(BlackBoardItem serverBlackBoardItem : serverItemList) {
-            if(clientItemList.contains(serverBlackBoardItem)) {
-                blackBoardItemDAO.update(serverBlackBoardItem);
-            } else {
-                blackBoardItemDAO.create(serverBlackBoardItem);
-            }
+            serverBlackBoardItem.setSyncStatus(true);
+            blackBoardItemDAO.createOrUpdate(serverBlackBoardItem);
         }
     }
 
@@ -86,7 +83,7 @@ public class SyncManager implements JsonManager.OnObjectResponseListener, JsonMa
         serverBlackBoardItem.setSyncStatus(true);
         BlackBoardItemDAO blackBoardItemDAO = DAOHelper.getInstance().getBlackBoardItemDAO();
         blackBoardItemDAO.deleteByID(currentUnsyncedBlackBoardItem.getBlackBoardItemID());
-        blackBoardItemDAO.create(serverBlackBoardItem);
+        blackBoardItemDAO.createOrUpdate(serverBlackBoardItem);
 
         syncBlackBoardItems();
     }

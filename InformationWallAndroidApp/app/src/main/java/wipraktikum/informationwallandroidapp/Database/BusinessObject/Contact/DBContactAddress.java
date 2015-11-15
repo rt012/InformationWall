@@ -8,7 +8,7 @@ import com.j256.ormlite.table.DatabaseTable;
  */
 @DatabaseTable
 public class DBContactAddress {
-    @DatabaseField(generatedId = true)
+    @DatabaseField(id = true)
     private long mContactAddressID;
     @DatabaseField
     private String mStreetName;
