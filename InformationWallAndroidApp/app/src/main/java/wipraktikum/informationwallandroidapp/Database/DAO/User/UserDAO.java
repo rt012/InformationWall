@@ -81,17 +81,14 @@ public class UserDAO implements IDAO {
         return ok;
     }
 
-    public boolean updateOrCreate(Object object) {
+    public boolean createOrUpdate(Object object) {
         boolean ok = false;
         try {
             Dao<DBUser, Long> userDAO = InfoWallApplication.getInstance().getDatabaseHelper().getUserDAO();
-            List<User> userList = queryForAll();
-            if(userList.contains(object)) {
-                DAOHelper.getInstance().getUserGroupDAO().update(((User) object).getUserGroup());
-                userDAO.update(mapUserToDBUser((User) object));
-            } else {
-                create(object);
-            }
+            User user = (User) object;
+            DAOHelper.getInstance().getUserGroupDAO().createOrUpdate(user.getUserGroup());
+            userDAO.createOrUpdate(mapUserToDBUser(user));
+
             ok = true;
         } catch (SQLException e) {
             e.printStackTrace();

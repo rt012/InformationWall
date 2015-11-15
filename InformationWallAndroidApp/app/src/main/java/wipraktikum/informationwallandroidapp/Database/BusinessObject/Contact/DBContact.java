@@ -8,7 +8,7 @@ import com.j256.ormlite.table.DatabaseTable;
  */
 @DatabaseTable
 public class DBContact {
-    @DatabaseField(generatedId = true)
+    @DatabaseField(id = true)
     private long mContactID;
     @DatabaseField
     private String mSurname;
@@ -20,7 +20,7 @@ public class DBContact {
     private String mTelephone;
     @DatabaseField
     private String mCompany;
-    @DatabaseField(foreign = true,  foreignAutoCreate = true, foreignAutoRefresh = true)
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
     public DBContactAddress mContactAddress;
     @DatabaseField
     private boolean mSyncStatus;

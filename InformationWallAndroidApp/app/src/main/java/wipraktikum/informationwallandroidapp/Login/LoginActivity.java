@@ -18,7 +18,7 @@ import wipraktikum.informationwallandroidapp.BaseActivity;
 import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
 
-public class LoginActivity extends BaseActivity implements LoginManager.OnRequestLoginResponsReceived {
+public class LoginActivity extends BaseActivity implements LoginManager.OnRequestLoginResponseReceived {
     private static final String TAG = "LoginActivity";
 
     private EditText mEmailText;
@@ -50,6 +50,7 @@ public class LoginActivity extends BaseActivity implements LoginManager.OnReques
 
     private void initLoginManager() {
         mLoginManager = new LoginManager();
+        mLoginManager.setOnRequestLoginResponseReceived(this);
     }
 
     private void setLoginButtonClickListener() {
@@ -112,7 +113,7 @@ public class LoginActivity extends BaseActivity implements LoginManager.OnReques
         progressDialog.show();
     }
 
-    private void dissmissProgressDialog() {
+    private void dismissProgressDialog() {
         progressDialog.dismiss();
     }
 
@@ -128,9 +129,9 @@ public class LoginActivity extends BaseActivity implements LoginManager.OnReques
     }
 
     @Override
-    public void OnRequestLoginResponsReceived(boolean successfull) {
-        dissmissProgressDialog();
-        if(successfull) {
+    public void OnRequestLoginResponseReceived(boolean successful) {
+        dismissProgressDialog();
+        if(successful) {
             onLoginSuccess();
         } else {
             onLoginFailed();

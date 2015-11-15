@@ -20,11 +20,11 @@ import wipraktikum.informationwallandroidapp.InfoWallApplication;
  */
 @DatabaseTable
 public class DBBlackBoardItem {
-    @DatabaseField(generatedId = true)
+    @DatabaseField(id = true)
     private long mBlackBoardItemID;
     @DatabaseField
     private String mTitle;
-    @DatabaseField(foreign = true, foreignAutoCreate = true, foreignAutoRefresh = true)
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private DBContact mContact;
     @DatabaseField
     private String mDescriptionText;
@@ -36,7 +36,7 @@ public class DBBlackBoardItem {
     private Date mEditedTimestamp;
     @DatabaseField(columnName = SYNCSTATUS_FIELD_NAME)
     private boolean mSyncStatus;
-    @DatabaseField(foreign = true, foreignAutoCreate = true, foreignAutoRefresh = true)
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private DBUser mUser;
 
     public static final String SYNCSTATUS_FIELD_NAME = "syncStatus";

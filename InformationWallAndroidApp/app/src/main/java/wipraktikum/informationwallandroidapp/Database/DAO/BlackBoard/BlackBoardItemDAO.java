@@ -65,19 +65,18 @@ public class BlackBoardItemDAO implements IDAO {
             BlackBoardItem tempItem = (BlackBoardItem) object;
 
             List<BlackBoardAttachment> tempAttachments = tempItem.getBlackBoardAttachment();
-
             // Set AttachmentList to null because ORMLite need a empty list as a ForeignCollection
             tempItem.setBlackBoardAttachment(null);
             // Mapping to DB-Object
-            DBBlackBoardItem item = (DBBlackBoardItem) this.mapBlackBoardItemToDBBlackBoardItem(tempItem);
-
-            InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardItemDAO().create(item);
+            DBBlackBoardItem blackBoardItem = (DBBlackBoardItem) this.mapBlackBoardItemToDBBlackBoardItem(tempItem);
+            InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardItemDAO().create(blackBoardItem);
 
             // Add  Item reference to Attachment Objects and add it to the db
             for(int i = 0; i < tempAttachments.size(); i++) {
                 DBBlackBoardAttachment tempAttachment = DAOHelper.getInstance().getBlackBoardAttachmentDAO().mapBlackBoardAttachmentToDBBlackBoardAttachment(tempAttachments.get(i));
-                tempAttachment.setBlackBoardItem(item);
-                InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardAttachmentDAO().create(tempAttachment);
+                tempAttachment.setBlackBoardItem(blackBoardItem);
+                //InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardAttachmentDAO().create(tempAttachment);
+                InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardAttachmentDAO().createOrUpdate(tempAttachment);
             }
 
             ok = true;
@@ -91,22 +90,26 @@ public class BlackBoardItemDAO implements IDAO {
     public boolean update(Object object){
         boolean ok = false;
         try {
-            BlackBoardItem tempItem = (BlackBoardItem) object;
+            BlackBoardItem blackBoardItem = (BlackBoardItem) object;
 
-            List<BlackBoardAttachment> tempAttachments = tempItem.getBlackBoardAttachment();
+            //Manage the foreigner objects
+            DAOHelper.getInstance().getUserGroupDAO().createOrUpdate(blackBoardItem.getUser());
+            DAOHelper.getInstance().getContactDAO().createOrUpdate(blackBoardItem.getContact());
 
+            List<BlackBoardAttachment> tempAttachments = blackBoardItem.getBlackBoardAttachment();
             // Set AttachmentList to null because ORMLite need a empty list as a ForeignCollection
-            tempItem.setBlackBoardAttachment(null);
+            blackBoardItem.setBlackBoardAttachment(null);
             // Mapping to DB-Object
-            DBBlackBoardItem item = (DBBlackBoardItem) this.mapBlackBoardItemToDBBlackBoardItem(tempItem);
+            DBBlackBoardItem dbBlackBoardItem = (DBBlackBoardItem) this.mapBlackBoardItemToDBBlackBoardItem(blackBoardItem);
 
-            InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardItemDAO().update(item);
+            InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardItemDAO().createOrUpdate(dbBlackBoardItem);
 
             // Add  Item reference to Attachment Objects and add it to the db
             for(int i = 0; i < tempAttachments.size(); i++) {
                 DBBlackBoardAttachment tempAttachment = DAOHelper.getInstance().getBlackBoardAttachmentDAO().mapBlackBoardAttachmentToDBBlackBoardAttachment(tempAttachments.get(i));
-                tempAttachment.setBlackBoardItem(item);
-                InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardAttachmentDAO().update(tempAttachment);
+                tempAttachment.setBlackBoardItem(dbBlackBoardItem);
+                //InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardAttachmentDAO().update(tempAttachment);
+                InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardAttachmentDAO().createOrUpdate(tempAttachment);
             }
 
             ok = true;
@@ -115,6 +118,38 @@ public class BlackBoardItemDAO implements IDAO {
         }
         return ok;
     }
+
+    public boolean createOrUpdate(Object object){
+        boolean ok = false;
+        try {
+            BlackBoardItem blackBoardItem = (BlackBoardItem) object;
+
+            //Manage the foreigner objects
+            DAOHelper.getInstance().getUserDAO().createOrUpdate(blackBoardItem.getUser());
+            DAOHelper.getInstance().getContactDAO().createOrUpdate(blackBoardItem.getContact());
+
+            List<BlackBoardAttachment> tempAttachments = blackBoardItem.getBlackBoardAttachment();
+            // Set AttachmentList to null because ORMLite need a empty list as a ForeignCollection
+            blackBoardItem.setBlackBoardAttachment(null);
+            // Mapping to DB-Object
+            DBBlackBoardItem dbBlackBoardItem = (DBBlackBoardItem) this.mapBlackBoardItemToDBBlackBoardItem(blackBoardItem);
+
+            InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardItemDAO().createOrUpdate(dbBlackBoardItem);
+
+            // Add  Item reference to Attachment Objects and add it to the db
+            for(int i = 0; i < tempAttachments.size(); i++) {
+                DBBlackBoardAttachment tempAttachment = DAOHelper.getInstance().getBlackBoardAttachmentDAO().mapBlackBoardAttachmentToDBBlackBoardAttachment(tempAttachments.get(i));
+                tempAttachment.setBlackBoardItem(dbBlackBoardItem);
+                InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardAttachmentDAO().createOrUpdate(tempAttachment);
+            }
+
+            ok = true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ok;
+    }
+
 
     @Override
     public boolean delete(Object object) {
@@ -126,6 +161,9 @@ public class BlackBoardItemDAO implements IDAO {
                     InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardAttachmentDAO().deleteById(blackBoardAttachment.getBlackBoardAttachmentID());
                 }
             }
+            blackBoardItem.setUser(null);
+            blackBoardItem.setContact(null);
+            blackBoardItem.setBlackBoardAttachment(null);
             InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardItemDAO().delete(mapBlackBoardItemToDBBlackBoardItem(blackBoardItem));
             ok = true;
         } catch (SQLException e) {

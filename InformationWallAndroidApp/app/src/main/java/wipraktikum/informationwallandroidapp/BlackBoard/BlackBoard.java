@@ -2,7 +2,9 @@ package wipraktikum.informationwallandroidapp.BlackBoard;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
@@ -24,15 +26,18 @@ import wipraktikum.informationwallandroidapp.Utils.FileHelper;
 /**
  * Created by Eric Schmidt on 30.10.2015.
  */
-public class BlackBoard extends BaseActivity {
+public class BlackBoard extends BaseActivity{
     private OnActivityResultListener mOnActivityResultListener = null;
     private static Fragment currentFragment = null;
     private FloatingActionButton fab = null;
+    private View mRootView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_black_board);
+        mRootView = (CoordinatorLayout) findViewById(R.id.cl_blackboard_layout);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -44,13 +49,21 @@ public class BlackBoard extends BaseActivity {
                 BlackBoardAddItem blackBoardAddItem = BlackBoardAddItem.getInstance();
                 blackBoardAddItem.setOnSaveBlackBoardItem(new BlackBoardAddItem.OnSaveBlackBoardItemListener() {
                     @Override
-                    public void onSaveBlackBoardItem() {
+                    public void onSaveBlackBoardItem(boolean isSuccessful) {
+                        if (!isSuccessful) {
+                            Snackbar.make(getRootView(), R.string.black_board_add_item_snackbar_connection_error, Snackbar.LENGTH_LONG).show();
+                        }
                         onSupportNavigateUp();
                     }
                 });
                 openFragment(blackBoardAddItem, true);
             }
         });
+    }
+
+    @Override
+    public View getRootView(){
+        return mRootView;
     }
 
     @Override
@@ -128,8 +141,8 @@ public class BlackBoard extends BaseActivity {
         }
     }
 
-    public void openBlackBoardOnServer(String actionParam){
-        Map<String,String> params = new Hashtable<String, String>();
+    public void openBlackBoardOnServer(String actionParam) {
+        Map<String, String> params = new Hashtable<String, String>();
         params.put(ServerURLManager.OPEN_BLACK_BOARD_PARAM_KEY, actionParam);
         PhpRequestManager.getInstance().phpRequest(ServerURLManager.OPEN_BLACK_BOARD_URL, params);
     }
@@ -198,9 +211,5 @@ public class BlackBoard extends BaseActivity {
 
     public interface OnActivityResultListener{
         void onActivityResult(Intent data);
-    }
-
-    public void ShowSnakeMessage() {
-
     }
 }

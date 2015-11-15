@@ -8,8 +8,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.io.File;
-
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardAttachment;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardAttachment;
 import wipraktikum.informationwallandroidapp.R;
@@ -41,11 +39,9 @@ public class BlackBoardAttachmentView extends LinearLayout {
                 findViewById(R.id.tv_black_board_attachment_item);
 
         if (attachment.getRemoteDataPath() != null) {
-            File attachmentFile = new File(attachment.getRemoteDataPath());
-            attachmentName.setText(attachmentFile.getName());
+            attachmentName.setText(attachment.getName());
         }else{
-            File attachmentFile = new File(attachment.getDeviceDataPath());
-            attachmentName.setText(attachmentFile.getName());
+            attachmentName.setText(attachment.getName());
         }
         //Grey Field if no local Path
         if (!FileHelper.getInstance().exists(attachment.getDeviceDataPath())){

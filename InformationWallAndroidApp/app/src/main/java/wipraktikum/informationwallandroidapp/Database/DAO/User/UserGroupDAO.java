@@ -1,5 +1,7 @@
 package wipraktikum.informationwallandroidapp.Database.DAO.User;
 
+import com.j256.ormlite.dao.Dao;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +69,20 @@ public class UserGroupDAO implements IDAO {
         boolean ok = false;
         try {
             InfoWallApplication.getInstance().getDatabaseHelper().getUserGroupDAO().update(mapUserGroupToDBUserGroup((UserGroup) object));
+            ok = true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ok;
+    }
+
+    public boolean createOrUpdate(Object object) {
+        boolean ok = false;
+        try {
+            Dao<DBUserGroup, Long> userGroupDAO = InfoWallApplication.getInstance().getDatabaseHelper().getUserGroupDAO();
+            UserGroup userGroup = (UserGroup) object;
+            userGroupDAO.createOrUpdate(mapUserGroupToDBUserGroup(userGroup));
+
             ok = true;
         } catch (SQLException e) {
             e.printStackTrace();

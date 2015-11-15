@@ -20,7 +20,7 @@ import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManage
  */
 public class LoginManager {
 
-    private OnRequestLoginResponsReceived mOnRequestLoginResponsReceived;
+    private OnRequestLoginResponseReceived mOnRequestLoginResponseReceived;
 
     public void requestLogin(String email, String password) {
         User loginUser = createRequestedUser(email, password);
@@ -30,8 +30,8 @@ public class LoginManager {
         jsonManager.setOnObjectResponseReceiveListener(new JsonManager.OnObjectResponseListener() {
             @Override
             public void OnResponse(JSONObject response) {
-                if (mOnRequestLoginResponsReceived != null) {
-                    mOnRequestLoginResponsReceived.OnRequestLoginResponsReceived(true);
+                if (mOnRequestLoginResponseReceived != null) {
+                    mOnRequestLoginResponseReceived.OnRequestLoginResponseReceived(true);
                 }
                 saveUser2DB(response);
                 InfoWallApplication.updateCurrentUser();
@@ -39,11 +39,10 @@ public class LoginManager {
         });
         jsonManager.setOnErrorReceiveListener(new JsonManager.OnErrorListener() {
             @Override
-            public void OnResponse(VolleyError error) {
-                if (mOnRequestLoginResponsReceived != null) {
-                    mOnRequestLoginResponsReceived.OnRequestLoginResponsReceived(false);
+            public void OnErrorResponse(VolleyError error) {
+                if (mOnRequestLoginResponseReceived != null) {
+                    mOnRequestLoginResponseReceived.OnRequestLoginResponseReceived(false);
                 }
-
             }
         });
     }
@@ -55,7 +54,7 @@ public class LoginManager {
     private void saveUser2DB(JSONObject response) {
         User currentUser = new Gson().fromJson(new JsonParser().parse(response.toString()), User.class);
         currentUser.setLoggedIn(true);
-        DAOHelper.getInstance().getUserDAO().updateOrCreate(currentUser);
+        DAOHelper.getInstance().getUserDAO().createOrUpdate(currentUser);
     }
 
     public void saveLoginInSharedPrefs(String email, String url) {
@@ -67,7 +66,11 @@ public class LoginManager {
         editor.commit();
     }
 
-    public interface OnRequestLoginResponsReceived {
-        void OnRequestLoginResponsReceived(boolean successfull);
+    public void setOnRequestLoginResponseReceived(OnRequestLoginResponseReceived onRequestLoginResponseReceived){
+        this.mOnRequestLoginResponseReceived = onRequestLoginResponseReceived;
+    }
+
+    public interface OnRequestLoginResponseReceived {
+        void OnRequestLoginResponseReceived(boolean successful);
     }
 }
