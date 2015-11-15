@@ -97,6 +97,7 @@ public class BlackBoardAttachmentDAO implements IDAO {
 
         if (dbBlackBoardAttachment != null) {
             blackBoardAttachment.setBlackBoardAttachmentID(dbBlackBoardAttachment.getBlackBoardAttachmentID());
+            blackBoardAttachment.setName(dbBlackBoardAttachment.getName());
             if (dbBlackBoardAttachment.getDataType() != null) {
                 blackBoardAttachment.setDataType(dbBlackBoardAttachment.getDataType());
             }else{
@@ -115,6 +116,7 @@ public class BlackBoardAttachmentDAO implements IDAO {
 
         if (blackBoardAttachment != null) {
             dbBlackBoardAttachment.setBlackBoardAttachmentID(blackBoardAttachment.getBlackBoardAttachmentID());
+            dbBlackBoardAttachment.setName(blackBoardAttachment.getName());
             dbBlackBoardAttachment.setDataType(blackBoardAttachment.getDataType());
             dbBlackBoardAttachment.setDeviceDataPath(blackBoardAttachment.getDeviceDataPath());
             dbBlackBoardAttachment.setRemoteDataPath(blackBoardAttachment.getRemoteDataPath());

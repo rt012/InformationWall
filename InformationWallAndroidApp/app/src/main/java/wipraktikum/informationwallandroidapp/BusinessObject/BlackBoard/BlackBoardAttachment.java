@@ -11,6 +11,7 @@ import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.
 @DatabaseTable
 public class BlackBoardAttachment {
     private long mBlackBoardAttachmentID;
+    private String mName;
     private String mRemoteDataPath;
     private String mDeviceDataPath;
     private DBBlackBoardAttachment.DataType mDataType = DBBlackBoardAttachment.DataType.OTHER;
@@ -39,6 +40,14 @@ public class BlackBoardAttachment {
 
     public void setBlackBoardItem(DBBlackBoardItem mDBBlackBoardItem) {
         this.mDBBlackBoardItem = mDBBlackBoardItem;
+    }
+
+    public String getName() {
+        return mName;
+    }
+
+    public void setName(String mName) {
+        this.mName = mName;
     }
 
     public String getDeviceDataPath() {

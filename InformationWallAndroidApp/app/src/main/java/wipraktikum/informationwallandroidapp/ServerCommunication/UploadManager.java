@@ -35,15 +35,8 @@ public class UploadManager{
 
     private OnUploadFinishedListener mOnUploadFinishedListener = null;
 
-    private UploadManager(){
+    public UploadManager(){
         mContext = InfoWallApplication.getInstance();
-    }
-
-    public static UploadManager getInstance(){
-        if (instance == null){
-            instance = new UploadManager();
-        }
-        return instance;
     }
 
     public boolean uploadFile(final File uploadFile, String uploadUrl){

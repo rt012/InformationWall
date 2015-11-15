@@ -58,7 +58,6 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     private OnSaveBlackBoardItemListener mOnSaveBlackBoardItemListener = null;
 
     private static BlackBoardAddItem instance = null;
-    private static List<BlackBoardAttachment> uploadList = new ArrayList<>();
 
     private BlackBoardItem blackBoardItem = null;
     private Contact selectedContact = null;
@@ -296,59 +295,6 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         return blackBoardItem;
     }
 
-    private void saveBlackBoardItem(final BlackBoardItem blackBoardItem){
-        if (!isEditTextEmpty(editTextTitle) && uploadList.isEmpty()) {
-
-            //TODO Upload Attachments recursive
-            //uploadAttachment(blackBoardAttachment, attachmentView);
-
-            //Check if item is new (create) or a edit (update)
-            if (isEditedItem){
-                blackBoardItem.setSyncStatus(false);
-                blackBoardItem.setBlackBoardItemID(getArguments().getLong(BLACK_BOARD_ITEM_ID_TAG));
-            }
-            DAOHelper.getInstance().getBlackBoardItemDAO().createOrUpdate(blackBoardItem);
-
-            // Set Attachments to the item again because in the create method we have to clean erase this reference ( because of ORMLite )
-            blackBoardItem.setBlackBoardAttachment(blackBoardAttachments);
-
-            JsonManager jsonManager  = new JsonManager();
-            jsonManager.sendJson(ServerURLManager.NEW_BLACK_BOARD_ITEM_URL, blackBoardItem);
-            jsonManager.setOnObjectResponseReceiveListener(new JsonManager.OnObjectResponseListener() {
-                @Override
-                public void OnResponse(JSONObject response) {
-                    BlackBoardItem serverBlackBoardItem = new Gson().fromJson(new JsonParser().parse(response.toString()), BlackBoardItem.class);
-                    serverBlackBoardItem.setSyncStatus(true);
-                    BlackBoardItemDAO blackBoardItemDAO = DAOHelper.getInstance().getBlackBoardItemDAO();
-                    blackBoardItemDAO.deleteByID(blackBoardItem.getBlackBoardItemID());
-                    blackBoardItemDAO.createOrUpdate(serverBlackBoardItem);
-                }
-            });
-            jsonManager.setOnErrorReceiveListener(new JsonManager.OnErrorListener() {
-                @Override
-                public void OnResponse(VolleyError error) {
-
-                }
-            });
-
-            if (mOnSaveBlackBoardItemListener != null) {
-                mOnSaveBlackBoardItemListener.onSaveBlackBoardItem();
-            }
-        }else{
-            int snackBarStringID = R.string.black_board_add_item_snackbar_upload_failure;
-
-            if(isEditTextEmpty(editTextTitle)){
-                snackBarStringID = R.string.black_board_add_item_snackbar_no_title;
-            }else if (!uploadList.isEmpty()){
-                snackBarStringID = R.string.black_board_add_item_snackbar_upload_in_progress;
-            }
-
-            Snackbar
-                .make(getView(), snackBarStringID, Snackbar.LENGTH_LONG)
-                .show();
-        }
-    }
-
     private View addAttachmentToView(BlackBoardAttachment attachment){
         BlackBoardAttachmentView attachmentView = new BlackBoardAttachmentView(getActivity(), attachment, false);
         attachmentContainer.addView(attachmentView);
@@ -356,25 +302,82 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         return attachmentView;
     }
 
-    private void uploadAttachment(final BlackBoardAttachment blackBoardAttachment, final View attachmentView){
-        UploadManager uploadManager =  UploadManager.getInstance();
+    private void saveBlackBoardItem(final BlackBoardItem blackBoardItem){
+        if (!isEditTextEmpty(editTextTitle)) {
+            uploadAttachment();
+        }else{
+            Snackbar
+                .make(getView(),  R.string.black_board_add_item_snackbar_no_title, Snackbar.LENGTH_LONG)
+                .show();
+        }
+    }
 
-        //Show Upload Progress
-        ((BlackBoardAttachmentView)attachmentView).showProgressbar(true);
-        uploadList.add(blackBoardAttachment);
-        //Upload File
-        File attachmentFile = new File(blackBoardAttachment.getDeviceDataPath());
-        uploadManager.uploadFile(attachmentFile, ServerURLManager.UPLOAD_BLACK_BOARD_ATTACHMENT_URL);
-        uploadManager.setOnUploadFinishedListener(new UploadManager.OnUploadFinishedListener() {
+    private void saveBlackBoardItem2DB(){
+        //Check if item is a edit
+        if (isEditedItem){
+            blackBoardItem.setSyncStatus(false);
+            blackBoardItem.setBlackBoardItemID(getArguments().getLong(BLACK_BOARD_ITEM_ID_TAG));
+        }
+        DAOHelper.getInstance().getBlackBoardItemDAO().createOrUpdate(blackBoardItem);
+
+        // Set Attachments to the item again because in the create method we have to clean erase this reference ( because of ORMLite )
+        blackBoardItem.setBlackBoardAttachment(blackBoardAttachments);
+
+        JsonManager jsonManager  = new JsonManager();
+        jsonManager.sendJson(ServerURLManager.NEW_BLACK_BOARD_ITEM_URL, blackBoardItem);
+        jsonManager.setOnObjectResponseReceiveListener(new JsonManager.OnObjectResponseListener() {
             @Override
-            public void onUploadFinished(String remoteDataPath) {
-                //Show Upload has finished
-                ((BlackBoardAttachmentView) attachmentView).showProgressbar(false);
-                uploadList.remove(blackBoardAttachment);
-                //Save remoteDataPath to attachment
-                blackBoardAttachment.setRemoteDataPath(remoteDataPath);
+            public void OnResponse(JSONObject response) {
+                BlackBoardItem serverBlackBoardItem = new Gson().fromJson(new JsonParser().parse(response.toString()), BlackBoardItem.class);
+                serverBlackBoardItem.setSyncStatus(true);
+                BlackBoardItemDAO blackBoardItemDAO = DAOHelper.getInstance().getBlackBoardItemDAO();
+                blackBoardItemDAO.deleteByID(blackBoardItem.getBlackBoardItemID());
+                blackBoardItemDAO.createOrUpdate(serverBlackBoardItem);
             }
         });
+        jsonManager.setOnErrorReceiveListener(new JsonManager.OnErrorListener() {
+            @Override
+            public void OnResponse(VolleyError error) {
+                Snackbar
+                        .make(getView(), R.string.black_board_add_item_snackbar_connection_error, Snackbar.LENGTH_LONG)
+                        .show();
+            }
+        });
+
+        if (mOnSaveBlackBoardItemListener != null) {
+            mOnSaveBlackBoardItemListener.onSaveBlackBoardItem();
+        }
+    }
+
+    //Needs a better name
+    private void uploadAttachment(){
+        if (!blackBoardAttachments.isEmpty()) {
+            UploadManager uploadManager = new UploadManager();
+            final BlackBoardAttachment blackBoardAttachment = blackBoardAttachments.get(0);
+            final BlackBoardAttachmentView attachmentView = (BlackBoardAttachmentView) blackBoardAttachmentViews.get(0);
+
+            //Show Upload Progress
+            attachmentView.showProgressbar(true);
+            //Upload File
+            File attachmentFile = new File(blackBoardAttachment.getDeviceDataPath());
+            uploadManager.uploadFile(attachmentFile, ServerURLManager.UPLOAD_BLACK_BOARD_ATTACHMENT_URL);
+            uploadManager.setOnUploadFinishedListener(new UploadManager.OnUploadFinishedListener() {
+                @Override
+                public void onUploadFinished(String remoteDataPath) {
+                    //Show Upload has finished
+                    attachmentView.showProgressbar(false);
+                    //Save remoteDataPath to attachment
+                    blackBoardAttachment.setRemoteDataPath(remoteDataPath);
+
+                    blackBoardAttachments.remove(0);
+                    blackBoardAttachmentViews.remove(0);
+
+                    uploadAttachment();
+                }
+            });
+        }else{
+            saveBlackBoardItem2DB();
+        }
     }
 
     private Contact createNewContact(){
@@ -423,6 +426,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
 
     private BlackBoardAttachment createNewAttachment(String filePath){
         BlackBoardAttachment blackBoardAttachment = new BlackBoardAttachment();
+        blackBoardAttachment.setName(FileHelper.getInstance().getFileName(filePath));
         blackBoardAttachment.setDeviceDataPath(filePath);
         blackBoardAttachment.setDataType(FileHelper.getInstance().getBlackBoardAttachmentDataType(filePath));
         return blackBoardAttachment;
