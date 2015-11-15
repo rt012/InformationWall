@@ -127,11 +127,18 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     public void onPause() {
         super.onPause();
 
+        removeErrorsFromTextFields();
+
         //Tell Server to close Live Preview
         Map<String, String> params = new HashMap<>();
         params.put(ServerURLManager.SHOW_LIVE_PREVIEW_BLACK_BOARD_ITEM_KEY, ServerURLManager.SHOW_LIVE_PREVIEW_BLACK_BOARD_ITEM_HIDE);
 
         PhpRequestManager.getInstance().phpRequest(ServerURLManager.SHOW_LIVE_PREVIEW_BLACK_BOARD_ITEM_URL, params);
+    }
+
+    private void removeErrorsFromTextFields() {
+        editTextFullName.setError(null);
+        editTextEmail.setError(null);
     }
 
     @Override
@@ -148,11 +155,35 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.menu_black_board_item_save) {
-            saveBlackBoardItem(fillBlackBoardItem());
-            return true;
+            if(validateInputs()) {
+                saveBlackBoardItem(fillBlackBoardItem());
+                return true;
+            }
         }
-
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean validateInputs() {
+        boolean valid = true;
+
+        if(tlAddContact.getVisibility() != View.GONE){
+            String name = editTextFullName.getText().toString();
+            String email = editTextEmail.getText().toString();
+            if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                editTextEmail.setError("enter a valid email address");
+                valid = false;
+            } else {
+                editTextEmail.setError(null);
+            }
+
+            if(name.isEmpty()) {
+                editTextFullName.setError("enter a name");
+                valid = false;
+            } else {
+                editTextFullName.setError(null);
+            }
+        }
+        return valid;
     }
 
     @Override

@@ -98,8 +98,7 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.black_board_ex_lv_group, null);
         }
-        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
         //Item Title
         TextView tvItemTitle = (TextView) convertView
                 .findViewById(R.id.tv_black_board_item_title);
@@ -107,14 +106,19 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
         //Item last edited
         TextView tvItemLastEdited = (TextView) convertView
                 .findViewById(R.id.tv_black_board_item_last_edited);
-        String editedTimestamp = formatter.format(blackBoardItem.getEditedTimestamp());
-        tvItemLastEdited.setText(context.getString(R.string.black_board_last_edited) + " " + editedTimestamp);
+
+        if(blackBoardItem.getEditedTimestamp() != null) {
+            String editedTimestamp = formatter.format(blackBoardItem.getEditedTimestamp());
+            tvItemLastEdited.setText(context.getString(R.string.black_board_last_edited) + " " + editedTimestamp);
+        }
+
         //Item Information
         TextView tvItemInfo =  (TextView) convertView
                 .findViewById(R.id.tv_black_board_item_info);
-        String createdTimestamp = formatter.format(blackBoardItem.getCreatedTimestamp());
-        tvItemInfo.setText(createdTimestamp + " (" + blackBoardItem.getContact().getFullName() + ")");
-
+        if(blackBoardItem.getCreatedTimestamp() != null) {
+            String createdTimestamp = formatter.format(blackBoardItem.getCreatedTimestamp());
+            tvItemInfo.setText(createdTimestamp + " (" + blackBoardItem.getContact().getFullName() + ")");
+        }
         return convertView;
     }
 
@@ -133,7 +137,9 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
         //Description Text
         TextView txtListChild = (TextView) convertView
                 .findViewById(R.id.tv_black_board_item_description);
-        txtListChild.setText(blackBoardItem.getDescriptionText());
+        if(blackBoardItem.getDescriptionText() != null) {
+            txtListChild.setText(blackBoardItem.getDescriptionText());
+        }
         ViewGroup.LayoutParams params = txtListChild.getLayoutParams();
         params.height = ViewGroup.LayoutParams.MATCH_PARENT;
         txtListChild.setLayoutParams(params);

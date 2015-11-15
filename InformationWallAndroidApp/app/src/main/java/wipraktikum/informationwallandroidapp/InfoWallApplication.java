@@ -11,6 +11,8 @@ import android.util.Log;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.JsonParser;
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
@@ -18,7 +20,6 @@ import java.sql.SQLException;
 import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoard;
 import wipraktikum.informationwallandroidapp.BusinessObject.User.User;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.Tile.DBTile;
-import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.Database.InformationWallORMHelper;
 import wipraktikum.informationwallandroidapp.ServerCommunication.SyncManager;
 import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
@@ -49,7 +50,7 @@ public class InfoWallApplication extends Application {
         //GCMHelper.getInstance().registerToGCM("asda");
         //Insert Database dummy date
         databaseHelper = InfoWallApplication.getInstance().getDatabaseHelper();
-
+        currentUser = getCurrentUser();
         try {
             insertTestData();
         } catch (SQLException e) {
@@ -58,6 +59,10 @@ public class InfoWallApplication extends Application {
 
         startActivity();
     }
+
+
+
+
 
     public static InfoWallApplication getInstance() {
         return instance;
@@ -71,14 +76,18 @@ public class InfoWallApplication extends Application {
     }
 
     public static User getCurrentUser(){
-        if (currentUser == null){
-            currentUser = DAOHelper.getInstance().getUserDAO().getCurrentUser();
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(instance);
+        String currentUserJsonString = sharedPref.getString("currentUser", null);
+        if (currentUser == null && currentUserJsonString != null){
+
+            currentUser = new Gson().fromJson(new JsonParser().parse(currentUserJsonString), User.class);
+            currentUser.setLoggedIn(true);
         }
         return currentUser;
     }
 
     public static void updateCurrentUser() {
-        currentUser = DAOHelper.getInstance().getUserDAO().getCurrentUser();
+        getCurrentUser();
     }
 
     public RequestQueue getRequestQueue() {

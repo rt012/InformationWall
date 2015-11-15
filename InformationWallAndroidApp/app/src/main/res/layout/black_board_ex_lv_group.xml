@@ -9,15 +9,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        >
         <TextView
             android:id="@+id/tv_black_board_item_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:textStyle="bold"
             android:textAppearance="@android:style/TextAppearance.Material.Title"
             android:paddingBottom="5dp"
-            android:text="@string/black_board_no_title" />
+            android:text="@string/black_board_no_title"
+            android:singleLine="false"
+            android:layout_weight="7"/>
 
         <TextView
             android:id="@+id/tv_black_board_item_last_edited"
@@ -25,6 +28,7 @@
             android:layout_height="match_parent"
             android:textAppearance="@android:style/TextAppearance.Material.Caption"
             android:text="@string/black_board_no_item_information"
+            android:layout_weight="9"
             android:paddingRight="5dp"
             android:gravity="bottom|right" />
     </LinearLayout>

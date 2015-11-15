@@ -8,18 +8,24 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 
+import org.json.JSONObject;
+
 import wipraktikum.informationwallandroidapp.BlackBoard.Adapter.BlackBoardExpandableListViewAdapter;
 import wipraktikum.informationwallandroidapp.BlackBoard.Dialog.BlackBoardItemDialogBuilder;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.R;
+import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
+import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
 
-public class BlackBoardOverview extends Fragment implements BlackBoardItemDialogBuilder.OnItemChangeListener{
+public class BlackBoardOverview extends Fragment implements BlackBoardItemDialogBuilder.OnItemChangeListener, JsonManager.OnObjectResponseListener {
     private final String FRAGMENT_TAG = "FRAGMENT_OVERVIEW";
 
     private BlackBoardExpandableListViewAdapter blackBoardExpandableListViewAdapter = null;
     private BlackBoardItemDialogBuilder blackBoardItemDialogBuilder = null;
     private static BlackBoardOverview instance = null;
+    private BlackBoardItem deletedBlackBoardItem;
+    private JsonManager jsonManager;
 
     public static BlackBoardOverview getInstance(){
         if (instance==null){
@@ -50,6 +56,10 @@ public class BlackBoardOverview extends Fragment implements BlackBoardItemDialog
     @Override
     public void onResume(){
         super.onResume();
+        if(jsonManager == null) {
+            jsonManager = new JsonManager();
+            jsonManager.setOnObjectResponseReceiveListener(this);
+        }
         blackBoardExpandableListViewAdapter.notifyDataSetChanged();
     }
 
@@ -66,9 +76,8 @@ public class BlackBoardOverview extends Fragment implements BlackBoardItemDialog
     public void onDelete(BlackBoardItem blackBoardItem) {
         //Close Dialog
         blackBoardItemDialogBuilder.dismiss();
-        DAOHelper.getInstance().getBlackBoardItemDAO().delete(blackBoardItem);
-        blackBoardExpandableListViewAdapter.notifyDataSetChanged();
-        //new JsonManager().sendJson(ServerURLManager.DELETE_BLACK_BOARD_ITEM_URL, blackBoardItem);
+        deletedBlackBoardItem = blackBoardItem;
+        new JsonManager().sendJson(ServerURLManager.DELETE_BLACK_BOARD_ITEM_URL, blackBoardItem);
     }
 
     @Override
@@ -84,5 +93,11 @@ public class BlackBoardOverview extends Fragment implements BlackBoardItemDialog
 
         ((BlackBoard)getActivity()).openFragment(blackBoardAddItem, true);
         //TODO EDIT FROM SERVER
+    }
+
+    @Override
+    public void OnResponse(JSONObject response) {
+        DAOHelper.getInstance().getBlackBoardItemDAO().delete(deletedBlackBoardItem);
+        blackBoardExpandableListViewAdapter.notifyDataSetChanged();
     }
 }

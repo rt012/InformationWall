@@ -34,6 +34,7 @@ public class LoginManager {
                     mOnRequestLoginResponseReceived.OnRequestLoginResponseReceived(true);
                 }
                 saveUser2DB(response);
+                saveCurrentUserToPrefs(response.toString());
                 InfoWallApplication.updateCurrentUser();
             }
         });
@@ -55,6 +56,13 @@ public class LoginManager {
         User currentUser = new Gson().fromJson(new JsonParser().parse(response.toString()), User.class);
         currentUser.setLoggedIn(true);
         DAOHelper.getInstance().getUserDAO().createOrUpdate(currentUser);
+    }
+
+    private void saveCurrentUserToPrefs(String userString) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(InfoWallApplication.getInstance());
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("currentUser", userString);
+        editor.commit();
     }
 
     public void saveLoginInSharedPrefs(String email, String url) {
