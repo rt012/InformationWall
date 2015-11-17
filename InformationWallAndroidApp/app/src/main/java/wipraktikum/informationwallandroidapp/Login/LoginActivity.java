@@ -126,6 +126,7 @@ public class LoginActivity extends BaseActivity implements LoginManager.OnReques
     private void openTileOverview() {
         Intent intent = new Intent(getApplicationContext(), TileOverview.class);
         startActivity(intent);
+        finish();
     }
 
     @Override

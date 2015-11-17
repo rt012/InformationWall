@@ -57,9 +57,6 @@ public class TileOverview extends BaseActivity {
     }
 
     @Override
-    public void onBackPressed(){}
-
-    @Override
     public void onResume(){
         super.onResume();
 

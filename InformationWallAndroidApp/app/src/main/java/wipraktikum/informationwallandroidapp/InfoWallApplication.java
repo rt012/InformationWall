@@ -60,10 +60,6 @@ public class InfoWallApplication extends Application {
         startActivity();
     }
 
-
-
-
-
     public static InfoWallApplication getInstance() {
         return instance;
     }
