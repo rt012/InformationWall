@@ -65,7 +65,9 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     private Contact selectedContact = null;
     private BlackBoardAutoCompleteTextViewContactAdapter autoCompleteTextViewContactAdapter = null;
     private List<BlackBoardAttachment> blackBoardAttachments = new ArrayList<>();
+    private List<BlackBoardAttachment> blackBoardAttachmentsCopy = new ArrayList<>();
     private ArrayList<View> blackBoardAttachmentViews = new ArrayList<>();
+    private ArrayList<View> blackBoardAttachmentViewsCopy = new ArrayList<>();
     private boolean isEditedItem = false;
 
     private TableLayout tlAddContact = null;
@@ -337,11 +339,45 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
 
     private void saveBlackBoardItem(final BlackBoardItem blackBoardItem){
         if (!isEditTextEmpty(editTextTitle)) {
+            blackBoardAttachmentsCopy.addAll(blackBoardAttachments);
+            blackBoardAttachmentViewsCopy.addAll(blackBoardAttachmentViews);
+
             uploadAttachment();
         }else{
             Snackbar
                 .make(getView(),  R.string.black_board_add_item_snackbar_no_title, Snackbar.LENGTH_LONG)
                 .show();
+        }
+    }
+
+    //Needs a better name
+    private void uploadAttachment(){
+        if (!blackBoardAttachmentsCopy.isEmpty()) {
+            UploadManager uploadManager = new UploadManager();
+            final BlackBoardAttachment blackBoardAttachment = blackBoardAttachmentsCopy.get(0);
+            final BlackBoardAttachmentView attachmentView = (BlackBoardAttachmentView) blackBoardAttachmentViewsCopy.get(0);
+
+            //Show Upload Progress
+            attachmentView.showProgressbar(true);
+            //Upload File
+            File attachmentFile = new File(blackBoardAttachment.getDeviceDataPath());
+            uploadManager.uploadFile(attachmentFile, ServerURLManager.UPLOAD_BLACK_BOARD_ATTACHMENT_URL);
+            uploadManager.setOnUploadFinishedListener(new UploadManager.OnUploadFinishedListener() {
+                @Override
+                public void onUploadFinished(String remoteDataPath) {
+                    //Show Upload has finished
+                    attachmentView.showProgressbar(false);
+                    //Save remoteDataPath to attachment
+                    blackBoardAttachment.setRemoteDataPath(remoteDataPath);
+
+                    blackBoardAttachmentsCopy.remove(0);
+                    blackBoardAttachmentViewsCopy.remove(0);
+
+                    uploadAttachment();
+                }
+            });
+        }else{
+            saveBlackBoardItem2DB();
         }
     }
 
@@ -360,38 +396,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         JsonManager jsonManager = new JsonManager();
         jsonManager.setOnObjectResponseReceiveListener(this);
         jsonManager.setOnErrorReceiveListener(this);
-        jsonManager.sendJson(ServerURLManager.NEW_BLACK_BOARD_ITEM_URL, blackBoardItem);
-    }
-
-    //Needs a better name
-    private void uploadAttachment(){
-        if (!blackBoardAttachments.isEmpty()) {
-            UploadManager uploadManager = new UploadManager();
-            final BlackBoardAttachment blackBoardAttachment = blackBoardAttachments.get(0);
-            final BlackBoardAttachmentView attachmentView = (BlackBoardAttachmentView) blackBoardAttachmentViews.get(0);
-
-            //Show Upload Progress
-            attachmentView.showProgressbar(true);
-            //Upload File
-            File attachmentFile = new File(blackBoardAttachment.getDeviceDataPath());
-            uploadManager.uploadFile(attachmentFile, ServerURLManager.UPLOAD_BLACK_BOARD_ATTACHMENT_URL);
-            uploadManager.setOnUploadFinishedListener(new UploadManager.OnUploadFinishedListener() {
-                @Override
-                public void onUploadFinished(String remoteDataPath) {
-                    //Show Upload has finished
-                    attachmentView.showProgressbar(false);
-                    //Save remoteDataPath to attachment
-                    blackBoardAttachment.setRemoteDataPath(remoteDataPath);
-
-                    blackBoardAttachments.remove(0);
-                    blackBoardAttachmentViews.remove(0);
-
-                    uploadAttachment();
-                }
-            });
-        }else{
-            saveBlackBoardItem2DB();
-        }
+        //jsonManager.sendJson(ServerURLManager.NEW_BLACK_BOARD_ITEM_URL, blackBoardItem);
     }
 
     private Contact createNewContact(){
@@ -465,12 +470,17 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         editTextStreet.setText("");
         editTextCity.setText("");
 
+        blackBoardAttachments = new ArrayList<>();
+        blackBoardAttachmentsCopy = new ArrayList<>();
+        blackBoardAttachmentViews = new ArrayList<>();
+        blackBoardAttachmentViewsCopy = new ArrayList<>();
+
         attachmentContainer.removeAllViews();
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
         resetGui();
     }
 
