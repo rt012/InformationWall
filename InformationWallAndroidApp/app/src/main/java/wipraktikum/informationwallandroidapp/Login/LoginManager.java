@@ -74,6 +74,16 @@ public class LoginManager {
         editor.commit();
     }
 
+    public void resetLoginInSharedPrefs() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(InfoWallApplication.getInstance());
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean("loggedIn", false);
+        editor.putString("username", null);
+        editor.putString("serverURL", null);
+        editor.commit();
+    }
+
+
     public void setOnRequestLoginResponseReceived(OnRequestLoginResponseReceived onRequestLoginResponseReceived){
         this.mOnRequestLoginResponseReceived = onRequestLoginResponseReceived;
     }

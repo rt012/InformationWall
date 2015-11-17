@@ -143,6 +143,8 @@ public class LoginActivity extends BaseActivity implements LoginManager.OnReques
         mLoginButton.setEnabled(true);
         if(mAutoLogin.isChecked()) {
             mLoginManager.saveLoginInSharedPrefs(mEmailText.getText().toString(), mServerURL.getText().toString());
+        }else{
+            mLoginManager.resetLoginInSharedPrefs();
         }
         openTileOverview();
     }
