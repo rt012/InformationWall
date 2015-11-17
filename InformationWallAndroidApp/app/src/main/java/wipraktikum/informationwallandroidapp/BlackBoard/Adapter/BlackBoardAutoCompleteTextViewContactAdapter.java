@@ -42,7 +42,7 @@ public class BlackBoardAutoCompleteTextViewContactAdapter extends ArrayAdapter {
 
         TextView textViewFullName = (TextView) convertView.
                 findViewById(R.id.tv_black_board_add_item_adapter_contact_full_name);
-        textViewFullName.setText(contact.getFullName());
+        textViewFullName.setText(mContactFilter.highlight(contact.getFullName()));
 
         TextView textViewFullAddress = (TextView) convertView.
                 findViewById(R.id.tv_black_board_add_item_adapter_contact_email);

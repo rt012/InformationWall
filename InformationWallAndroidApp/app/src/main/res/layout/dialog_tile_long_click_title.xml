@@ -16,6 +16,7 @@
             android:id="@+id/dialogTitleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
             android:text="@string/title"
             android:textSize="25sp"
             android:padding="15dp"
@@ -27,6 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:paddingLeft="5dp"
+            android:textColor="@android:color/white"
             android:textSize="20sp"
             android:text="@string/switch_showItem"/>
     </LinearLayout>
