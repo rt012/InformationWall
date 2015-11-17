@@ -1,5 +1,6 @@
 package wipraktikum.informationwallandroidapp.BlackBoard;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -38,10 +39,32 @@ public class BlackBoardOverview extends Fragment implements BlackBoardItemDialog
     public View onCreateView(LayoutInflater inflater,ViewGroup viewGroup, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_black_board_overview, viewGroup, false);
 
-        ExpandableListView expandableListView = (ExpandableListView) view.findViewById(R.id.ex_lv_black_board);
+        final ExpandableListView expandableListView = (ExpandableListView) view.findViewById(R.id.ex_lv_black_board);
         blackBoardExpandableListViewAdapter = new BlackBoardExpandableListViewAdapter(getActivity());
         expandableListView.setAdapter(blackBoardExpandableListViewAdapter);
-
+        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            int previousGroup = -1;
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                // Collapse previous parent if expanded.
+                if ((previousGroup != -1) && (groupPosition != previousGroup)) {
+                    expandableListView.collapseGroup(previousGroup);
+                }
+                previousGroup = groupPosition;
+            }
+        });
+        expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            View previousView = null;
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                if (previousView != null) {
+                    previousView.setBackgroundColor(Color.TRANSPARENT);
+                }
+                if (previousView != v) v.setBackgroundColor(getResources().getColor(R.color.ci_color_lightest));
+                previousView = v;
+                return false;
+            }
+        });
         expandableListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {

@@ -94,7 +94,7 @@ public class ContactFilter extends Filter{
                 int spanEnd = Math.min(start + search.length(),
                         originalText.length());
 
-                highlighted.setSpan(new ForegroundColorSpan(InfoWallApplication.getInstance().getResources().getColor(R.color.ci_color_dark)),
+                highlighted.setSpan(new ForegroundColorSpan(InfoWallApplication.getInstance().getResources().getColor(R.color.ci_color_light)),
                         spanStart, spanEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 highlighted.setSpan(new StyleSpan(Typeface.BOLD),
                         spanStart, spanEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);

@@ -111,7 +111,6 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
             String editedTimestamp = formatter.format(blackBoardItem.getEditedTimestamp());
             tvItemLastEdited.setText(context.getString(R.string.black_board_last_edited) + " " + editedTimestamp);
         }
-
         //Item Information
         TextView tvItemInfo =  (TextView) convertView
                 .findViewById(R.id.tv_black_board_item_info);
@@ -119,6 +118,7 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
             String createdTimestamp = formatter.format(blackBoardItem.getCreatedTimestamp());
             tvItemInfo.setText(createdTimestamp + " (" + blackBoardItem.getContact().getFullName() + ")");
         }
+
         return convertView;
     }
 
