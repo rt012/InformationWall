@@ -74,7 +74,7 @@ public class InfoWallApplication extends Application {
     public static User getCurrentUser(){
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(instance);
         String currentUserJsonString = sharedPref.getString("currentUser", null);
-        if (currentUser == null || currentUserJsonString != null){
+        if (currentUser == null && currentUserJsonString != null){
 
             currentUser = new Gson().fromJson(new JsonParser().parse(currentUserJsonString), User.class);
             currentUser.setLoggedIn(true);
@@ -93,6 +93,7 @@ public class InfoWallApplication extends Application {
 
         return mRequestQueue;
     }
+
     public <T> void addToRequestQueue(Request<T> req, String tag) {
         // set the default tag if tag is empty
         req.setTag(TextUtils.isEmpty(tag) ? TAG : tag);
@@ -117,7 +118,6 @@ public class InfoWallApplication extends Application {
         return databaseHelper;
     }
 
-
     /**
      * Testing out the TodoOrmLiteExample app by creating some Todo entries in the database,
      * and querying for all the Todo object from the todo table.
@@ -130,8 +130,8 @@ public class InfoWallApplication extends Application {
         //Tiles
         Dao<DBTile, Long> tileDao =  databaseHelper.getTileDAO();
         tileDao.createIfNotExists(new DBTile("Black Board", R.drawable.blackboard_app_icon, BlackBoard.class.getName()));
-        tileDao.createIfNotExists(new DBTile("Example Tile 1", R.drawable.app_coming_soon1, TileOverview.class.getName()));
-        tileDao.createIfNotExists(new DBTile("Example Tile 2", R.drawable.app_coming_soon2, TileOverview.class.getName()));
+        tileDao.createIfNotExists(new DBTile("Example Tile 1", R.drawable.app_coming_soon, TileOverview.class.getName()));
+        tileDao.createIfNotExists(new DBTile("Example Tile 2", R.drawable.app_coming_soon, TileOverview.class.getName()));
     }
 
     private void startActivity() {
