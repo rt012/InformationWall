@@ -87,7 +87,7 @@ public class LoginActivity extends BaseActivity implements LoginManager.OnReques
             mEmailText.setError(null);
         }
 
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
+        if (password.isEmpty()) {
             mPasswordText.setError("between 4 and 10 alphanumeric characters");
             valid = false;
         } else {

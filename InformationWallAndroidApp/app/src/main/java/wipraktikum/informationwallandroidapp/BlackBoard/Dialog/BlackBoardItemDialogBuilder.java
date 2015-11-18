@@ -33,6 +33,9 @@ public class BlackBoardItemDialogBuilder extends DialogFragment {
         User currentUser = InfoWallApplication.getCurrentUser();
         mBlackBoardItem = blackBoardItem;
 
+        canDelete = false;
+        canEdit = false;
+
         //Rights management
         if (currentUser.getUserGroup().canDelete()){
             canDelete = true;
