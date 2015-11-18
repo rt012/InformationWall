@@ -12,7 +12,7 @@ import wipraktikum.informationwallandroidapp.BusinessObject.User.User;
  * Created by Eric Schmidt on 25.10.2015.
  */
 @DatabaseTable
-public class BlackBoardItem {
+public class BlackBoardItem{
     private long mBlackBoardItemID;
     private String mTitle;
     private Contact mContact;

@@ -57,6 +57,8 @@ import wipraktikum.informationwallandroidapp.Utils.RealPathHelper;
 public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivityResultListener, TextWatcher,
         JsonManager.OnObjectResponseListener, JsonManager.OnErrorListener {
     public static final String BLACK_BOARD_ITEM_ID_TAG = "blackBoardItemID";
+    private static final String BLACK_BOARD_SAVED_INSTANCE_TAG = "blackBoardJSON";
+
 
     private OnSaveBlackBoardItemListener mOnSaveBlackBoardItemListener = null;
     private OnStartActivityResultListener mOnStartActivityResultListener = null;
@@ -86,7 +88,6 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     private LinearLayout attachmentContainer = null;
     private Button buttonAttachment = null;
 
-
     public static BlackBoardAddItem getInstance(){
         if (instance==null){
             instance = new BlackBoardAddItem();
@@ -100,6 +101,19 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         setHasOptionsMenu(true);
 
         ((BlackBoard)getActivity()).setOnActivityResultListener(this);
+
+        setUpGUI(view);
+
+        //Write BlackBoardItem Information to View
+        if (getArguments() != null){
+            blackBoardItem = (BlackBoardItem) DAOHelper.getInstance().getBlackBoardItemDAO().queryForId(
+                    getArguments().getLong(BLACK_BOARD_ITEM_ID_TAG));
+            isEditedItem = true;
+            setBlackBoardItemInformation();
+        }else{
+            blackBoardItem = new BlackBoardItem();
+        }
+
         return view;
     }
 
@@ -107,21 +121,10 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     public void onResume(){
         super.onResume();
 
-        setUpGUI(getView());
         //Tell Server to open Live Preview
         Map<String, String> params = new HashMap<>();
         params.put(ServerURLManager.SHOW_LIVE_PREVIEW_BLACK_BOARD_ITEM_KEY, ServerURLManager.SHOW_LIVE_PREVIEW_BLACK_BOARD_ITEM_SHOW);
         PhpRequestManager.getInstance().phpRequest(ServerURLManager.SHOW_LIVE_PREVIEW_BLACK_BOARD_ITEM_URL, params);
-
-        //Write BlackBoardItem Information to View
-        if (getArguments() != null){
-            blackBoardItem = (BlackBoardItem) DAOHelper.getInstance().getBlackBoardItemDAO().queryForId(
-                    getArguments().getLong(BLACK_BOARD_ITEM_ID_TAG));
-            setBlackBoardItemInformation();
-            isEditedItem = true;
-        }else{
-            blackBoardItem = new BlackBoardItem();
-        }
 
         //Handle initial Live Preview
         sendLivePreviewToServer();
@@ -211,6 +214,11 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     @Override
     public void afterTextChanged(Editable s) {}
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
     private void setUpGUI(View view){
         editTextTitle = (EditText) view.findViewById(R.id.edit_black_board_add_item_title);
         editTextTitle.addTextChangedListener(this);
@@ -282,7 +290,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
             }
         });
 
-        attachmentContainer = (LinearLayout) getView().findViewById(R.id.ll_attachment_container);
+        attachmentContainer = (LinearLayout) view.findViewById(R.id.ll_attachment_container);
     }
 
     public void setBlackBoardItemInformation() {
@@ -293,11 +301,16 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
 
         editTextTitle.setText(title);
         editTextDescription.setText(descriptionText);
-        autoCompleteTextViewContact.setText(contact.getFullName());
-        selectedContact = contact;
+        if (contact != null) {
+            autoCompleteTextViewContact.setText(contact.getFullName());
+            selectedContact = contact;
+        }
 
-        for (BlackBoardAttachment blackBoardAttachment : blackBoardAttachments) {
-            addAttachmentToView(blackBoardAttachment);
+        attachmentContainer.removeAllViews();
+        if (blackBoardAttachments != null) {
+            for (BlackBoardAttachment blackBoardAttachment : blackBoardAttachments) {
+                addAttachmentToView(blackBoardAttachment);
+            }
         }
     }
 
@@ -352,7 +365,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         }else{
             Snackbar
                 .make(getView(),  R.string.black_board_add_item_snackbar_no_title, Snackbar.LENGTH_LONG)
-                .show();
+                    .show();
         }
     }
 
@@ -485,12 +498,6 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        resetGui();
-    }
-
-    @Override
     public void OnResponse(JSONObject response) {
         Gson gsonInstance = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
         BlackBoardItem serverBlackBoardItem = gsonInstance.fromJson(new JsonParser().parse(response.toString()), BlackBoardItem.class);
@@ -522,7 +529,6 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     public void setOnStartActivityResultListener(OnStartActivityResultListener onStartActivityResultListener){
         mOnStartActivityResultListener = onStartActivityResultListener;
     }
-
 
     public interface OnStartActivityResultListener{
         void onStartActivityResultListener();
