@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="ci_color" type="color">#163f50</item>
-    <item name="ci_color_light" type="color">#F2163f50</item>
+    <item name="ci_color_light" type="color">#214857</item>
+    <item name="ci_color_light_" type="color">#F2163f50</item>
     <item name="ci_color_lightest" type="color">#A1B2B9</item>
     <color name="loginButton">#218eed</color>
 </resources>

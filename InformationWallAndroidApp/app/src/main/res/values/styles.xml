@@ -2,11 +2,11 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/ci_color</item>
-        <item name="colorPrimaryDark">@color/ci_color_light</item>
+        <item name="colorPrimary">@color/ci_color_light</item>
+        <item name="colorPrimaryDark">@color/ci_color</item>
     </style>
 
-    <!-- Devider -->
+    <!-- Divider -->
     <style name="Divider">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
