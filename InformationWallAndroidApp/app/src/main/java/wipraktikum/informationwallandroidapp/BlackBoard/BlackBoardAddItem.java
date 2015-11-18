@@ -57,7 +57,9 @@ import wipraktikum.informationwallandroidapp.Utils.RealPathHelper;
 public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivityResultListener, TextWatcher,
         JsonManager.OnObjectResponseListener, JsonManager.OnErrorListener {
     public static final String BLACK_BOARD_ITEM_ID_TAG = "blackBoardItemID";
+
     private OnSaveBlackBoardItemListener mOnSaveBlackBoardItemListener = null;
+    private OnStartActivityResultListener mOnStartActivityResultListener = null;
 
     private static BlackBoardAddItem instance = null;
 
@@ -272,6 +274,10 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         buttonAttachment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mOnStartActivityResultListener != null) {
+                    mOnStartActivityResultListener.onStartActivityResultListener();
+                }
+
                 FileHelper.getInstance().showFileChooser(getActivity());
             }
         });
@@ -511,5 +517,14 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
 
     public interface OnSaveBlackBoardItemListener{
         void onSaveBlackBoardItem(boolean isSuccessful);
+    }
+
+    public void setOnStartActivityResultListener(OnStartActivityResultListener onStartActivityResultListener){
+        mOnStartActivityResultListener = onStartActivityResultListener;
+    }
+
+
+    public interface OnStartActivityResultListener{
+        void onStartActivityResultListener();
     }
 }

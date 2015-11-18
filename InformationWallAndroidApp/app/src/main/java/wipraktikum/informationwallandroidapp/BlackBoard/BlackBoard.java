@@ -31,6 +31,7 @@ public class BlackBoard extends BaseActivity{
     private static Fragment currentFragment = null;
     private FloatingActionButton fab = null;
     private View mRootView = null;
+    private boolean isFilePickerVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +94,12 @@ public class BlackBoard extends BaseActivity{
     @Override
     public void onPause() {
         super.onPause();
-        openBlackBoardOnServer(ServerURLManager.OPEN_BLACK_BOARD_PARAM_CLOSE);
+        if (!isFilePickerVisible) {
+            openBlackBoardOnServer(ServerURLManager.OPEN_BLACK_BOARD_PARAM_CLOSE);
+        }else{
+            isFilePickerVisible = false;
+        }
+
     }
 
     @Override
@@ -185,6 +191,14 @@ public class BlackBoard extends BaseActivity{
             if (fragment != null) {
                 if (fragment.getClass().getSimpleName().equals(BlackBoardAddItem.class.getSimpleName())){
                     fab.hide();
+                    //Add Listener
+                    ((BlackBoardAddItem)fragment).setOnStartActivityResultListener(new BlackBoardAddItem.OnStartActivityResultListener() {
+                        @Override
+                        public void onStartActivityResultListener() {
+                            isFilePickerVisible = true;
+                        }
+                    });
+
                 }else if(fragment.getClass().getSimpleName().equals(BlackBoardOverview.class.getSimpleName())){
                     fab.show();
                 }
