@@ -8,7 +8,7 @@
     <string name="title_activity_base">BaseActivity</string>
     <!-- LogIn -->
     <string name="login_authenticating_progress_bar">Authenticating...</string>
-    <string name="cb_autoLogin">Eingeloggt bleiben</string>
+    <string name="cb_autoLogin">Keep me logged in</string>
 
     <!--- GridViewLongClickDialog  -->
     <string name="small">Small</string>

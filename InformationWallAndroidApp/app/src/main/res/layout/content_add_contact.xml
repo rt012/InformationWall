@@ -18,6 +18,7 @@
             <EditText android:id="@+id/edit_black_board_add_item_contact_full_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
                 android:inputType="text"
                 android:hint="@string/black_board_add_item_contact_full_name" />
         </android.support.design.widget.TextInputLayout>
@@ -33,6 +34,7 @@
             <EditText android:id="@+id/edit_black_board_add_item_contact_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
                 android:inputType="textEmailAddress"
                 android:hint="@string/black_board_add_item_contact_email" />
         </android.support.design.widget.TextInputLayout>
@@ -48,6 +50,7 @@
             <EditText android:id="@+id/edit_black_board_add_item_contact_telephone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
                 android:inputType="textEmailAddress"
                 android:hint="@string/black_board_add_item_contact_telephone" />
         </android.support.design.widget.TextInputLayout>
@@ -63,6 +66,7 @@
             <EditText android:id="@+id/edit_black_board_add_item_contact_company"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
                 android:inputType="textEmailAddress"
                 android:hint="@string/black_board_add_item_contact_company" />
         </android.support.design.widget.TextInputLayout>
@@ -78,6 +82,7 @@
             <EditText android:id="@+id/edit_black_board_add_item_contact_street"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
                 android:inputType="textEmailAddress"
                 android:hint="@string/black_board_add_item_contact_street" />
         </android.support.design.widget.TextInputLayout>
@@ -93,6 +98,7 @@
             <EditText android:id="@+id/edit_black_board_add_item_contact_city"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
                 android:inputType="textEmailAddress"
                 android:hint="@string/black_board_add_item_contact_city" />
         </android.support.design.widget.TextInputLayout>

@@ -415,7 +415,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         JsonManager jsonManager = new JsonManager();
         jsonManager.setOnObjectResponseReceiveListener(this);
         jsonManager.setOnErrorReceiveListener(this);
-        //jsonManager.sendJson(ServerURLManager.NEW_BLACK_BOARD_ITEM_URL, blackBoardItem);
+        jsonManager.sendJson(ServerURLManager.NEW_BLACK_BOARD_ITEM_URL, blackBoardItem);
     }
 
     private Contact createNewContact(){

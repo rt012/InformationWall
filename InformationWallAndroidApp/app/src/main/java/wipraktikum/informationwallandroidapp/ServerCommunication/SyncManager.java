@@ -1,5 +1,6 @@
 package wipraktikum.informationwallandroidapp.ServerCommunication;
 
+import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -21,7 +22,7 @@ import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
  * Created by Remi on 04.11.2015.
  */
 
-public class SyncManager implements JsonManager.OnObjectResponseListener, JsonManager.OnArrayResponseListener {
+public class SyncManager implements JsonManager.OnObjectResponseListener, JsonManager.OnArrayResponseListener, JsonManager.OnErrorListener {
 
     private JsonManager jsonManager;
     private static SyncManager instance;
@@ -31,6 +32,7 @@ public class SyncManager implements JsonManager.OnObjectResponseListener, JsonMa
     private SyncManager() {
         jsonManager = new JsonManager();
         jsonManager.setOnObjectResponseReceiveListener(this);
+        jsonManager.setOnErrorReceiveListener(this);
         jsonManager.setOnArrayResponseReceiveListener(this);
         gsonInstance = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
     }
@@ -50,7 +52,6 @@ public class SyncManager implements JsonManager.OnObjectResponseListener, JsonMa
         try {
             ArrayList<BlackBoardItem> unsyncedItems = DAOHelper.getInstance().getBlackBoardItemDAO().getUnsyncedItems();
             if(!unsyncedItems.isEmpty()) {
-
                 currentUnsyncedBlackBoardItem = unsyncedItems.get(0);
                 String jsonString =  gsonInstance.toJson(currentUnsyncedBlackBoardItem);
                 jsonManager.sendJson(ServerURLManager.NEW_BLACK_BOARD_ITEM_URL, jsonString);
@@ -69,12 +70,24 @@ public class SyncManager implements JsonManager.OnObjectResponseListener, JsonMa
     private void UpdateOrCreateBlackBoardItems(JsonElement response) {
         BlackBoardItemDAO blackBoardItemDAO = DAOHelper.getInstance().getBlackBoardItemDAO();
 
+        deleteAllBlackboardItems();
+
         Gson gsonInstance = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
         List<BlackBoardItem> serverItemList = gsonInstance.fromJson(response, new TypeToken<List<BlackBoardItem>>(){}.getType());
         for(BlackBoardItem serverBlackBoardItem : serverItemList) {
             serverBlackBoardItem.setSyncStatus(true);
             blackBoardItemDAO.createOrUpdate(serverBlackBoardItem);
         }
+    }
+
+    public void deleteAllBlackboardItems(){
+        BlackBoardItemDAO blackBoardItemDAO = DAOHelper.getInstance().getBlackBoardItemDAO();
+        ArrayList<BlackBoardItem> blackBoardItems = blackBoardItemDAO.queryForAll();
+
+        for (BlackBoardItem blackBoardItem : blackBoardItems){
+            blackBoardItemDAO.delete(blackBoardItem);
+        }
+
     }
 
     @Override
@@ -92,5 +105,11 @@ public class SyncManager implements JsonManager.OnObjectResponseListener, JsonMa
     @Override
     public void OnResponse(JSONArray response) {
         UpdateOrCreateBlackBoardItems(new JsonParser().parse(response.toString()));
+    }
+
+
+    @Override
+    public void OnErrorResponse(VolleyError error) {
+        syncBlackBoardItemsFromServer();
     }
 }
