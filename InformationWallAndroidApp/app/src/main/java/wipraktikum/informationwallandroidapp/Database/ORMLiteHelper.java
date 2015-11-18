@@ -21,7 +21,7 @@ import wipraktikum.informationwallandroidapp.Database.BusinessObject.User.DBUser
 /**
  * Created by Eric Schmidt on 22.10.2015.
  */
-public class InformationWallORMHelper extends OrmLiteSqliteOpenHelper{
+public class ORMLiteHelper extends OrmLiteSqliteOpenHelper{
     private static final String DATABASE_NAME = "todo";
     private static final int DATABASE_VERSION = 1;
 
@@ -36,7 +36,7 @@ public class InformationWallORMHelper extends OrmLiteSqliteOpenHelper{
     private Dao<DBUser, Long> userDAO;
     private Dao<DBUserGroup, Long> userGroupDAO;
 
-    public InformationWallORMHelper(Context context){
+    public ORMLiteHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

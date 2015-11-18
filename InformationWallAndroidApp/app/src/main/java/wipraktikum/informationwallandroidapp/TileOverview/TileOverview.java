@@ -16,7 +16,7 @@ import wipraktikum.informationwallandroidapp.BaseActivity;
 import wipraktikum.informationwallandroidapp.BusinessObject.Tile.Tile;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.Tile.DBTile;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
-import wipraktikum.informationwallandroidapp.Database.InformationWallORMHelper;
+import wipraktikum.informationwallandroidapp.Database.ORMLiteHelper;
 import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.ServerCommunication.PhpRequestManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
@@ -27,7 +27,7 @@ import wipraktikum.informationwallandroidapp.TileOverview.Dialog.TileLongClickDi
 public class TileOverview extends BaseActivity {
     public final static String TILE_ID_KEY_PARAM = "tileID";
 
-    private InformationWallORMHelper databaseHelper = null;
+    private ORMLiteHelper databaseHelper = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

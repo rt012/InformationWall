@@ -20,7 +20,7 @@ import java.sql.SQLException;
 import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoard;
 import wipraktikum.informationwallandroidapp.BusinessObject.User.User;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.Tile.DBTile;
-import wipraktikum.informationwallandroidapp.Database.InformationWallORMHelper;
+import wipraktikum.informationwallandroidapp.Database.ORMLiteHelper;
 import wipraktikum.informationwallandroidapp.ServerCommunication.SyncManager;
 import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
 import wipraktikum.informationwallandroidapp.Utils.ActivityHelper;
@@ -32,7 +32,7 @@ import wipraktikum.informationwallandroidapp.Utils.ParseUtils;
 public class InfoWallApplication extends Application {
     private static InfoWallApplication instance;
     private static User currentUser;
-    private InformationWallORMHelper databaseHelper;
+    private ORMLiteHelper databaseHelper;
 
     public static final String TAG = InfoWallApplication.class.getSimpleName();
     private RequestQueue mRequestQueue;
@@ -110,9 +110,9 @@ public class InfoWallApplication extends Application {
         }
     }
 
-    public InformationWallORMHelper getDatabaseHelper() {
+    public ORMLiteHelper getDatabaseHelper() {
         if (databaseHelper == null) {
-           databaseHelper = new InformationWallORMHelper(this);
+           databaseHelper = new ORMLiteHelper(this);
         }
         return databaseHelper;
     }
