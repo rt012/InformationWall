@@ -53,8 +53,7 @@ public class SyncManager implements JsonManager.OnObjectResponseListener, JsonMa
             ArrayList<BlackBoardItem> unsyncedItems = DAOHelper.getInstance().getBlackBoardItemDAO().getUnsyncedItems();
             if(!unsyncedItems.isEmpty()) {
                 currentUnsyncedBlackBoardItem = unsyncedItems.get(0);
-                String jsonString =  gsonInstance.toJson(currentUnsyncedBlackBoardItem);
-                jsonManager.sendJson(ServerURLManager.NEW_BLACK_BOARD_ITEM_URL, jsonString);
+                jsonManager.sendJson(ServerURLManager.NEW_BLACK_BOARD_ITEM_URL, currentUnsyncedBlackBoardItem);
             } else {
                 syncBlackBoardItemsFromServer();
             }

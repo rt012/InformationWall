@@ -503,7 +503,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         BlackBoardItem serverBlackBoardItem = gsonInstance.fromJson(new JsonParser().parse(response.toString()), BlackBoardItem.class);
         serverBlackBoardItem.setSyncStatus(true);
         BlackBoardItemDAO blackBoardItemDAO = DAOHelper.getInstance().getBlackBoardItemDAO();
-        blackBoardItemDAO.deleteByID(blackBoardItem.getBlackBoardItemID());
+        blackBoardItemDAO.delete(blackBoardItem);
         blackBoardItemDAO.createOrUpdate(serverBlackBoardItem);
 
         if (mOnSaveBlackBoardItemListener != null) {
