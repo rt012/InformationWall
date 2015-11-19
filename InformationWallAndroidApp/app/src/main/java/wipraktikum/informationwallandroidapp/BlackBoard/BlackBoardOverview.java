@@ -3,6 +3,7 @@ package wipraktikum.informationwallandroidapp.BlackBoard;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
+import wipraktikum.informationwallandroidapp.ServerCommunication.SyncManager;
 
 public class BlackBoardOverview extends Fragment implements BlackBoardItemDialogBuilder.OnItemChangeListener, JsonManager.OnObjectResponseListener, JsonManager.OnErrorListener{
     private final String FRAGMENT_TAG = "FRAGMENT_OVERVIEW";
@@ -32,6 +34,26 @@ public class BlackBoardOverview extends Fragment implements BlackBoardItemDialog
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup viewGroup, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_black_board_overview, viewGroup, false);
+
+        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setColorSchemeResources(
+                R.color.refresh_progress_1,
+                R.color.refresh_progress_2,
+                R.color.refresh_progress_3);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                SyncManager.getInstance().syncBlackBoardItems();
+                SyncManager.getInstance().setOnSyncFinishedListener(new SyncManager.OnSyncFinishedListener() {
+                    @Override
+                    public void onSyncFinished() {
+                        // stopping swipe refresh
+                        swipeRefreshLayout.setRefreshing(false);
+                        blackBoardExpandableListViewAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        });
 
         final ExpandableListView expandableListView = (ExpandableListView) view.findViewById(R.id.ex_lv_black_board);
         blackBoardExpandableListViewAdapter = new BlackBoardExpandableListViewAdapter(getActivity());

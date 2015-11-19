@@ -5,4 +5,9 @@
     <item name="ci_color_light_" type="color">#F2163f50</item>
     <item name="ci_color_lightest" type="color">#A1B2B9</item>
     <color name="loginButton">#218eed</color>
+
+    <!-- Color Refresh -->
+    <color name="refresh_progress_1">@color/ci_color</color>
+    <color name="refresh_progress_2">@color/ci_color_light</color>
+    <color name="refresh_progress_3">@color/ci_color_lightest</color>
 </resources>

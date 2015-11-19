@@ -28,7 +28,8 @@ public class SyncManager implements JsonManager.OnObjectResponseListener, JsonMa
     private JsonManager jsonManagerFromServer;
     private static SyncManager instance;
     private BlackBoardItem currentUnsyncedBlackBoardItem;
-    private Gson gsonInstance;
+
+    private OnSyncFinishedListener mOnSyncFinishedListener = null;
 
     private SyncManager() {
         jsonManagerToServer = new JsonManager();
@@ -45,12 +46,12 @@ public class SyncManager implements JsonManager.OnObjectResponseListener, JsonMa
         jsonManagerFromServer.setOnErrorReceiveListener(new JsonManager.OnErrorListener() {
             @Override
             public void OnErrorResponse(VolleyError error) {
-
+                if (mOnSyncFinishedListener != null){
+                    mOnSyncFinishedListener.onSyncFinished();
+                }
             }
         });
         jsonManagerFromServer.setOnArrayResponseReceiveListener(this);
-
-        gsonInstance = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
     }
 
     public static SyncManager getInstance(){
@@ -120,6 +121,17 @@ public class SyncManager implements JsonManager.OnObjectResponseListener, JsonMa
     @Override
     public void OnResponse(JSONArray response) {
         UpdateOrCreateBlackBoardItems(new JsonParser().parse(response.toString()));
+        if (mOnSyncFinishedListener != null){
+            mOnSyncFinishedListener.onSyncFinished();
+        }
     }
 
+    //Listener for OnActivityResult Event
+    public void setOnSyncFinishedListener(OnSyncFinishedListener onSyncFinishedListener){
+        mOnSyncFinishedListener = onSyncFinishedListener;
+    }
+
+    public interface OnSyncFinishedListener{
+        void onSyncFinished();
+    }
 }
