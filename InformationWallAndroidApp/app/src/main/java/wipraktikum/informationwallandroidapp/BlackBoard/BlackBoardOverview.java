@@ -26,16 +26,8 @@ public class BlackBoardOverview extends Fragment implements BlackBoardItemDialog
 
     private BlackBoardExpandableListViewAdapter blackBoardExpandableListViewAdapter = null;
     private BlackBoardItemDialogBuilder blackBoardItemDialogBuilder = null;
-    private static BlackBoardOverview instance = null;
     private BlackBoardItem deletedBlackBoardItem;
     private JsonManager jsonManager;
-
-    public static BlackBoardOverview getInstance(){
-        if (instance==null){
-            instance = new BlackBoardOverview();
-        }
-        return instance;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup viewGroup, Bundle savedInstanceState) {

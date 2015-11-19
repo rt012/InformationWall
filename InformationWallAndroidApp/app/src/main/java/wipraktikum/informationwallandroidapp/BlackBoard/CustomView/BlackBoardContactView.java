@@ -26,7 +26,7 @@ public class BlackBoardContactView extends TableLayout {
         TextView txtContactCompany = (TextView) findViewById(R.id.tv_black_board_contact_company);
         ImageView ivContactCompany = (ImageView) findViewById(R.id.iv_black_board_contact_company);
         TableRow trContactCompany = (TableRow) findViewById(R.id.tr_black_board_contact_company);
-        if (blackBoardContact.getCompany() != null) {
+        if (blackBoardContact.getCompany() != null && !blackBoardContact.getCompany().isEmpty()) {
             txtContactCompany.setText(blackBoardContact.getCompany());
             ivContactCompany.setImageDrawable(context.getDrawable(R.drawable.icon_company));
         }else{
@@ -36,7 +36,7 @@ public class BlackBoardContactView extends TableLayout {
         TextView txtContactFullName= (TextView) findViewById(R.id.tv_black_board_contact_full_name);
         ImageView ivContactFullName = (ImageView) findViewById(R.id.iv_black_board_contact_full_name);
         TableRow trContactFullName= (TableRow) findViewById(R.id.tr_black_board_contact_full_name);
-        if (blackBoardContact.getFullName() != null) {
+        if (blackBoardContact.getFullName() != null && !blackBoardContact.getFullName().isEmpty()) {
             txtContactFullName.setText(blackBoardContact.getFullName());
             ivContactFullName.setImageDrawable(context.getDrawable(R.drawable.icon_name));
         }else{
@@ -46,7 +46,7 @@ public class BlackBoardContactView extends TableLayout {
         TextView txtContactEmail = (TextView) findViewById(R.id.tv_black_board_contact_email);
         ImageView ivContactEmail = (ImageView) findViewById(R.id.iv_black_board_contact_email);
         TableRow trContactEmail = (TableRow) findViewById(R.id.tr_black_board_contact_email);
-        if (blackBoardContact.getEMailAddress() != null) {
+        if (blackBoardContact.getEMailAddress() != null && !blackBoardContact.getEMailAddress().isEmpty()) {
             txtContactEmail.setText(blackBoardContact.getEMailAddress());
             ivContactEmail.setImageDrawable(context.getDrawable(R.drawable.icon_email));
             trContactEmail.setOnClickListener(new OnClickListener() {
@@ -66,7 +66,7 @@ public class BlackBoardContactView extends TableLayout {
         TextView txtContactTel= (TextView) findViewById(R.id.tv_black_board_contact_tel);
         ImageView ivContactTel = (ImageView)findViewById(R.id.iv_black_board_contact_tel);
         TableRow trContactTel = (TableRow) findViewById(R.id.tr_black_board_contact_tel);
-        if (blackBoardContact.getTelephone() != null) {
+        if (blackBoardContact.getTelephone() != null && !blackBoardContact.getTelephone().isEmpty()) {
             txtContactTel.setText(blackBoardContact.getTelephone());
             ivContactTel.setImageDrawable(context.getDrawable(R.drawable.icon_telephone));
             trContactTel.setOnClickListener(new OnClickListener() {
@@ -86,7 +86,7 @@ public class BlackBoardContactView extends TableLayout {
         TextView txtContactFullAddress = (TextView) findViewById(R.id.tv_black_board_contact_address);
         ImageView ivContactFullAddress = (ImageView) findViewById(R.id.iv_black_board_contact_address);
         TableRow trContactFullAddress = (TableRow) findViewById(R.id.tr_black_board_contact_address);
-        if (blackBoardContact.getContactAddress() != null && blackBoardContact.getContactAddress().getFullAddress() != null) {
+        if (blackBoardContact.getContactAddress() != null && blackBoardContact.getContactAddress().getFullAddress() != null && !blackBoardContact.getContactAddress().getFullAddress().isEmpty()) {
             txtContactFullAddress.setText(blackBoardContact.getContactAddress().getFullAddress());
             ivContactFullAddress.setImageDrawable(context.getDrawable(R.drawable.icon_address));
         }else{

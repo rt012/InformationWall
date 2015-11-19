@@ -82,13 +82,16 @@ public class BlackBoard extends BaseActivity{
         }
 
         if (currentFragment == null) {
-            openFragment(BlackBoardOverview.getInstance(), false);
+            openFragment(new BlackBoardOverview(), false);
+        } else {
+            openFragment(currentFragment, false);
+            /*showFabByFragment(currentFragment);
+            //Change Title of Actionbar
+            setTitle(getActionBarTitleByFragment(currentFragment));*/
         }
 
-        //Show Fab
-        showFabByFragment(currentFragment);
-        //Change Title of Actionbar
-        setTitle(getActionBarTitleByFragment(currentFragment));
+
+
     }
 
     @Override
@@ -108,6 +111,9 @@ public class BlackBoard extends BaseActivity{
             getSupportFragmentManager().popBackStack();
             //Get current Fragment
             Fragment fragment = getActiveFragment();
+            if(fragment == null) {
+                fragment = new BlackBoardOverview();
+            }
             currentFragment = fragment;
             //Change Title of Actionbar
             setTitle(getActionBarTitleByFragment(fragment));
@@ -126,6 +132,9 @@ public class BlackBoard extends BaseActivity{
             getSupportFragmentManager().popBackStack();
             //Get current Fragment
             Fragment fragment = getActiveFragment();
+            if(fragment == null) {
+                fragment = new BlackBoardOverview();
+            }
             currentFragment = fragment;
             //Change Title of Actionbar
             setTitle(getActionBarTitleByFragment(fragment));
@@ -158,7 +167,7 @@ public class BlackBoard extends BaseActivity{
         fragmentTransaction.replace(R.id.black_board_fragment_container, fragment,
                 fragment.getClass().getSimpleName());
         if (addToBackStack)fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        fragmentTransaction.commitAllowingStateLoss();
 
         //Change Title of Actionbar
         setTitle(getActionBarTitleByFragment(fragment));
@@ -214,7 +223,7 @@ public class BlackBoard extends BaseActivity{
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
             return null;
         }
-        String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+        String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getClass().getSimpleName();
         return getSupportFragmentManager().findFragmentByTag(tag);
     }
 
