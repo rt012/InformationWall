@@ -100,7 +100,6 @@ public class BlackBoardOverview extends Fragment implements BlackBoardItemDialog
             jsonManager.setOnObjectResponseReceiveListener(this);
             jsonManager.setOnErrorReceiveListener(this);
         }
-        blackBoardExpandableListViewAdapter.notifyDataSetChanged();
     }
 
     public void showDialogFragmentByItem(BlackBoardItem blackBoardItem){
