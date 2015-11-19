@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 
+import com.android.volley.VolleyError;
+
 import org.json.JSONObject;
 
 import wipraktikum.informationwallandroidapp.BlackBoard.Adapter.BlackBoardExpandableListViewAdapter;
@@ -19,7 +21,7 @@ import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
 
-public class BlackBoardOverview extends Fragment implements BlackBoardItemDialogBuilder.OnItemChangeListener, JsonManager.OnObjectResponseListener {
+public class BlackBoardOverview extends Fragment implements BlackBoardItemDialogBuilder.OnItemChangeListener, JsonManager.OnObjectResponseListener, JsonManager.OnErrorListener{
     private final String FRAGMENT_TAG = "FRAGMENT_OVERVIEW";
 
     private BlackBoardExpandableListViewAdapter blackBoardExpandableListViewAdapter = null;
@@ -82,6 +84,7 @@ public class BlackBoardOverview extends Fragment implements BlackBoardItemDialog
         if(jsonManager == null) {
             jsonManager = new JsonManager();
             jsonManager.setOnObjectResponseReceiveListener(this);
+            jsonManager.setOnErrorReceiveListener(this);
         }
         blackBoardExpandableListViewAdapter.notifyDataSetChanged();
     }
@@ -100,7 +103,7 @@ public class BlackBoardOverview extends Fragment implements BlackBoardItemDialog
         //Close Dialog
         blackBoardItemDialogBuilder.dismiss();
         deletedBlackBoardItem = blackBoardItem;
-        new JsonManager().sendJson(ServerURLManager.DELETE_BLACK_BOARD_ITEM_URL, blackBoardItem);
+        jsonManager.sendJson(ServerURLManager.DELETE_BLACK_BOARD_ITEM_URL, blackBoardItem);
     }
 
     @Override
@@ -120,6 +123,13 @@ public class BlackBoardOverview extends Fragment implements BlackBoardItemDialog
 
     @Override
     public void OnResponse(JSONObject response) {
+        DAOHelper.getInstance().getBlackBoardItemDAO().delete(deletedBlackBoardItem);
+        blackBoardExpandableListViewAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void OnErrorResponse(VolleyError error) {
+        System.out.print("asdasd");
         DAOHelper.getInstance().getBlackBoardItemDAO().delete(deletedBlackBoardItem);
         blackBoardExpandableListViewAdapter.notifyDataSetChanged();
     }

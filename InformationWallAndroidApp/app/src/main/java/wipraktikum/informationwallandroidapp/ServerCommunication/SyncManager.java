@@ -22,18 +22,34 @@ import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
  * Created by Remi on 04.11.2015.
  */
 
-public class SyncManager implements JsonManager.OnObjectResponseListener, JsonManager.OnArrayResponseListener, JsonManager.OnErrorListener {
+public class SyncManager implements JsonManager.OnObjectResponseListener, JsonManager.OnArrayResponseListener {
 
-    private JsonManager jsonManager;
+    private JsonManager jsonManagerToServer;
+    private JsonManager jsonManagerFromServer;
     private static SyncManager instance;
     private BlackBoardItem currentUnsyncedBlackBoardItem;
     private Gson gsonInstance;
 
     private SyncManager() {
-        jsonManager = new JsonManager();
-        jsonManager.setOnObjectResponseReceiveListener(this);
-        jsonManager.setOnErrorReceiveListener(this);
-        jsonManager.setOnArrayResponseReceiveListener(this);
+        jsonManagerToServer = new JsonManager();
+        jsonManagerToServer.setOnObjectResponseReceiveListener(this);
+        jsonManagerToServer.setOnErrorReceiveListener(new JsonManager.OnErrorListener() {
+            @Override
+            public void OnErrorResponse(VolleyError error) {
+                syncBlackBoardItemsFromServer();
+            }
+        });
+        jsonManagerToServer.setOnArrayResponseReceiveListener(this);
+
+        jsonManagerFromServer = new JsonManager();
+        jsonManagerFromServer.setOnErrorReceiveListener(new JsonManager.OnErrorListener() {
+            @Override
+            public void OnErrorResponse(VolleyError error) {
+
+            }
+        });
+        jsonManagerFromServer.setOnArrayResponseReceiveListener(this);
+
         gsonInstance = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
     }
 
@@ -53,7 +69,7 @@ public class SyncManager implements JsonManager.OnObjectResponseListener, JsonMa
             ArrayList<BlackBoardItem> unsyncedItems = DAOHelper.getInstance().getBlackBoardItemDAO().getUnsyncedItems();
             if(!unsyncedItems.isEmpty()) {
                 currentUnsyncedBlackBoardItem = unsyncedItems.get(0);
-                jsonManager.sendJson(ServerURLManager.NEW_BLACK_BOARD_ITEM_URL, currentUnsyncedBlackBoardItem);
+                jsonManagerToServer.sendJson(ServerURLManager.NEW_BLACK_BOARD_ITEM_URL, currentUnsyncedBlackBoardItem);
             } else {
                 syncBlackBoardItemsFromServer();
             }
@@ -63,7 +79,7 @@ public class SyncManager implements JsonManager.OnObjectResponseListener, JsonMa
     }
 
     private void syncBlackBoardItemsFromServer() {
-        jsonManager.getJsonArray(ServerURLManager.GET_ALL_ITEMS_URL);
+        jsonManagerFromServer.getJsonArray(ServerURLManager.GET_ALL_ITEMS_URL);
     }
 
     private void UpdateOrCreateBlackBoardItems(JsonElement response) {
@@ -106,9 +122,4 @@ public class SyncManager implements JsonManager.OnObjectResponseListener, JsonMa
         UpdateOrCreateBlackBoardItems(new JsonParser().parse(response.toString()));
     }
 
-
-    @Override
-    public void OnErrorResponse(VolleyError error) {
-        syncBlackBoardItemsFromServer();
-    }
 }
