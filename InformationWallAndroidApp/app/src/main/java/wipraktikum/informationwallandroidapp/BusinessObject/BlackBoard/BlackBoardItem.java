@@ -20,7 +20,7 @@ public class BlackBoardItem{
     private List<BlackBoardAttachment> mBlackBoardAttachment;
     private Date mCreatedTimestamp;
     private Date mEditedTimestamp;
-    private transient boolean mSyncStatus;
+    private boolean mSyncStatus;
     private User mUser;
 
     public BlackBoardItem(){};
