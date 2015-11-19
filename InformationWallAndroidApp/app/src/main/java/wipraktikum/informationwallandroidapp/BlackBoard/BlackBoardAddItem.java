@@ -497,7 +497,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     }
 
     private boolean isEditTextEmpty(EditText editText){
-        String editString = editText.getText().toString();
+        String editString = editText.getText().toString().trim();
         if (editString.matches("")) {
             return true;
         }
