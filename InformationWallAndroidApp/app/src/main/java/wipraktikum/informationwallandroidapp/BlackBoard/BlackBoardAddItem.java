@@ -390,39 +390,36 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
 
     //Needs a better name
     private void uploadAttachment(){
+        while (!blackBoardAttachmentsCopy.isEmpty() && blackBoardAttachmentsCopy.get(0).getRemoteDataPath() != null){
+            blackBoardAttachmentsCopy.remove(0);
+            blackBoardAttachmentViewsCopy.remove(0);
+        }
+
+        //Check again if the attachments are null
         if (!blackBoardAttachmentsCopy.isEmpty()) {
-            //Ignore the attachments with a remote data path
-            while (blackBoardAttachmentsCopy.get(0).getRemoteDataPath() != null){
-                blackBoardAttachmentsCopy.remove(0);
-                blackBoardAttachmentViewsCopy.remove(0);
-            }
+            UploadManager uploadManager = new UploadManager();
+            final BlackBoardAttachment blackBoardAttachment = blackBoardAttachmentsCopy.get(0);
+            final BlackBoardAttachmentView attachmentView = (BlackBoardAttachmentView) blackBoardAttachmentViewsCopy.get(0);
 
-            //Check again if the attachments are null
-            if (!blackBoardAttachmentsCopy.isEmpty()) {
-                UploadManager uploadManager = new UploadManager();
-                final BlackBoardAttachment blackBoardAttachment = blackBoardAttachmentsCopy.get(0);
-                final BlackBoardAttachmentView attachmentView = (BlackBoardAttachmentView) blackBoardAttachmentViewsCopy.get(0);
+            //Show Upload Progress
+            attachmentView.showProgressbar(true);
+            //Upload File
+            File attachmentFile = new File(blackBoardAttachment.getDeviceDataPath());
+            uploadManager.uploadFile(attachmentFile, ServerURLManager.UPLOAD_BLACK_BOARD_ATTACHMENT_URL);
+            uploadManager.setOnUploadFinishedListener(new UploadManager.OnUploadFinishedListener() {
+                @Override
+                public void onUploadFinished(String remoteDataPath) {
+                    //Show Upload has finished
+                    attachmentView.showProgressbar(false);
+                    //Save remoteDataPath to attachment
+                    blackBoardAttachment.setRemoteDataPath(remoteDataPath);
 
-                //Show Upload Progress
-                attachmentView.showProgressbar(true);
-                //Upload File
-                File attachmentFile = new File(blackBoardAttachment.getDeviceDataPath());
-                uploadManager.uploadFile(attachmentFile, ServerURLManager.UPLOAD_BLACK_BOARD_ATTACHMENT_URL);
-                uploadManager.setOnUploadFinishedListener(new UploadManager.OnUploadFinishedListener() {
-                    @Override
-                    public void onUploadFinished(String remoteDataPath) {
-                        //Show Upload has finished
-                        attachmentView.showProgressbar(false);
-                        //Save remoteDataPath to attachment
-                        blackBoardAttachment.setRemoteDataPath(remoteDataPath);
+                    blackBoardAttachmentsCopy.remove(0);
+                    blackBoardAttachmentViewsCopy.remove(0);
 
-                        blackBoardAttachmentsCopy.remove(0);
-                        blackBoardAttachmentViewsCopy.remove(0);
-
-                        uploadAttachment();
-                    }
-                });
-            }
+                    uploadAttachment();
+                }
+            });
         }else{
             saveBlackBoardItem2DB();
         }
