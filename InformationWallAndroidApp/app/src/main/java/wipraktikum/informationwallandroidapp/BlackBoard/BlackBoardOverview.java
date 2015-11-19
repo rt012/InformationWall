@@ -110,7 +110,6 @@ public class BlackBoardOverview extends Fragment implements BlackBoardItemDialog
         blackBoardAddItem.setArguments(params);
 
         ((BlackBoard)getActivity()).openFragment(blackBoardAddItem, true);
-        //TODO EDIT FROM SERVER
     }
 
     @Override

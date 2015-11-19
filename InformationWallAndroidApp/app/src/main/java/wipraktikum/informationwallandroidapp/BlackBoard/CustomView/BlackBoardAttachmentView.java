@@ -58,6 +58,8 @@ public class BlackBoardAttachmentView extends LinearLayout {
         }
     }
 
+
+
     private Drawable getDrawableFromDataType(DBBlackBoardAttachment.DataType dataType) {
         Drawable drawable = null;
 

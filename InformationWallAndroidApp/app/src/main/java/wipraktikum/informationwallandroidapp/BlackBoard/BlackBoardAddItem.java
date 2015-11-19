@@ -24,6 +24,7 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONObject;
 
@@ -48,6 +49,7 @@ import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.PhpRequestManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.UploadManager;
+import wipraktikum.informationwallandroidapp.Utils.ActivityHelper;
 import wipraktikum.informationwallandroidapp.Utils.FileHelper;
 import wipraktikum.informationwallandroidapp.Utils.RealPathHelper;
 
@@ -57,8 +59,7 @@ import wipraktikum.informationwallandroidapp.Utils.RealPathHelper;
 public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivityResultListener, TextWatcher,
         JsonManager.OnObjectResponseListener, JsonManager.OnErrorListener {
     public static final String BLACK_BOARD_ITEM_ID_TAG = "blackBoardItemID";
-    private static final String BLACK_BOARD_SAVED_INSTANCE_TAG = "blackBoardJSON";
-
+    private static final String BLACK_BOARD_ATTACHMENT_SAVED_INSTANCE_TAG = "blackBoardAttachmentJSON";
 
     private OnSaveBlackBoardItemListener mOnSaveBlackBoardItemListener = null;
     private OnStartActivityResultListener mOnStartActivityResultListener = null;
@@ -73,6 +74,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     private ArrayList<View> blackBoardAttachmentViews = new ArrayList<>();
     private ArrayList<View> blackBoardAttachmentViewsCopy = new ArrayList<>();
     private boolean isEditedItem = false;
+    private boolean isFilePickerVisible = false;
 
     private TableLayout tlAddContact = null;
     private AutoCompleteTextView autoCompleteTextViewContact = null;
@@ -88,28 +90,21 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     private LinearLayout attachmentContainer = null;
     private Button buttonAttachment = null;
 
-    public static BlackBoardAddItem getInstance(){
-        if (instance==null){
-            instance = new BlackBoardAddItem();
-        }
-        return instance;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup viewGroup, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_black_board_add_item, viewGroup, false);
         setHasOptionsMenu(true);
 
         ((BlackBoard)getActivity()).setOnActivityResultListener(this);
+        setRetainInstance(true);
 
         setUpGUI(view);
-
         //Write BlackBoardItem Information to View
         if (getArguments() != null){
             blackBoardItem = (BlackBoardItem) DAOHelper.getInstance().getBlackBoardItemDAO().queryForId(
                     getArguments().getLong(BLACK_BOARD_ITEM_ID_TAG));
             isEditedItem = true;
-            setBlackBoardItemInformation();
+            setBlackBoardItemViewContent();
         }else{
             blackBoardItem = new BlackBoardItem();
         }
@@ -131,16 +126,29 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     }
 
     @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+
+        //Retrieve SavedInstance
+        if (savedInstanceState != null) {
+            Gson gsonInstance = new GsonBuilder().create();
+            String jsonString = savedInstanceState.getString(BLACK_BOARD_ATTACHMENT_SAVED_INSTANCE_TAG);
+            blackBoardAttachments = gsonInstance.fromJson(jsonString, new TypeToken<List<BlackBoardAttachment>>() {}.getType());
+            setAttachmentViewContent();
+        }
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
 
         removeErrorsFromTextFields();
 
-        //Tell Server to close Live Preview
-        Map<String, String> params = new HashMap<>();
-        params.put(ServerURLManager.SHOW_LIVE_PREVIEW_BLACK_BOARD_ITEM_KEY, ServerURLManager.SHOW_LIVE_PREVIEW_BLACK_BOARD_ITEM_HIDE);
-
-        PhpRequestManager.getInstance().phpRequest(ServerURLManager.SHOW_LIVE_PREVIEW_BLACK_BOARD_ITEM_URL, params);
+        if (!isFilePickerVisible) {
+            closeLivePreviewOnServer();
+        }else{
+            isFilePickerVisible = false;
+        }
     }
 
     private void removeErrorsFromTextFields() {
@@ -163,7 +171,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.menu_black_board_item_save) {
             if(validateInputs()) {
-                saveBlackBoardItem(fillBlackBoardItem());
+                saveBlackBoardItem();
                 return true;
             }
         }
@@ -201,6 +209,8 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         View attachmentView = addAttachmentToView(blackBoardAttachment);
         blackBoardAttachments.add(blackBoardAttachment);
         blackBoardAttachmentViews.add(attachmentView);
+
+        isFilePickerVisible = false;
     }
 
     @Override
@@ -217,6 +227,10 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+
+        Gson gsonInstance = new GsonBuilder().create();
+        String jsonString = gsonInstance.toJson(blackBoardAttachments);
+        outState.putString(BLACK_BOARD_ATTACHMENT_SAVED_INSTANCE_TAG, jsonString);
     }
 
     private void setUpGUI(View view){
@@ -285,7 +299,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
                 if (mOnStartActivityResultListener != null) {
                     mOnStartActivityResultListener.onStartActivityResultListener();
                 }
-
+                isFilePickerVisible = true;
                 FileHelper.getInstance().showFileChooser(getActivity());
             }
         });
@@ -293,11 +307,11 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         attachmentContainer = (LinearLayout) view.findViewById(R.id.ll_attachment_container);
     }
 
-    public void setBlackBoardItemInformation() {
+    public void setBlackBoardItemViewContent() {
         String title = getBlackBoardItem().getTitle();
         String descriptionText = getBlackBoardItem().getDescriptionText();
         Contact contact = getBlackBoardItem().getContact();
-        List<BlackBoardAttachment> blackBoardAttachments = getBlackBoardItem().getBlackBoardAttachment();
+        blackBoardAttachments = getBlackBoardItem().getBlackBoardAttachment();
 
         editTextTitle.setText(title);
         editTextDescription.setText(descriptionText);
@@ -306,10 +320,15 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
             selectedContact = contact;
         }
 
+        setAttachmentViewContent();
+    }
+
+    private void setAttachmentViewContent(){
         attachmentContainer.removeAllViews();
+        blackBoardAttachmentViews = new ArrayList<>();
         if (blackBoardAttachments != null) {
             for (BlackBoardAttachment blackBoardAttachment : blackBoardAttachments) {
-                addAttachmentToView(blackBoardAttachment);
+                blackBoardAttachmentViews.add(addAttachmentToView(blackBoardAttachment));
             }
         }
     }
@@ -351,12 +370,12 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
 
     private View addAttachmentToView(BlackBoardAttachment attachment){
         BlackBoardAttachmentView attachmentView = new BlackBoardAttachmentView(getActivity(), attachment, false);
-        attachmentContainer.addView(attachmentView);
+        attachmentContainer.addView(attachmentView, 0);
 
         return attachmentView;
     }
 
-    private void saveBlackBoardItem(final BlackBoardItem blackBoardItem){
+    private void saveBlackBoardItem(){
         if (!isEditTextEmpty(editTextTitle)) {
             blackBoardAttachmentsCopy.addAll(blackBoardAttachments);
             blackBoardAttachmentViewsCopy.addAll(blackBoardAttachmentViews);
@@ -365,45 +384,55 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         }else{
             Snackbar
                 .make(getView(),  R.string.black_board_add_item_snackbar_no_title, Snackbar.LENGTH_LONG)
-                    .show();
+                .show();
         }
     }
 
     //Needs a better name
     private void uploadAttachment(){
         if (!blackBoardAttachmentsCopy.isEmpty()) {
-            UploadManager uploadManager = new UploadManager();
-            final BlackBoardAttachment blackBoardAttachment = blackBoardAttachmentsCopy.get(0);
-            final BlackBoardAttachmentView attachmentView = (BlackBoardAttachmentView) blackBoardAttachmentViewsCopy.get(0);
+            //Ignore the attachments with a remote data path
+            while (blackBoardAttachmentsCopy.get(0).getRemoteDataPath() != null){
+                blackBoardAttachmentsCopy.remove(0);
+                blackBoardAttachmentViewsCopy.remove(0);
+            }
 
-            //Show Upload Progress
-            attachmentView.showProgressbar(true);
-            //Upload File
-            File attachmentFile = new File(blackBoardAttachment.getDeviceDataPath());
-            uploadManager.uploadFile(attachmentFile, ServerURLManager.UPLOAD_BLACK_BOARD_ATTACHMENT_URL);
-            uploadManager.setOnUploadFinishedListener(new UploadManager.OnUploadFinishedListener() {
-                @Override
-                public void onUploadFinished(String remoteDataPath) {
-                    //Show Upload has finished
-                    attachmentView.showProgressbar(false);
-                    //Save remoteDataPath to attachment
-                    blackBoardAttachment.setRemoteDataPath(remoteDataPath);
+            //Check again if the attachments are null
+            if (!blackBoardAttachmentsCopy.isEmpty()) {
+                UploadManager uploadManager = new UploadManager();
+                final BlackBoardAttachment blackBoardAttachment = blackBoardAttachmentsCopy.get(0);
+                final BlackBoardAttachmentView attachmentView = (BlackBoardAttachmentView) blackBoardAttachmentViewsCopy.get(0);
 
-                    blackBoardAttachmentsCopy.remove(0);
-                    blackBoardAttachmentViewsCopy.remove(0);
+                //Show Upload Progress
+                attachmentView.showProgressbar(true);
+                //Upload File
+                File attachmentFile = new File(blackBoardAttachment.getDeviceDataPath());
+                uploadManager.uploadFile(attachmentFile, ServerURLManager.UPLOAD_BLACK_BOARD_ATTACHMENT_URL);
+                uploadManager.setOnUploadFinishedListener(new UploadManager.OnUploadFinishedListener() {
+                    @Override
+                    public void onUploadFinished(String remoteDataPath) {
+                        //Show Upload has finished
+                        attachmentView.showProgressbar(false);
+                        //Save remoteDataPath to attachment
+                        blackBoardAttachment.setRemoteDataPath(remoteDataPath);
 
-                    uploadAttachment();
-                }
-            });
+                        blackBoardAttachmentsCopy.remove(0);
+                        blackBoardAttachmentViewsCopy.remove(0);
+
+                        uploadAttachment();
+                    }
+                });
+            }
         }else{
             saveBlackBoardItem2DB();
         }
     }
 
     private void saveBlackBoardItem2DB(){
+        fillBlackBoardItem();
         //Check if item is a edit
         if (isEditedItem){
-            blackBoardItem.setSyncStatus(false);
+            blackBoardItem.setSyncStatus(true);
             blackBoardItem.setBlackBoardItemID(getArguments().getLong(BLACK_BOARD_ITEM_ID_TAG));
         }
         blackBoardAttachments = blackBoardItem.getBlackBoardAttachment();
@@ -478,23 +507,10 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         return false;
     }
 
-    private void resetGui() {
-        editTextTitle.setText("");
-        editTextDescription.setText("");
-        autoCompleteTextViewContact.setText("");
-        editTextFullName.setText("");
-        editTextEmail.setText("");
-        editTextTelephone.setText("");
-        editTextCompany.setText("");
-        editTextStreet.setText("");
-        editTextCity.setText("");
-
-        blackBoardAttachments = new ArrayList<>();
-        blackBoardAttachmentsCopy = new ArrayList<>();
-        blackBoardAttachmentViews = new ArrayList<>();
-        blackBoardAttachmentViewsCopy = new ArrayList<>();
-
-        attachmentContainer.removeAllViews();
+    @Override
+    public void onDestroyView(){
+        super.onDestroyView();
+        ActivityHelper.hideKeyboard(getActivity().getCurrentFocus());
     }
 
     @Override
@@ -506,6 +522,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         blackBoardItemDAO.delete(blackBoardItem);
         blackBoardItemDAO.createOrUpdate(serverBlackBoardItem);
 
+        closeLivePreviewOnServer();
         if (mOnSaveBlackBoardItemListener != null) {
             mOnSaveBlackBoardItemListener.onSaveBlackBoardItem(true);
         }
@@ -513,9 +530,18 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
 
     @Override
     public void OnErrorResponse(VolleyError error) {
+        closeLivePreviewOnServer();
         if (mOnSaveBlackBoardItemListener != null) {
             mOnSaveBlackBoardItemListener.onSaveBlackBoardItem(false);
         }
+    }
+
+    private void closeLivePreviewOnServer(){
+        //Tell Server to close Live Preview
+        Map<String, String> params = new HashMap<>();
+        params.put(ServerURLManager.SHOW_LIVE_PREVIEW_BLACK_BOARD_ITEM_KEY, ServerURLManager.SHOW_LIVE_PREVIEW_BLACK_BOARD_ITEM_HIDE);
+
+        PhpRequestManager.getInstance().phpRequest(ServerURLManager.SHOW_LIVE_PREVIEW_BLACK_BOARD_ITEM_URL, params);
     }
 
     public void setOnSaveBlackBoardItem(OnSaveBlackBoardItemListener onSaveBlackBoardItemListener){

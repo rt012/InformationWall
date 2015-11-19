@@ -47,7 +47,7 @@ public class BlackBoard extends BaseActivity{
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BlackBoardAddItem blackBoardAddItem = BlackBoardAddItem.getInstance();
+                BlackBoardAddItem blackBoardAddItem = new BlackBoardAddItem();
                 blackBoardAddItem.setOnSaveBlackBoardItem(new BlackBoardAddItem.OnSaveBlackBoardItemListener() {
                     @Override
                     public void onSaveBlackBoardItem(boolean isSuccessful) {
@@ -89,9 +89,6 @@ public class BlackBoard extends BaseActivity{
             //Change Title of Actionbar
             setTitle(getActionBarTitleByFragment(currentFragment));*/
         }
-
-
-
     }
 
     @Override
