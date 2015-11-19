@@ -48,8 +48,10 @@ public class ContactFilter extends Filter{
             suggestions.clear();
 
             for (Contact contact : mContactsAll) {
-                if(contact.getFullName().toLowerCase().contains(search.toLowerCase())){
-                    suggestions.add(contact);
+                if (contact.getFullName() != null) {
+                    if (contact.getFullName().toLowerCase().contains(search.toLowerCase())) {
+                        suggestions.add(contact);
+                    }
                 }
             }
 
