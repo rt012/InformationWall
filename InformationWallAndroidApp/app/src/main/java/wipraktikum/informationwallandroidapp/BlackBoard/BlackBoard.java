@@ -81,7 +81,7 @@ public class BlackBoard extends BaseActivity{
             }
         }
 
-        if (currentFragment == null || currentFragment == BlackBoardOverview.getInstance()) {
+        if (currentFragment == null) {
             openFragment(BlackBoardOverview.getInstance(), false);
         }
 
