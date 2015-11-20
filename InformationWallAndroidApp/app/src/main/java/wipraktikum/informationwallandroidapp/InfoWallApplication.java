@@ -71,11 +71,14 @@ public class InfoWallApplication extends Application {
         return null;
     }
 
+    public static void resetCurrentUser(){
+        currentUser = null;
+    }
+
     public static User getCurrentUser(){
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(instance);
         String currentUserJsonString = sharedPref.getString("currentUser", null);
         if (currentUser == null && currentUserJsonString != null){
-
             currentUser = new Gson().fromJson(new JsonParser().parse(currentUserJsonString), User.class);
             currentUser.setLoggedIn(true);
         }

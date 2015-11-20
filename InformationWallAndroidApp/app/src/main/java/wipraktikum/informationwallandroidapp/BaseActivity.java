@@ -72,6 +72,7 @@ public class BaseActivity extends AppCompatActivity implements NotificationHelpe
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sp.edit();
         editor.remove("currentUser");
+        InfoWallApplication.resetCurrentUser();
     }
 
     private void openLoginActivity() {
