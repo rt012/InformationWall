@@ -20,6 +20,8 @@ public class DBUserGroup {
     private boolean mRead;
     @DatabaseField
     private boolean mDelete;
+    @DatabaseField
+    private boolean mActivate;
 
     public DBUserGroup(){}
 
@@ -69,5 +71,13 @@ public class DBUserGroup {
 
     public void setDelete(boolean mDelete) {
         this.mDelete = mDelete;
+    }
+
+    public boolean canActivate() {
+        return mActivate;
+    }
+
+    public void setActivate(boolean mActivate) {
+        this.mActivate = mActivate;
     }
 }

@@ -118,6 +118,7 @@ public class UserGroupDAO implements IDAO {
             userGroup.setEdit(dbUserGroup.canEdit());
             userGroup.setWrite(dbUserGroup.canWrite());
             userGroup.setRead(dbUserGroup.canRead());
+            userGroup.setActivate(dbUserGroup.canActivate());
         }
         return userGroup;
     }
@@ -130,6 +131,7 @@ public class UserGroupDAO implements IDAO {
             dbUserGroup.setEdit(userGroup.canEdit());
             dbUserGroup.setWrite(userGroup.canWrite());
             dbUserGroup.setRead(userGroup.canRead());
+            dbUserGroup.setActivate(userGroup.canActivate());
         }
         return dbUserGroup;
     }

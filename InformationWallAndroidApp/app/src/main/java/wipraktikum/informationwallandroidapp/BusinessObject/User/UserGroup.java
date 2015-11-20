@@ -10,6 +10,7 @@ public class UserGroup {
     private boolean mWrite;
     private boolean mRead;
     private boolean mDelete;
+    private boolean mActivate;
 
     public UserGroup(){}
 
@@ -59,5 +60,13 @@ public class UserGroup {
 
     public void setDelete(boolean mDelete) {
         this.mDelete = mDelete;
+    }
+
+    public boolean canActivate() {
+        return mActivate;
+    }
+
+    public void setActivate(boolean mActivate) {
+        this.mActivate = mActivate;
     }
 }
