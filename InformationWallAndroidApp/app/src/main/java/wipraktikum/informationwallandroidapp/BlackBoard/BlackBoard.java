@@ -28,7 +28,7 @@ import wipraktikum.informationwallandroidapp.Utils.FileHelper;
  */
 public class BlackBoard extends BaseActivity{
     private OnActivityResultListener mOnActivityResultListener = null;
-    private static Fragment currentFragment = null;
+    private Fragment currentFragment = null;
     private FloatingActionButton fab = null;
     private View mRootView = null;
     private boolean isFilePickerVisible = false;
