@@ -25,6 +25,7 @@ import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.ServerCommunication.DownloadManager;
 import wipraktikum.informationwallandroidapp.Utils.FileHelper;
+import wipraktikum.informationwallandroidapp.Utils.StringHelper;
 
 /**
  * Created by Eric Schmidt on 25.10.2015.
@@ -116,7 +117,11 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
                 .findViewById(R.id.tv_black_board_item_info);
         if(blackBoardItem.getCreatedTimestamp() != null) {
             String createdTimestamp = formatter.format(blackBoardItem.getCreatedTimestamp());
-            tvItemInfo.setText(createdTimestamp + " (" + blackBoardItem.getContact().getFullName() + ")");
+            String informationText = createdTimestamp;
+            if (blackBoardItem.getContact() != null && !StringHelper.isStringNullOrEmpty(blackBoardItem.getContact().getFullName())){
+                informationText += " (" + blackBoardItem.getContact().getFullName() + ")";
+            }
+            tvItemInfo.setText(informationText);
         }
 
         return convertView;

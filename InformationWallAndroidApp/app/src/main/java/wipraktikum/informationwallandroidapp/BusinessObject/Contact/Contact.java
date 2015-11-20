@@ -2,6 +2,8 @@ package wipraktikum.informationwallandroidapp.BusinessObject.Contact;
 
 import com.j256.ormlite.table.DatabaseTable;
 
+import wipraktikum.informationwallandroidapp.Utils.StringHelper;
+
 /**
  * Created by Eric Schmidt on 25.10.2015.
  */
@@ -32,9 +34,9 @@ public class Contact {
     }
 
     public String getFullName(){
-        if (mName != null && mSurname != null) {
+        if (!StringHelper.isStringNullOrEmpty(mName) && !StringHelper.isStringNullOrEmpty(mSurname)) {
             return mSurname + ", " + mName;
-        }else if (mSurname != null){
+        }else if (!StringHelper.isStringNullOrEmpty(mSurname)){
             return mSurname;
         }
         return null;

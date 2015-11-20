@@ -2,6 +2,8 @@ package wipraktikum.informationwallandroidapp.BusinessObject.Contact;
 
 import com.j256.ormlite.table.DatabaseTable;
 
+import wipraktikum.informationwallandroidapp.Utils.StringHelper;
+
 /**
  * Created by Eric Schmidt on 25.10.2015.
  */
@@ -65,11 +67,13 @@ public class ContactAddress {
     }
 
     public String getFullAddress(){
-        if (mStreetName != null && mHouseNumber != null && mCity != null) {
+        if (!StringHelper.isStringNullOrEmpty(mStreetName) && !StringHelper.isStringNullOrEmpty(mHouseNumber)
+                && !StringHelper.isStringNullOrEmpty(mCity)) {
             return mStreetName + " " + mHouseNumber + ", " + mCity;
-        }else if (mStreetName == null && mCity != null){
+        }else if (StringHelper.isStringNullOrEmpty(mStreetName) && !StringHelper.isStringNullOrEmpty(mCity)){
             return mCity;
-        }else if (mStreetName != null && mHouseNumber == null && mCity != null){
+        }else if (!StringHelper.isStringNullOrEmpty(mStreetName) && StringHelper.isStringNullOrEmpty(mHouseNumber)
+                && !StringHelper.isStringNullOrEmpty(mCity)){
             return mStreetName + ", " + mCity;
         }
 

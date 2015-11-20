@@ -52,6 +52,7 @@ import wipraktikum.informationwallandroidapp.ServerCommunication.UploadManager;
 import wipraktikum.informationwallandroidapp.Utils.ActivityHelper;
 import wipraktikum.informationwallandroidapp.Utils.FileHelper;
 import wipraktikum.informationwallandroidapp.Utils.RealPathHelper;
+import wipraktikum.informationwallandroidapp.Utils.StringHelper;
 
 /**
  * Created by Eric Schmidt on 30.10.2015.
@@ -376,7 +377,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     }
 
     private void saveBlackBoardItem(){
-        if (!isEditTextEmpty(editTextTitle)) {
+        if (!StringHelper.isStringNullOrEmpty((editTextTitle.getText().toString()))) {
             blackBoardAttachmentsCopy.addAll(blackBoardAttachments);
             blackBoardAttachmentViewsCopy.addAll(blackBoardAttachmentViews);
 
@@ -447,7 +448,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     private Contact createNewContact(){
         Contact newContact = new Contact();
 
-        if (!isEditTextEmpty(editTextFullName)) {
+        if (!StringHelper.isStringNullOrEmpty(editTextFullName.getText().toString())) {
             String[] splitFullName = editTextFullName.getText().toString().split(" ");
             if (splitFullName.length == 2) {
                 newContact.setSurname(splitFullName[0]);
@@ -457,13 +458,16 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
             }
         }
 
-        if (!isEditTextEmpty(editTextFullName)) newContact.setTelephone(editTextTelephone.getText().toString());
-        if (!isEditTextEmpty(editTextEmail))    newContact.setEMailAddress(editTextEmail.getText().toString());
-        if (!isEditTextEmpty(editTextCompany))  newContact.setCompany(editTextCompany.getText().toString());
+        if (!StringHelper.isStringNullOrEmpty(editTextFullName.getText().toString()))
+            newContact.setTelephone(editTextTelephone.getText().toString());
+        if (!StringHelper.isStringNullOrEmpty((editTextEmail.getText().toString())))
+            newContact.setEMailAddress(editTextEmail.getText().toString());
+        if (!StringHelper.isStringNullOrEmpty((editTextCompany.getText().toString())))
+            newContact.setCompany(editTextCompany.getText().toString());
 
         ContactAddress newContactAddress = new ContactAddress();
 
-        if (!isEditTextEmpty(editTextStreet)) {
+        if (!StringHelper.isStringNullOrEmpty((editTextStreet.getText().toString()))) {
             String[] splitStreet = editTextStreet.getText().toString().split(" ");
             if (splitStreet.length == 2) {
                 newContactAddress.setStreetName(splitStreet[0]);
@@ -473,7 +477,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
             }
         }
 
-        if (!isEditTextEmpty(editTextCity)) {
+        if (!StringHelper.isStringNullOrEmpty((editTextCity.getText().toString()))) {
             String[] splitCity = editTextCity.getText().toString().split(" ");
             if (splitCity.length == 2) {
                 newContactAddress.setZipCode(splitCity[0]);
@@ -494,14 +498,6 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         blackBoardAttachment.setDeviceDataPath(filePath);
         blackBoardAttachment.setDataType(FileHelper.getInstance().getBlackBoardAttachmentDataType(filePath));
         return blackBoardAttachment;
-    }
-
-    private boolean isEditTextEmpty(EditText editText){
-        String editString = editText.getText().toString().trim();
-        if (editString.matches("")) {
-            return true;
-        }
-        return false;
     }
 
     @Override
