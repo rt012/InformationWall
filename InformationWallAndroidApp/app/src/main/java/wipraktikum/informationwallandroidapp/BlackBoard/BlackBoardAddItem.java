@@ -204,6 +204,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
 
     @Override
     public void onActivityResult(Intent data) {
+        //ContactHelper.createVCFFromUri(getActivity(), data.getData());
         String filePath = RealPathHelper.getInstance().getRealPathFromURI(data.getData());
         //Add filePath to LinearLayout below
         BlackBoardAttachment blackBoardAttachment = createNewAttachment(filePath);
