@@ -38,7 +38,7 @@
     <!--- BlackBoard Add Item -->
     <string name="menu_black_board_save_item">Save</string>
     <string name="black_board_add_item_title">Title</string>
-    <string name="black_board_add_item_contact">Contact</string>
+    <string name="black_board_add_item_contact">Search Contact</string>
     <string name="black_board_add_item_new_contact">Create new contact</string>
     <string name="black_board_add_item_description">Description</string>
     <string name="black_board_add_item_attachments">ADD ATTACHMENT</string>
