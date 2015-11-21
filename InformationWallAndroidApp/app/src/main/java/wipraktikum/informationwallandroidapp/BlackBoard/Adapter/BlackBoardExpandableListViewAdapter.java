@@ -41,18 +41,23 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
 
         // Get black board items from database
         mBlackBoardItems = DAOHelper.getInstance().getBlackBoardItemDAO().queryForAll();
+        sortItems();
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        mBlackBoardItems = DAOHelper.getInstance().getBlackBoardItemDAO().queryForAll();
+        sortItems();
+        super.notifyDataSetChanged();
+    }
+
+    private void sortItems(){
         Collections.sort(mBlackBoardItems, new Comparator<BlackBoardItem>() {
             @Override
             public int compare(BlackBoardItem lhs, BlackBoardItem rhs) {
                 return rhs.getEditedTimestamp().compareTo(lhs.getEditedTimestamp());
             }
         });
-    }
-
-    @Override
-    public void notifyDataSetChanged() {
-        mBlackBoardItems = DAOHelper.getInstance().getBlackBoardItemDAO().queryForAll();
-        super.notifyDataSetChanged();
     }
 
     @Override

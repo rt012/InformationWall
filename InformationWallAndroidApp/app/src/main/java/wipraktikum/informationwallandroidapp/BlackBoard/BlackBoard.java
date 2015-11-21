@@ -48,15 +48,6 @@ public class BlackBoard extends BaseActivity{
             @Override
             public void onClick(View view) {
                 BlackBoardAddItem blackBoardAddItem = new BlackBoardAddItem();
-                blackBoardAddItem.setOnSaveBlackBoardItem(new BlackBoardAddItem.OnSaveBlackBoardItemListener() {
-                    @Override
-                    public void onSaveBlackBoardItem(boolean isSuccessful) {
-                        if (!isSuccessful) {
-                            Snackbar.make(getRootView(), R.string.black_board_add_item_snackbar_connection_error, Snackbar.LENGTH_LONG).show();
-                        }
-                        onSupportNavigateUp();
-                    }
-                });
                 openFragment(blackBoardAddItem, true);
             }
         });
@@ -85,9 +76,6 @@ public class BlackBoard extends BaseActivity{
             openFragment(new BlackBoardOverview(), false);
         } else {
             openFragment(currentFragment, false);
-            /*showFabByFragment(currentFragment);
-            //Change Title of Actionbar
-            setTitle(getActionBarTitleByFragment(currentFragment));*/
         }
     }
 
@@ -170,6 +158,19 @@ public class BlackBoard extends BaseActivity{
         setTitle(getActionBarTitleByFragment(fragment));
         //Show Fab
         showFabByFragment(fragment);
+
+        if (fragment instanceof BlackBoardAddItem){
+            ((BlackBoardAddItem) fragment).setOnSaveBlackBoardItem(new BlackBoardAddItem.OnSaveBlackBoardItemListener() {
+                @Override
+                public void onSaveBlackBoardItem(boolean isSuccessful) {
+                    if (!isSuccessful) {
+                        Snackbar.make(getRootView(), R.string.black_board_add_item_snackbar_connection_error, Snackbar.LENGTH_LONG).show();
+                    }
+                    onSupportNavigateUp();
+                }
+            });
+        }
+        ;
 
         currentFragment = fragment;
     }
