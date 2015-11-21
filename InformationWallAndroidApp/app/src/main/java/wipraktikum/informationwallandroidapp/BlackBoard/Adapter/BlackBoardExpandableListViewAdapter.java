@@ -196,13 +196,13 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
                     attachment.setDeviceDataPath(filePath);
                     DAOHelper.getInstance().getBlackBoardAttachmentDAO().update(attachment);
                     //Open File
-                    fileHelper.openFile(context, filePath, attachment.getDataType());
+                    fileHelper.openFile(context, filePath);
                     notifyDataSetChanged();
                 }
             }, new IntentFilter(android.app.DownloadManager.ACTION_DOWNLOAD_COMPLETE));
         }else{
             //Open File
-            fileHelper.openFile(context, attachment.getDeviceDataPath(), attachment.getDataType());
+            fileHelper.openFile(context, attachment.getDeviceDataPath());
         }
     }
 

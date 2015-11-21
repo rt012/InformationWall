@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.webkit.MimeTypeMap;
 
 import java.io.File;
 
@@ -30,11 +31,14 @@ public class FileHelper {
         return instance;
     }
 
-    public void openFile(Context activity, String fullFileName, DBBlackBoardAttachment.DataType dataType) {
+    public void openFile(Context activity, String fullFileName) {
         File file = new File(fullFileName);
         Intent intent = new Intent();
         intent.setAction(android.content.Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.fromFile(file), getDataTyp(dataType));
+        //intent.setData(Uri.fromFile(file));
+        intent.setDataAndType(Uri.fromFile(file),
+                MimeTypeMap.getSingleton().getMimeTypeFromExtension
+                        (FileHelper.getInstance().getFileExtension(file.getAbsolutePath().toLowerCase())));
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         activity.startActivity(intent);
     }
@@ -44,22 +48,6 @@ public class FileHelper {
         intent.setType("*/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         activity.startActivityForResult(Intent.createChooser(intent, "Select Attachment"), PICK_ATTACHMENT_REQUEST);
-    }
-
-    private String getDataTyp(DBBlackBoardAttachment.DataType dataType) {
-        String fileType;
-        switch (dataType) {
-            case PDF:
-                fileType = "application/pdf";
-                break;
-            case IMG:
-                fileType = "image/*";
-                break;
-            default:
-                fileType = null;
-                break;
-        }
-        return fileType;
     }
 
     public String getFileName(String fullFileName){
@@ -77,10 +65,12 @@ public class FileHelper {
         String extension = getFileExtension(fullFileName);
 
         switch (extension){
+            case "PDF":
             case "pdf":
                 return DBBlackBoardAttachment.DataType.PDF;
             case "png":
             case "jpg":
+            case "jpeg":
             case "bmp":
                 return DBBlackBoardAttachment.DataType.IMG;
             default:
