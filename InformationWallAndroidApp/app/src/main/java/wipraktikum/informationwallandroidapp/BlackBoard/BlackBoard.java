@@ -180,15 +180,15 @@ public class BlackBoard extends BaseActivity{
             if (fragment.getClass().getSimpleName().equals(BlackBoardAddItem.class.getSimpleName())){
                 //Check if a item is edited or a new one is created
                 if (fragment.getArguments() != null){
-                    return getString(R.string.activity_black_board_edit_item_title);
+                    return getString(R.string.fragment_black_board_edit_item_title);
                 }else {
-                    return getString(R.string.activity_black_board_add_item_title);
+                    return getString(R.string.fragment_black_board_add_item_title);
                 }
             }else if(fragment.getClass().getSimpleName().equals(BlackBoardOverview.class.getSimpleName())){
-                return getString(R.string.activity_black_board_title);
+                return getString(R.string.fragment_black_board_title);
             }
         }
-        return getString(R.string.activity_black_board_title);
+        return getString(R.string.fragment_black_board_title);
     }
 
     private void showFabByFragment(Fragment fragment){

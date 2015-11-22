@@ -1,24 +1,25 @@
-package wipraktikum.informationwallandroidapp.Login;
-
-/**
- * Created by Remi on 05.11.2015.
- */
+package wipraktikum.informationwallandroidapp.Account;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import wipraktikum.informationwallandroidapp.BaseActivity;
 import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
 
-public class LoginActivity extends BaseActivity implements LoginManager.OnRequestLoginResponseReceived {
+/**
+ * Created by Eric Schmidt on 22.11.2015.
+ */
+public class AccountLogIn extends Fragment implements LogInManager.OnRequestLoginResponseReceived{
     private static final String TAG = "LoginActivity";
 
     private EditText mEmailText;
@@ -28,29 +29,30 @@ public class LoginActivity extends BaseActivity implements LoginManager.OnReques
     private CheckBox mAutoLogin;
 
     private ProgressDialog progressDialog = null;
-    private LoginManager mLoginManager;
+    private LogInManager mLogInManager;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+    public View onCreateView(LayoutInflater inflater,ViewGroup viewGroup, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_account_login, viewGroup, false);
 
-        initViews();
+        initViews(view);
         initLoginManager();
         setLoginButtonClickListener();
+
+        return view;
     }
 
-    private void initViews() {
-        mLoginButton = (Button) findViewById(R.id.btn_login);
-        mEmailText = (EditText) findViewById(R.id.input_email);
-        mPasswordText = (EditText) findViewById(R.id.input_password);
-        mServerURL = (EditText) findViewById(R.id.input_server);
-        mAutoLogin = (CheckBox) findViewById(R.id.checkbox_autoLogin);
+    private void initViews(View view) {
+        mLoginButton = (Button) view.findViewById(R.id.btn_login);
+        mEmailText = (EditText) view.findViewById(R.id.input_email);
+        mPasswordText = (EditText) view.findViewById(R.id.input_password);
+        mServerURL = (EditText) view.findViewById(R.id.input_server);
+        mAutoLogin = (CheckBox) view.findViewById(R.id.checkbox_autoLogin);
     }
 
     private void initLoginManager() {
-        mLoginManager = new LoginManager();
-        mLoginManager.setOnRequestLoginResponseReceived(this);
+        mLogInManager = new LogInManager();
+        mLogInManager.setOnRequestLoginResponseReceived(this);
     }
 
     private void setLoginButtonClickListener() {
@@ -67,7 +69,8 @@ public class LoginActivity extends BaseActivity implements LoginManager.OnReques
         mLoginButton.setEnabled(false);
         if (validateInputFields()) {
             showProgressDialog();
-            mLoginManager.requestLogin(mEmailText.getText().toString(), mPasswordText.getText().toString());
+            mLogInManager.requestLogin(mEmailText.getText().toString(), mPasswordText.getText().toString(),
+                    mAutoLogin.isChecked());
         } else  {
             onLoginFailed();
         }
@@ -105,7 +108,7 @@ public class LoginActivity extends BaseActivity implements LoginManager.OnReques
     }
 
     private void showProgressDialog() {
-        progressDialog = new ProgressDialog(LoginActivity.this,
+        progressDialog = new ProgressDialog(getActivity(),
                 R.style.Base_Theme_AppCompat_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);
@@ -117,16 +120,9 @@ public class LoginActivity extends BaseActivity implements LoginManager.OnReques
         progressDialog.dismiss();
     }
 
-    @Override
-    public void onBackPressed() {
-        // Disable going back to the MainActivity
-        moveTaskToBack(true);
-    }
-
     private void openTileOverview() {
-        Intent intent = new Intent(getApplicationContext(), TileOverview.class);
+        Intent intent = new Intent(getActivity(), TileOverview.class);
         startActivity(intent);
-        finish();
     }
 
     @Override
@@ -141,16 +137,13 @@ public class LoginActivity extends BaseActivity implements LoginManager.OnReques
 
     private void onLoginSuccess() {
         mLoginButton.setEnabled(true);
-        if(mAutoLogin.isChecked()) {
-            mLoginManager.saveLoginInSharedPrefs(mEmailText.getText().toString(), mServerURL.getText().toString());
-        }else{
-            mLoginManager.resetLoginInSharedPrefs();
-        }
         openTileOverview();
     }
 
     private void onLoginFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+        Snackbar
+            .make(getView(), R.string.log_in_failed, Snackbar.LENGTH_LONG)
+            .show();
         mLoginButton.setEnabled(true);
     }
 }

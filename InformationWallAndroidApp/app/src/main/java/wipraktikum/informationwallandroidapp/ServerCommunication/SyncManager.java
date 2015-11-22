@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
+import wipraktikum.informationwallandroidapp.BusinessObject.User.User;
 import wipraktikum.informationwallandroidapp.Database.DAO.BlackBoard.BlackBoardItemDAO;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 
@@ -90,10 +91,27 @@ public class SyncManager implements JsonManager.OnObjectResponseListener, JsonMa
 
         Gson gsonInstance = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
         List<BlackBoardItem> serverItemList = gsonInstance.fromJson(response, new TypeToken<List<BlackBoardItem>>(){}.getType());
+        serverItemList = keepTransientUserData(serverItemList);
+
         for(BlackBoardItem serverBlackBoardItem : serverItemList) {
             serverBlackBoardItem.setSyncStatus(true);
             blackBoardItemDAO.createOrUpdate(serverBlackBoardItem);
         }
+    }
+
+    private List<BlackBoardItem> keepTransientUserData(List<BlackBoardItem> serverItemList) {
+        for (BlackBoardItem blackBoardItem : serverItemList){
+            User serverUser = blackBoardItem.getUser();
+            User clientUser = (User) DAOHelper.getInstance().getUserDAO()
+                    .queryForId(serverUser.getUserID());
+            if (clientUser != null) {
+                serverUser.setKeepLogInData(clientUser.isKeepLogInData());
+                serverUser.setPreviousLoggedIn(clientUser.isPreviousLoggedIn());
+                serverUser.setLoggedIn(clientUser.isLoggedIn());
+            }
+        }
+
+        return serverItemList;
     }
 
     public void deleteAllBlackboardItems(){

@@ -1,6 +1,8 @@
 package wipraktikum.informationwallandroidapp.Database.DAO.User;
 
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -115,6 +117,40 @@ public class UserDAO implements IDAO {
         return ok;
     }
 
+    public ArrayList<User> getPreviousLoggedInAccounts() throws SQLException{
+        Dao<DBUser, Long> userDAO = InfoWallApplication.getInstance().getDatabaseHelper().getUserDAO();
+        // get our query builder from the DAO
+        QueryBuilder<DBUser, Long> queryBuilder =
+                userDAO.queryBuilder();
+        queryBuilder.where().eq(DBUser.PREVIOUS_LOGGED_IN_FIELD_NAME, true);
+        PreparedQuery<DBUser> preparedQuery = queryBuilder.prepare();
+        List<DBUser> DBUsers = userDAO.query(preparedQuery);
+
+        ArrayList<User> previousLoggedInUsers = new ArrayList<User>();
+        if(DBUsers != null || !DBUsers.isEmpty()) {
+            for(DBUser dbUser : DBUsers) {
+                previousLoggedInUsers.add(mapDBUserToUser(dbUser));
+            }
+        }
+        return previousLoggedInUsers;
+    }
+
+    public User getLoggedInUser() throws SQLException{
+        Dao<DBUser, Long> userDAO = InfoWallApplication.getInstance().getDatabaseHelper().getUserDAO();
+        // get our query builder from the DAO
+        QueryBuilder<DBUser, Long> queryBuilder =
+                userDAO.queryBuilder();
+        queryBuilder.where().eq(DBUser.LOGGED_IN_FIELD_NAME, true);
+        PreparedQuery<DBUser> preparedQuery = queryBuilder.prepare();
+        List<DBUser> DBUsers = userDAO.query(preparedQuery);
+
+        User loggedInUser = null;
+        if(DBUsers != null || !DBUsers.isEmpty()) {
+            loggedInUser = mapDBUserToUser(DBUsers.get(0));
+        }
+        return loggedInUser;
+    }
+
     public User mapDBUserToUser(DBUser dbUser) {
         User user = new User();
         if(dbUser != null) {
@@ -124,6 +160,8 @@ public class UserDAO implements IDAO {
             user.setUserGroup(DAOHelper.getInstance().getUserGroupDAO().
                     mapDBUserGroupToUserGroup(dbUser.getUserGroup()));
             user.setLoggedIn(dbUser.isLoggedIn());
+            user.setPreviousLoggedIn(dbUser.isPreviousLoggedIn());
+            user.setKeepLogInData(dbUser.isKeepLogInData());
         }
         return user;
     }
@@ -136,6 +174,8 @@ public class UserDAO implements IDAO {
             dbUser.setUserGroup(DAOHelper.getInstance().getUserGroupDAO().
                     mapUserGroupToDBUserGroup(user.getUserGroup()));
             dbUser.setLoggedIn(user.isLoggedIn());
+            dbUser.setPreviousLoggedIn(user.isPreviousLoggedIn());
+            dbUser.setKeepLogInData(user.isKeepLogInData());
         }
         return dbUser;
     }

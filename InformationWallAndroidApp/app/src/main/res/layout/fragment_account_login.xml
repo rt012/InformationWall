@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
             android:gravity="center_horizontal"
-            android:text="Information Wall"
+            android:text="@string/log_in_title"
             android:textColor="#218eed"
             android:textSize="24dp" />
 
@@ -29,7 +29,7 @@
             android:gravity="center_horizontal"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:text="Enter your email address, password and Server URL to connect to your Information Wall!"
+            android:text="@string/log_in_title_information"
             android:textColor="#9d9d9d"
             android:textSize="16dp" />
 
@@ -94,7 +94,7 @@
             android:background="#9d9d9d"
             android:textColor="@android:color/white"
             android:text="Login"
-           />
+            />
 
     </LinearLayout>
 </ScrollView>

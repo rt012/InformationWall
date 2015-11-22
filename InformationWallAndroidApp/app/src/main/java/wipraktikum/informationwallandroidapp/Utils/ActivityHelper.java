@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
-import wipraktikum.informationwallandroidapp.Login.LoginActivity;
+import wipraktikum.informationwallandroidapp.Account.AccountActivity;
 import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
 
 /**
@@ -14,7 +14,7 @@ import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
  */
 public class ActivityHelper {
     public static void openLoginActivity(Context context){
-        Intent intent = new Intent(context, LoginActivity.class);
+        Intent intent = new Intent(context, AccountActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }

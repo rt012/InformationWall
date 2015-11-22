@@ -1,9 +1,7 @@
 package wipraktikum.informationwallandroidapp;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import wipraktikum.informationwallandroidapp.Account.LogInManager;
 import wipraktikum.informationwallandroidapp.Preferences.AppPreferences;
 import wipraktikum.informationwallandroidapp.Utils.ActivityHelper;
 import wipraktikum.informationwallandroidapp.Utils.NotificationHelper;
@@ -57,22 +56,8 @@ public class BaseActivity extends AppCompatActivity implements NotificationHelpe
     }
 
     private void performLogout() {
-        editLoggedInState();
-        removeCurrentUser();
+        LogInManager.logOutUser(InfoWallApplication.getCurrentUser());
         openLoginActivity();
-    }
-
-    private void editLoggedInState() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putBoolean("loggedIn", false);
-    }
-
-    private void removeCurrentUser() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.remove("currentUser");
-        InfoWallApplication.resetCurrentUser();
     }
 
     private void openLoginActivity() {

@@ -9,6 +9,8 @@ public class User {
     private String mPassword;
     private UserGroup mUserGroup;
     private transient boolean mLoggedIn;
+    private transient boolean mPreviousLoggedIn;
+    private transient boolean mKeepLogInData;
 
     public User(){}
 
@@ -55,6 +57,22 @@ public class User {
 
     public void setLoggedIn(boolean mLoggedIn) {
         this.mLoggedIn = mLoggedIn;
+    }
+
+    public boolean isPreviousLoggedIn() {
+        return mPreviousLoggedIn;
+    }
+
+    public void setPreviousLoggedIn(boolean mPreviousLoggedIn) {
+        this.mPreviousLoggedIn = mPreviousLoggedIn;
+    }
+
+    public boolean isKeepLogInData() {
+        return mKeepLogInData;
+    }
+
+    public void setKeepLogInData(boolean mKeepLogInData) {
+        this.mKeepLogInData = mKeepLogInData;
     }
 
     @Override
