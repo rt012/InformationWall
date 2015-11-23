@@ -24,7 +24,6 @@ public class AccountActivity extends BaseActivity{
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if(existPreviousAccountData()){
             openFragment(new AccountOverview(), false);
@@ -35,8 +34,21 @@ public class AccountActivity extends BaseActivity{
 
     @Override
     public void onBackPressed() {
-        // Disable going back to the MainActivity
-        moveTaskToBack(true);
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0){
+            getSupportFragmentManager().popBackStack();
+            setTitle(getActionBarTitleByFragment(getActiveFragment()));
+        }else {
+            // Disable going back to the MainActivity
+            moveTaskToBack(true);
+        }
+    }
+
+    private Fragment getActiveFragment() {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            return null;
+        }
+        String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getClass().getSimpleName();
+        return getSupportFragmentManager().findFragmentByTag(tag);
     }
 
     private boolean existPreviousAccountData(){

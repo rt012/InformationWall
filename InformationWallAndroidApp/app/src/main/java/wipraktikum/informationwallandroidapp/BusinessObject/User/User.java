@@ -8,6 +8,7 @@ public class User {
     private String mEmailAddress;
     private String mPassword;
     private UserGroup mUserGroup;
+    private transient String mServerURL;
     private transient boolean mLoggedIn;
     private transient boolean mPreviousLoggedIn;
     private transient boolean mKeepLogInData;
@@ -73,6 +74,14 @@ public class User {
 
     public void setKeepLogInData(boolean mKeepLogInData) {
         this.mKeepLogInData = mKeepLogInData;
+    }
+
+    public String getServerURL() {
+        return mServerURL;
+    }
+
+    public void setServerURL(String mServerURL) {
+        this.mServerURL = mServerURL;
     }
 
     @Override

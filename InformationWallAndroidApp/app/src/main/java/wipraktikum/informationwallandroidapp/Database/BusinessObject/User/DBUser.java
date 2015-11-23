@@ -16,6 +16,8 @@ public class DBUser {
     private String mPassword;
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private DBUserGroup mUserGroup;
+    @DatabaseField
+    private String mServerURL;
     @DatabaseField(columnName = LOGGED_IN_FIELD_NAME)
     private boolean mLoggedIn;
     @DatabaseField(columnName = PREVIOUS_LOGGED_IN_FIELD_NAME)
@@ -82,5 +84,13 @@ public class DBUser {
 
     public void setKeepLogInData(boolean mKeepLogInData) {
         this.mKeepLogInData = mKeepLogInData;
+    }
+
+    public String getServerURL() {
+        return mServerURL;
+    }
+
+    public void setServerURL(String mServerURL) {
+        this.mServerURL = mServerURL;
     }
 }

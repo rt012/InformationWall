@@ -159,6 +159,7 @@ public class UserDAO implements IDAO {
             user.setEmailAddress(dbUser.getEmailAddress());
             user.setUserGroup(DAOHelper.getInstance().getUserGroupDAO().
                     mapDBUserGroupToUserGroup(dbUser.getUserGroup()));
+            user.setServerURL(dbUser.getServerURL());
             user.setLoggedIn(dbUser.isLoggedIn());
             user.setPreviousLoggedIn(dbUser.isPreviousLoggedIn());
             user.setKeepLogInData(dbUser.isKeepLogInData());
@@ -173,6 +174,7 @@ public class UserDAO implements IDAO {
             dbUser.setEmailAddress(user.getEmailAddress());
             dbUser.setUserGroup(DAOHelper.getInstance().getUserGroupDAO().
                     mapUserGroupToDBUserGroup(user.getUserGroup()));
+            dbUser.setServerURL(user.getServerURL());
             dbUser.setLoggedIn(user.isLoggedIn());
             dbUser.setPreviousLoggedIn(user.isPreviousLoggedIn());
             dbUser.setKeepLogInData(user.isKeepLogInData());

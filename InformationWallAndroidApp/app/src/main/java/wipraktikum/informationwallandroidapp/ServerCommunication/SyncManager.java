@@ -105,6 +105,7 @@ public class SyncManager implements JsonManager.OnObjectResponseListener, JsonMa
             User clientUser = (User) DAOHelper.getInstance().getUserDAO()
                     .queryForId(serverUser.getUserID());
             if (clientUser != null) {
+                serverUser.setServerURL(clientUser.getServerURL());
                 serverUser.setKeepLogInData(clientUser.isKeepLogInData());
                 serverUser.setPreviousLoggedIn(clientUser.isPreviousLoggedIn());
                 serverUser.setLoggedIn(clientUser.isLoggedIn());

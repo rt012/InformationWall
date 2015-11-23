@@ -38,10 +38,13 @@ public class AccountOverviewListViewAdapter extends ArrayAdapter {
 
         TextView tvFirstChar = (TextView) view.findViewById(R.id.tv_account_overview_first_char);
         String firstChar = user.getEmailAddress().substring(0, 1);
-        tvFirstChar.setText(firstChar);
+        tvFirstChar.setText(firstChar.toUpperCase());
 
         TextView tvEmail = (TextView) view.findViewById(R.id.tv_account_overview_email);
         tvEmail.setText(user.getEmailAddress());
+
+        TextView tvServer = (TextView) view.findViewById(R.id.tv_account_overview_server);
+        tvServer.setText(user.getServerURL());
 
         return view;
     }

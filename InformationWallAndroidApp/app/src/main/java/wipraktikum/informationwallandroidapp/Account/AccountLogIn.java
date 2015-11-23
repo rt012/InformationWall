@@ -7,12 +7,16 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import wipraktikum.informationwallandroidapp.BusinessObject.User.User;
+import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
 
@@ -21,6 +25,7 @@ import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
  */
 public class AccountLogIn extends Fragment implements LogInManager.OnRequestLoginResponseReceived{
     private static final String TAG = "LoginActivity";
+    public static final String USER_ID_TAG = "userID";
 
     private EditText mEmailText;
     private EditText mPasswordText;
@@ -38,8 +43,30 @@ public class AccountLogIn extends Fragment implements LogInManager.OnRequestLogi
         initViews(view);
         initLoginManager();
         setLoginButtonClickListener();
+        getUserArguments();
 
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_black_board_add_item, menu);
+        menu.findItem(R.id.action_logout).setVisible(false);
+        menu.findItem(R.id.action_logout).setEnabled(false);
+    }
+
+    private void getUserArguments(){
+        //Write BlackBoardItem Information to View
+        if (getArguments() != null){
+            User user = (User) DAOHelper.getInstance().getUserDAO().queryForId(
+                    getArguments().getLong(USER_ID_TAG));
+            setUserViewContent(user);
+        }
+    }
+
+    private void setUserViewContent(User user) {
+        mEmailText.setText(user.getEmailAddress());
+        mServerURL.setText(user.getServerURL());
     }
 
     private void initViews(View view) {
@@ -69,11 +96,24 @@ public class AccountLogIn extends Fragment implements LogInManager.OnRequestLogi
         mLoginButton.setEnabled(false);
         if (validateInputFields()) {
             showProgressDialog();
-            mLogInManager.requestLogin(mEmailText.getText().toString(), mPasswordText.getText().toString(),
+            mLogInManager.requestLogin(createUserFromInput(),
                     mAutoLogin.isChecked());
         } else  {
             onLoginFailed();
         }
+    }
+
+    private User createUserFromInput(){
+        User user = new User();
+        String email = mEmailText.getText().toString();
+        String password = mPasswordText.getText().toString();
+        String serverURL = mServerURL.getText().toString();
+
+        user.setEmailAddress(email);
+        user.setPassword(password);
+        user.setServerURL(serverURL);
+
+        return user;
     }
 
     public boolean validateInputFields() {
