@@ -8,11 +8,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
-
-import java.sql.SQLException;
+import android.view.Menu;
 
 import wipraktikum.informationwallandroidapp.BaseActivity;
-import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.R;
 
 public class AccountActivity extends BaseActivity{
@@ -25,10 +23,21 @@ public class AccountActivity extends BaseActivity{
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if(existPreviousAccountData()){
+        if(LogInManager.existPreviousAccountData()){
             openFragment(new AccountOverview(), false);
         }else{
             openFragment(new AccountLogIn(), false);
+        }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0){
+            getSupportFragmentManager().popBackStack();
+            setTitle(getActionBarTitleByFragment(getActiveFragment()));
+            return true;
+        }else {
+            return super.onSupportNavigateUp();
         }
     }
 
@@ -43,6 +52,11 @@ public class AccountActivity extends BaseActivity{
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+    }
+
     private Fragment getActiveFragment() {
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
             return null;
@@ -51,18 +65,7 @@ public class AccountActivity extends BaseActivity{
         return getSupportFragmentManager().findFragmentByTag(tag);
     }
 
-    private boolean existPreviousAccountData(){
-        try {
-            if (!DAOHelper.getInstance().getUserDAO().getPreviousLoggedInAccounts().isEmpty()){
-                return true;
-            }else{
-                return false;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
+
 
     public void openFragment(Fragment fragment, boolean addToBackStack){
         FragmentTransaction fragmentTransaction =  getSupportFragmentManager().beginTransaction();
@@ -76,10 +79,10 @@ public class AccountActivity extends BaseActivity{
     }
 
     private String getActionBarTitleByFragment(Fragment fragment) {
-        if (fragment instanceof AccountOverview){
-            return getString(R.string.fragment_account_overview_title);
-        }else{
+        if (fragment instanceof AccountLogIn){
             return getString(R.string.fragment_account_log_in_title);
+        }else{
+            return getString(R.string.fragment_account_overview_title);
         }
     }
 }

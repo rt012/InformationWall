@@ -7,14 +7,13 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import wipraktikum.informationwallandroidapp.BaseActivity;
 import wipraktikum.informationwallandroidapp.BusinessObject.User.User;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.R;
@@ -44,15 +43,17 @@ public class AccountLogIn extends Fragment implements LogInManager.OnRequestLogi
         initLoginManager();
         setLoginButtonClickListener();
         getUserArguments();
+        handleHomeButtonEnabled(view);
 
         return view;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_black_board_add_item, menu);
-        menu.findItem(R.id.action_logout).setVisible(false);
-        menu.findItem(R.id.action_logout).setEnabled(false);
+    private void handleHomeButtonEnabled(View view){
+        if (LogInManager.existPreviousAccountData()) {
+            ((BaseActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }else{
+            ((BaseActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
     }
 
     private void getUserArguments(){
@@ -163,6 +164,7 @@ public class AccountLogIn extends Fragment implements LogInManager.OnRequestLogi
     private void openTileOverview() {
         Intent intent = new Intent(getActivity(), TileOverview.class);
         startActivity(intent);
+        getActivity().finish();
     }
 
     @Override

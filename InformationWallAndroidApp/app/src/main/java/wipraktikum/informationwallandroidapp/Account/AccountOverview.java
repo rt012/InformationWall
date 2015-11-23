@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import wipraktikum.informationwallandroidapp.Account.Adapter.AccountOverviewListViewAdapter;
+import wipraktikum.informationwallandroidapp.BaseActivity;
 import wipraktikum.informationwallandroidapp.BusinessObject.User.User;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.R;
@@ -32,6 +33,12 @@ public class AccountOverview extends Fragment {
         initViews(view);
 
         return view;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        ((BaseActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 
     private void initViews(View view) {
@@ -65,7 +72,7 @@ public class AccountOverview extends Fragment {
     private void handleNavigationByUser(User user){
         if (user.isKeepLogInData()){
             LogInManager.logInUser(user);
-            openTileOverview();
+            //openTileOverview();
             getActivity().finish();
         }else{
             ((AccountActivity) getActivity()).openFragment(createLogInFragment(user), true);

@@ -130,11 +130,7 @@ public class InfoWallApplication extends Application {
     }
 
     private void startActivity() {
-        if(checkIfUserIsLoggedIn()){
-            // Start Tile Overview
-            ActivityHelper.openTileOverviewActivity(this);
-        } else {
-            // Start Login Screen
+        if(!checkIfUserIsLoggedIn()){
             ActivityHelper.openLoginActivity(this);
         }
     }

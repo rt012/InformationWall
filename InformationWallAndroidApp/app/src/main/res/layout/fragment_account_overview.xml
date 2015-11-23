@@ -7,6 +7,8 @@
     android:paddingTop="10dp"
     android:weightSum="1">
 
+    <include layout="@layout/content_logo"></include>
+
     <ListView
         android:id="@+id/lv_account_overview"
         android:layout_width="match_parent"
