@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import wipraktikum.informationwallandroidapp.About.AboutDialog;
 import wipraktikum.informationwallandroidapp.Account.LogInManager;
 import wipraktikum.informationwallandroidapp.Preferences.AppPreferences;
 import wipraktikum.informationwallandroidapp.Utils.ActivityHelper;
@@ -50,9 +51,16 @@ public class BaseActivity extends AppCompatActivity implements NotificationHelpe
             case R.id.action_logout:
                 performLogout();
                 return true;
+            case R.id.action_about:
+                openAboutDialog();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openAboutDialog(){
+        new AboutDialog().show(getSupportFragmentManager(), AboutDialog.class.getSimpleName());
     }
 
     private void performLogout() {

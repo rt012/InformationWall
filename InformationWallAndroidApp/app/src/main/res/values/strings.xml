@@ -3,9 +3,11 @@
     <string name="app_name">Information Wall</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_base">BaseActivity</string>
+    <!-- Action bar menu -->
     <string name="action_settings">Settings</string>
     <string name="action_logout">Logout</string>
-    <string name="title_activity_base">BaseActivity</string>
+    <string name="action_about">About</string>
     <!-- LogIn -->
     <string name="login_authenticating_progress_bar">Authenticating...</string>
     <string name="log_in_failed">Log in failed</string>
@@ -17,7 +19,8 @@
     <string name="fragment_account_overview_title">Account Overview</string>
     <string name="fragment_account_overview_new_account">NEW ACCOUNT</string>
     <string name="fragment_account_log_in_title">Log in</string>
-
+    <!-- LogIn -->
+    <string name="dialog_about_title">About</string>
     <!--- GridViewLongClickDialog  -->
     <string name="small">Small</string>
     <string name="middle">Middle</string>
