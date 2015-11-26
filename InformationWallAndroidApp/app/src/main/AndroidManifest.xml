@@ -48,7 +48,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Login.LoginActivity"
+            android:name=".Account.AccountActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>

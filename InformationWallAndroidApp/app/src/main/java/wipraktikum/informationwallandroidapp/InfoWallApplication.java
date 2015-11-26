@@ -2,17 +2,13 @@ package wipraktikum.informationwallandroidapp;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
-import com.google.gson.JsonParser;
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
@@ -20,6 +16,7 @@ import java.sql.SQLException;
 import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoard;
 import wipraktikum.informationwallandroidapp.BusinessObject.User.User;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.Tile.DBTile;
+import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.Database.ORMLiteHelper;
 import wipraktikum.informationwallandroidapp.ServerCommunication.SyncManager;
 import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
@@ -76,12 +73,7 @@ public class InfoWallApplication extends Application {
     }
 
     public static User getCurrentUser(){
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(instance);
-        String currentUserJsonString = sharedPref.getString("currentUser", null);
-        if (currentUser == null && currentUserJsonString != null){
-            currentUser = new Gson().fromJson(new JsonParser().parse(currentUserJsonString), User.class);
-            currentUser.setLoggedIn(true);
-        }
+        currentUser = DAOHelper.getInstance().getUserDAO().getCurrentUser();
         return currentUser;
     }
 
@@ -138,18 +130,14 @@ public class InfoWallApplication extends Application {
     }
 
     private void startActivity() {
-        if(checkIfUserIsLoggedIn()){
-            // Start Tile Overview
-            ActivityHelper.openTileOverviewActivity(this);
-        } else {
-            // Start Login Screen
+        if(!checkIfUserIsLoggedIn()){
             ActivityHelper.openLoginActivity(this);
         }
     }
 
     private boolean checkIfUserIsLoggedIn() {
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        return sharedPref.getBoolean("loggedIn", false);
+        if (currentUser == null) return false;
+        return true;
     }
 
     private static final class MyActivityLifecycleCallbacks implements ActivityLifecycleCallbacks {

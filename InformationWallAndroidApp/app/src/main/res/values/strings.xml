@@ -3,13 +3,24 @@
     <string name="app_name">Information Wall</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_base">BaseActivity</string>
+    <!-- Action bar menu -->
     <string name="action_settings">Settings</string>
     <string name="action_logout">Logout</string>
-    <string name="title_activity_base">BaseActivity</string>
+    <string name="action_about">About</string>
     <!-- LogIn -->
     <string name="login_authenticating_progress_bar">Authenticating...</string>
+    <string name="log_in_failed">Log in failed</string>
     <string name="cb_autoLogin">Keep me logged in</string>
-
+    <string name="log_in_title_information">Enter your email address,
+        password and Server URL to connect to your Information Wall!</string>
+    <string name="log_in_title">Information Wall</string>
+    <string name="log_in_overview_title">Select Account</string>
+    <string name="fragment_account_overview_title">Account Overview</string>
+    <string name="fragment_account_overview_new_account">NEW ACCOUNT</string>
+    <string name="fragment_account_log_in_title">Log in</string>
+    <!-- LogIn -->
+    <string name="dialog_about_title">About</string>
     <!--- GridViewLongClickDialog  -->
     <string name="small">Small</string>
     <string name="middle">Middle</string>
@@ -22,9 +33,9 @@
     <string name="dialog_fire_missiles">Test</string>
     <string name="title_activity_black_board">BlackBoard</string>
     <!--- BlackBoard  -->
-    <string name="activity_black_board_title">Black Board</string>
-    <string name="activity_black_board_add_item_title">New Entry</string>
-    <string name="activity_black_board_edit_item_title">Edit Entry</string>
+    <string name="fragment_black_board_title">Black Board</string>
+    <string name="fragment_black_board_add_item_title">New Entry</string>
+    <string name="fragment_black_board_edit_item_title">Edit Entry</string>
 
     <string name="black_board_no_title">No Title</string>
     <string name="black_board_no_item_information">No Item Information</string>
@@ -32,7 +43,7 @@
     <string name="black_board_description">Description</string>
     <string name="black_board_no_description_information">No description available</string>
     <string name="black_board_last_edited">Edited:</string>
-    <!-- BlackBoard Long Click Dialog-->
+    <!-- BlackBoard Overview Long Click Dialog-->
     <string name="black_board_long_click_dialog_edit">EDIT</string>
     <string name="black_board_long_click_dialog_delete">DELETE</string>
     <!--- BlackBoard Add Item -->

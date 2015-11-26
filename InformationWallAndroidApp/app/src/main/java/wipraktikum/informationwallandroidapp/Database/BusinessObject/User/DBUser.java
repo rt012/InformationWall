@@ -17,7 +17,16 @@ public class DBUser {
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private DBUserGroup mUserGroup;
     @DatabaseField
+    private String mServerURL;
+    @DatabaseField(columnName = LOGGED_IN_FIELD_NAME)
     private boolean mLoggedIn;
+    @DatabaseField(columnName = PREVIOUS_LOGGED_IN_FIELD_NAME)
+    private boolean mPreviousLoggedIn;
+    @DatabaseField
+    private boolean mKeepLogInData;
+
+    public static final String PREVIOUS_LOGGED_IN_FIELD_NAME = "previousLoggedIn";
+    public static final String LOGGED_IN_FIELD_NAME = "loggedIn";
 
     public DBUser(){}
 
@@ -59,5 +68,29 @@ public class DBUser {
 
     public void setLoggedIn(boolean mLoggedIn) {
         this.mLoggedIn = mLoggedIn;
+    }
+
+    public boolean isPreviousLoggedIn() {
+        return mPreviousLoggedIn;
+    }
+
+    public void setPreviousLoggedIn(boolean previousLoggedIn) {
+        this.mPreviousLoggedIn = previousLoggedIn;
+    }
+
+    public boolean isKeepLogInData() {
+        return mKeepLogInData;
+    }
+
+    public void setKeepLogInData(boolean mKeepLogInData) {
+        this.mKeepLogInData = mKeepLogInData;
+    }
+
+    public String getServerURL() {
+        return mServerURL;
+    }
+
+    public void setServerURL(String mServerURL) {
+        this.mServerURL = mServerURL;
     }
 }
