@@ -1,9 +1,13 @@
 package wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard;
 
+import com.google.gson.GsonBuilder;
 import com.j256.ormlite.table.DatabaseTable;
+
+import java.util.List;
 
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardAttachment;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem;
+import wipraktikum.informationwallandroidapp.Utils.FileHelper;
 
 /**
  * Created by Eric Schmidt on 25.10.2015.
@@ -95,5 +99,17 @@ public class BlackBoardAttachment {
 
     public void setSyncStatus(boolean mSyncStatus) {
         this.mSyncStatus = mSyncStatus;
+    }
+
+    public static BlackBoardAttachment createNewAttachmentByFilePath(String filePath){
+        BlackBoardAttachment blackBoardAttachment = new BlackBoardAttachment();
+        blackBoardAttachment.setName(FileHelper.getInstance().getFileName(filePath));
+        blackBoardAttachment.setDeviceDataPath(filePath);
+        blackBoardAttachment.setDataType(FileHelper.getInstance().getBlackBoardAttachmentDataType(filePath));
+        return blackBoardAttachment;
+    }
+
+    public static String convertAttachmentListToJson(List<BlackBoardAttachment> attachmentList) {
+        return new GsonBuilder().create().toJson(attachmentList);
     }
 }
