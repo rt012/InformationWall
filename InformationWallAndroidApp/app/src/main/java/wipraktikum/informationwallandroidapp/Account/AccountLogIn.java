@@ -168,7 +168,7 @@ public class AccountLogIn extends Fragment implements LogInManager.OnRequestLogi
     }
 
     @Override
-    public void OnRequestLoginResponseReceived(boolean successful) {
+    public void onRequestLoginResponseReceived(boolean successful) {
         dismissProgressDialog();
         if(successful) {
             onLoginSuccess();
