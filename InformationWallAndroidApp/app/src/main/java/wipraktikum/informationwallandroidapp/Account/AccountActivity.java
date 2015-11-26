@@ -23,7 +23,7 @@ public class AccountActivity extends BaseActivity{
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if(LogInManager.existPreviousAccountData()){
+        if(LoginManager.existPreviousAccountData()){
             openFragment(new AccountOverview(), false);
         }else{
             openFragment(new AccountLogIn(), false);

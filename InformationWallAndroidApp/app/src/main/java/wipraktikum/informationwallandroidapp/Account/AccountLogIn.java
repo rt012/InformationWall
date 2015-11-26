@@ -22,7 +22,7 @@ import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
 /**
  * Created by Eric Schmidt on 22.11.2015.
  */
-public class AccountLogIn extends Fragment implements LogInManager.OnRequestLoginResponseReceived{
+public class AccountLogIn extends Fragment implements LoginManager.OnRequestLoginResponseReceived{
     private static final String TAG = "LoginActivity";
     public static final String USER_ID_TAG = "userID";
 
@@ -33,7 +33,7 @@ public class AccountLogIn extends Fragment implements LogInManager.OnRequestLogi
     private CheckBox mAutoLogin;
 
     private ProgressDialog progressDialog = null;
-    private LogInManager mLogInManager;
+    private LoginManager mLoginManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup viewGroup, Bundle savedInstanceState) {
@@ -49,7 +49,7 @@ public class AccountLogIn extends Fragment implements LogInManager.OnRequestLogi
     }
 
     private void handleHomeButtonEnabled(View view){
-        if (LogInManager.existPreviousAccountData()) {
+        if (LoginManager.existPreviousAccountData()) {
             ((BaseActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }else{
             ((BaseActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -79,8 +79,8 @@ public class AccountLogIn extends Fragment implements LogInManager.OnRequestLogi
     }
 
     private void initLoginManager() {
-        mLogInManager = new LogInManager();
-        mLogInManager.setOnRequestLoginResponseReceived(this);
+        mLoginManager = new LoginManager();
+        mLoginManager.setOnRequestLoginResponseReceived(this);
     }
 
     private void setLoginButtonClickListener() {
@@ -97,7 +97,7 @@ public class AccountLogIn extends Fragment implements LogInManager.OnRequestLogi
         mLoginButton.setEnabled(false);
         if (validateInputFields()) {
             showProgressDialog();
-            mLogInManager.requestLogin(createUserFromInput(),
+            mLoginManager.requestLogin(createUserFromInput(),
                     mAutoLogin.isChecked());
         } else  {
             onLoginFailed();

@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import wipraktikum.informationwallandroidapp.About.AboutDialog;
-import wipraktikum.informationwallandroidapp.Account.LogInManager;
+import wipraktikum.informationwallandroidapp.Account.LoginManager;
 import wipraktikum.informationwallandroidapp.Preferences.AppPreferences;
 import wipraktikum.informationwallandroidapp.Utils.ActivityHelper;
 import wipraktikum.informationwallandroidapp.Utils.NotificationHelper;
@@ -64,7 +64,7 @@ public class BaseActivity extends AppCompatActivity implements NotificationHelpe
     }
 
     private void performLogout() {
-        LogInManager.logOutUser(InfoWallApplication.getCurrentUser());
+        LoginManager.logOutUser(InfoWallApplication.getCurrentUser());
         openLoginActivity();
     }
 

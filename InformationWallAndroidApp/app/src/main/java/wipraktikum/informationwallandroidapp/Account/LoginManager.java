@@ -17,7 +17,7 @@ import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManage
 /**
  * Created by Remi on 14.11.2015.
  */
-public class LogInManager {
+public class LoginManager {
 
     private OnRequestLoginResponseReceived mOnRequestLoginResponseReceived;
 

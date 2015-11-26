@@ -71,7 +71,7 @@ public class AccountOverview extends Fragment {
 
     private void handleNavigationByUser(User user){
         if (user.isKeepLogInData()){
-            LogInManager.logInUser(user);
+            LoginManager.logInUser(user);
             //openTileOverview();
             getActivity().finish();
         }else{
