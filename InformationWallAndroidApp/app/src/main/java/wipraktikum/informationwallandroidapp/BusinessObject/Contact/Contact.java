@@ -111,4 +111,14 @@ public class Contact {
         }
         return false;
     }
+
+    public static void splitContactFullName(Contact contact, String fullName) {
+        String[] splitFullName = fullName.split(" ");
+        if (splitFullName.length == 2) {
+            contact.setSurname(splitFullName[0]);
+            contact.setName(splitFullName[1]);
+        } else {
+            contact.setSurname(splitFullName[0]);
+        }
+    }
 }

@@ -142,7 +142,8 @@ public class BlackBoardItemDAO implements IDAO {
                 tempAttachment.setBlackBoardItem(dbBlackBoardItem);
                 InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardAttachmentDAO().createOrUpdate(tempAttachment);
             }
-
+            // Set Attachments to the item again because in the create method we have to clean erase this reference ( because of ORMLite )
+            blackBoardItem.setBlackBoardAttachment(tempAttachments);
             ok = true;
         } catch (SQLException e) {
             e.printStackTrace();

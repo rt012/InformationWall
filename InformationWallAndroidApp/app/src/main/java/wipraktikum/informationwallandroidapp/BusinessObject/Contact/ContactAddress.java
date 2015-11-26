@@ -87,4 +87,24 @@ public class ContactAddress {
     public void setSyncStatus(boolean mSyncStatus) {
         this.mSyncStatus = mSyncStatus;
     }
+
+    public static void splitStreet(ContactAddress contactAddress, String street) {
+        String[] splitStreet = street.split(" ");
+        if (splitStreet.length == 2) {
+            contactAddress.setStreetName(splitStreet[0]);
+            contactAddress.setHouseNumber(splitStreet[1]);
+        } else {
+            contactAddress.setStreetName(splitStreet[0]);
+        }
+    }
+
+    public static void splitCity(ContactAddress contactAddress, String city) {
+        String[] splitCity = city.split(" ");
+        if (splitCity.length == 2) {
+            contactAddress.setZipCode(splitCity[0]);
+            contactAddress.setCity(splitCity[1]);
+        } else {
+            contactAddress.setCity(splitCity[0]);
+        }
+    }
 }

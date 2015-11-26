@@ -1,5 +1,8 @@
 package wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParser;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.Date;
@@ -112,5 +115,10 @@ public class BlackBoardItem{
 
     public void setUser(User mUser) {
         this.mUser = mUser;
+    }
+
+    public static BlackBoardItem parseItemFromJson(String json) {
+        Gson gsonInstance = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+        return gsonInstance.fromJson(new JsonParser().parse(json), BlackBoardItem.class);
     }
 }
