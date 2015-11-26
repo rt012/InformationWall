@@ -86,7 +86,7 @@
         </TableRow>
 
         <View
-            style="@style/Divider" /> 
+            style="@style/Divider" />
 
         <!-- Attachments -->
         <TableRow
