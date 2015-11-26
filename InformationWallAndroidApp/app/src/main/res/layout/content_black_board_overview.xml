@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:showIn="@layout/activity_black_board"
-    tools:context="wipraktikum.informationwallandroidapp.BlackBoard.BlackBoardOverview">
+    tools:context=".BlackBoard.BlackBoardOverview">
 
     <ExpandableListView
         android:id="@+id/ex_lv_black_board"

@@ -5,16 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".Account.AccountActivity">
+    tools:context=".BlackBoard.BlackBoardItemLayoutSelection">
 
     <include layout="@layout/custom_app_bar_layout"></include>
 
-    <!-- Fragment Container-->
-    <FrameLayout
-        android:id="@+id/account_fragment_container"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="?attr/actionBarSize">
-    </FrameLayout>
+    <include layout="@layout/content_black_board_layout_selection"></include>
 
 </android.support.design.widget.CoordinatorLayout>

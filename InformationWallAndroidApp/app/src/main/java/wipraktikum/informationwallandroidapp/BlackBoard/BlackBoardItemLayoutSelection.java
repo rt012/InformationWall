@@ -42,7 +42,7 @@ public class BlackBoardItemLayoutSelection extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_layout_selection);
+        setContentView(R.layout.activity_black_board_layout_selection);
 
         setToolbar();
         setPagerAdapter();
