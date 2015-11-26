@@ -88,6 +88,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     private ImageButton imageButtonExpandContact = null;
     private LinearLayout attachmentContainer = null;
     private Button buttonAttachment = null;
+    private Button buttonAddLayout = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup viewGroup, Bundle savedInstanceState) {
@@ -182,6 +183,14 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
                 }
                 isFilePickerVisible = true;
                 FileHelper.getInstance().showFileChooser(getActivity());
+            }
+        });
+
+        buttonAddLayout = (Button) view.findViewById(R.id.b_black_board_add_layout);
+        buttonAddLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActivityHelper.openLayoutSelectionwActivity(InfoWallApplication.getInstance());
             }
         });
 

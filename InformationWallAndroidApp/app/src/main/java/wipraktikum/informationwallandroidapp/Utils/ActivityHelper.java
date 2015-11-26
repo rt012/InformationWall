@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoardItemLayoutSelection;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
 import wipraktikum.informationwallandroidapp.Account.AccountActivity;
 import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
@@ -21,6 +22,12 @@ public class ActivityHelper {
 
     public static void openTileOverviewActivity(Context context) {
         Intent intent = new Intent(context, TileOverview.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
+
+    public static void openLayoutSelectionwActivity(Context context) {
+        Intent intent = new Intent(context, BlackBoardItemLayoutSelection.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
