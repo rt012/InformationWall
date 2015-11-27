@@ -140,6 +140,6 @@ public class TileOverview extends BaseActivity {
     private void activateTileOnServer(String actionParam){
         Map<String,String> params = new HashMap<>();
         params.put(ServerURLManager.SHOW_BLACK_BOARD_PARAM_KEY, actionParam);
-        PhpRequestManager.getInstance().phpRequest(ServerURLManager.SHOW_BLACK_BOARD_URL, params);
+        PhpRequestManager.getInstance().phpRequest(ServerURLManager.UPDATE_BLACKBOARD_BEHAVIOUR_URL, params);
     }
 }

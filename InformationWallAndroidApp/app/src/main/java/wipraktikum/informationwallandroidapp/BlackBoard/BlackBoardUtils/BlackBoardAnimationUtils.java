@@ -16,7 +16,7 @@ public class BlackBoardAnimationUtils {
     public static void openLivePreview() {
         Map<String, String> params = new HashMap<>();
         params.put(ServerURLManager.SHOW_LIVE_PREVIEW_BLACK_BOARD_ITEM_KEY, ServerURLManager.SHOW_LIVE_PREVIEW_BLACK_BOARD_ITEM_SHOW);
-        PhpRequestManager.getInstance().phpRequest(ServerURLManager.SHOW_LIVE_PREVIEW_BLACK_BOARD_ITEM_URL, params);
+        PhpRequestManager.getInstance().phpRequest(ServerURLManager.UPDATE_BLACKBOARD_BEHAVIOUR_URL, params);
     }
 
     public static void closeLivePreviewOnServer(){
@@ -24,7 +24,7 @@ public class BlackBoardAnimationUtils {
         Map<String, String> params = new HashMap<>();
         params.put(ServerURLManager.SHOW_LIVE_PREVIEW_BLACK_BOARD_ITEM_KEY, ServerURLManager.SHOW_LIVE_PREVIEW_BLACK_BOARD_ITEM_HIDE);
 
-        PhpRequestManager.getInstance().phpRequest(ServerURLManager.SHOW_LIVE_PREVIEW_BLACK_BOARD_ITEM_URL, params);
+        PhpRequestManager.getInstance().phpRequest(ServerURLManager.UPDATE_BLACKBOARD_BEHAVIOUR_URL, params);
     }
 
     public static void sendLivePreviewUpdate(BlackBoardItem updatedBlackBoardItem) {

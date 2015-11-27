@@ -144,7 +144,7 @@ public class BlackBoard extends BaseActivity{
     public void openBlackBoardOnServer(String actionParam) {
         Map<String, String> params = new Hashtable<String, String>();
         params.put(ServerURLManager.OPEN_BLACK_BOARD_PARAM_KEY, actionParam);
-        PhpRequestManager.getInstance().phpRequest(ServerURLManager.OPEN_BLACK_BOARD_URL, params);
+        PhpRequestManager.getInstance().phpRequest(ServerURLManager.UPDATE_BLACKBOARD_BEHAVIOUR_URL, params);
     }
 
     public void openFragment(Fragment fragment, boolean addToBackStack){
