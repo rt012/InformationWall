@@ -95,7 +95,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         View view = inflater.inflate(R.layout.fragment_black_board_add_item, viewGroup, false);
         setHasOptionsMenu(true);
 
-        blackBoardItemDAO = DAOHelper.getInstance().getBlackBoardItemDAO();
+        blackBoardItemDAO = DAOHelper.getBlackBoardItemDAO();
 
         ((BlackBoard)getActivity()).setOnActivityResultListener(this);
         setRetainInstance(true);
@@ -123,7 +123,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         editTextDescription.addTextChangedListener(this);
 
         autoCompleteTextViewContactAdapter = new BlackBoardAutoCompleteTextViewContactAdapter(
-                getActivity(), 0, DAOHelper.getInstance().getContactDAO().queryForAll());
+                getActivity(), 0, DAOHelper.getContactDAO().queryForAll());
         autoCompleteTextViewContact = (AutoCompleteTextView) view.findViewById(R.id.ac_tv_black_board_add_item_contact);
         autoCompleteTextViewContact.setAdapter(autoCompleteTextViewContactAdapter);
         autoCompleteTextViewContact.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -68,7 +68,7 @@ public class SyncManager implements JsonManager.OnObjectResponseListener, JsonMa
 
     private void syncBlackBoardItemToServer() {
         try {
-            ArrayList<BlackBoardItem> unsyncedItems = DAOHelper.getInstance().getBlackBoardItemDAO().getUnsyncedItems();
+            ArrayList<BlackBoardItem> unsyncedItems = DAOHelper.getBlackBoardItemDAO().getUnsyncedItems();
             if(!unsyncedItems.isEmpty()) {
                 currentUnsyncedBlackBoardItem = unsyncedItems.get(0);
                 jsonManagerToServer.sendJson(ServerURLManager.NEW_BLACK_BOARD_ITEM_URL, currentUnsyncedBlackBoardItem);
@@ -85,7 +85,7 @@ public class SyncManager implements JsonManager.OnObjectResponseListener, JsonMa
     }
 
     private void UpdateOrCreateBlackBoardItems(JsonElement response) {
-        BlackBoardItemDAO blackBoardItemDAO = DAOHelper.getInstance().getBlackBoardItemDAO();
+        BlackBoardItemDAO blackBoardItemDAO = DAOHelper.getBlackBoardItemDAO();
 
         deleteAllBlackboardItems();
 
@@ -102,7 +102,7 @@ public class SyncManager implements JsonManager.OnObjectResponseListener, JsonMa
     private List<BlackBoardItem> keepTransientUserData(List<BlackBoardItem> serverItemList) {
         for (BlackBoardItem blackBoardItem : serverItemList){
             User serverUser = blackBoardItem.getUser();
-            User clientUser = (User) DAOHelper.getInstance().getUserDAO()
+            User clientUser = (User) DAOHelper.getUserDAO()
                     .queryForId(serverUser.getUserID());
             if (clientUser != null) {
                 serverUser.setServerURL(clientUser.getServerURL());
@@ -116,7 +116,7 @@ public class SyncManager implements JsonManager.OnObjectResponseListener, JsonMa
     }
 
     public void deleteAllBlackboardItems(){
-        BlackBoardItemDAO blackBoardItemDAO = DAOHelper.getInstance().getBlackBoardItemDAO();
+        BlackBoardItemDAO blackBoardItemDAO = DAOHelper.getBlackBoardItemDAO();
         ArrayList<BlackBoardItem> blackBoardItems = blackBoardItemDAO.queryForAll();
 
         for (BlackBoardItem blackBoardItem : blackBoardItems){
@@ -130,7 +130,7 @@ public class SyncManager implements JsonManager.OnObjectResponseListener, JsonMa
         Gson gsonInstance = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
         BlackBoardItem serverBlackBoardItem = gsonInstance.fromJson(new JsonParser().parse(response.toString()), BlackBoardItem.class);
         serverBlackBoardItem.setSyncStatus(true);
-        BlackBoardItemDAO blackBoardItemDAO = DAOHelper.getInstance().getBlackBoardItemDAO();
+        BlackBoardItemDAO blackBoardItemDAO = DAOHelper.getBlackBoardItemDAO();
         blackBoardItemDAO.deleteByID(currentUnsyncedBlackBoardItem.getBlackBoardItemID());
         blackBoardItemDAO.createOrUpdate(serverBlackBoardItem);
 

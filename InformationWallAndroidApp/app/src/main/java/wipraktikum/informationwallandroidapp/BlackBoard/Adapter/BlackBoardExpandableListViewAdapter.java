@@ -40,13 +40,13 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
         this.context = context;
 
         // Get black board items from database
-        mBlackBoardItems = DAOHelper.getInstance().getBlackBoardItemDAO().queryForAll();
+        mBlackBoardItems = DAOHelper.getBlackBoardItemDAO().queryForAll();
         sortItems();
     }
 
     @Override
     public void notifyDataSetChanged() {
-        mBlackBoardItems = DAOHelper.getInstance().getBlackBoardItemDAO().queryForAll();
+        mBlackBoardItems = DAOHelper.getBlackBoardItemDAO().queryForAll();
         sortItems();
         super.notifyDataSetChanged();
     }
@@ -194,7 +194,7 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
                     downloadAttachments.remove(convertView.getItem());
                     //Update BlackBoardAttachment
                     attachment.setDeviceDataPath(filePath);
-                    DAOHelper.getInstance().getBlackBoardAttachmentDAO().update(attachment);
+                    DAOHelper.getBlackBoardAttachmentDAO().update(attachment);
                     //Open File
                     fileHelper.openFile(context, filePath);
                     notifyDataSetChanged();

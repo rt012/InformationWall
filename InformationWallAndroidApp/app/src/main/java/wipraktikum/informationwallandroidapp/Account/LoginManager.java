@@ -61,7 +61,7 @@ public class LoginManager {
     }
 
     private static void saveUser2DB(User user) {
-        DAOHelper.getInstance().getUserDAO().createOrUpdate(user);
+        DAOHelper.getUserDAO().createOrUpdate(user);
     }
 
     public static void logInUser(User user){
@@ -85,7 +85,7 @@ public class LoginManager {
 
     public static boolean existPreviousAccountData(){
         try {
-            if (!DAOHelper.getInstance().getUserDAO().getPreviousLoggedInAccounts().isEmpty()){
+            if (!DAOHelper.getUserDAO().getPreviousLoggedInAccounts().isEmpty()){
                 return true;
             }else{
                 return false;

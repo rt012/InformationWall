@@ -76,7 +76,7 @@ public class PushNotificationReceiver extends ParsePushBroadcastReceiver {
 
             if (!isBackground) {
                 Intent resultIntent = new Intent(context, BlackBoard.class);
-                DAOHelper.getInstance().getBlackBoardItemDAO().createOrUpdate(blackBoardItem);
+                DAOHelper.getBlackBoardItemDAO().createOrUpdate(blackBoardItem);
                 showNotificationMessage(context, blackBoardItem, resultIntent);
             }
 

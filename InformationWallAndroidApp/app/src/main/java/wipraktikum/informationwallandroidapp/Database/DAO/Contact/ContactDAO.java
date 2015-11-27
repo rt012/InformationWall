@@ -85,7 +85,7 @@ public class ContactDAO implements IDAO {
         try {
             Dao<DBContact, Long> contactDAO = InfoWallApplication.getInstance().getDatabaseHelper().getContactDAO();
             Contact contact = (Contact) object;
-            DAOHelper.getInstance().getContactAddressDAO().createOrUpdate(contact.getContactAddress());
+            DAOHelper.getContactAddressDAO().createOrUpdate(contact.getContactAddress());
             contactDAO.createOrUpdate(mapContactToDBContact(contact));
 
             ok = true;
@@ -122,7 +122,7 @@ public class ContactDAO implements IDAO {
             contact.setName(dbContact.getName());
             contact.setSurname(dbContact.getSurname());
             contact.setTelephone(dbContact.getTelephone());
-            contact.setContactAddress((ContactAddress) DAOHelper.getInstance().
+            contact.setContactAddress((ContactAddress) DAOHelper.
                     getContactAddressDAO().mapDBContactAddressToContactAddress(dbContact.getContactAddress()));
             contact.setSyncStatus(dbContact.isSyncStatus());
         }else{
@@ -143,7 +143,7 @@ public class ContactDAO implements IDAO {
             dbContact.setEMailAddress(contact.getEMailAddress());
             dbContact.setCompany(contact.getCompany());
             dbContact.setContactID(contact.getContactID());
-            dbContact.setContactAddress((DBContactAddress) DAOHelper.getInstance().
+            dbContact.setContactAddress((DBContactAddress) DAOHelper.
                     getContactAddressDAO().mapContactAddressToDBContractAddress(contact.getContactAddress()));
             dbContact.setSyncStatus(contact.isSyncStatus());
         }else{

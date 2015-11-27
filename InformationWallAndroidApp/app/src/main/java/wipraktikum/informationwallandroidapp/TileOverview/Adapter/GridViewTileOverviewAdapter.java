@@ -29,7 +29,7 @@ public final class GridViewTileOverviewAdapter extends BaseAdapter {
         mInflater = LayoutInflater.from(context);
 
         // Get tiles from database
-        mTiles = DAOHelper.getInstance().getTileDAO().queryForAll();
+        mTiles = DAOHelper.getTileDAO().queryForAll();
     }
 
     @Override

@@ -12,38 +12,27 @@ import wipraktikum.informationwallandroidapp.Database.DAO.User.UserGroupDAO;
  * Created by Eric Schmidt on 28.10.2015.
  */
 public class DAOHelper {
-    private static DAOHelper instance = null;
-
-    private DAOHelper(){}
-
-    public static DAOHelper getInstance(){
-        if(instance == null){
-            instance = new DAOHelper();
-        }
-        return instance;
-    }
-
-    public TileDAO getTileDAO(){
+    public static TileDAO getTileDAO(){
         return TileDAO.getInstance();
     }
 
-    public ContactDAO getContactDAO(){
+    public static ContactDAO getContactDAO(){
         return ContactDAO.getInstance();
     }
 
-    public ContactAddressDAO getContactAddressDAO(){
+    public static ContactAddressDAO getContactAddressDAO(){
         return ContactAddressDAO.getInstance();
     }
 
-    public BlackBoardItemDAO getBlackBoardItemDAO(){
+    public static BlackBoardItemDAO getBlackBoardItemDAO(){
         return BlackBoardItemDAO.getInstance();
     }
 
-    public BlackBoardAttachmentDAO getBlackBoardAttachmentDAO(){
+    public static BlackBoardAttachmentDAO getBlackBoardAttachmentDAO(){
         return BlackBoardAttachmentDAO.getInstance();
     }
 
-    public UserDAO getUserDAO() {return UserDAO.getInstance();}
+    public static UserDAO getUserDAO() {return UserDAO.getInstance();}
 
-    public UserGroupDAO getUserGroupDAO() {return UserGroupDAO.getInstance();}
+    public static UserGroupDAO getUserGroupDAO() {return UserGroupDAO.getInstance();}
 }

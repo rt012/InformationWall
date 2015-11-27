@@ -74,7 +74,7 @@ public class UserDAO implements IDAO {
         boolean ok = false;
         try {
             Dao<DBUser, Long> userDAO = InfoWallApplication.getInstance().getDatabaseHelper().getUserDAO();
-            DAOHelper.getInstance().getUserGroupDAO().update(((User) object).getUserGroup());
+            DAOHelper.getUserGroupDAO().update(((User) object).getUserGroup());
             userDAO.update(mapUserToDBUser((User) object));
             ok = true;
         } catch (SQLException e) {
@@ -88,7 +88,7 @@ public class UserDAO implements IDAO {
         try {
             Dao<DBUser, Long> userDAO = InfoWallApplication.getInstance().getDatabaseHelper().getUserDAO();
             User user = (User) object;
-            DAOHelper.getInstance().getUserGroupDAO().createOrUpdate(user.getUserGroup());
+            DAOHelper.getUserGroupDAO().createOrUpdate(user.getUserGroup());
             userDAO.createOrUpdate(mapUserToDBUser(user));
 
             ok = true;
@@ -157,7 +157,7 @@ public class UserDAO implements IDAO {
             user.setUserID(dbUser.getUserID());
             user.setPassword(dbUser.getPassword());
             user.setEmailAddress(dbUser.getEmailAddress());
-            user.setUserGroup(DAOHelper.getInstance().getUserGroupDAO().
+            user.setUserGroup(DAOHelper.getUserGroupDAO().
                     mapDBUserGroupToUserGroup(dbUser.getUserGroup()));
             user.setServerURL(dbUser.getServerURL());
             user.setLoggedIn(dbUser.isLoggedIn());
@@ -172,7 +172,7 @@ public class UserDAO implements IDAO {
             dbUser.setUserID(user.getUserID());
             dbUser.setPassword(user.getPassword());
             dbUser.setEmailAddress(user.getEmailAddress());
-            dbUser.setUserGroup(DAOHelper.getInstance().getUserGroupDAO().
+            dbUser.setUserGroup(DAOHelper.getUserGroupDAO().
                     mapUserGroupToDBUserGroup(user.getUserGroup()));
             dbUser.setServerURL(user.getServerURL());
             dbUser.setLoggedIn(user.isLoggedIn());

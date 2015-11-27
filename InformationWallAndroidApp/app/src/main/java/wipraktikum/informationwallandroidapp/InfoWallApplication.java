@@ -73,7 +73,7 @@ public class InfoWallApplication extends Application {
     }
 
     public static User getCurrentUser(){
-        currentUser = DAOHelper.getInstance().getUserDAO().getCurrentUser();
+        currentUser = DAOHelper.getUserDAO().getCurrentUser();
         return currentUser;
     }
 

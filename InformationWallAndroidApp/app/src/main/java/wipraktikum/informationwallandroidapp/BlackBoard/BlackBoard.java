@@ -63,7 +63,7 @@ public class BlackBoard extends BaseActivity{
         super.onResume();
 
         if (getIntent().getExtras() != null){
-            Tile currentTile = (Tile) DAOHelper.getInstance().getTileDAO().queryForId(
+            Tile currentTile = (Tile) DAOHelper.getTileDAO().queryForId(
                     getIntent().getExtras().getLong(TileOverview.TILE_ID_KEY_PARAM));
             if (currentTile.getIsActivated()) {
                 openBlackBoardOnServer(ServerURLManager.OPEN_BLACK_BOARD_PARAM_OPEN);

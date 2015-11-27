@@ -59,7 +59,7 @@ public class AccountLogIn extends Fragment implements LoginManager.OnRequestLogi
     private void getUserArguments(){
         //Write BlackBoardItem Information to View
         if (getArguments() != null){
-            User user = (User) DAOHelper.getInstance().getUserDAO().queryForId(
+            User user = (User) DAOHelper.getUserDAO().queryForId(
                     getArguments().getLong(USER_ID_TAG));
             setUserViewContent(user);
         }

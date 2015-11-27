@@ -61,7 +61,7 @@ public class TileOverview extends BaseActivity {
         super.onResume();
 
         //Show Tile if activated. Hide if not
-        List<Tile> tileList = DAOHelper.getInstance().getTileDAO().queryForAll();
+        List<Tile> tileList = DAOHelper.getTileDAO().queryForAll();
         for (Tile tile : tileList){
             if(tile.getName().equals("Black Board") && tile.getIsActivated()){
                 activateTileOnServer(ServerURLManager.SHOW_BLACK_BOARD_PARAM_ACTIVE);
@@ -107,7 +107,7 @@ public class TileOverview extends BaseActivity {
                 } else {
                     activateTile(false, isActivatedView, tile);
                 }
-                DAOHelper.getInstance().getTileDAO().update(tile);
+                DAOHelper.getTileDAO().update(tile);
             }
         });
         tileLongClickDialog.setOnRadioButtonChangeListener(new TileLongClickDialog.OnRadioButtonChangeListener() {
@@ -115,7 +115,7 @@ public class TileOverview extends BaseActivity {
             public void onRadioButtonChanged(int radioButtonPos) {
                 Log.i(TileLongClickDialog.class.getSimpleName(), "Send message to Webserver - Tile changed Size");
                 tile.setTileSize(DBTile.EnumTileSize.values()[radioButtonPos]);
-                DAOHelper.getInstance().getTileDAO().update(tile);
+                DAOHelper.getTileDAO().update(tile);
             }
         });
     }

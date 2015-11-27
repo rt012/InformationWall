@@ -135,14 +135,14 @@ public class BlackBoardOverview extends Fragment implements BlackBoardItemDialog
 
     @Override
     public void OnResponse(JSONObject response) {
-        DAOHelper.getInstance().getBlackBoardItemDAO().delete(deletedBlackBoardItem);
+        DAOHelper.getBlackBoardItemDAO().delete(deletedBlackBoardItem);
         blackBoardExpandableListViewAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void OnErrorResponse(VolleyError error) {
         System.out.print("asdasd");
-        DAOHelper.getInstance().getBlackBoardItemDAO().delete(deletedBlackBoardItem);
+        DAOHelper.getBlackBoardItemDAO().delete(deletedBlackBoardItem);
         blackBoardExpandableListViewAdapter.notifyDataSetChanged();
     }
 }

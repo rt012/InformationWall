@@ -73,7 +73,7 @@ public class BlackBoardItemDAO implements IDAO {
 
             // Add  Item reference to Attachment Objects and add it to the db
             for(int i = 0; i < tempAttachments.size(); i++) {
-                DBBlackBoardAttachment tempAttachment = DAOHelper.getInstance().getBlackBoardAttachmentDAO().mapBlackBoardAttachmentToDBBlackBoardAttachment(tempAttachments.get(i));
+                DBBlackBoardAttachment tempAttachment = DAOHelper.getBlackBoardAttachmentDAO().mapBlackBoardAttachmentToDBBlackBoardAttachment(tempAttachments.get(i));
                 tempAttachment.setBlackBoardItem(blackBoardItem);
                 //InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardAttachmentDAO().create(tempAttachment);
                 InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardAttachmentDAO().createOrUpdate(tempAttachment);
@@ -93,8 +93,8 @@ public class BlackBoardItemDAO implements IDAO {
             BlackBoardItem blackBoardItem = (BlackBoardItem) object;
 
             //Manage the foreigner objects
-            DAOHelper.getInstance().getUserGroupDAO().createOrUpdate(blackBoardItem.getUser());
-            DAOHelper.getInstance().getContactDAO().createOrUpdate(blackBoardItem.getContact());
+            DAOHelper.getUserGroupDAO().createOrUpdate(blackBoardItem.getUser());
+            DAOHelper.getContactDAO().createOrUpdate(blackBoardItem.getContact());
 
             List<BlackBoardAttachment> tempAttachments = blackBoardItem.getBlackBoardAttachment();
             // Set AttachmentList to null because ORMLite need a empty list as a ForeignCollection
@@ -106,7 +106,7 @@ public class BlackBoardItemDAO implements IDAO {
 
             // Add  Item reference to Attachment Objects and add it to the db
             for(int i = 0; i < tempAttachments.size(); i++) {
-                DBBlackBoardAttachment tempAttachment = DAOHelper.getInstance().getBlackBoardAttachmentDAO().mapBlackBoardAttachmentToDBBlackBoardAttachment(tempAttachments.get(i));
+                DBBlackBoardAttachment tempAttachment = DAOHelper.getBlackBoardAttachmentDAO().mapBlackBoardAttachmentToDBBlackBoardAttachment(tempAttachments.get(i));
                 tempAttachment.setBlackBoardItem(dbBlackBoardItem);
                 //InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardAttachmentDAO().update(tempAttachment);
                 InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardAttachmentDAO().createOrUpdate(tempAttachment);
@@ -125,8 +125,8 @@ public class BlackBoardItemDAO implements IDAO {
             BlackBoardItem blackBoardItem = (BlackBoardItem) object;
 
             //Manage the foreigner objects
-            DAOHelper.getInstance().getUserDAO().createOrUpdate(blackBoardItem.getUser());
-            DAOHelper.getInstance().getContactDAO().createOrUpdate(blackBoardItem.getContact());
+            DAOHelper.getUserDAO().createOrUpdate(blackBoardItem.getUser());
+            DAOHelper.getContactDAO().createOrUpdate(blackBoardItem.getContact());
 
             List<BlackBoardAttachment> tempAttachments = blackBoardItem.getBlackBoardAttachment();
             // Set AttachmentList to null because ORMLite need a empty list as a ForeignCollection
@@ -138,7 +138,7 @@ public class BlackBoardItemDAO implements IDAO {
 
             // Add  Item reference to Attachment Objects and add it to the db
             for(int i = 0; i < tempAttachments.size(); i++) {
-                DBBlackBoardAttachment tempAttachment = DAOHelper.getInstance().getBlackBoardAttachmentDAO().mapBlackBoardAttachmentToDBBlackBoardAttachment(tempAttachments.get(i));
+                DBBlackBoardAttachment tempAttachment = DAOHelper.getBlackBoardAttachmentDAO().mapBlackBoardAttachmentToDBBlackBoardAttachment(tempAttachments.get(i));
                 tempAttachment.setBlackBoardItem(dbBlackBoardItem);
                 InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardAttachmentDAO().createOrUpdate(tempAttachment);
             }
@@ -211,12 +211,12 @@ public class BlackBoardItemDAO implements IDAO {
         blackBoardItem.setDescriptionText(dbBlackBoardItem.getDescriptionText());
         blackBoardItem.setCreatedTimestamp(dbBlackBoardItem.getCreatedTimestamp());
         blackBoardItem.setEditedTimestamp(dbBlackBoardItem.getEditedTimestamp());
-        blackBoardItem.setContact(DAOHelper.getInstance().
+        blackBoardItem.setContact(DAOHelper.
                 getContactDAO().mapDBContactToContact(dbBlackBoardItem.getContact()));
-        blackBoardItem.setBlackBoardAttachment(DAOHelper.getInstance().
+        blackBoardItem.setBlackBoardAttachment(DAOHelper.
                 getBlackBoardAttachmentDAO().mapDBBlackBoardAttachmentToBlackBoardAttachment(dbBlackBoardItem.getBlackBoardAttachment()));
         blackBoardItem.setSyncStatus(dbBlackBoardItem.isSyncStatus());
-        blackBoardItem.setUser(DAOHelper.getInstance().getUserDAO().mapDBUserToUser(dbBlackBoardItem.getUser()));
+        blackBoardItem.setUser(DAOHelper.getUserDAO().mapDBUserToUser(dbBlackBoardItem.getUser()));
         return blackBoardItem;
     }
 
@@ -228,10 +228,10 @@ public class BlackBoardItemDAO implements IDAO {
         dbBlackBoardItem.setDescriptionText(blackBoardItem.getDescriptionText());
         dbBlackBoardItem.setCreatedTimestamp(blackBoardItem.getCreatedTimestamp());
         dbBlackBoardItem.setEditedTimestamp(blackBoardItem.getEditedTimestamp());
-        dbBlackBoardItem.setContact(DAOHelper.getInstance().
+        dbBlackBoardItem.setContact(DAOHelper.
                 getContactDAO().mapContactToDBContact(blackBoardItem.getContact()));
         try {
-            List<DBBlackBoardAttachment> dbBlackBoardAttachments= DAOHelper.getInstance().
+            List<DBBlackBoardAttachment> dbBlackBoardAttachments= DAOHelper.
                     getBlackBoardAttachmentDAO().mapBlackBoardAttachmentToDBBlackBoardAttachment(blackBoardItem.getBlackBoardAttachment());
             if (dbBlackBoardAttachments != null) {
                 dbBlackBoardItem.setBlackBoardAttachment(dbBlackBoardAttachments);
@@ -240,7 +240,7 @@ public class BlackBoardItemDAO implements IDAO {
             e.printStackTrace();
         }
         dbBlackBoardItem.setSyncStatus(blackBoardItem.isSyncStatus());
-        dbBlackBoardItem.setUser(DAOHelper.getInstance().getUserDAO().mapUserToDBUser(blackBoardItem.getUser()));
+        dbBlackBoardItem.setUser(DAOHelper.getUserDAO().mapUserToDBUser(blackBoardItem.getUser()));
 
         return dbBlackBoardItem;
     }

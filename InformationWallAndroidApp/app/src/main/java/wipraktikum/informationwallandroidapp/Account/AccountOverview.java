@@ -62,7 +62,7 @@ public class AccountOverview extends Fragment {
 
     private List<User> getPreviousLoggedInUsers(){
         try {
-            return DAOHelper.getInstance().getUserDAO().getPreviousLoggedInAccounts();
+            return DAOHelper.getUserDAO().getPreviousLoggedInAccounts();
         } catch (SQLException e) {
             e.printStackTrace();
         }
