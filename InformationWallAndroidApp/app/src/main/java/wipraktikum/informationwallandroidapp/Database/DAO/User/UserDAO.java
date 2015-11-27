@@ -135,20 +135,17 @@ public class UserDAO implements DAO {
         return previousLoggedInUsers;
     }
 
-    public User getLoggedInUser() throws SQLException{
+    public List<String> getAllServerURL() throws SQLException{
         Dao<DBUser, Long> userDAO = InfoWallApplication.getInstance().getDatabaseHelper().getUserDAO();
-        // get our query builder from the DAO
-        QueryBuilder<DBUser, Long> queryBuilder =
-                userDAO.queryBuilder();
-        queryBuilder.where().eq(DBUser.LOGGED_IN_FIELD_NAME, true);
-        PreparedQuery<DBUser> preparedQuery = queryBuilder.prepare();
-        List<DBUser> DBUsers = userDAO.query(preparedQuery);
+        List<String> serverURLList = new ArrayList<>();
 
-        User loggedInUser = null;
-        if(DBUsers != null || !DBUsers.isEmpty()) {
-            loggedInUser = mapDBUserToUser(DBUsers.get(0));
+        List<DBUser> results = userDAO.queryBuilder()
+                .distinct().selectColumns(DBUser.SERVER_URL_FIELD_NAME).query();
+        for(DBUser dbUser : results){
+            serverURLList.add(dbUser.getServerURL());
         }
-        return loggedInUser;
+
+        return serverURLList;
     }
 
     public User mapDBUserToUser(DBUser dbUser) {

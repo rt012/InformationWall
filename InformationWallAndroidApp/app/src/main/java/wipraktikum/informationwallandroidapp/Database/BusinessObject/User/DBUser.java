@@ -16,7 +16,7 @@ public class DBUser {
     private String mPassword;
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private DBUserGroup mUserGroup;
-    @DatabaseField
+    @DatabaseField(columnName = SERVER_URL_FIELD_NAME)
     private String mServerURL;
     @DatabaseField(columnName = LOGGED_IN_FIELD_NAME)
     private boolean mLoggedIn;
@@ -27,6 +27,7 @@ public class DBUser {
 
     public static final String PREVIOUS_LOGGED_IN_FIELD_NAME = "previousLoggedIn";
     public static final String LOGGED_IN_FIELD_NAME = "loggedIn";
+    public static final String SERVER_URL_FIELD_NAME = "serverURL";
 
     public DBUser(){}
 

@@ -9,10 +9,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import java.sql.SQLException;
+
+import wipraktikum.informationwallandroidapp.Account.Adapter.AccountAutoCompleteTextViewServerAdapter;
 import wipraktikum.informationwallandroidapp.BaseActivity;
 import wipraktikum.informationwallandroidapp.BusinessObject.User.User;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
@@ -29,7 +33,7 @@ public class AccountLogIn extends Fragment implements LoginManager.OnRequestLogi
     private EditText mEmailText;
     private EditText mPasswordText;
     private Button mLoginButton;
-    private EditText mServerURL;
+    private AutoCompleteTextView mServerURL;
     private CheckBox mAutoLogin;
 
     private ProgressDialog progressDialog = null;
@@ -40,6 +44,8 @@ public class AccountLogIn extends Fragment implements LoginManager.OnRequestLogi
         View view = inflater.inflate(R.layout.fragment_account_login, viewGroup, false);
 
         initViews(view);
+        setServerAutoCompleteAdapter();
+        setServerURLClickListener();
         initLoginManager();
         setLoginButtonClickListener();
         getUserArguments();
@@ -74,7 +80,7 @@ public class AccountLogIn extends Fragment implements LoginManager.OnRequestLogi
         mLoginButton = (Button) view.findViewById(R.id.btn_login);
         mEmailText = (EditText) view.findViewById(R.id.input_email);
         mPasswordText = (EditText) view.findViewById(R.id.input_password);
-        mServerURL = (EditText) view.findViewById(R.id.input_server);
+        mServerURL = (AutoCompleteTextView) view.findViewById(R.id.input_server);
         mAutoLogin = (CheckBox) view.findViewById(R.id.checkbox_autoLogin);
     }
 
@@ -90,6 +96,30 @@ public class AccountLogIn extends Fragment implements LoginManager.OnRequestLogi
                 login();
             }
         });
+    }
+
+    private void setServerURLClickListener(){
+        mServerURL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mServerURL.showDropDown();
+            }
+        });
+        mServerURL.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                mServerURL.showDropDown();
+            }
+        });
+    }
+
+    private void setServerAutoCompleteAdapter(){
+        try {
+            mServerURL.setAdapter(new AccountAutoCompleteTextViewServerAdapter(
+                    getActivity(), 0, DAOHelper.getUserDAO().getAllServerURL()));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void login() {
