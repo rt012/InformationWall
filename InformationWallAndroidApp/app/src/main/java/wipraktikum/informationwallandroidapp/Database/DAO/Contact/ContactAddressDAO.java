@@ -8,13 +8,13 @@ import java.util.List;
 
 import wipraktikum.informationwallandroidapp.BusinessObject.Contact.ContactAddress;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.Contact.DBContactAddress;
-import wipraktikum.informationwallandroidapp.Database.DAO.IDAO;
+import wipraktikum.informationwallandroidapp.Database.DAO.DAO;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
 
 /**
  * Created by Remi on 28.10.2015.
  */
-public class ContactAddressDAO implements IDAO {
+public class ContactAddressDAO implements DAO {
     private static ContactAddressDAO instance = null;
 
     private ContactAddressDAO(){}

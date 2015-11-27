@@ -8,13 +8,13 @@ import java.util.List;
 
 import wipraktikum.informationwallandroidapp.BusinessObject.User.UserGroup;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.User.DBUserGroup;
-import wipraktikum.informationwallandroidapp.Database.DAO.IDAO;
+import wipraktikum.informationwallandroidapp.Database.DAO.DAO;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
 
 /**
  * Created by Eric Schmidt on 07.11.2015.
  */
-public class UserGroupDAO implements IDAO {
+public class UserGroupDAO implements DAO {
     private static UserGroupDAO instance = null;
 
     private UserGroupDAO(){}

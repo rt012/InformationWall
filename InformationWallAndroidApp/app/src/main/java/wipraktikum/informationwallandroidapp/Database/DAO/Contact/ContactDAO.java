@@ -11,13 +11,13 @@ import wipraktikum.informationwallandroidapp.BusinessObject.Contact.ContactAddre
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.Contact.DBContact;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.Contact.DBContactAddress;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
-import wipraktikum.informationwallandroidapp.Database.DAO.IDAO;
+import wipraktikum.informationwallandroidapp.Database.DAO.DAO;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
 
 /**
  * Created by Eric Schmidt on 28.10.2015.
  */
-public class ContactDAO implements IDAO {
+public class ContactDAO implements DAO {
     private static ContactDAO instance = null;
 
     private ContactDAO(){}

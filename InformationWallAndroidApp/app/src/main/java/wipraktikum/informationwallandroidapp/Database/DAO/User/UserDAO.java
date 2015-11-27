@@ -11,13 +11,13 @@ import java.util.List;
 import wipraktikum.informationwallandroidapp.BusinessObject.User.User;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.User.DBUser;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
-import wipraktikum.informationwallandroidapp.Database.DAO.IDAO;
+import wipraktikum.informationwallandroidapp.Database.DAO.DAO;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
 
 /**
  * Created by Eric Schmidt on 07.11.2015.
  */
-public class UserDAO implements IDAO {
+public class UserDAO implements DAO {
     private static UserDAO instance = null;
 
     private UserDAO(){}

@@ -6,13 +6,13 @@ import java.util.List;
 
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardAttachment;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardAttachment;
-import wipraktikum.informationwallandroidapp.Database.DAO.IDAO;
+import wipraktikum.informationwallandroidapp.Database.DAO.DAO;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
 
 /**
  * Created by Eric Schmidt on 28.10.2015.
  */
-public class BlackBoardAttachmentDAO implements IDAO {
+public class BlackBoardAttachmentDAO implements DAO {
     private static BlackBoardAttachmentDAO instance = null;
 
     private BlackBoardAttachmentDAO(){}

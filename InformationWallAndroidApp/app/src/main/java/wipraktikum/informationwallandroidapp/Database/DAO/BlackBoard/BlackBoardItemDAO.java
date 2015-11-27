@@ -13,13 +13,13 @@ import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoar
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardAttachment;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
-import wipraktikum.informationwallandroidapp.Database.DAO.IDAO;
+import wipraktikum.informationwallandroidapp.Database.DAO.DAO;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
 
 /**
  * Created by Eric Schmidt on 28.10.2015.
  */
-public class BlackBoardItemDAO implements IDAO {
+public class BlackBoardItemDAO implements DAO {
     static BlackBoardItemDAO instance = null;
 
     private BlackBoardItemDAO(){}
