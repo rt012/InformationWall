@@ -6,10 +6,10 @@ import java.util.ArrayList;
  * Created by Eric Schmidt on 28.10.2015.
  */
 public interface DAO {
-    public ArrayList queryForAll();
-    public Object queryForId(long iD);
-    public boolean create(Object object);
-    public boolean update(Object object);
-    public boolean delete(Object object);
-    public boolean deleteByID(long Id);
+    ArrayList queryForAll();
+    Object queryForId(long iD);
+    boolean create(Object object);
+    boolean update(Object object);
+    boolean delete(Object object);
+    boolean deleteByID(long Id);
 }

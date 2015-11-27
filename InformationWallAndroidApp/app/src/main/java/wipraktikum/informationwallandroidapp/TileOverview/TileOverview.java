@@ -17,6 +17,7 @@ import wipraktikum.informationwallandroidapp.BusinessObject.Tile.Tile;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.Tile.DBTile;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.Database.ORMLiteHelper;
+import wipraktikum.informationwallandroidapp.InfoWallApplication;
 import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.ServerCommunication.PhpRequestManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
@@ -49,7 +50,9 @@ public class TileOverview extends BaseActivity {
         gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                showOnLongClickDialogByTile(tileOverviewAdapter.getItem(position), view.findViewById(R.id.tileBorder));
+                if (InfoWallApplication.getCurrentUser().getUserGroup().canActivate()) {
+                    showOnLongClickDialogByTile(tileOverviewAdapter.getItem(position), view.findViewById(R.id.tileBorder));
+                }
                 return true;
             }
         });
