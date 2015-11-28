@@ -75,7 +75,7 @@ public class SyncManager implements JsonManager.OnObjectResponseListener, JsonMa
 
                 JSONObject jsonObject = JSONBuilder.createJSONFromParam(ServerURLManager.NEW_BLACKBOARD_ITEM_KEY,
                         JSONBuilder.createJSONFromObject(currentUnsyncedBlackBoardItem));
-                jsonManagerToServer.sendJson(ServerURLManager.NEW_BLACK_BOARD_ITEM_URL, jsonObject);
+                jsonManagerToServer.sendJson(ServerURLManager.UPDATE_BLACKBOARD_BEHAVIOUR_URL, jsonObject);
             } else {
                 syncBlackBoardItemsFromServer();
             }

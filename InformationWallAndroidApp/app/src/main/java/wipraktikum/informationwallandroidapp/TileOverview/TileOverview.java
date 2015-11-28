@@ -8,9 +8,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import java.util.HashMap;
+import org.json.JSONObject;
+
 import java.util.List;
-import java.util.Map;
 
 import wipraktikum.informationwallandroidapp.BaseActivity;
 import wipraktikum.informationwallandroidapp.BusinessObject.Tile.Tile;
@@ -19,10 +19,11 @@ import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.Database.ORMLiteHelper;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
 import wipraktikum.informationwallandroidapp.R;
-import wipraktikum.informationwallandroidapp.ServerCommunication.PhpRequestManager;
+import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
 import wipraktikum.informationwallandroidapp.TileOverview.Adapter.GridViewTileOverviewAdapter;
 import wipraktikum.informationwallandroidapp.TileOverview.Dialog.TileLongClickDialog;
+import wipraktikum.informationwallandroidapp.Utils.JSONBuilder;
 
 
 public class TileOverview extends BaseActivity {
@@ -141,8 +142,7 @@ public class TileOverview extends BaseActivity {
 
     //Only Blackboard is currently working (--> No more Tiles at the moment)
     private void activateTileOnServer(String actionParam){
-        Map<String,String> params = new HashMap<>();
-        params.put(ServerURLManager.SHOW_BLACK_BOARD_PARAM_KEY, actionParam);
-        PhpRequestManager.getInstance().phpRequest(ServerURLManager.UPDATE_BLACKBOARD_BEHAVIOUR_URL, params);
+        JSONObject jsonObject = JSONBuilder.createJSONFromParam(ServerURLManager.SHOW_BLACK_BOARD_PARAM_KEY, actionParam);
+        new JsonManager().sendJson(ServerURLManager.UPDATE_BLACKBOARD_BEHAVIOUR_URL, jsonObject);
     }
 }

@@ -440,7 +440,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
             attachmentView.showProgressbar(true);
             //Upload File
             File attachmentFile = new File(blackBoardAttachment.getDeviceDataPath());
-            uploadManager.uploadFile(attachmentFile, ServerURLManager.UPLOAD_BLACK_BOARD_ATTACHMENT_URL);
+            uploadManager.uploadFile(attachmentFile, ServerURLManager.UPDATE_BLACKBOARD_BEHAVIOUR_URL);
             uploadManager.setOnUploadFinishedListener(new UploadManager.OnUploadFinishedListener() {
                 @Override
                 public void onUploadFinished(String remoteDataPath) {
@@ -480,7 +480,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
 
         JSONObject jsonObject = JSONBuilder.createJSONFromParam(ServerURLManager.NEW_BLACKBOARD_ITEM_KEY,
                 JSONBuilder.createJSONFromObject(blackBoardItem));
-        jsonManager.sendJson(ServerURLManager.NEW_BLACK_BOARD_ITEM_URL, jsonObject);
+        jsonManager.sendJson(ServerURLManager.UPDATE_BLACKBOARD_BEHAVIOUR_URL, jsonObject);
     }
 
     private Contact createNewContact(){

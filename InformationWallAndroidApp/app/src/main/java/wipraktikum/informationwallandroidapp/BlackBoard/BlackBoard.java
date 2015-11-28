@@ -10,18 +10,18 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import java.util.Hashtable;
-import java.util.Map;
+import org.json.JSONObject;
 
 import wipraktikum.informationwallandroidapp.BaseActivity;
 import wipraktikum.informationwallandroidapp.BusinessObject.Tile.Tile;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
 import wipraktikum.informationwallandroidapp.R;
-import wipraktikum.informationwallandroidapp.ServerCommunication.PhpRequestManager;
+import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
 import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
 import wipraktikum.informationwallandroidapp.Utils.FileHelper;
+import wipraktikum.informationwallandroidapp.Utils.JSONBuilder;
 
 /**
  * Created by Eric Schmidt on 30.10.2015.
@@ -142,9 +142,8 @@ public class BlackBoard extends BaseActivity{
     }
 
     public void openBlackBoardOnServer(String actionParam) {
-        Map<String, String> params = new Hashtable<String, String>();
-        params.put(ServerURLManager.OPEN_BLACK_BOARD_PARAM_KEY, actionParam);
-        PhpRequestManager.getInstance().phpRequest(ServerURLManager.UPDATE_BLACKBOARD_BEHAVIOUR_URL, params);
+        JSONObject jsonObject = JSONBuilder.createJSONFromParam(ServerURLManager.OPEN_BLACK_BOARD_PARAM_KEY, actionParam);
+        new JsonManager().sendJson(ServerURLManager.UPDATE_BLACKBOARD_BEHAVIOUR_URL, jsonObject);
     }
 
     public void openFragment(Fragment fragment, boolean addToBackStack){

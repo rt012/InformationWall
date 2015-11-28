@@ -27,7 +27,7 @@ public class LoginManager {
 
         JSONObject jsonObject =  JSONBuilder.createJSONFromParam(ServerURLManager.LOG_IN_AUTHENTICATION_KEY,
                 JSONBuilder.createJSONFromObject(loginUser));
-        jsonManager.sendJson(ServerURLManager.LOG_IN_AUTHENTICATION_URL, jsonObject);
+        jsonManager.sendJson(ServerURLManager.UPDATE_BLACKBOARD_BEHAVIOUR_URL, jsonObject);
         jsonManager.setOnObjectResponseReceiveListener(new JsonManager.OnObjectResponseListener() {
             @Override
             public void OnResponse(JSONObject response) {
