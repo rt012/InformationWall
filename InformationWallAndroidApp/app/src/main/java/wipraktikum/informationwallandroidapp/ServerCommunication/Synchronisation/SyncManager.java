@@ -21,9 +21,6 @@ public class SyncManager {
         getSyncBlackboardItem().syncBlackBoardItems();
         getSyncContact().syncContacts();
 
-        syncFinishedBlackboardItem = false;
-        syncFinishedContact = false;
-
         getSyncBlackboardItem().setOnSyncFinishedListener(new SyncBlackboardItem.OnSyncFinishedListener() {
             @Override
             public void onSyncFinished() {

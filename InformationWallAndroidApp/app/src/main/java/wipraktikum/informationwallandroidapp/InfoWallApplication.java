@@ -120,7 +120,7 @@ public class InfoWallApplication extends Application {
      */
     private void insertTestData() throws SQLException {
         //Sync Black Board Items from server and send unsynced items to it
-        SyncManager.getSyncBlackboardItem().syncBlackBoardItems();
+        new SyncManager().syncAll();
 
         //Tiles
         Dao<DBTile, Long> tileDao =  databaseHelper.getTileDAO();
