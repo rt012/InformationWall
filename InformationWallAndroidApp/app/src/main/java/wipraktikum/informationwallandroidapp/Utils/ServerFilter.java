@@ -36,7 +36,10 @@ public class ServerFilter extends Filter {
 
     @Override
     public String convertResultToString(Object resultValue) {
-        return resultValue.toString();
+        if (resultValue != null) {
+            return resultValue.toString();
+        }
+        return null;
     }
 
 

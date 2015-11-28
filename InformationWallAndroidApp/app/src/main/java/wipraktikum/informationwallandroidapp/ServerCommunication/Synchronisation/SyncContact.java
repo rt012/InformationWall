@@ -92,18 +92,18 @@ public class SyncContact implements JsonManager.OnObjectResponseListener, JsonMa
     private void UpdateOrCreateContact(JsonElement response) {
         ContactDAO contactDAO = DAOHelper.getContactDAO();
 
-        deleteAllBlackboardItems();
+        deleteAllContacts();
 
         Gson gsonInstance = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
         List<BlackBoardItem> serverItemList = gsonInstance.fromJson(response, new TypeToken<List<Contact>>(){}.getType());
 
-        for(BlackBoardItem serverBlackBoardItem : serverItemList) {
-            serverBlackBoardItem.setSyncStatus(true);
-            contactDAO.createOrUpdate(serverBlackBoardItem);
+        for(BlackBoardItem serverContact : serverItemList) {
+            serverContact.setSyncStatus(true);
+            contactDAO.createOrUpdate(serverContact);
         }
     }
 
-    public void deleteAllBlackboardItems(){
+    public void deleteAllContacts(){
         ContactDAO contactDAO = DAOHelper.getContactDAO();
         ArrayList<BlackBoardItem> blackBoardItems = contactDAO.queryForAll();
 

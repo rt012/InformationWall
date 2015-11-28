@@ -14,8 +14,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-import java.sql.SQLException;
-
 import wipraktikum.informationwallandroidapp.Account.Adapter.AccountAutoCompleteTextViewServerAdapter;
 import wipraktikum.informationwallandroidapp.BaseActivity;
 import wipraktikum.informationwallandroidapp.BusinessObject.User.User;
@@ -114,12 +112,8 @@ public class AccountLogIn extends Fragment implements LoginManager.OnRequestLogi
     }
 
     private void setServerAutoCompleteAdapter(){
-        try {
-            mServerURL.setAdapter(new AccountAutoCompleteTextViewServerAdapter(
-                    getActivity(), 0, DAOHelper.getUserDAO().getAllServerURL()));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        mServerURL.setAdapter(new AccountAutoCompleteTextViewServerAdapter(
+                getActivity(), 0, DAOHelper.getUserDAO().getAllServerURL()));
     }
 
     public void login() {

@@ -135,14 +135,20 @@ public class UserDAO implements DAO {
         return previousLoggedInUsers;
     }
 
-    public List<String> getAllServerURL() throws SQLException{
-        Dao<DBUser, Long> userDAO = InfoWallApplication.getInstance().getDatabaseHelper().getUserDAO();
+    public List<String> getAllServerURL(){
         List<String> serverURLList = new ArrayList<>();
+        try {
+            Dao<DBUser, Long> userDAO = InfoWallApplication.getInstance().getDatabaseHelper().getUserDAO();
 
-        List<DBUser> results = userDAO.queryBuilder()
-                .distinct().selectColumns(DBUser.SERVER_URL_FIELD_NAME).query();
-        for(DBUser dbUser : results){
-            serverURLList.add(dbUser.getServerURL());
+            List<DBUser> results = userDAO.queryBuilder()
+                    .distinct().selectColumns(DBUser.SERVER_URL_FIELD_NAME).query();
+            for(DBUser dbUser : results){
+                if (dbUser.getServerURL() != null) {
+                    serverURLList.add(dbUser.getServerURL());
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return serverURLList;
