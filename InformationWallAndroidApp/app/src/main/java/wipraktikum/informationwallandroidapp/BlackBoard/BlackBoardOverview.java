@@ -21,7 +21,7 @@ import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
-import wipraktikum.informationwallandroidapp.ServerCommunication.SyncManager;
+import wipraktikum.informationwallandroidapp.ServerCommunication.Synchronisation.SyncManager;
 import wipraktikum.informationwallandroidapp.Utils.JSONBuilder;
 
 public class BlackBoardOverview extends Fragment implements BlackBoardItemDialogBuilder.OnItemChangeListener, JsonManager.OnObjectResponseListener, JsonManager.OnErrorListener{
@@ -44,8 +44,9 @@ public class BlackBoardOverview extends Fragment implements BlackBoardItemDialog
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                SyncManager.getInstance().syncBlackBoardItems();
-                SyncManager.getInstance().setOnSyncFinishedListener(new SyncManager.OnSyncFinishedListener() {
+                SyncManager syncManager = new SyncManager();
+                syncManager.syncAll();
+                syncManager.setOnSyncFinishedListener(new SyncManager.OnSyncFinishedListener() {
                     @Override
                     public void onSyncFinished() {
                         // stopping swipe refresh

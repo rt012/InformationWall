@@ -22,8 +22,10 @@ public class DBContact {
     private String mCompany;
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     public DBContactAddress mContactAddress;
-    @DatabaseField
+    @DatabaseField(columnName = SYNCSTATUS_FIELD_NAME)
     private boolean mSyncStatus;
+
+    public static final String SYNCSTATUS_FIELD_NAME = "syncStatus";
 
     public DBContact(){};
 

@@ -1,4 +1,4 @@
-package wipraktikum.informationwallandroidapp.ServerCommunication;
+package wipraktikum.informationwallandroidapp.ServerCommunication.Synchronisation;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -18,22 +18,24 @@ import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoar
 import wipraktikum.informationwallandroidapp.BusinessObject.User.User;
 import wipraktikum.informationwallandroidapp.Database.DAO.BlackBoard.BlackBoardItemDAO;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
+import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
+import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
 import wipraktikum.informationwallandroidapp.Utils.JSONBuilder;
 
 /**
  * Created by Remi on 04.11.2015.
  */
 
-public class SyncManager implements JsonManager.OnObjectResponseListener, JsonManager.OnArrayResponseListener {
+public class SyncBlackboardItem implements JsonManager.OnObjectResponseListener, JsonManager.OnArrayResponseListener {
 
     private JsonManager jsonManagerToServer;
     private JsonManager jsonManagerFromServer;
-    private static SyncManager instance;
+    private static SyncBlackboardItem instance;
     private BlackBoardItem currentUnsyncedBlackBoardItem;
 
     private OnSyncFinishedListener mOnSyncFinishedListener = null;
 
-    private SyncManager() {
+    private SyncBlackboardItem() {
         jsonManagerToServer = new JsonManager();
         jsonManagerToServer.setOnObjectResponseReceiveListener(this);
         jsonManagerToServer.setOnErrorReceiveListener(new JsonManager.OnErrorListener() {
@@ -56,9 +58,9 @@ public class SyncManager implements JsonManager.OnObjectResponseListener, JsonMa
         jsonManagerFromServer.setOnArrayResponseReceiveListener(this);
     }
 
-    public static SyncManager getInstance(){
+    public static SyncBlackboardItem getInstance(){
         if (instance == null){
-            instance = new SyncManager();
+            instance = new SyncBlackboardItem();
         }
         return instance;
     }
@@ -85,7 +87,7 @@ public class SyncManager implements JsonManager.OnObjectResponseListener, JsonMa
     }
 
     private void syncBlackBoardItemsFromServer() {
-        jsonManagerFromServer.getJsonArray(ServerURLManager.GET_ALL_ITEMS_URL);
+        jsonManagerFromServer.getJsonArray(ServerURLManager.GET_ALL_BLACKBOARD_ITEMS_URL);
     }
 
     private void UpdateOrCreateBlackBoardItems(JsonElement response) {
@@ -149,7 +151,6 @@ public class SyncManager implements JsonManager.OnObjectResponseListener, JsonMa
         }
     }
 
-    //Listener for OnActivityResult Event
     public void setOnSyncFinishedListener(OnSyncFinishedListener onSyncFinishedListener){
         mOnSyncFinishedListener = onSyncFinishedListener;
     }

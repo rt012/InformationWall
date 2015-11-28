@@ -18,7 +18,7 @@ import wipraktikum.informationwallandroidapp.BusinessObject.User.User;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.Tile.DBTile;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.Database.ORMLiteHelper;
-import wipraktikum.informationwallandroidapp.ServerCommunication.SyncManager;
+import wipraktikum.informationwallandroidapp.ServerCommunication.Synchronisation.SyncManager;
 import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
 import wipraktikum.informationwallandroidapp.Utils.ActivityHelper;
 import wipraktikum.informationwallandroidapp.Utils.ParseUtils;
@@ -120,7 +120,7 @@ public class InfoWallApplication extends Application {
      */
     private void insertTestData() throws SQLException {
         //Sync Black Board Items from server and send unsynced items to it
-        SyncManager.getInstance().syncBlackBoardItems();
+        SyncManager.getSyncBlackboardItem().syncBlackBoardItems();
 
         //Tiles
         Dao<DBTile, Long> tileDao =  databaseHelper.getTileDAO();
