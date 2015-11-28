@@ -6,11 +6,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
@@ -25,19 +22,8 @@ public class JsonManager {
     private OnErrorListener mOnErrorListener;
     final String VOLLEY_TAG = "Volley Log";
 
-    public void sendJson(String url, Object object) {
-        JSONObject objectAsJsonObject = null;
-        if(object != null) {
-            try {
-                Gson gsonHandler = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-                String objectAsJsonString = gsonHandler.toJson(object);
-                objectAsJsonObject = new JSONObject(objectAsJsonString);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST, url,  objectAsJsonObject,
+    public void sendJson(String url, JSONObject jsonObject) {
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST, url,  jsonObject,
                 new Response.Listener<JSONObject>() {
 
                     @Override

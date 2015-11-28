@@ -22,6 +22,7 @@ import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.SyncManager;
+import wipraktikum.informationwallandroidapp.Utils.JSONBuilder;
 
 public class BlackBoardOverview extends Fragment implements BlackBoardItemDialogBuilder.OnItemChangeListener, JsonManager.OnObjectResponseListener, JsonManager.OnErrorListener{
     private final String FRAGMENT_TAG = "FRAGMENT_OVERVIEW";
@@ -116,7 +117,10 @@ public class BlackBoardOverview extends Fragment implements BlackBoardItemDialog
         //Close Dialog
         blackBoardItemDialogBuilder.dismiss();
         deletedBlackBoardItem = blackBoardItem;
-        jsonManager.sendJson(ServerURLManager.DELETE_BLACK_BOARD_ITEM_URL, blackBoardItem);
+
+        JSONObject jsonObject = JSONBuilder.createJSONFromParam(ServerURLManager.LIVE_PREVIEW_BLACKBOARD_ITEM_KEY,
+                JSONBuilder.createJSONFromObject(blackBoardItem));
+        jsonManager.sendJson(ServerURLManager.DELETE_BLACK_BOARD_ITEM_URL, jsonObject);
     }
 
     @Override

@@ -18,6 +18,7 @@ import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoar
 import wipraktikum.informationwallandroidapp.BusinessObject.User.User;
 import wipraktikum.informationwallandroidapp.Database.DAO.BlackBoard.BlackBoardItemDAO;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
+import wipraktikum.informationwallandroidapp.Utils.JSONBuilder;
 
 /**
  * Created by Remi on 04.11.2015.
@@ -71,7 +72,10 @@ public class SyncManager implements JsonManager.OnObjectResponseListener, JsonMa
             ArrayList<BlackBoardItem> unsyncedItems = DAOHelper.getBlackBoardItemDAO().getUnsyncedItems();
             if(!unsyncedItems.isEmpty()) {
                 currentUnsyncedBlackBoardItem = unsyncedItems.get(0);
-                jsonManagerToServer.sendJson(ServerURLManager.NEW_BLACK_BOARD_ITEM_URL, currentUnsyncedBlackBoardItem);
+
+                JSONObject jsonObject = JSONBuilder.createJSONFromParam(ServerURLManager.NEW_BLACKBOARD_ITEM_KEY,
+                        JSONBuilder.createJSONFromObject(currentUnsyncedBlackBoardItem));
+                jsonManagerToServer.sendJson(ServerURLManager.NEW_BLACK_BOARD_ITEM_URL, jsonObject);
             } else {
                 syncBlackBoardItemsFromServer();
             }

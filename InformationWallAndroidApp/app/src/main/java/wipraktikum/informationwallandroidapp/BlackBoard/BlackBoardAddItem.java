@@ -47,6 +47,7 @@ import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManage
 import wipraktikum.informationwallandroidapp.ServerCommunication.UploadManager;
 import wipraktikum.informationwallandroidapp.Utils.ActivityHelper;
 import wipraktikum.informationwallandroidapp.Utils.FileHelper;
+import wipraktikum.informationwallandroidapp.Utils.JSONBuilder;
 import wipraktikum.informationwallandroidapp.Utils.RealPathHelper;
 import wipraktikum.informationwallandroidapp.Utils.StringHelper;
 
@@ -476,7 +477,10 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         JsonManager jsonManager = new JsonManager();
         jsonManager.setOnObjectResponseReceiveListener(this);
         jsonManager.setOnErrorReceiveListener(this);
-        jsonManager.sendJson(ServerURLManager.NEW_BLACK_BOARD_ITEM_URL, blackBoardItem);
+
+        JSONObject jsonObject = JSONBuilder.createJSONFromParam(ServerURLManager.NEW_BLACKBOARD_ITEM_KEY,
+                JSONBuilder.createJSONFromObject(blackBoardItem));
+        jsonManager.sendJson(ServerURLManager.NEW_BLACK_BOARD_ITEM_URL, jsonObject);
     }
 
     private Contact createNewContact(){

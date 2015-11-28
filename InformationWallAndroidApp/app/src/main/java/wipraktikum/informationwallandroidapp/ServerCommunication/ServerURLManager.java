@@ -21,14 +21,17 @@ public class ServerURLManager {
     //Create or update a blackboard item
     public static final String NEW_BLACK_BOARD_ITEM_URL = "http://myinfowall.ddns.net/apps/blackboard/blackBoardGetJSON.php";
     public static final String GET_ALL_ITEMS_URL = "http://myinfowall.ddns.net/apps/blackboard/getAllBlackBoardItems.php";
+    public static final String NEW_BLACKBOARD_ITEM_KEY = "newBlackboardItem";
     //Validate user
     public static final String LOG_IN_AUTHENTICATION_URL = "http://myinfowall.ddns.net/apps/blackboard/checkUser.php";
+    public static final String LOG_IN_AUTHENTICATION_KEY = "checkUser";
     //Upload a attachment to the server
     public static final String UPLOAD_BLACK_BOARD_ATTACHMENT_URL = "http://myinfowall.ddns.net/apps/blackboard/fileUpload.php";
     public static final String UPLOAD_BLACK_BOARD_ATTACHMENT_FILE_KEY = "newfile";
     public static final String UPLOAD_BLACK_BOARD_ATTACHMENT_FILE_NAME_KEY = "filename";
     //Get all blackboard items from the server
     public static final String LIVE_PREVIEW_BLACK_BOARD_ITEM_JSON_URL = "http://myinfowall.ddns.net/apps/blackboard/addBlackboardGetJSON.php";
+    public static final String LIVE_PREVIEW_BLACKBOARD_ITEM_KEY = "livePreviewBlackboardItem";
     //Delete BlackBoardItem
     public static final String DELETE_BLACK_BOARD_ITEM_URL = "http://myinfowall.ddns.net/apps/blackboard/deleteBlackBoardItem.php";
     // Update User with GCM ID

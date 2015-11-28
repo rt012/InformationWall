@@ -13,6 +13,7 @@ import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
 import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
+import wipraktikum.informationwallandroidapp.Utils.JSONBuilder;
 
 /**
  * Created by Remi on 14.11.2015.
@@ -23,7 +24,10 @@ public class LoginManager {
 
     public void requestLogin(final User loginUser, final boolean keepLoggedIn) {
         JsonManager jsonManager = new JsonManager();
-        jsonManager.sendJson(ServerURLManager.LOG_IN_AUTHENTICATION_URL, loginUser);
+
+        JSONObject jsonObject =  JSONBuilder.createJSONFromParam(ServerURLManager.LOG_IN_AUTHENTICATION_KEY,
+                JSONBuilder.createJSONFromObject(loginUser));
+        jsonManager.sendJson(ServerURLManager.LOG_IN_AUTHENTICATION_URL, jsonObject);
         jsonManager.setOnObjectResponseReceiveListener(new JsonManager.OnObjectResponseListener() {
             @Override
             public void OnResponse(JSONObject response) {
