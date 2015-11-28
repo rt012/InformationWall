@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import wipraktikum.informationwallandroidapp.R;
 
@@ -21,6 +22,8 @@ public class LayoutSelectionFragment extends Fragment {
      * The fragment's page number, which is set to the argument value for {@link #ARG_PAGE}.
      */
     private int mPageNumber;
+
+    private ImageView ivLayoutPreview = null;
 
     /**
      * Factory method for this fragment class. Constructs a new fragment for the given page number.
@@ -49,11 +52,28 @@ public class LayoutSelectionFragment extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater
                 .inflate(R.layout.fragment_layout_slide, container, false);
 
-        // Set the title view to show the page number.
-        /*((TextView) rootView.findViewById(android.R.id.text1)).setText(
-                getString(R.string.title_template_step, mPageNumber + 1));*/
+        initView(rootView);
+        setDrawableByPageNumber();
 
         return rootView;
+    }
+
+    private void initView(ViewGroup rootView) {
+        ivLayoutPreview = (ImageView) rootView.findViewById(R.id.blackboard_layout_selection_ivLayoutPreview);
+    }
+
+    private void setDrawableByPageNumber() {
+        switch (getPageNumber()){
+            case 0:
+                ivLayoutPreview.setImageResource(R.drawable.text_only);
+                break;
+            case 1:
+                ivLayoutPreview.setImageResource(R.drawable.document_view);
+                break;
+            case 2:
+                ivLayoutPreview.setImageResource(R.drawable.document_and_info);
+                break;
+        }
     }
 
     /**

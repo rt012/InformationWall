@@ -6,22 +6,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/layoutSelection_infoText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Please select a Layout-Template"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:textSize="15dp" />
-
-    <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:layout_margin="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
         android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:id="@+id/tv_layout_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:text="@string/blackboard_layout_text_only"
+        android:textSize="25sp"
+        android:textStyle="bold"/>
 
     <RelativeLayout
         android:id="@+id/viewPagerIndicator"
@@ -49,6 +50,6 @@
         android:layout_marginRight="20dp"
         android:background="#9d9d9d"
         android:textColor="@android:color/white"
-        android:text="Speichern" />
+        android:text="@string/blackboard_layout_save" />
 
 </LinearLayout>

@@ -4,11 +4,10 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/blackboard_layout_selection_ivLayoutPreview"
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:src="@drawable/app_coming_soon"
-        android:scaleType="centerCrop"
+        android:scaleType="fitCenter"
         android:layout_gravity="center_horizontal"/>
 
 </LinearLayout>

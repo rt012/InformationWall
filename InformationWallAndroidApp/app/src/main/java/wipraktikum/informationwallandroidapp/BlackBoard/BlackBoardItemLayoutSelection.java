@@ -7,7 +7,6 @@ package wipraktikum.informationwallandroidapp.BlackBoard;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -37,17 +36,29 @@ public class BlackBoardItemLayoutSelection extends BaseActivity {
     /**
      * The pager adapter, which provides the pages to the view pager widget.
      */
-    private PagerAdapter mPagerAdapter;
+    private FragmentStatePagerAdapter mPagerAdapter;
+    private TextView tvLayoutDesc = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_black_board_layout_selection);
 
+        initViews();
         setToolbar();
         setPagerAdapter();
         setUiPageViewController();
-        initSaveButton();
+    }
+
+    private void initViews(){
+        tvLayoutDesc = (TextView) findViewById(R.id.tv_layout_name);
+        saveButton = (Button) findViewById(R.id.btn_save_layout);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveSelectedLayout();
+            }
+        });
     }
 
     private void setToolbar() {
@@ -65,7 +76,8 @@ public class BlackBoardItemLayoutSelection extends BaseActivity {
         mPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-
+                setDescriptionTextView(position);
+                mPagerAdapter.getItem(position);
                 invalidateOptionsMenu();
                 for (int i = 0; i < dotsCount; i++) {
                     dots[i].setTextColor(getResources().getColor(android.R.color.darker_gray));
@@ -89,16 +101,6 @@ public class BlackBoardItemLayoutSelection extends BaseActivity {
         }
 
         dots[0].setTextColor(getResources().getColor(R.color.ci_color));
-    }
-
-    private void initSaveButton() {
-        saveButton = (Button) findViewById(R.id.btn_save_layout);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveSelectedLayout();
-            }
-        });
     }
 
     @Override
@@ -146,6 +148,20 @@ public class BlackBoardItemLayoutSelection extends BaseActivity {
         @Override
         public int getCount() {
             return NUM_PAGES;
+        }
+    }
+
+    private void setDescriptionTextView(int position){
+        switch (position){
+            case 0:
+                tvLayoutDesc.setText(R.string.blackboard_layout_text_only);
+                break;
+            case 1:
+                tvLayoutDesc.setText(R.string.blackboard_layout_document);
+                break;
+            case 2:
+                tvLayoutDesc.setText(R.string.blackboard_layout_document_and_info);
+                break;
         }
     }
 }
