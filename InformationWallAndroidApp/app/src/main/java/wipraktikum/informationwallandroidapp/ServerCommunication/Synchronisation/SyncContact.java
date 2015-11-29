@@ -14,7 +14,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
 import wipraktikum.informationwallandroidapp.BusinessObject.Contact.Contact;
 import wipraktikum.informationwallandroidapp.Database.DAO.Contact.ContactDAO;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
@@ -95,9 +94,9 @@ public class SyncContact implements JsonManager.OnObjectResponseListener, JsonMa
         deleteAllContacts();
 
         Gson gsonInstance = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-        List<BlackBoardItem> serverItemList = gsonInstance.fromJson(response, new TypeToken<List<Contact>>(){}.getType());
+        List<Contact> serverItemList = gsonInstance.fromJson(response, new TypeToken<List<Contact>>(){}.getType());
 
-        for(BlackBoardItem serverContact : serverItemList) {
+        for(Contact serverContact : serverItemList) {
             serverContact.setSyncStatus(true);
             contactDAO.createOrUpdate(serverContact);
         }
@@ -105,10 +104,10 @@ public class SyncContact implements JsonManager.OnObjectResponseListener, JsonMa
 
     public void deleteAllContacts(){
         ContactDAO contactDAO = DAOHelper.getContactDAO();
-        ArrayList<BlackBoardItem> blackBoardItems = contactDAO.queryForAll();
+        ArrayList<Contact> contacts = contactDAO.queryForAll();
 
-        for (BlackBoardItem blackBoardItem : blackBoardItems){
-            contactDAO.delete(blackBoardItem);
+        for (Contact contact : contacts){
+            contactDAO.delete(contact);
         }
 
     }
