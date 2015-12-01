@@ -39,7 +39,7 @@ public class BlackBoard extends BaseActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_black_board);
+        setContentView(R.layout.activity_blackboard);
         mRootView = (CoordinatorLayout) findViewById(R.id.cl_blackboard_layout);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

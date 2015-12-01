@@ -45,7 +45,7 @@ public class BlackBoardItemLayoutSelection extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup viewGroup, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_black_board_layout_selection, viewGroup, false);
+        View view = inflater.inflate(R.layout.fragment_blackboard_layout_selection, viewGroup, false);
         setHasOptionsMenu(true);
 
         initViews(view);

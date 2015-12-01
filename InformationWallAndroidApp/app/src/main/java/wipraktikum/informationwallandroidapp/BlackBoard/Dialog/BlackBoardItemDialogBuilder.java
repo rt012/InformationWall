@@ -62,8 +62,8 @@ public class BlackBoardItemDialogBuilder extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         // Inflate and set the layouts for the dialog
-        final View customDialogView = inflater.inflate(R.layout.dialog_black_board_item_long_click, null);
-        final View customDialogTitle = inflater.inflate(R.layout.dialog_black_board_item_long_click_title, null);
+        final View customDialogView = inflater.inflate(R.layout.dialog_blackboard_item_long_click, null);
+        final View customDialogTitle = inflater.inflate(R.layout.dialog_blackboard_item_long_click_title, null);
 
         final Button btDelete = (Button) customDialogView.findViewById(R.id.bt_black_board_item_delete_dialog);
         final Button btEdit = (Button) customDialogView.findViewById(R.id.bt_black_board_item_edit_dialog);

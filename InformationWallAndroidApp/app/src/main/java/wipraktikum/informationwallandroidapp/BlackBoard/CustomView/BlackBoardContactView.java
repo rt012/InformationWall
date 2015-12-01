@@ -21,7 +21,7 @@ public class BlackBoardContactView extends TableLayout {
     public BlackBoardContactView(final Context context, final Contact blackBoardContact) {
         super(context);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.content_black_board_ex_lv_child_contact, this);
+        inflater.inflate(R.layout.content_blackboard_ex_lv_child_contact, this);
 
         //Contact Information
         TextView txtContactCompany = (TextView) findViewById(R.id.tv_black_board_contact_company);

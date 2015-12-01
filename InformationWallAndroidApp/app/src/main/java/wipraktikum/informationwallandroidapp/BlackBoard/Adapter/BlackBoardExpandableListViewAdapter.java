@@ -102,7 +102,7 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = layoutInflater.inflate(R.layout.black_board_ex_lv_group, null);
+            convertView = layoutInflater.inflate(R.layout.blackboard_ex_lv_group, null);
         }
         SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
         //Item Title
@@ -141,7 +141,7 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.black_board_ex_lv_child, null);
+            convertView = infalInflater.inflate(R.layout.blackboard_ex_lv_child, null);
         }
 
         //Description Text

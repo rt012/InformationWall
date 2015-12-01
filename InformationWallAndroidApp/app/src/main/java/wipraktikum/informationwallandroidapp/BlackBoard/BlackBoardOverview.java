@@ -34,7 +34,7 @@ public class BlackBoardOverview extends Fragment implements BlackBoardItemDialog
 
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup viewGroup, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_black_board_overview, viewGroup, false);
+        View view = inflater.inflate(R.layout.fragment_blackboard_overview, viewGroup, false);
 
         initViews(view);
         setTitle();

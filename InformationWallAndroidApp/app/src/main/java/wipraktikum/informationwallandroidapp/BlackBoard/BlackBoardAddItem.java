@@ -94,7 +94,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
 
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup viewGroup, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_black_board_add_item, viewGroup, false);
+        View view = inflater.inflate(R.layout.fragment_blackboard_add_item, viewGroup, false);
         setHasOptionsMenu(true);
 
         blackBoardItemDAO = DAOHelper.getBlackBoardItemDAO();

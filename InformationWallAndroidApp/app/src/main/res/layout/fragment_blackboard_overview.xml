@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".BlackBoard.BlackBoardItemLayoutSelection">
+    android:orientation="vertical"
+    tools:context="wipraktikum.informationwallandroidapp.BlackBoard.BlackBoard">
 
-    <include layout="@layout/content_black_board_layout_selection"></include>
+    <include layout="@layout/content_blackboard_overview" />
 
-</android.support.design.widget.CoordinatorLayout>
+</LinearLayout>
