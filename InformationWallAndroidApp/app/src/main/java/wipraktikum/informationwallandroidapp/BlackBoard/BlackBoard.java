@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 import wipraktikum.informationwallandroidapp.BaseActivity;
 import wipraktikum.informationwallandroidapp.BusinessObject.Tile.Tile;
+import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
 import wipraktikum.informationwallandroidapp.R;
@@ -28,6 +29,8 @@ import wipraktikum.informationwallandroidapp.Utils.JSONBuilder;
  */
 public class BlackBoard extends BaseActivity{
     private OnActivityResultListener mOnActivityResultListener = null;
+    private OnLayoutSelectionListener mOnLayoutSelectionListener = null;
+
     private Fragment currentFragment = null;
     private FloatingActionButton fab = null;
     private View mRootView = null;
@@ -100,10 +103,6 @@ public class BlackBoard extends BaseActivity{
                 fragment = new BlackBoardOverview();
             }
             currentFragment = fragment;
-            //Change Title of Actionbar
-            setTitle(getActionBarTitleByFragment(fragment));
-            //Show Fab
-            showFabByFragment(fragment);
 
             return true;
         }else {
@@ -121,10 +120,6 @@ public class BlackBoard extends BaseActivity{
                 fragment = new BlackBoardOverview();
             }
             currentFragment = fragment;
-            //Change Title of Actionbar
-            setTitle(getActionBarTitleByFragment(fragment));
-            //Show Fab
-            showFabByFragment(fragment);
         }else {
             super.onBackPressed();
         }
@@ -153,13 +148,22 @@ public class BlackBoard extends BaseActivity{
         if (addToBackStack)fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commitAllowingStateLoss();
 
-        //Change Title of Actionbar
-        setTitle(getActionBarTitleByFragment(fragment));
-        //Show Fab
-        showFabByFragment(fragment);
+        //Set Listener
+        setFragmentListener(fragment);
 
+        currentFragment = fragment;
+    }
+
+    private void setFragmentListener(Fragment fragment){
         if (fragment instanceof BlackBoardAddItem){
-            ((BlackBoardAddItem) fragment).setOnSaveBlackBoardItem(new BlackBoardAddItem.OnSaveBlackBoardItemListener() {
+            //Add Listener
+            ((BlackBoardAddItem)fragment).setOnStartActivityResultListener(new BlackBoardAddItem.OnStartActivityResultListener() {
+                @Override
+                public void onStartActivityResultListener() {
+                    isFilePickerVisible = true;
+                }
+            });
+            ((BlackBoardAddItem) fragment).setOnSaveBlackBoardItemListener(new BlackBoardAddItem.OnSaveBlackBoardItemListener() {
                 @Override
                 public void onSaveBlackBoardItem(boolean isSuccessful) {
                     if (!isSuccessful) {
@@ -168,48 +172,26 @@ public class BlackBoard extends BaseActivity{
                     onSupportNavigateUp();
                 }
             });
-        }
-        ;
-
-        currentFragment = fragment;
-    }
-
-    private String getActionBarTitleByFragment(Fragment fragment){
-        if (fragment != null) {
-            if (fragment.getClass().getSimpleName().equals(BlackBoardAddItem.class.getSimpleName())){
-                //Check if a item is edited or a new one is created
-                if (fragment.getArguments() != null){
-                    return getString(R.string.fragment_black_board_edit_item_title);
-                }else {
-                    return getString(R.string.fragment_black_board_add_item_title);
+        }else if(fragment instanceof BlackBoardItemLayoutSelection){
+            ((BlackBoardItemLayoutSelection)fragment).setOnLayoutSelectListener(new BlackBoardItemLayoutSelection.OnLayoutSelectListener() {
+                @Override
+                public void onLayoutSelect(DBBlackBoardItem.LayoutType layoutType) {
+                    if (mOnLayoutSelectionListener != null) {
+                        mOnLayoutSelectionListener.OnLayoutSelect(layoutType);
+                    }
+                    onSupportNavigateUp();
                 }
-            }else if(fragment.getClass().getSimpleName().equals(BlackBoardOverview.class.getSimpleName())){
-                return getString(R.string.fragment_black_board_title);
-            }
+            });
         }
-        return getString(R.string.fragment_black_board_title);
     }
 
-    private void showFabByFragment(Fragment fragment){
+    public void showFab(boolean isVisible){
         //By User
         if (InfoWallApplication.getCurrentUser().getUserGroup().canWrite()) {
-            //By Fragment
-            if (fragment != null) {
-                if (fragment.getClass().getSimpleName().equals(BlackBoardAddItem.class.getSimpleName())){
-                    fab.hide();
-                    //Add Listener
-                    ((BlackBoardAddItem)fragment).setOnStartActivityResultListener(new BlackBoardAddItem.OnStartActivityResultListener() {
-                        @Override
-                        public void onStartActivityResultListener() {
-                            isFilePickerVisible = true;
-                        }
-                    });
-
-                }else if(fragment.getClass().getSimpleName().equals(BlackBoardOverview.class.getSimpleName())){
-                    fab.show();
-                }
-            } else {
+            if (isVisible) {
                 fab.show();
+            } else {
+                fab.hide();
             }
         }else{
             fab.hide();
@@ -231,5 +213,13 @@ public class BlackBoard extends BaseActivity{
 
     public interface OnActivityResultListener{
         void onActivityResult(Intent data);
+    }
+    //Listener for OnLayoutChange Event in BlackBoardLayoutSelection
+    public void setOnLayoutSelectionListener(OnLayoutSelectionListener onLayoutSelectionListener){
+        mOnLayoutSelectionListener = onLayoutSelectionListener;
+    }
+
+    public interface OnLayoutSelectionListener{
+        void OnLayoutSelect(DBBlackBoardItem.LayoutType layoutType);
     }
 }

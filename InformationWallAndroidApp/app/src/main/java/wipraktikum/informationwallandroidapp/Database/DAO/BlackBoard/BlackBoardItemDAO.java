@@ -151,7 +151,6 @@ public class BlackBoardItemDAO implements DAO {
         return ok;
     }
 
-
     @Override
     public boolean delete(Object object) {
         boolean ok = false;
@@ -209,6 +208,7 @@ public class BlackBoardItemDAO implements DAO {
         blackBoardItem.setBlackBoardItemID(dbBlackBoardItem.getBlackBoardItemID());
         blackBoardItem.setTitle(dbBlackBoardItem.getTitle());
         blackBoardItem.setDescriptionText(dbBlackBoardItem.getDescriptionText());
+        blackBoardItem.setLayoutType(dbBlackBoardItem.getLayoutType());
         blackBoardItem.setCreatedTimestamp(dbBlackBoardItem.getCreatedTimestamp());
         blackBoardItem.setEditedTimestamp(dbBlackBoardItem.getEditedTimestamp());
         blackBoardItem.setContact(DAOHelper.
@@ -226,6 +226,7 @@ public class BlackBoardItemDAO implements DAO {
         dbBlackBoardItem.setBlackBoardItemID(blackBoardItem.getBlackBoardItemID());
         dbBlackBoardItem.setTitle(blackBoardItem.getTitle());
         dbBlackBoardItem.setDescriptionText(blackBoardItem.getDescriptionText());
+        dbBlackBoardItem.setLayoutType(blackBoardItem.getLayoutType());
         dbBlackBoardItem.setCreatedTimestamp(blackBoardItem.getCreatedTimestamp());
         dbBlackBoardItem.setEditedTimestamp(blackBoardItem.getEditedTimestamp());
         dbBlackBoardItem.setContact(DAOHelper.

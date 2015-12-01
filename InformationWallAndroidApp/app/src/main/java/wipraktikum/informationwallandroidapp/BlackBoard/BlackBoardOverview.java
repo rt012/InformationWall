@@ -36,6 +36,22 @@ public class BlackBoardOverview extends Fragment implements BlackBoardItemDialog
     public View onCreateView(LayoutInflater inflater,ViewGroup viewGroup, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_black_board_overview, viewGroup, false);
 
+        initViews(view);
+        setTitle();
+        showFab();
+
+        return view;
+    }
+
+    private void setTitle(){
+        getActivity().setTitle(getString(R.string.fragment_black_board_title));
+    }
+
+    private void showFab(){
+        ((BlackBoard)getActivity()).showFab(true);
+    }
+
+    private void initViews(View view){
         final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setColorSchemeResources(
                 R.color.refresh_progress_1,
@@ -91,7 +107,6 @@ public class BlackBoardOverview extends Fragment implements BlackBoardItemDialog
                 return true;
             }
         });
-        return view;
     }
 
     @Override

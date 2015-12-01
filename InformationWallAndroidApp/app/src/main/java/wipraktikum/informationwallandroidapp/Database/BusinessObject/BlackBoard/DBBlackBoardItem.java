@@ -28,6 +28,8 @@ public class DBBlackBoardItem {
     private DBContact mContact;
     @DatabaseField
     private String mDescriptionText;
+    @DatabaseField
+    private LayoutType mLayoutType = LayoutType.TEXT_ONLY;
     @ForeignCollectionField(eager= true)
     private ForeignCollection<DBBlackBoardAttachment> mBlackBoardAttachment;
     @DatabaseField
@@ -73,6 +75,14 @@ public class DBBlackBoardItem {
 
     public void setDescriptionText(String mDescriptionText) {
         this.mDescriptionText = mDescriptionText;
+    }
+
+    public LayoutType getLayoutType() {
+        return mLayoutType;
+    }
+
+    public void setLayoutType(LayoutType mLayoutType) {
+        this.mLayoutType = mLayoutType;
     }
 
     public Date getCreatedTimestamp() {
@@ -129,5 +139,9 @@ public class DBBlackBoardItem {
 
     public void setUser(DBUser mUser) {
         this.mUser = mUser;
+    }
+
+    public enum LayoutType {
+        TEXT_ONLY, ATTACHMENT_ONLY, TEXT_AND_ATTACHMENT;
     }
 }

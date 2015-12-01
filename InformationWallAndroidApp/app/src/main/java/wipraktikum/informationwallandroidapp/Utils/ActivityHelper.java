@@ -26,7 +26,7 @@ public class ActivityHelper {
         context.startActivity(intent);
     }
 
-    public static void openLayoutSelectionwActivity(Context context) {
+    public static void openLayoutSelectionActivity(Context context) {
         Intent intent = new Intent(context, BlackBoardItemLayoutSelection.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);

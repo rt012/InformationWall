@@ -84,6 +84,7 @@ public class ContactDAO implements DAO {
 
     public boolean createOrUpdate(Object object) {
         boolean ok = false;
+        if (object != null) return ok;
         try {
             Dao<DBContact, Long> contactDAO = InfoWallApplication.getInstance().getDatabaseHelper().getContactDAO();
             Contact contact = (Contact) object;

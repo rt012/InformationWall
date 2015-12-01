@@ -5,24 +5,27 @@ package wipraktikum.informationwallandroidapp.BlackBoard;
  */
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import wipraktikum.informationwallandroidapp.BaseActivity;
+import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem;
 import wipraktikum.informationwallandroidapp.R;
 
 
-public class BlackBoardItemLayoutSelection extends BaseActivity {
-
+public class BlackBoardItemLayoutSelection extends Fragment {
     private static final int NUM_PAGES = 3;
 
     private ViewPager mPager;
@@ -30,6 +33,7 @@ public class BlackBoardItemLayoutSelection extends BaseActivity {
     private LinearLayout dotsLayout;
     private int dotsCount;
     private TextView[] dots;
+    private OnLayoutSelectListener mOnLayoutSelectListener = null;
 
     private Button saveButton;
 
@@ -40,19 +44,21 @@ public class BlackBoardItemLayoutSelection extends BaseActivity {
     private TextView tvLayoutDesc = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_black_board_layout_selection);
+    public View onCreateView(LayoutInflater inflater,ViewGroup viewGroup, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_black_board_layout_selection, viewGroup, false);
+        setHasOptionsMenu(true);
 
-        initViews();
-        setToolbar();
-        setPagerAdapter();
-        setUiPageViewController();
+        initViews(view);
+        setToolbar(view);
+        setPagerAdapter(view);
+        setUiPageViewController(view);
+
+        return view;
     }
 
-    private void initViews(){
-        tvLayoutDesc = (TextView) findViewById(R.id.tv_layout_name);
-        saveButton = (Button) findViewById(R.id.btn_save_layout);
+    private void initViews(View view){
+        tvLayoutDesc = (TextView) view.findViewById(R.id.tv_layout_name);
+        saveButton = (Button) view.findViewById(R.id.btn_save_layout);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,24 +67,22 @@ public class BlackBoardItemLayoutSelection extends BaseActivity {
         });
     }
 
-    private void setToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("Select Layout");
+    private void setToolbar(View view) {
+        ((BaseActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getActivity().setTitle("Select Layout");
     }
 
-    private void setPagerAdapter() {
+    private void setPagerAdapter(View view) {
         // Instantiate a ViewPager and a PagerAdapter.
-        mPager = (ViewPager) findViewById(R.id.pager);
-        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
+        mPager = (ViewPager) view.findViewById(R.id.pager);
+        mPagerAdapter = new ScreenSlidePagerAdapter(getActivity().getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
         mPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-                setDescriptionTextView(position);
+                setDescriptionTextViewByPosition(position);
                 mPagerAdapter.getItem(position);
-                invalidateOptionsMenu();
+                getActivity().invalidateOptionsMenu();
                 for (int i = 0; i < dotsCount; i++) {
                     dots[i].setTextColor(getResources().getColor(android.R.color.darker_gray));
                 }
@@ -87,13 +91,13 @@ public class BlackBoardItemLayoutSelection extends BaseActivity {
         });
     }
 
-    private void setUiPageViewController() {
-        dotsLayout = (LinearLayout)findViewById(R.id.viewPagerCountDots);
+    private void setUiPageViewController(View view) {
+        dotsLayout = (LinearLayout) view.findViewById(R.id.viewPagerCountDots);
         dotsCount = mPagerAdapter.getCount();
         dots = new TextView[dotsCount];
 
         for (int i = 0; i < dotsCount; i++) {
-            dots[i] = new TextView(this);
+            dots[i] = new TextView(getActivity());
             dots[i].setText(Html.fromHtml("&#8226;"));
             dots[i].setTextSize(30);
             dots[i].setTextColor(getResources().getColor(android.R.color.darker_gray));
@@ -104,10 +108,8 @@ public class BlackBoardItemLayoutSelection extends BaseActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.menu_black_board_add_item, menu);
-        return true;
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_black_board_add_item, menu);
     }
 
     @Override
@@ -123,17 +125,10 @@ public class BlackBoardItemLayoutSelection extends BaseActivity {
     }
 
     private void saveSelectedLayout() {
-        int currentIndex = mPager.getCurrentItem();
-        // Save the layout index somewhere
-        this.finish();
+        if (mOnLayoutSelectListener != null) {
+            mOnLayoutSelectListener.onLayoutSelect(getLayoutTypeByPosition(mPager.getCurrentItem()));
+        }
     }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        this.finish();
-        return true;
-    }
-
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
         public ScreenSlidePagerAdapter(FragmentManager fm) {
@@ -151,7 +146,7 @@ public class BlackBoardItemLayoutSelection extends BaseActivity {
         }
     }
 
-    private void setDescriptionTextView(int position){
+    private void setDescriptionTextViewByPosition(int position){
         switch (position){
             case 0:
                 tvLayoutDesc.setText(R.string.blackboard_layout_text_only);
@@ -163,6 +158,27 @@ public class BlackBoardItemLayoutSelection extends BaseActivity {
                 tvLayoutDesc.setText(R.string.blackboard_layout_document_and_info);
                 break;
         }
+    }
+
+    private DBBlackBoardItem.LayoutType getLayoutTypeByPosition(int position){
+        switch (position){
+            case 0:
+                return DBBlackBoardItem.LayoutType.TEXT_ONLY;
+            case 1:
+                return DBBlackBoardItem.LayoutType.ATTACHMENT_ONLY;
+            case 2:
+                return DBBlackBoardItem.LayoutType.TEXT_AND_ATTACHMENT;
+        }
+
+        return DBBlackBoardItem.LayoutType.TEXT_ONLY;
+    }
+
+    public void setOnLayoutSelectListener(OnLayoutSelectListener onLayoutSelectListener){
+        mOnLayoutSelectListener = onLayoutSelectListener;
+    }
+
+    public interface OnLayoutSelectListener{
+        void onLayoutSelect(DBBlackBoardItem.LayoutType layoutType);
     }
 }
 

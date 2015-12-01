@@ -7,8 +7,6 @@
     android:fitsSystemWindows="true"
     tools:context=".BlackBoard.BlackBoardItemLayoutSelection">
 
-    <include layout="@layout/custom_app_bar_layout"></include>
-
     <include layout="@layout/content_black_board_layout_selection"></include>
 
 </android.support.design.widget.CoordinatorLayout>

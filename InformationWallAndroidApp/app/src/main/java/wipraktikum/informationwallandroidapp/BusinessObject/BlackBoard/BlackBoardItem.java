@@ -10,6 +10,7 @@ import java.util.List;
 
 import wipraktikum.informationwallandroidapp.BusinessObject.Contact.Contact;
 import wipraktikum.informationwallandroidapp.BusinessObject.User.User;
+import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem;
 
 /**
  * Created by Eric Schmidt on 25.10.2015.
@@ -20,6 +21,7 @@ public class BlackBoardItem{
     private String mTitle;
     private Contact mContact;
     private String mDescriptionText;
+    private DBBlackBoardItem.LayoutType mLayoutType = DBBlackBoardItem.LayoutType.TEXT_ONLY;;
     private List<BlackBoardAttachment> mBlackBoardAttachment;
     private Date mCreatedTimestamp;
     private Date mEditedTimestamp;
@@ -58,6 +60,14 @@ public class BlackBoardItem{
 
     public void setDescriptionText(String mDescriptionText) {
         this.mDescriptionText = mDescriptionText;
+    }
+
+    public DBBlackBoardItem.LayoutType getLayoutType() {
+        return mLayoutType;
+    }
+
+    public void setLayoutType(DBBlackBoardItem.LayoutType mLayoutType) {
+        this.mLayoutType = mLayoutType;
     }
 
     public Date getCreatedTimestamp() {

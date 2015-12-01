@@ -38,6 +38,7 @@ import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoar
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
 import wipraktikum.informationwallandroidapp.BusinessObject.Contact.Contact;
 import wipraktikum.informationwallandroidapp.BusinessObject.Contact.ContactAddress;
+import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem;
 import wipraktikum.informationwallandroidapp.Database.DAO.BlackBoard.BlackBoardItemDAO;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
@@ -55,7 +56,7 @@ import wipraktikum.informationwallandroidapp.Utils.StringHelper;
  * Created by Eric Schmidt on 30.10.2015.
  */
 public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivityResultListener, TextWatcher,
-        JsonManager.OnObjectResponseListener, JsonManager.OnErrorListener {
+        JsonManager.OnObjectResponseListener, JsonManager.OnErrorListener, BlackBoard.OnLayoutSelectionListener {
     public static final String BLACK_BOARD_ITEM_ID_TAG = "blackBoardItemID";
     private static final String BLACK_BOARD_ATTACHMENT_SAVED_INSTANCE_TAG = "blackBoardAttachmentJSON";
 
@@ -99,24 +100,37 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         blackBoardItemDAO = DAOHelper.getBlackBoardItemDAO();
 
         ((BlackBoard)getActivity()).setOnActivityResultListener(this);
+        ((BlackBoard)getActivity()).setOnLayoutSelectionListener(this);
+
         setRetainInstance(true);
 
-        setUpGUI(view);
+        initViews(view);
+        showFab();
 
         //Write BlackBoardItem Information to View
         if (getArguments() != null){
+            setTitle(getString(R.string.fragment_black_board_edit_item_title));
             blackBoardItem = (BlackBoardItem) blackBoardItemDAO.queryForId(
                     getArguments().getLong(BLACK_BOARD_ITEM_ID_TAG));
             isEditedItem = true;
             fillInBlackBoardItemUI();
         }else{
+            setTitle(getString(R.string.fragment_black_board_add_item_title));
             blackBoardItem = new BlackBoardItem();
         }
 
         return view;
     }
 
-    private void setUpGUI(View view){
+    private void setTitle(String title){
+        getActivity().setTitle(title);
+    }
+
+    private void showFab(){
+        ((BlackBoard)getActivity()).showFab(false);
+    }
+
+    private void initViews(View view){
         editTextTitle = (EditText) view.findViewById(R.id.edit_black_board_add_item_title);
         editTextTitle.addTextChangedListener(this);
 
@@ -191,7 +205,8 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         buttonAddLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityHelper.openLayoutSelectionwActivity(InfoWallApplication.getInstance());
+                ((BlackBoard)getActivity()).openFragment(new BlackBoardItemLayoutSelection(), true);
+                //ActivityHelper.openLayoutSelectionActivity(InfoWallApplication.getInstance());
             }
         });
 
@@ -373,6 +388,11 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         saveBlackBoardAttachmentsToInstanceState(outState);
     }
 
+    @Override
+    public void OnLayoutSelect(DBBlackBoardItem.LayoutType layoutType) {
+        blackBoardItem.setLayoutType(layoutType);
+    }
+
     /**
      * save BlackBoardAttachments to instance state because otherwise attachment views get lost after onPause
      */
@@ -470,7 +490,6 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         }
         blackBoardAttachments = blackBoardItem.getBlackBoardAttachment();
         blackBoardItemDAO.createOrUpdate(blackBoardItem);
-
     }
 
     private void sendBlackBoardItemToServer() {
@@ -509,8 +528,6 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         return newContact;
     }
 
-
-
     @Override
     public void onDestroyView(){
         super.onDestroyView();
@@ -543,7 +560,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         triggerOnSaveBlackBoardItemEvent(false);
     }
 
-    public void setOnSaveBlackBoardItem(OnSaveBlackBoardItemListener onSaveBlackBoardItemListener){
+    public void setOnSaveBlackBoardItemListener(OnSaveBlackBoardItemListener onSaveBlackBoardItemListener){
         mOnSaveBlackBoardItemListener = onSaveBlackBoardItemListener;
     }
 

@@ -98,11 +98,7 @@ public class BlackBoardAttachmentDAO implements DAO {
         if (dbBlackBoardAttachment != null) {
             blackBoardAttachment.setBlackBoardAttachmentID(dbBlackBoardAttachment.getBlackBoardAttachmentID());
             blackBoardAttachment.setName(dbBlackBoardAttachment.getName());
-            if (dbBlackBoardAttachment.getDataType() != null) {
-                blackBoardAttachment.setDataType(dbBlackBoardAttachment.getDataType());
-            }else{
-                blackBoardAttachment.setDataType(DBBlackBoardAttachment.DataType.OTHER);
-            }
+            blackBoardAttachment.setDataType(dbBlackBoardAttachment.getDataType());
             blackBoardAttachment.setDeviceDataPath(dbBlackBoardAttachment.getDeviceDataPath());
             blackBoardAttachment.setRemoteDataPath(dbBlackBoardAttachment.getRemoteDataPath());
             blackBoardAttachment.setBlackBoardItem(dbBlackBoardAttachment.getBlackBoardItem());

@@ -82,5 +82,7 @@ public class LayoutSelectionFragment extends Fragment {
     public int getPageNumber() {
         return mPageNumber;
     }
+
+
 }
 
