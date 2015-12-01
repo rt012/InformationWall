@@ -34,6 +34,7 @@ import java.util.List;
 import wipraktikum.informationwallandroidapp.BlackBoard.Adapter.BlackBoardAutoCompleteTextViewContactAdapter;
 import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoardUtils.BlackBoardAnimationUtils;
 import wipraktikum.informationwallandroidapp.BlackBoard.CustomView.BlackBoardAttachmentView;
+import wipraktikum.informationwallandroidapp.BlackBoard.Dialog.BlackBoardAttachmentDialog;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardAttachment;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
 import wipraktikum.informationwallandroidapp.BusinessObject.Contact.Contact;
@@ -206,7 +207,6 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
             @Override
             public void onClick(View v) {
                 ((BlackBoard)getActivity()).openFragment(new BlackBoardItemLayoutSelection(), true);
-                //ActivityHelper.openLayoutSelectionActivity(InfoWallApplication.getInstance());
             }
         });
 
@@ -306,18 +306,20 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
 
     private boolean validateInputs() {
         boolean valid = true;
-        validateTitleInput(valid);
+        valid = validateTitleInput(valid);
         validateContactInput(valid);
         return valid;
     }
 
-    private void validateTitleInput(boolean valid) {
+    private boolean validateTitleInput(boolean valid) {
         if(StringHelper.isStringNullOrEmpty(editTextTitle.getText().toString())){
             editTextTitle.setError("enter a valid email address");
             valid = false;
         }else {
             editTextTitle.setError(null);
         }
+
+        return valid;
     }
 
     private void validateContactInput(boolean valid) {
@@ -364,11 +366,34 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         return RealPathHelper.getInstance().getRealPathFromURI(data.getData());
     }
 
-    private View addAttachmentViewToAttachmentContainer(BlackBoardAttachment attachment){
-        BlackBoardAttachmentView attachmentView = new BlackBoardAttachmentView(getActivity(), attachment, false);
+    private View addAttachmentViewToAttachmentContainer(final BlackBoardAttachment attachment){
+        final BlackBoardAttachmentView attachmentView = new BlackBoardAttachmentView(getActivity(), attachment, false);
         attachmentContainer.addView(attachmentView, 0);
         blackBoardAttachmentViews.add(attachmentView);
+
+        attachmentView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showBlackboardAttachmentDialog(attachment, attachmentView);
+                return true;
+            }
+        });
+
         return attachmentView;
+    }
+
+    private void showBlackboardAttachmentDialog(BlackBoardAttachment attachment, final View attachmentView){
+        final BlackBoardAttachmentDialog blackBoardAttachmentDialog = BlackBoardAttachmentDialog.newInstance(attachment);
+        blackBoardAttachmentDialog.show(getFragmentManager(), BlackBoardAttachmentDialog.class.getSimpleName());
+        blackBoardAttachmentDialog.setOnItemChangeListener(new BlackBoardAttachmentDialog.OnItemChangeListener() {
+            @Override
+            public void onDelete(BlackBoardAttachment blackboardAttachment) {
+                attachmentContainer.removeView(attachmentView);
+                blackBoardAttachments.remove(blackboardAttachment);
+                blackBoardAttachmentViews.remove(attachmentView);
+                blackBoardAttachmentDialog.dismiss();
+            }
+        });
     }
 
     @Override

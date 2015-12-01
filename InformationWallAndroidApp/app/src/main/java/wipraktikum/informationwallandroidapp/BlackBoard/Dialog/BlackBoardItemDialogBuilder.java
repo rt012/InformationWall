@@ -115,12 +115,12 @@ public class BlackBoardItemDialogBuilder extends DialogFragment {
         return  hasRights;
     }
 
-    public void setOnItemDeleteListener(OnItemChangeListener onItemChangeListener){
+    public void setOnItemChangeListener(OnItemChangeListener onItemChangeListener){
         mOnItemChangeListener = onItemChangeListener;
     }
 
     public interface OnItemChangeListener {
-        public void onDelete(BlackBoardItem blackBoardItem);
-        public void onEdit(BlackBoardItem blackBoardItem);
+        void onDelete(BlackBoardItem blackBoardItem);
+        void onEdit(BlackBoardItem blackBoardItem);
     }
 }

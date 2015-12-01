@@ -125,7 +125,7 @@ public class BlackBoardOverview extends Fragment implements BlackBoardItemDialog
         if (blackBoardItemDialogBuilder.hasRights()) {
             blackBoardItemDialogBuilder.show(getFragmentManager(), BlackBoardItemDialogBuilder.class.getSimpleName());
         }
-        blackBoardItemDialogBuilder.setOnItemDeleteListener(this);
+        blackBoardItemDialogBuilder.setOnItemChangeListener(this);
     }
 
     @Override

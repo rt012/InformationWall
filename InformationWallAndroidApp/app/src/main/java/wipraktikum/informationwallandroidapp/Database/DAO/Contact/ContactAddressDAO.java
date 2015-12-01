@@ -79,7 +79,7 @@ public class ContactAddressDAO implements DAO {
 
     public boolean createOrUpdate(Object object) {
         boolean ok = false;
-        if (object != null) return ok;
+        if (object == null) return ok;
         try {
             Dao<DBContactAddress, Long> contactAddressDAO = InfoWallApplication.getInstance().getDatabaseHelper().getContactAddressDAO();
             ContactAddress contactAddress = (ContactAddress) object;

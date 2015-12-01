@@ -13,7 +13,8 @@
         android:paddingLeft="10dp"
         android:background="@android:color/transparent"
         android:id="@+id/bt_black_board_item_edit_dialog"/>
-
+    <View
+        style="@style/Divider" />
     <Button
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
