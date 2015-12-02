@@ -53,9 +53,13 @@ public class LayoutSelectionFragment extends Fragment {
                 .inflate(R.layout.fragment_layout_slide, container, false);
 
         initView(rootView);
-        setDrawableByPageNumber();
-
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setDrawableByPageNumber();
     }
 
     private void initView(ViewGroup rootView) {

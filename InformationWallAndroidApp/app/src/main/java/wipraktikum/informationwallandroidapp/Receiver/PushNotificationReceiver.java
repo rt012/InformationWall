@@ -98,7 +98,6 @@ public class PushNotificationReceiver extends ParsePushBroadcastReceiver {
         notificationUtils = NotificationHelper.getInstance();
 
         intent.putExtras(parseIntent.getExtras());
-
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         notificationUtils.showNotificationMessage(blackBoardItem, intent);
     }

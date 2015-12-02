@@ -10,9 +10,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.google.gson.Gson;
+
 import org.json.JSONObject;
 
 import wipraktikum.informationwallandroidapp.BaseActivity;
+import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
 import wipraktikum.informationwallandroidapp.BusinessObject.Tile.Tile;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
@@ -65,7 +68,7 @@ public class BlackBoard extends BaseActivity{
     public void onResume(){
         super.onResume();
 
-        if (getIntent().getExtras() != null){
+        if (getIntent().getExtras() != null && getIntent().getExtras().containsKey(TileOverview.TILE_ID_KEY_PARAM)){
             Tile currentTile = (Tile) DAOHelper.getTileDAO().queryForId(
                     getIntent().getExtras().getLong(TileOverview.TILE_ID_KEY_PARAM));
             if (currentTile.getIsActivated()) {
@@ -146,6 +149,26 @@ public class BlackBoard extends BaseActivity{
         fragmentTransaction.replace(R.id.black_board_fragment_container, fragment,
                 fragment.getClass().getSimpleName());
         if (addToBackStack)fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commitAllowingStateLoss();
+
+        //Set Listener
+        setFragmentListener(fragment);
+
+        currentFragment = fragment;
+    }
+
+    public void openLayoutSelectionFragment(Fragment fragment, boolean addtoBackStack, BlackBoardItem currentBlackboardItem){
+        if(currentBlackboardItem != null) {
+            String currentBlackBoardItemAsJson = new Gson().toJson(currentBlackboardItem);
+            Bundle params = new Bundle();
+            params.putString("currentBlackBoardItem", currentBlackBoardItemAsJson);
+            fragment.setArguments(params);
+        }
+
+        FragmentTransaction fragmentTransaction =  getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.black_board_fragment_container, fragment,
+                fragment.getClass().getSimpleName());
+        if (addtoBackStack)fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commitAllowingStateLoss();
 
         //Set Listener

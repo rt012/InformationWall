@@ -54,7 +54,7 @@
     <string name="black_board_add_item_new_contact">Create new contact</string>
     <string name="black_board_add_item_description">Description</string>
     <string name="black_board_add_item_attachments">ADD ATTACHMENT</string>
-    <string name="black_board_add_layout">ADD LAYOUT</string>
+    <string name="black_board_add_layout">CHANGE LAYOUT</string>
 
     <string name="black_board_add_item_snackbar_connection_error">Entry was not uploaded to the server</string>
     <string name="black_board_add_item_snackbar_no_title">Please enter at least the title</string>

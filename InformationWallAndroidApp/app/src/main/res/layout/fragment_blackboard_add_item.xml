@@ -85,6 +85,22 @@
                 android:text="@string/black_board_add_layout"/>
         </TableRow>
 
+        <!-- Layout -->
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingBottom="15dp">
+
+                <ImageView
+                    android:id="@+id/iv_black_board_layout"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:gravity="center_horizontal"
+                    android:scaleType="fitCenter"
+                    />
+        </TableRow>
+
         <View
             style="@style/Divider" />
 

@@ -20,7 +20,10 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import wipraktikum.informationwallandroidapp.BaseActivity;
+import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem;
 import wipraktikum.informationwallandroidapp.R;
 
@@ -37,6 +40,8 @@ public class BlackBoardItemLayoutSelection extends Fragment {
 
     private Button saveButton;
 
+    private BlackBoardItem mCurrentBlackBoardItem;
+
     /**
      * The pager adapter, which provides the pages to the view pager widget.
      */
@@ -48,10 +53,13 @@ public class BlackBoardItemLayoutSelection extends Fragment {
         View view = inflater.inflate(R.layout.fragment_blackboard_layout_selection, viewGroup, false);
         setHasOptionsMenu(true);
 
+        setRetainInstance(true);
         initViews(view);
         setToolbar(view);
         setPagerAdapter(view);
         setUiPageViewController(view);
+
+        setInitialState();
 
         return view;
     }
@@ -105,6 +113,22 @@ public class BlackBoardItemLayoutSelection extends Fragment {
         }
 
         dots[0].setTextColor(getResources().getColor(R.color.ci_color));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        setInitialState();
+    }
+
+    private void setInitialState() {
+        if(getArguments().containsKey("currentBlackBoardItem")) {
+            mCurrentBlackBoardItem = new Gson().fromJson(getArguments().getString("currentBlackBoardItem"), BlackBoardItem.class);
+            if(mCurrentBlackBoardItem.getLayoutType() != null) {
+                mPager.setCurrentItem(mCurrentBlackBoardItem.getLayoutType().ordinal(), true);
+            }
+        }
     }
 
     @Override

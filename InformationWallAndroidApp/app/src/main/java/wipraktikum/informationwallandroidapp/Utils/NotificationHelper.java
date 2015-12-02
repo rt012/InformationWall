@@ -11,9 +11,6 @@ import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
-import android.widget.Toast;
-
-import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -105,8 +102,6 @@ public class NotificationHelper {
             if (mOnNotificationReceiveListener != null) {
                 mOnNotificationReceiveListener.onNotificationReceive();
             }
-
-            Toast.makeText(InfoWallApplication.getInstance(), new Gson().toJson(blackBoardItem).toString(), Toast.LENGTH_SHORT);
             //intent.putExtra("title", title);
             //intent.putExtra("message", message);
             //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);

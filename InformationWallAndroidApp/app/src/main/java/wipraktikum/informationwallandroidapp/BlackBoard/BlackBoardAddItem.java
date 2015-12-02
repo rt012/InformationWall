@@ -16,8 +16,10 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
+import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -77,6 +79,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     private ArrayList<View> blackBoardAttachmentViewsCopy = new ArrayList<>();
     private boolean isEditedItem = false;
     private boolean isFilePickerVisible = false;
+    private boolean layoutUpdated = false;
 
     private TableLayout tlAddContact = null;
     private AutoCompleteTextView autoCompleteTextViewContact = null;
@@ -92,6 +95,8 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     private LinearLayout attachmentContainer = null;
     private Button buttonAttachment = null;
     private Button buttonAddLayout = null;
+    private ImageView layoutImage = null;
+    private TextView layoutDescrition = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup viewGroup, Bundle savedInstanceState) {
@@ -117,7 +122,10 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
             fillInBlackBoardItemUI();
         }else{
             setTitle(getString(R.string.fragment_black_board_add_item_title));
-            blackBoardItem = new BlackBoardItem();
+            if(!layoutUpdated) {
+                blackBoardItem = new BlackBoardItem();
+            }
+            setSelectedLayout();
         }
 
         return view;
@@ -206,12 +214,35 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         buttonAddLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((BlackBoard)getActivity()).openFragment(new BlackBoardItemLayoutSelection(), true);
+                ((BlackBoard)getActivity()).openLayoutSelectionFragment(new BlackBoardItemLayoutSelection(), true, blackBoardItem);
             }
         });
 
+        layoutImage = (ImageView) view.findViewById(R.id.iv_black_board_layout);
+        //layoutDescrition = (TextView) view.findViewById(R.id.tv_black_board_layout);
+
+
+
         attachmentContainer = (LinearLayout) view.findViewById(R.id.ll_attachment_container);
     }
+
+    private void setSelectedLayout() {
+        switch (blackBoardItem.getLayoutType().ordinal()){
+            case 0:
+                layoutImage.setImageResource(R.drawable.text_only);
+                //layoutDescrition.setText(R.string.blackboard_layout_text_only);
+                break;
+            case 1:
+                layoutImage.setImageResource(R.drawable.document_view);
+                //layoutDescrition.setText(R.string.blackboard_layout_document);
+                break;
+            case 2:
+                layoutImage.setImageResource(R.drawable.document_and_info);
+                //layoutDescrition.setText(R.string.blackboard_layout_document_and_info);
+                break;
+        }
+    }
+
 
     private void fillInBlackBoardItemUI() {
         String title = getBlackBoardItem().getTitle();
@@ -223,6 +254,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         editTextDescription.setText(description);
         fillInContactUI(contact);
         fillInAttachmentUI();
+        setSelectedLayout();
 
     }
     
@@ -415,6 +447,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
 
     @Override
     public void OnLayoutSelect(DBBlackBoardItem.LayoutType layoutType) {
+        layoutUpdated = true;
         blackBoardItem.setLayoutType(layoutType);
     }
 
