@@ -15,11 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
-import wipraktikum.informationwallandroidapp.BusinessObject.User.User;
 import wipraktikum.informationwallandroidapp.Database.DAO.BlackBoard.BlackBoardItemDAO;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
+import wipraktikum.informationwallandroidapp.ServerCommunication.TransientManager;
 import wipraktikum.informationwallandroidapp.Utils.JSONBuilder;
 
 /**
@@ -107,15 +107,7 @@ public class SyncBlackboardItem implements JsonManager.OnObjectResponseListener,
 
     private List<BlackBoardItem> keepTransientUserData(List<BlackBoardItem> serverItemList) {
         for (BlackBoardItem blackBoardItem : serverItemList){
-            User serverUser = blackBoardItem.getUser();
-            User clientUser = (User) DAOHelper.getUserDAO()
-                    .queryForId(serverUser.getUserID());
-            if (clientUser != null) {
-                serverUser.setServerURL(clientUser.getServerURL());
-                serverUser.setKeepLogInData(clientUser.isKeepLogInData());
-                serverUser.setPreviousLoggedIn(clientUser.isPreviousLoggedIn());
-                serverUser.setLoggedIn(clientUser.isLoggedIn());
-            }
+            blackBoardItem.setUser(TransientManager.keepTransientUserData(blackBoardItem.getUser()));
         }
 
         return serverItemList;

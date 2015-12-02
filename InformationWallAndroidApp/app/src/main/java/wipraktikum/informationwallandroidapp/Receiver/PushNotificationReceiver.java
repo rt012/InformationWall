@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoard;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
+import wipraktikum.informationwallandroidapp.ServerCommunication.TransientManager;
 import wipraktikum.informationwallandroidapp.Utils.NotificationHelper;
 
 /**
@@ -76,6 +77,7 @@ public class PushNotificationReceiver extends ParsePushBroadcastReceiver {
 
             if (!isBackground) {
                 Intent resultIntent = new Intent(context, BlackBoard.class);
+                blackBoardItem.setUser(TransientManager.keepTransientUserData(blackBoardItem.getUser()));
                 DAOHelper.getBlackBoardItemDAO().createOrUpdate(blackBoardItem);
                 showNotificationMessage(context, blackBoardItem, resultIntent);
             }

@@ -89,7 +89,6 @@ public class UserDAO implements DAO {
             Dao<DBUser, Long> userDAO = InfoWallApplication.getInstance().getDatabaseHelper().getUserDAO();
             User user = (User) object;
             DAOHelper.getUserGroupDAO().createOrUpdate(user.getUserGroup());
-            user = keepTransientUserData(user);
             userDAO.createOrUpdate(mapUserToDBUser(user));
 
             ok = true;
@@ -97,20 +96,6 @@ public class UserDAO implements DAO {
             e.printStackTrace();
         }
         return ok;
-    }
-
-    private User keepTransientUserData(User serverUser) {
-            User clientUser = (User) DAOHelper.getUserDAO()
-                    .queryForId(serverUser.getUserID());
-            if (clientUser != null) {
-                serverUser.setServerURL(clientUser.getServerURL());
-                serverUser.setKeepLogInData(clientUser.isKeepLogInData());
-                serverUser.setPreviousLoggedIn(clientUser.isPreviousLoggedIn());
-                serverUser.setLoggedIn(clientUser.isLoggedIn());
-            }
-
-
-        return serverUser;
     }
 
     @Override
