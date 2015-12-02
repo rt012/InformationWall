@@ -34,7 +34,6 @@ public class BlackBoard extends BaseActivity{
     private OnActivityResultListener mOnActivityResultListener = null;
     private OnLayoutSelectionListener mOnLayoutSelectionListener = null;
 
-    private Fragment currentFragment = null;
     private FloatingActionButton fab = null;
     private View mRootView = null;
     private boolean isFilePickerVisible = false;
@@ -57,6 +56,8 @@ public class BlackBoard extends BaseActivity{
                 openFragment(blackBoardAddItem, true);
             }
         });
+
+        openFragment(new BlackBoardOverview(), false);
     }
 
     @Override
@@ -77,12 +78,6 @@ public class BlackBoard extends BaseActivity{
                 openBlackBoardOnServer(ServerURLManager.OPEN_BLACK_BOARD_PARAM_CLOSE);
             }
         }
-
-        if (currentFragment == null) {
-            openFragment(new BlackBoardOverview(), false);
-        } else {
-            openFragment(currentFragment, false);
-        }
     }
 
     @Override
@@ -100,12 +95,6 @@ public class BlackBoard extends BaseActivity{
     public boolean onSupportNavigateUp() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 0){
             getSupportFragmentManager().popBackStack();
-            //Get current Fragment
-            Fragment fragment = getActiveFragment();
-            if(fragment == null) {
-                fragment = new BlackBoardOverview();
-            }
-            currentFragment = fragment;
 
             return true;
         }else {
@@ -117,12 +106,6 @@ public class BlackBoard extends BaseActivity{
     public void onBackPressed(){
         if (getSupportFragmentManager().getBackStackEntryCount() > 0){
             getSupportFragmentManager().popBackStack();
-            //Get current Fragment
-            Fragment fragment = getActiveFragment();
-            if(fragment == null) {
-                fragment = new BlackBoardOverview();
-            }
-            currentFragment = fragment;
         }else {
             super.onBackPressed();
         }
@@ -153,8 +136,6 @@ public class BlackBoard extends BaseActivity{
 
         //Set Listener
         setFragmentListener(fragment);
-
-        currentFragment = fragment;
     }
 
     public void openLayoutSelectionFragment(Fragment fragment, boolean addtoBackStack, BlackBoardItem currentBlackboardItem){
@@ -174,7 +155,6 @@ public class BlackBoard extends BaseActivity{
         //Set Listener
         setFragmentListener(fragment);
 
-        currentFragment = fragment;
     }
 
     private void setFragmentListener(Fragment fragment){
@@ -219,14 +199,6 @@ public class BlackBoard extends BaseActivity{
         }else{
             fab.hide();
         }
-    }
-
-    private Fragment getActiveFragment() {
-        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
-            return null;
-        }
-        String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getClass().getSimpleName();
-        return getSupportFragmentManager().findFragmentByTag(tag);
     }
 
     //Listener for OnActivityResult Event
