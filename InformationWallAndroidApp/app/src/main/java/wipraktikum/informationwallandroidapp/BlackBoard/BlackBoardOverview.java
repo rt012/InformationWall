@@ -1,6 +1,5 @@
 package wipraktikum.informationwallandroidapp.BlackBoard;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -87,18 +86,7 @@ public class BlackBoardOverview extends Fragment implements BlackBoardItemDialog
                 previousGroup = groupPosition;
             }
         });
-        expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            View previousView = null;
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                if (previousView != null) {
-                    previousView.setBackgroundColor(Color.TRANSPARENT);
-                }
-                if (previousView != v) v.setBackgroundColor(getResources().getColor(R.color.ci_color_lightest));
-                previousView = v;
-                return false;
-            }
-        });
+
         expandableListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
