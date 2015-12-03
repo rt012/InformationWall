@@ -14,7 +14,7 @@ public class ServerURLManager {
     public static final String OPEN_BLACK_BOARD_PARAM_KEY = "status";
     public static final String OPEN_BLACK_BOARD_PARAM_OPEN = "open";
     public static final String OPEN_BLACK_BOARD_PARAM_CLOSE = "close";
-    //Show blackboard tile on informationwall
+    //Show blackboard tile on InformationWall
     public static final String SHOW_BLACK_BOARD_PARAM_KEY = "activated";
     public static final String SHOW_BLACK_BOARD_PARAM_ACTIVE = "active";
     public static final String SHOW_BLACK_BOARD_PARAM_NOT_ACTIVE = "notactivated";
