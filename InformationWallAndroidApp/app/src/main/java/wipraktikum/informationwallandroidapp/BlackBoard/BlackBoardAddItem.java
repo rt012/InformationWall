@@ -525,7 +525,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
             attachmentView.showProgressbar(true);
             //Upload File
             File attachmentFile = new File(blackBoardAttachment.getDeviceDataPath());
-            uploadManager.uploadFile(attachmentFile, ServerURLManager.UPDATE_BLACKBOARD_BEHAVIOUR_URL);
+            uploadManager.uploadFile(attachmentFile, ServerURLManager.UPLOAD_BLACK_BOARD_ATTACHMENT_FILE_URL);
             uploadManager.setOnUploadFinishedListener(new UploadManager.OnUploadFinishedListener() {
                 @Override
                 public void onUploadFinished(String remoteDataPath) {

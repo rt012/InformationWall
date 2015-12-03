@@ -36,8 +36,6 @@ public class BlackBoardOverview extends Fragment implements BlackBoardItemDialog
         View view = inflater.inflate(R.layout.fragment_blackboard_overview, viewGroup, false);
 
         initViews(view);
-        setTitle();
-        showFab();
 
         return view;
     }
@@ -77,6 +75,7 @@ public class BlackBoardOverview extends Fragment implements BlackBoardItemDialog
         expandableListView.setAdapter(blackBoardExpandableListViewAdapter);
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             int previousGroup = -1;
+
             @Override
             public void onGroupExpand(int groupPosition) {
                 // Collapse previous parent if expanded.
@@ -105,6 +104,9 @@ public class BlackBoardOverview extends Fragment implements BlackBoardItemDialog
             jsonManager.setOnObjectResponseReceiveListener(this);
             jsonManager.setOnErrorReceiveListener(this);
         }
+
+        setTitle();
+        showFab();
     }
 
     public void showDialogFragmentByItem(BlackBoardItem blackBoardItem){

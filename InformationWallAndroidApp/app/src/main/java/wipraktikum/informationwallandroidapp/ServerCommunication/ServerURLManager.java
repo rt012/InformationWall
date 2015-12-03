@@ -23,6 +23,7 @@ public class ServerURLManager {
     //Validate user
     public static final String LOG_IN_AUTHENTICATION_KEY = "checkUser";
     //Upload a attachment to the server
+    public static final String UPLOAD_BLACK_BOARD_ATTACHMENT_FILE_URL = "http://myinfowall.ddns.net/apps/blackboard/fileUpload.php";
     public static final String UPLOAD_BLACK_BOARD_ATTACHMENT_FILE_KEY = "newfile";
     public static final String UPLOAD_BLACK_BOARD_ATTACHMENT_FILE_NAME_KEY = "filename";
     //Get all blackboard items from the server
