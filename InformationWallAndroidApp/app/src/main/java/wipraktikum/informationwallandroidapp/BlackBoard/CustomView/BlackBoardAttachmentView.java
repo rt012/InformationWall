@@ -2,6 +2,7 @@ package wipraktikum.informationwallandroidapp.BlackBoard.CustomView;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
@@ -65,13 +66,13 @@ public class BlackBoardAttachmentView extends LinearLayout {
 
         switch (dataType) {
             case PDF:
-                drawable = mContext.getDrawable(R.drawable.icon_pdf);
+                drawable = ContextCompat.getDrawable(mContext, R.drawable.icon_pdf);
                 break;
             case IMG:
-                drawable = mContext.getDrawable(R.drawable.icon_img);
+                drawable = ContextCompat.getDrawable(mContext, R.drawable.icon_img);
                 break;
             default:
-                drawable = mContext.getDrawable(R.drawable.icon_attachment);
+                drawable = ContextCompat.getDrawable(mContext, R.drawable.icon_attachment);
                 break;
         }
         return drawable;
