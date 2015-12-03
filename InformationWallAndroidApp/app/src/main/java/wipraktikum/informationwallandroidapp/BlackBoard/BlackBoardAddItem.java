@@ -337,15 +337,20 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     }
 
     private boolean validateInputs() {
-        boolean valid = true;
-        valid = validateTitleInput(valid);
-        validateContactInput(valid);
-        return valid;
+        boolean validTitle = validateTitleInput();
+        boolean validContact = validateContactInput();
+
+        if (validContact == false || validTitle == false){
+            return false;
+        }else{
+            return true;
+        }
     }
 
-    private boolean validateTitleInput(boolean valid) {
+    private boolean validateTitleInput() {
+        boolean valid = true;
         if(StringHelper.isStringNullOrEmpty(editTextTitle.getText().toString())){
-            editTextTitle.setError("enter a valid email address");
+            editTextTitle.setError(getString(R.string.black_board_add_item_snackbar_no_title));
             valid = false;
         }else {
             editTextTitle.setError(null);
@@ -354,7 +359,8 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         return valid;
     }
 
-    private void validateContactInput(boolean valid) {
+    private boolean validateContactInput() {
+        boolean valid = true;
         if(tlAddContact.getVisibility() != View.GONE){
             String email = editTextEmail.getText().toString();
 
@@ -372,6 +378,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
                 editTextFullName.setError(null);
             }
         }
+        return valid;
     }
 
     private void saveBlackBoardItem(){
