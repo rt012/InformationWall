@@ -3,6 +3,7 @@ package wipraktikum.informationwallandroidapp.BlackBoard.CustomView;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -29,7 +30,7 @@ public class BlackBoardContactView extends TableLayout {
         TableRow trContactCompany = (TableRow) findViewById(R.id.tr_black_board_contact_company);
         if (!StringHelper.isStringNullOrEmpty(blackBoardContact.getCompany())) {
             txtContactCompany.setText(blackBoardContact.getCompany());
-            ivContactCompany.setImageDrawable(context.getDrawable(R.drawable.icon_company));
+            ivContactCompany.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.icon_company));
         }else{
             trContactCompany.setVisibility(View.GONE);
         }
@@ -39,7 +40,7 @@ public class BlackBoardContactView extends TableLayout {
         TableRow trContactFullName= (TableRow) findViewById(R.id.tr_black_board_contact_full_name);
         if (!StringHelper.isStringNullOrEmpty(blackBoardContact.getFullName())) {
             txtContactFullName.setText(blackBoardContact.getFullName());
-            ivContactFullName.setImageDrawable(context.getDrawable(R.drawable.icon_name));
+            ivContactFullName.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.icon_name));
         }else{
             trContactFullName.setVisibility(View.GONE);
         }
@@ -49,7 +50,7 @@ public class BlackBoardContactView extends TableLayout {
         TableRow trContactEmail = (TableRow) findViewById(R.id.tr_black_board_contact_email);
         if (!StringHelper.isStringNullOrEmpty(blackBoardContact.getEMailAddress())) {
             txtContactEmail.setText(blackBoardContact.getEMailAddress());
-            ivContactEmail.setImageDrawable(context.getDrawable(R.drawable.icon_email));
+            ivContactEmail.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.icon_email));
             trContactEmail.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -69,7 +70,7 @@ public class BlackBoardContactView extends TableLayout {
         TableRow trContactTel = (TableRow) findViewById(R.id.tr_black_board_contact_tel);
         if (!StringHelper.isStringNullOrEmpty(blackBoardContact.getTelephone())) {
             txtContactTel.setText(blackBoardContact.getTelephone());
-            ivContactTel.setImageDrawable(context.getDrawable(R.drawable.icon_telephone));
+            ivContactTel.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.icon_telephone));
             trContactTel.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -89,7 +90,7 @@ public class BlackBoardContactView extends TableLayout {
         TableRow trContactFullAddress = (TableRow) findViewById(R.id.tr_black_board_contact_address);
         if (blackBoardContact.getContactAddress() != null && !StringHelper.isStringNullOrEmpty(blackBoardContact.getContactAddress().getFullAddress())) {
             txtContactFullAddress.setText(blackBoardContact.getContactAddress().getFullAddress());
-            ivContactFullAddress.setImageDrawable(context.getDrawable(R.drawable.icon_address));
+            ivContactFullAddress.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.icon_address));
         }else{
             trContactFullAddress.setVisibility(View.GONE);
         }
