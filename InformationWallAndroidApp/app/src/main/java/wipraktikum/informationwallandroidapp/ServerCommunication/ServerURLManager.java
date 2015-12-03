@@ -20,8 +20,6 @@ public class ServerURLManager {
     public static final String SHOW_BLACK_BOARD_PARAM_NOT_ACTIVE = "notactivated";
     //Create or update a blackboard item
     public static final String NEW_BLACKBOARD_ITEM_KEY = "newBlackboardItem";
-    //Create or update a contact
-    public static final String NEW_CONTACT_KEY = "newContact";
     //Validate user
     public static final String LOG_IN_AUTHENTICATION_KEY = "checkUser";
     //Upload a attachment to the server

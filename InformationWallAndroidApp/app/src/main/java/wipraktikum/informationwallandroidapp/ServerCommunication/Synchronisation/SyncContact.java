@@ -8,9 +8,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,30 +17,17 @@ import wipraktikum.informationwallandroidapp.Database.DAO.Contact.ContactDAO;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
-import wipraktikum.informationwallandroidapp.Utils.JSONBuilder;
 
 /**
  * Created by Eric Schmidt on 28.11.2015.
  */
-public class SyncContact implements JsonManager.OnObjectResponseListener, JsonManager.OnArrayResponseListener{
+public class SyncContact implements JsonManager.OnArrayResponseListener{
     private static SyncContact instance = null;
-    private JsonManager jsonManagerToServer = null;
     private JsonManager jsonManagerFromServer = null;
-    private Contact currentUnsyncedContact;
 
     private OnSyncFinishedListener mOnSyncFinishedListener = null;
 
     private SyncContact (){
-        jsonManagerToServer = new JsonManager();
-        jsonManagerToServer.setOnObjectResponseReceiveListener(this);
-        jsonManagerToServer.setOnErrorReceiveListener(new JsonManager.OnErrorListener() {
-            @Override
-            public void OnErrorResponse(VolleyError error) {
-                syncContactFromServer();
-            }
-        });
-        jsonManagerToServer.setOnArrayResponseReceiveListener(this);
-
         jsonManagerFromServer = new JsonManager();
         jsonManagerFromServer.setOnErrorReceiveListener(new JsonManager.OnErrorListener() {
             @Override
@@ -63,25 +48,7 @@ public class SyncContact implements JsonManager.OnObjectResponseListener, JsonMa
     }
 
     public void syncContacts() {
-        syncContactToServer();
-    }
-
-    private void syncContactToServer(){
-        try {
-            ArrayList<Contact> unsyncedItems = DAOHelper.getContactDAO().getUnsyncedItems();
-            if(!unsyncedItems.isEmpty()) {
-                currentUnsyncedContact = unsyncedItems.get(0);
-
-                JSONObject jsonObject = JSONBuilder.createJSONFromParam(ServerURLManager.NEW_CONTACT_KEY,
-                        JSONBuilder.createJSONFromObject(currentUnsyncedContact));
-                jsonManagerToServer.sendJson(ServerURLManager.UPDATE_BLACKBOARD_BEHAVIOUR_URL, jsonObject);
-            } else {
-                syncContactFromServer();
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        syncContactFromServer();
     }
 
     private void syncContactFromServer(){
@@ -110,18 +77,6 @@ public class SyncContact implements JsonManager.OnObjectResponseListener, JsonMa
             contactDAO.delete(contact);
         }
 
-    }
-
-    @Override
-    public void OnResponse(JSONObject response) {
-        Gson gsonInstance = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-        Contact serverContact = gsonInstance.fromJson(new JsonParser().parse(response.toString()), Contact.class);
-        serverContact.setSyncStatus(true);
-        ContactDAO contactDAO = DAOHelper.getContactDAO();
-        contactDAO.deleteByID(currentUnsyncedContact.getContactID());
-        contactDAO.createOrUpdate(serverContact);
-
-        syncContacts();
     }
 
     @Override

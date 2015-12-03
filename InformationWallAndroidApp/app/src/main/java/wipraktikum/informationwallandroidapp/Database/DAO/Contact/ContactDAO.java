@@ -1,8 +1,6 @@
 package wipraktikum.informationwallandroidapp.Database.DAO.Contact;
 
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.PreparedQuery;
-import com.j256.ormlite.stmt.QueryBuilder;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -113,24 +111,6 @@ public class ContactDAO implements DAO {
             e.printStackTrace();
         }
         return ok;
-    }
-
-    public ArrayList<Contact> getUnsyncedItems() throws SQLException{
-        Dao<DBContact, Long> contactDAO = InfoWallApplication.getInstance().getDatabaseHelper().getContactDAO();
-        // get our query builder from the DAO
-        QueryBuilder<DBContact, Long> queryBuilder =
-                contactDAO.queryBuilder();
-        queryBuilder.where().eq(DBContact.SYNCSTATUS_FIELD_NAME, false);
-        PreparedQuery<DBContact> preparedQuery = queryBuilder.prepare();
-        List<DBContact> dbContacts = contactDAO.query(preparedQuery);
-
-        ArrayList<Contact> unsyncedContactList = new ArrayList<Contact>();
-        if(dbContacts != null || !dbContacts.isEmpty()) {
-            for(DBContact dbContact : dbContacts) {
-                unsyncedContactList.add(mapDBContactToContact(dbContact));
-            }
-        }
-        return unsyncedContactList;
     }
 
     public Contact mapDBContactToContact(DBContact dbContact) {
