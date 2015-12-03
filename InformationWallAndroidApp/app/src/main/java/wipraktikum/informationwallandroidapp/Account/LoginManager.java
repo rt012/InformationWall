@@ -12,6 +12,7 @@ import wipraktikum.informationwallandroidapp.BusinessObject.User.User;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
 import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
+import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
 import wipraktikum.informationwallandroidapp.Utils.JSONBuilder;
 
 /**
@@ -24,10 +25,7 @@ public class LoginManager {
     public void requestLogin(final User loginUser, final boolean keepLoggedIn) {
         JsonManager jsonManager = new JsonManager();
 
-        //JSONObject jsonObject =  JSONBuilder.createJSONFromParam(ServerURLManager.LOG_IN_AUTHENTICATION_KEY,
-        //        JSONBuilder.createJSONFromObject(loginUser));
-        //jsonManager.sendJson(ServerURLManager.UPDATE_BLACKBOARD_BEHAVIOUR_URL, jsonObject);
-        jsonManager.sendJson("http://myinfowall.ddns.net/apps/blackboard/checkUser.php", JSONBuilder.createJSONFromObject(loginUser));
+        jsonManager.sendJson(ServerURLManager.LOG_IN_AUTHENTICATION_URL, JSONBuilder.createJSONFromObject(loginUser));
         jsonManager.setOnObjectResponseReceiveListener(new JsonManager.OnObjectResponseListener() {
             @Override
             public void OnResponse(JSONObject response) {

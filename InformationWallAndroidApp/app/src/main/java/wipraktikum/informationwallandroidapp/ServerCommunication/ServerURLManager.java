@@ -18,18 +18,18 @@ public class ServerURLManager {
     public static final String SHOW_BLACK_BOARD_PARAM_KEY = "activated";
     public static final String SHOW_BLACK_BOARD_PARAM_ACTIVE = "active";
     public static final String SHOW_BLACK_BOARD_PARAM_NOT_ACTIVE = "notactivated";
+    //Get all blackboard items from the server
+    public static final String LIVE_PREVIEW_BLACKBOARD_ITEM_KEY = "livePreviewBlackboardItem";
     //Create or update a blackboard item
-    public static final String NEW_BLACKBOARD_ITEM_KEY = "newBlackboardItem";
+    public static final String NEW_BLACKBOARD_ITEM_URL = "http://myinfowall.ddns.net/apps/blackboard/blackBoardGetJSON.php";
     //Validate user
-    public static final String LOG_IN_AUTHENTICATION_KEY = "checkUser";
+    public static final String LOG_IN_AUTHENTICATION_URL = "http://myinfowall.ddns.net/apps/blackboard/checkUser.php";
+    //Delete BlackBoardItem
+    public static final String DELETE_BLACK_BOARD_ITEM_URL = "http://myinfowall.ddns.net/apps/blackboard/deleteBlackBoardItem.php";
     //Upload a attachment to the server
     public static final String UPLOAD_BLACK_BOARD_ATTACHMENT_FILE_URL = "http://myinfowall.ddns.net/apps/blackboard/fileUpload.php";
     public static final String UPLOAD_BLACK_BOARD_ATTACHMENT_FILE_KEY = "newfile";
     public static final String UPLOAD_BLACK_BOARD_ATTACHMENT_FILE_NAME_KEY = "filename";
-    //Get all blackboard items from the server
-    public static final String LIVE_PREVIEW_BLACKBOARD_ITEM_KEY = "livePreviewBlackboardItem";
-    //Delete BlackBoardItem
-    public static final String DELETE_BLACK_BOARD_ITEM_KEY = "deleteBlackBoardItem";
     //Sync
     public static final String GET_ALL_BLACKBOARD_ITEMS_URL = "http://myinfowall.ddns.net/apps/blackboard/getAllBlackBoardItems.php";
     public static final String GET_ALL_CONTACTS_URL = "http://myinfowall.ddns.net/apps/blackboard/syncContact.php";

@@ -74,10 +74,7 @@ public class SyncBlackboardItem implements JsonManager.OnObjectResponseListener,
             ArrayList<BlackBoardItem> unsyncedItems = DAOHelper.getBlackBoardItemDAO().getUnsyncedItems();
             if(!unsyncedItems.isEmpty()) {
                 currentUnsyncedBlackBoardItem = unsyncedItems.get(0);
-
-                JSONObject jsonObject = JSONBuilder.createJSONFromParam(ServerURLManager.NEW_BLACKBOARD_ITEM_KEY,
-                        JSONBuilder.createJSONFromObject(currentUnsyncedBlackBoardItem));
-                jsonManagerToServer.sendJson(ServerURLManager.UPDATE_BLACKBOARD_BEHAVIOUR_URL, jsonObject);
+                jsonManagerToServer.sendJson(ServerURLManager.NEW_BLACKBOARD_ITEM_URL, JSONBuilder.createJSONFromObject(currentUnsyncedBlackBoardItem));
             } else {
                 syncBlackBoardItemsFromServer();
             }

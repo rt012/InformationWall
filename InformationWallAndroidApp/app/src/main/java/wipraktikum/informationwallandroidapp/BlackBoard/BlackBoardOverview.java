@@ -124,9 +124,7 @@ public class BlackBoardOverview extends Fragment implements BlackBoardItemDialog
         blackBoardItemDialogBuilder.dismiss();
         deletedBlackBoardItem = blackBoardItem;
 
-        JSONObject jsonObject = JSONBuilder.createJSONFromParam(ServerURLManager.DELETE_BLACK_BOARD_ITEM_KEY,
-                JSONBuilder.createJSONFromObject(blackBoardItem));
-        jsonManager.sendJson(ServerURLManager.UPDATE_BLACKBOARD_BEHAVIOUR_URL, jsonObject);
+        jsonManager.sendJson(ServerURLManager.DELETE_BLACK_BOARD_ITEM_URL, JSONBuilder.createJSONFromObject(blackBoardItem));
     }
 
     @Override
