@@ -419,8 +419,6 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         );
         addAttachmentViewToAttachmentContainer(blackBoardAttachment);
         blackBoardAttachments.add(blackBoardAttachment);
-
-        otherFragmentIsVisible = false;
         saveBlackBoardAttachmentsToSharedPrefs();
     }
 
