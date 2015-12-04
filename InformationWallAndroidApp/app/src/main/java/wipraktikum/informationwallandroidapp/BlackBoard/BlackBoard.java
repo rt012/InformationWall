@@ -12,20 +12,17 @@ import android.view.View;
 
 import com.google.gson.Gson;
 
-import org.json.JSONObject;
-
 import wipraktikum.informationwallandroidapp.BaseActivity;
+import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoardUtils.BlackBoardAnimationUtils;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
 import wipraktikum.informationwallandroidapp.BusinessObject.Tile.Tile;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
 import wipraktikum.informationwallandroidapp.R;
-import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
 import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
 import wipraktikum.informationwallandroidapp.Utils.FileHelper;
-import wipraktikum.informationwallandroidapp.Utils.JSONBuilder;
 
 /**
  * Created by Eric Schmidt on 30.10.2015.
@@ -123,8 +120,7 @@ public class BlackBoard extends BaseActivity{
     }
 
     public void openBlackBoardOnServer(String actionParam) {
-        JSONObject jsonObject = JSONBuilder.createJSONFromParam(ServerURLManager.OPEN_BLACK_BOARD_PARAM_KEY, actionParam);
-        new JsonManager().sendJson(ServerURLManager.UPDATE_BLACKBOARD_BEHAVIOUR_URL, jsonObject);
+        BlackBoardAnimationUtils.openBlackBoardOnServer(actionParam);
     }
 
     public void openFragment(Fragment fragment, boolean addToBackStack){

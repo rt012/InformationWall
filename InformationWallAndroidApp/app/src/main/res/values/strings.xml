@@ -87,6 +87,8 @@
     <string name="pref_animation">Animation</string>
     <string name="pref_animation_summary">Enable animation on the Information Wall Screen</string>
 
+    <string name="pref_animation_key">pref_animation</string>
+
 
 
 
