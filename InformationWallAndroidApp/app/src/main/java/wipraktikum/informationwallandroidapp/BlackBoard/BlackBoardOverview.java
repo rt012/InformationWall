@@ -1,6 +1,7 @@
 package wipraktikum.informationwallandroidapp.BlackBoard;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import wipraktikum.informationwallandroidapp.BlackBoard.Adapter.BlackBoardExpand
 import wipraktikum.informationwallandroidapp.BlackBoard.Dialog.BlackBoardItemDialogBuilder;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
+import wipraktikum.informationwallandroidapp.InfoWallApplication;
 import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
@@ -107,6 +109,13 @@ public class BlackBoardOverview extends Fragment implements BlackBoardItemDialog
 
         setTitle();
         showFab();
+        deleteTempAttachments();
+    }
+
+    private void deleteTempAttachments() {
+        if(PreferenceManager.getDefaultSharedPreferences(InfoWallApplication.getInstance()).contains("currentAttachments")) {
+            PreferenceManager.getDefaultSharedPreferences(InfoWallApplication.getInstance()).edit().remove("currentAttachments");
+        }
     }
 
     public void showDialogFragmentByItem(BlackBoardItem blackBoardItem){

@@ -12,7 +12,7 @@
         android:paddingLeft="24dp"
         android:paddingRight="24dp">
 
-        <include layout="@layout/content_logo"></include>
+
 
         <!--  Email Label -->
         <android.support.design.widget.TextInputLayout

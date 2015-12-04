@@ -30,7 +30,7 @@ public class JSONBuilder {
         JSONObject objectAsJsonObject = null;
         if(object != null) {
             try {
-                Gson gsonHandler = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+                Gson gsonHandler = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").serializeNulls().create();
                 String objectAsJsonString = gsonHandler.toJson(object);
                 objectAsJsonObject = new JSONObject(objectAsJsonString);
             } catch (JSONException e) {

@@ -7,5 +7,11 @@
         android:title="@string/pref_pushNoti"
         android:summary="@string/pref_pushNoti_summary"
         android:defaultValue="true" />
+
+    <SwitchPreference
+        android:key="pref_animation"
+        android:title="@string/pref_animation"
+        android:summary="@string/pref_animation_summary"
+        android:defaultValue="false" />
     </PreferenceCategory>
 </PreferenceScreen>

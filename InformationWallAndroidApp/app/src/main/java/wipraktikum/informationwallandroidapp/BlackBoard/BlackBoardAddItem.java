@@ -2,6 +2,7 @@ package wipraktikum.informationwallandroidapp.BlackBoard;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -48,6 +49,7 @@ import wipraktikum.informationwallandroidapp.InfoWallApplication;
 import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
+import wipraktikum.informationwallandroidapp.ServerCommunication.TransientManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.UploadManager;
 import wipraktikum.informationwallandroidapp.Utils.ActivityHelper;
 import wipraktikum.informationwallandroidapp.Utils.FileHelper;
@@ -277,6 +279,16 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
 
         //Handle initial Live Preview
         sendLivePreviewToServer();
+        setCurrentAttachmentsFromSharedPrefs();
+
+    }
+
+    private void setCurrentAttachmentsFromSharedPrefs() {
+        String attachmentString = PreferenceManager.getDefaultSharedPreferences(InfoWallApplication.getInstance()).getString("currentAttachments", "null");
+        if(attachmentString != "null") {
+            blackBoardAttachments = new Gson().fromJson(attachmentString, new TypeToken<List<BlackBoardAttachment>>() {}.getType());
+            setAttachmentViewContent();
+        }
     }
 
     @Override
@@ -307,6 +319,12 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         }else{
             isFilePickerVisible = false;
         }
+
+        saveBlackBoardAttachmentsToSharedPrefs();
+    }
+
+    private void saveBlackBoardAttachmentsToSharedPrefs() {
+        PreferenceManager.getDefaultSharedPreferences(InfoWallApplication.getInstance()).edit().putString("currentAttachments", BlackBoardAttachment.convertAttachmentListToJson(blackBoardAttachments)).commit();
     }
 
     private void removeErrorsFromTextFields() {
@@ -398,6 +416,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         blackBoardAttachments.add(blackBoardAttachment);
 
         isFilePickerVisible = false;
+        saveBlackBoardAttachmentsToSharedPrefs();
     }
 
     private String getFilePathFromResult(Intent data) {
@@ -606,6 +625,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
 
     private void updateBlackBoardItemInDB(JSONObject response) {
         BlackBoardItem serverBlackBoardItem = BlackBoardItem.parseItemFromJson(response.toString());
+        serverBlackBoardItem.setUser(TransientManager.keepTransientUserData(serverBlackBoardItem.getUser()));
         serverBlackBoardItem.setSyncStatus(true);
         blackBoardItemDAO.delete(blackBoardItem);
         blackBoardItemDAO.createOrUpdate(serverBlackBoardItem);
