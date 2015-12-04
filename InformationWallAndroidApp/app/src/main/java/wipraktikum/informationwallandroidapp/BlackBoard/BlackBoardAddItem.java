@@ -189,13 +189,13 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
                     tlAddContact.setVisibility(View.VISIBLE);
                     autoCompleteTextViewContact.setEnabled(false);
                     autoCompleteTextViewContact.setText(getActivity().getString(R.string.black_board_add_item_new_contact));
-                    imageButtonExpandContact.setImageDrawable(getActivity().getDrawable(R.drawable.ic_arrow_up));
+                    imageButtonExpandContact.setImageResource(R.drawable.ic_arrow_up);
                 } else {
                     tlAddContact.setVisibility(View.GONE);
                     autoCompleteTextViewContact.setEnabled(true);
                     autoCompleteTextViewContact.setText("");
                     autoCompleteTextViewContact.setHint(getActivity().getString(R.string.black_board_add_item_contact));
-                    imageButtonExpandContact.setImageDrawable(getActivity().getDrawable(R.drawable.ic_arrow_down));
+                    imageButtonExpandContact.setImageResource(R.drawable.ic_arrow_down);
                 }
             }
         });

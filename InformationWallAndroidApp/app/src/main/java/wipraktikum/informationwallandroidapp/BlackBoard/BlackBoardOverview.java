@@ -1,5 +1,6 @@
 package wipraktikum.informationwallandroidapp.BlackBoard;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -113,11 +114,11 @@ public class BlackBoardOverview extends Fragment implements BlackBoardItemDialog
     }
 
     private void deleteTempAttachments() {
-        if(PreferenceManager.getDefaultSharedPreferences(InfoWallApplication.getInstance()).contains(
-                getString(R.string.black_board_add_item_temp_attachments))) {
-            PreferenceManager.getDefaultSharedPreferences(InfoWallApplication.getInstance()).edit().remove(
-                    getString(R.string.black_board_add_item_temp_attachments));
-        }
+        SharedPreferences savedPrefs = PreferenceManager.getDefaultSharedPreferences(
+                InfoWallApplication.getInstance());
+        SharedPreferences.Editor editor = savedPrefs.edit();
+        editor.remove(getString(R.string.black_board_add_item_temp_attachments));
+        editor.apply();
     }
 
     public void showDialogFragmentByItem(BlackBoardItem blackBoardItem){
