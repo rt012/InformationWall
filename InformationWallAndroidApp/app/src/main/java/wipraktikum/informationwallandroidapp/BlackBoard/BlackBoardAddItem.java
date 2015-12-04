@@ -284,7 +284,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     }
 
     private void setCurrentAttachmentsFromSharedPrefs() {
-        String attachmentString = PreferenceManager.getDefaultSharedPreferences(InfoWallApplication.getInstance()).getString("currentAttachments", "null");
+        String attachmentString = PreferenceManager.getDefaultSharedPreferences(InfoWallApplication.getInstance()).getString(getString(R.string.black_board_add_item_temp_attachments), "null");
         if(attachmentString != "null") {
             blackBoardAttachments = new Gson().fromJson(attachmentString, new TypeToken<List<BlackBoardAttachment>>() {}.getType());
             setAttachmentViewContent();
@@ -324,7 +324,10 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     }
 
     private void saveBlackBoardAttachmentsToSharedPrefs() {
-        PreferenceManager.getDefaultSharedPreferences(InfoWallApplication.getInstance()).edit().putString("currentAttachments", BlackBoardAttachment.convertAttachmentListToJson(blackBoardAttachments)).commit();
+        PreferenceManager.getDefaultSharedPreferences(InfoWallApplication.getInstance()).edit()
+                .putString(getString(R.string.black_board_add_item_temp_attachments),
+                        BlackBoardAttachment.convertAttachmentListToJson(blackBoardAttachments))
+                .commit();
     }
 
     private void removeErrorsFromTextFields() {

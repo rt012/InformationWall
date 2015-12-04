@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoard;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
+import wipraktikum.informationwallandroidapp.InfoWallApplication;
 import wipraktikum.informationwallandroidapp.ServerCommunication.TransientManager;
 import wipraktikum.informationwallandroidapp.Utils.NotificationHelper;
 
@@ -79,7 +80,9 @@ public class PushNotificationReceiver extends ParsePushBroadcastReceiver {
                 Intent resultIntent = new Intent(context, BlackBoard.class);
                 blackBoardItem.setUser(TransientManager.keepTransientUserData(blackBoardItem.getUser()));
                 DAOHelper.getBlackBoardItemDAO().createOrUpdate(blackBoardItem);
-                showNotificationMessage(context, blackBoardItem, resultIntent);
+                if(blackBoardItem.getUser().getUserID() != InfoWallApplication.getInstance().getCurrentUser().getUserID()) {
+                    showNotificationMessage(context, blackBoardItem, resultIntent);
+                }
             }
 
         } catch (Exception e) {
@@ -96,9 +99,7 @@ public class PushNotificationReceiver extends ParsePushBroadcastReceiver {
      * @param intent
      */
     private void showNotificationMessage(Context context, BlackBoardItem blackBoardItem, Intent intent) {
-
         notificationUtils = NotificationHelper.getInstance();
-
         intent.putExtras(parseIntent.getExtras());
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         notificationUtils.showNotificationMessage(blackBoardItem, intent);

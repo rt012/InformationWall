@@ -113,8 +113,10 @@ public class BlackBoardOverview extends Fragment implements BlackBoardItemDialog
     }
 
     private void deleteTempAttachments() {
-        if(PreferenceManager.getDefaultSharedPreferences(InfoWallApplication.getInstance()).contains("currentAttachments")) {
-            PreferenceManager.getDefaultSharedPreferences(InfoWallApplication.getInstance()).edit().remove("currentAttachments");
+        if(PreferenceManager.getDefaultSharedPreferences(InfoWallApplication.getInstance()).contains(
+                getString(R.string.black_board_add_item_temp_attachments))) {
+            PreferenceManager.getDefaultSharedPreferences(InfoWallApplication.getInstance()).edit().remove(
+                    getString(R.string.black_board_add_item_temp_attachments));
         }
     }
 
