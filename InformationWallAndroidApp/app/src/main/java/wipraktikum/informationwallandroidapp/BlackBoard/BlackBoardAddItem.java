@@ -80,7 +80,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     private ArrayList<View> blackBoardAttachmentViews = new ArrayList<>();
     private ArrayList<View> blackBoardAttachmentViewsCopy = new ArrayList<>();
     private boolean isEditedItem = false;
-    private boolean isFilePickerVisible = false;
+    private boolean otherFragmentIsVisible = false;
     private boolean layoutUpdated = false;
 
     private TableLayout tlAddContact = null;
@@ -207,7 +207,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
                 if (mOnStartActivityResultListener != null) {
                     mOnStartActivityResultListener.onStartActivityResultListener();
                 }
-                isFilePickerVisible = true;
+                otherFragmentIsVisible = true;
                 FileHelper.getInstance().showFileChooser(getActivity());
             }
         });
@@ -216,6 +216,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         buttonAddLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                otherFragmentIsVisible = true;
                 ((BlackBoard)getActivity()).openLayoutSelectionFragment(new BlackBoardItemLayoutSelection(), true, blackBoardItem);
             }
         });
@@ -274,6 +275,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     @Override
     public void onResume(){
         super.onResume();
+        otherFragmentIsVisible = false;
         //Tell Server to open Live Preview
         BlackBoardAnimationUtils.openLivePreview();
 
@@ -314,10 +316,10 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
 
         removeErrorsFromTextFields();
 
-        if (!isFilePickerVisible) {
+        if (!otherFragmentIsVisible) {
             BlackBoardAnimationUtils.closeLivePreviewOnServer();
         }else{
-            isFilePickerVisible = false;
+            otherFragmentIsVisible = false;
         }
 
         saveBlackBoardAttachmentsToSharedPrefs();
@@ -418,7 +420,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         addAttachmentViewToAttachmentContainer(blackBoardAttachment);
         blackBoardAttachments.add(blackBoardAttachment);
 
-        isFilePickerVisible = false;
+        otherFragmentIsVisible = false;
         saveBlackBoardAttachmentsToSharedPrefs();
     }
 
