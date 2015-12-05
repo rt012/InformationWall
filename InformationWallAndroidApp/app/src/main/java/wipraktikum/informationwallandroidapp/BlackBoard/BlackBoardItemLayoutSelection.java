@@ -16,7 +16,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -37,8 +36,6 @@ public class BlackBoardItemLayoutSelection extends Fragment {
     private int dotsCount;
     private TextView[] dots;
     private OnLayoutSelectListener mOnLayoutSelectListener = null;
-
-    private Button saveButton;
 
     private BlackBoardItem mCurrentBlackBoardItem;
 
@@ -66,13 +63,6 @@ public class BlackBoardItemLayoutSelection extends Fragment {
 
     private void initViews(View view){
         tvLayoutDesc = (TextView) view.findViewById(R.id.tv_layout_name);
-        saveButton = (Button) view.findViewById(R.id.btn_save_layout);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveSelectedLayout();
-            }
-        });
     }
 
     private void setToolbar(View view) {
@@ -95,6 +85,12 @@ public class BlackBoardItemLayoutSelection extends Fragment {
                     dots[i].setTextColor(getResources().getColor(android.R.color.darker_gray));
                 }
                 dots[position].setTextColor(getResources().getColor(R.color.ci_color));
+            }
+        });
+        mPager.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveSelectedLayout();
             }
         });
     }
