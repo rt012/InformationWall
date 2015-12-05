@@ -19,8 +19,8 @@ public class BlackBoardAttachment {
     private String mRemoteDataPath;
     private String mDeviceDataPath;
     private DBBlackBoardAttachment.DataType mDataType = DBBlackBoardAttachment.DataType.OTHER;
-    private DBBlackBoardItem mDBBlackBoardItem;
-    private boolean mSyncStatus;
+    private transient DBBlackBoardItem mDBBlackBoardItem;
+    private transient boolean mSyncStatus;
 
     public BlackBoardAttachment(){}
 
