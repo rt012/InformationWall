@@ -11,7 +11,7 @@ public class DBBlackBoardAttachment {
     @DatabaseField(generatedId = true)
     private long mBlackBoardAttachmentID;
     @DatabaseField
-    private String mName;
+    private String mAttachmentName;
     @DatabaseField
     private String mRemoteDataPath;
     @DatabaseField
@@ -48,12 +48,12 @@ public class DBBlackBoardAttachment {
         this.mBlackBoardItem = mBlackBoardItem;
     }
 
-    public String getName() {
-        return mName;
+    public String getAttachmentName() {
+        return mAttachmentName;
     }
 
-    public void setName(String mName) {
-        this.mName = mName;
+    public void setAttachmentName(String mName) {
+        this.mAttachmentName = mName;
     }
 
     public String getDeviceDataPath() {

@@ -40,9 +40,9 @@ public class BlackBoardAttachmentView extends LinearLayout {
                 findViewById(R.id.tv_black_board_attachment_item);
 
         if (attachment.getRemoteDataPath() != null) {
-            attachmentName.setText(attachment.getName());
+            attachmentName.setText(attachment.getAttachmentName());
         }else{
-            attachmentName.setText(attachment.getName());
+            attachmentName.setText(attachment.getAttachmentName());
         }
         //Grey Field if no local Path
         if (!FileHelper.getInstance().exists(attachment.getDeviceDataPath())){

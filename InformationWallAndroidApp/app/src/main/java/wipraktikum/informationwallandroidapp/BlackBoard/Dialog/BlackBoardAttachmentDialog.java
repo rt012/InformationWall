@@ -49,7 +49,7 @@ public class BlackBoardAttachmentDialog extends DialogFragment{
             }
         });
 
-        titleText.setText(mBlackboardAttachment.getName());
+        titleText.setText(mBlackboardAttachment.getAttachmentName());
 
         // Pass null as the parent view because its going in the dialog layout
         builder.setView(customDialogView)

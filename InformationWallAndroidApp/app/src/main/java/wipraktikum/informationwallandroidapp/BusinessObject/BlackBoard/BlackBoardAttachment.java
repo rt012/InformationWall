@@ -15,7 +15,7 @@ import wipraktikum.informationwallandroidapp.Utils.FileHelper;
 @DatabaseTable
 public class BlackBoardAttachment {
     private long mBlackBoardAttachmentID;
-    private String mName;
+    private String mAttachmentName;
     private String mRemoteDataPath;
     private transient String mDeviceDataPath;
     private DBBlackBoardAttachment.DataType mDataType = DBBlackBoardAttachment.DataType.OTHER;
@@ -46,12 +46,12 @@ public class BlackBoardAttachment {
         this.mDBBlackBoardItem = mDBBlackBoardItem;
     }
 
-    public String getName() {
-        return mName;
+    public String getAttachmentName() {
+        return mAttachmentName;
     }
 
-    public void setName(String mName) {
-        this.mName = mName;
+    public void setAttachmentName(String mName) {
+        this.mAttachmentName = mName;
     }
 
     public String getDeviceDataPath() {
@@ -103,7 +103,7 @@ public class BlackBoardAttachment {
 
     public static BlackBoardAttachment createNewAttachmentByFilePath(String filePath){
         BlackBoardAttachment blackBoardAttachment = new BlackBoardAttachment();
-        blackBoardAttachment.setName(FileHelper.getInstance().getFileName(filePath));
+        blackBoardAttachment.setAttachmentName(FileHelper.getInstance().getFileName(filePath));
         blackBoardAttachment.setDeviceDataPath(filePath);
         blackBoardAttachment.setDataType(FileHelper.getInstance().getBlackBoardAttachmentDataType(filePath));
         return blackBoardAttachment;

@@ -97,7 +97,7 @@ public class BlackBoardAttachmentDAO implements DAO {
 
         if (dbBlackBoardAttachment != null) {
             blackBoardAttachment.setBlackBoardAttachmentID(dbBlackBoardAttachment.getBlackBoardAttachmentID());
-            blackBoardAttachment.setName(dbBlackBoardAttachment.getName());
+            blackBoardAttachment.setAttachmentName(dbBlackBoardAttachment.getAttachmentName());
             blackBoardAttachment.setDataType(dbBlackBoardAttachment.getDataType());
             blackBoardAttachment.setDeviceDataPath(dbBlackBoardAttachment.getDeviceDataPath());
             blackBoardAttachment.setRemoteDataPath(dbBlackBoardAttachment.getRemoteDataPath());
@@ -112,7 +112,7 @@ public class BlackBoardAttachmentDAO implements DAO {
 
         if (blackBoardAttachment != null) {
             dbBlackBoardAttachment.setBlackBoardAttachmentID(blackBoardAttachment.getBlackBoardAttachmentID());
-            dbBlackBoardAttachment.setName(blackBoardAttachment.getName());
+            dbBlackBoardAttachment.setAttachmentName(blackBoardAttachment.getAttachmentName());
             dbBlackBoardAttachment.setDataType(blackBoardAttachment.getDataType());
             dbBlackBoardAttachment.setDeviceDataPath(blackBoardAttachment.getDeviceDataPath());
             dbBlackBoardAttachment.setRemoteDataPath(blackBoardAttachment.getRemoteDataPath());

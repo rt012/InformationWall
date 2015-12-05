@@ -116,7 +116,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         showFab();
 
         //Write BlackBoardItem Information to View
-        if (getArguments() != null){
+        if (blackBoardItem == null && getArguments() != null){
             setTitle(getString(R.string.fragment_black_board_edit_item_title));
             blackBoardItem = (BlackBoardItem) blackBoardItemDAO.queryForId(
                     getArguments().getLong(BLACK_BOARD_ITEM_ID_TAG));
@@ -217,7 +217,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
             @Override
             public void onClick(View v) {
                 otherFragmentIsVisible = true;
-                ((BlackBoard)getActivity()).openLayoutSelectionFragment(new BlackBoardItemLayoutSelection(), true, blackBoardItem);
+                ((BlackBoard) getActivity()).openLayoutSelectionFragment(new BlackBoardItemLayoutSelection(), true, blackBoardItem);
             }
         });
 
@@ -246,7 +246,6 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         }
     }
 
-
     private void fillInBlackBoardItemUI() {
         String title = getBlackBoardItem().getTitle();
         String description = getBlackBoardItem().getDescriptionText();
@@ -258,7 +257,6 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         fillInContactUI(contact);
         fillInAttachmentUI();
         setSelectedLayout();
-
     }
     
     private void fillInContactUI(Contact contact){
