@@ -87,12 +87,6 @@ public class BlackBoardItemLayoutSelection extends Fragment {
                 dots[position].setTextColor(getResources().getColor(R.color.ci_color));
             }
         });
-        mPager.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveSelectedLayout();
-            }
-        });
     }
 
     private void setUiPageViewController(View view) {
@@ -157,7 +151,14 @@ public class BlackBoardItemLayoutSelection extends Fragment {
 
         @Override
         public android.support.v4.app.Fragment getItem(int position) {
-            return LayoutSelectionFragment.create(position);
+            LayoutSelectionFragment layoutSelectionFragment = LayoutSelectionFragment.create(position);
+            layoutSelectionFragment.setOnLayoutSelectListener(new LayoutSelectionFragment.OnLayoutSelectListener() {
+                @Override
+                public void onLayoutSelect(int pageNumber) {
+                    saveSelectedLayout();
+                }
+            });
+            return layoutSelectionFragment;
         }
 
         @Override

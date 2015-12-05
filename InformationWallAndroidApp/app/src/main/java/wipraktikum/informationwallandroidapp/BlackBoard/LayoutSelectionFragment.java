@@ -22,6 +22,7 @@ public class LayoutSelectionFragment extends Fragment {
      * The fragment's page number, which is set to the argument value for {@link #ARG_PAGE}.
      */
     private int mPageNumber;
+    private OnLayoutSelectListener mOnLayoutSelectListener = null;
 
     private ImageView ivLayoutPreview = null;
 
@@ -64,6 +65,18 @@ public class LayoutSelectionFragment extends Fragment {
 
     private void initView(ViewGroup rootView) {
         ivLayoutPreview = (ImageView) rootView.findViewById(R.id.blackboard_layout_selection_ivLayoutPreview);
+        ivLayoutPreview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveSelectedLayout();
+            }
+        });
+    }
+
+    private void saveSelectedLayout(){
+        if (mOnLayoutSelectListener != null) {
+            mOnLayoutSelectListener.onLayoutSelect(this.getPageNumber());
+        }
     }
 
     private void setDrawableByPageNumber() {
@@ -87,6 +100,13 @@ public class LayoutSelectionFragment extends Fragment {
         return mPageNumber;
     }
 
+    public void setOnLayoutSelectListener(OnLayoutSelectListener onLayoutSelectListener){
+        mOnLayoutSelectListener = onLayoutSelectListener;
+    }
+
+    public interface OnLayoutSelectListener{
+        void onLayoutSelect(int pageNumber);
+    }
 
 }
 
