@@ -1,5 +1,8 @@
 package wipraktikum.informationwallandroidapp.ServerCommunication;
 
+import java.util.List;
+
+import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardAttachment;
 import wipraktikum.informationwallandroidapp.BusinessObject.User.User;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 
@@ -19,5 +22,18 @@ public class TransientManager {
             }
         }
         return serverUser;
+    }
+
+    public static List<BlackBoardAttachment> keepTransientAttachmentList(List<BlackBoardAttachment> serverBlackboardAttachments) {
+        if (serverBlackboardAttachments != null) {
+            for (BlackBoardAttachment serverBlackboardAttachment : serverBlackboardAttachments) {
+                BlackBoardAttachment clientBlackboardAttachment = (BlackBoardAttachment)
+                        DAOHelper.getBlackBoardAttachmentDAO().queryForId(serverBlackboardAttachment.getBlackBoardAttachmentID());
+                if (clientBlackboardAttachment != null) {
+                    serverBlackboardAttachment.setDeviceDataPath(clientBlackboardAttachment.getDeviceDataPath());
+                }
+            }
+        }
+        return serverBlackboardAttachments;
     }
 }

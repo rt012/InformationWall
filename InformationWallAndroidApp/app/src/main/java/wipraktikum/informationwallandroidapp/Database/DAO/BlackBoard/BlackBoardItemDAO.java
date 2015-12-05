@@ -163,8 +163,8 @@ public class BlackBoardItemDAO implements DAO {
             }
             blackBoardItem.setUser(null);
             blackBoardItem.setContact(null);
-            blackBoardItem.setBlackBoardAttachment(null);
-            InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardItemDAO().delete(mapBlackBoardItemToDBBlackBoardItem(blackBoardItem));
+            //blackBoardItem.setBlackBoardAttachment(null);
+            InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardItemDAO().deleteById(blackBoardItem.getBlackBoardItemID());
             ok = true;
         } catch (SQLException e) {
             e.printStackTrace();
