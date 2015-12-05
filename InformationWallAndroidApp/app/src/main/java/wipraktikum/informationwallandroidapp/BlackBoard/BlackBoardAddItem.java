@@ -325,8 +325,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
 
     private void saveBlackBoardAttachmentsToSharedPrefs() {
         PreferenceManager.getDefaultSharedPreferences(InfoWallApplication.getInstance()).edit()
-                .putString(getString(R.string.black_board_add_item_temp_attachments),
-                        BlackBoardAttachment.convertAttachmentListToJson(blackBoardAttachments))
+                .putString(getString(R.string.black_board_add_item_temp_attachments), BlackBoardAttachment.convertAttachmentListToJson(blackBoardAttachments))
                 .commit();
     }
 
@@ -410,11 +409,9 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
 
     @Override
     public void onActivityResult(Intent data) {
-
         //Add filePath to LinearLayout below
         BlackBoardAttachment blackBoardAttachment = BlackBoardAttachment.createNewAttachmentByFilePath(
-                getFilePathFromResult(data)
-        );
+                getFilePathFromResult(data));
         addAttachmentViewToAttachmentContainer(blackBoardAttachment);
         blackBoardAttachments.add(blackBoardAttachment);
         saveBlackBoardAttachmentsToSharedPrefs();
@@ -490,6 +487,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
 
     private void setAttachmentViewContent(){
         attachmentContainer.removeAllViews();
+        blackBoardAttachmentViews.clear();
         if (blackBoardAttachments != null) {
             for (BlackBoardAttachment blackBoardAttachment : blackBoardAttachments) {
                 addAttachmentViewToAttachmentContainer(blackBoardAttachment);
