@@ -156,6 +156,9 @@ public class BlackBoardItemDAO implements DAO {
         boolean ok = false;
         try {
             BlackBoardItem blackBoardItem = (BlackBoardItem) object;
+            //To get the database object and not the edited one
+            blackBoardItem = (BlackBoardItem) queryForId(blackBoardItem.getBlackBoardItemID());
+
             if(blackBoardItem.getBlackBoardAttachment() != null && !blackBoardItem.getBlackBoardAttachment().isEmpty()) {
                 for(BlackBoardAttachment blackBoardAttachment : blackBoardItem.getBlackBoardAttachment()) {
                     InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardAttachmentDAO().deleteById(blackBoardAttachment.getBlackBoardAttachmentID());

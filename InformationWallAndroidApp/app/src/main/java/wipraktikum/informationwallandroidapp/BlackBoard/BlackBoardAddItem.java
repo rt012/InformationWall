@@ -20,7 +20,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
-import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -70,8 +69,6 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     private OnSaveBlackBoardItemListener mOnSaveBlackBoardItemListener = null;
     private OnStartActivityResultListener mOnStartActivityResultListener = null;
 
-    private static BlackBoardAddItem instance = null;
-
     private BlackBoardItem blackBoardItem = null;
     private Contact selectedContact = null;
     private BlackBoardAutoCompleteTextViewContactAdapter autoCompleteTextViewContactAdapter = null;
@@ -98,7 +95,6 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     private Button buttonAttachment = null;
     private Button buttonAddLayout = null;
     private ImageView layoutImage = null;
-    private TextView layoutDescrition = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup viewGroup, Bundle savedInstanceState) {
@@ -519,7 +515,11 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         if (tlAddContact.getVisibility() == View.VISIBLE) {
             newContact = createNewContact();
         } else {
-            newContact = selectedContact;
+            if (StringHelper.isStringNullOrEmpty(autoCompleteTextViewContact.getText().toString())){
+                newContact = null;
+            }else {
+                newContact = selectedContact;
+            }
         }
         blackBoardItem.setContact(newContact);
 
