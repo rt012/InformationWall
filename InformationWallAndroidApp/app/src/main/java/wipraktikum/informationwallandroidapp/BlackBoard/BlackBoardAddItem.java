@@ -625,6 +625,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     private void updateBlackBoardItemInDB(JSONObject response) {
         BlackBoardItem serverBlackBoardItem = BlackBoardItem.parseItemFromJson(response.toString());
         serverBlackBoardItem.setUser(TransientManager.keepTransientUserData(serverBlackBoardItem.getUser()));
+        serverBlackBoardItem.setBlackBoardAttachment(TransientManager.keepTransientAttachmentList(serverBlackBoardItem.getBlackBoardAttachment()));
         serverBlackBoardItem.setSyncStatus(true);
         blackBoardItemDAO.delete(blackBoardItem);
         blackBoardItemDAO.createOrUpdate(serverBlackBoardItem);

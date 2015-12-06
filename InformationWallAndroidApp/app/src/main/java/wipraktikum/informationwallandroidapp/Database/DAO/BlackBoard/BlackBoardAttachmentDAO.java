@@ -1,5 +1,9 @@
 package wipraktikum.informationwallandroidapp.Database.DAO.BlackBoard;
 
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +53,25 @@ public class BlackBoardAttachmentDAO implements DAO {
             e.printStackTrace();
         }
         return blackBoardAttachment;
+    }
+
+    public Object queryForRemoteDataPath(String remoteDataPath){
+        BlackBoardAttachment blackboardAttachment = null;
+        try {
+            Dao<DBBlackBoardAttachment, Long> blackBoardAttachmentDAO = InfoWallApplication.getInstance().getDatabaseHelper().getBlackBoardAttachmentDAO();
+            // get our query builder from the DAO
+            QueryBuilder<DBBlackBoardAttachment, Long> queryBuilder =
+                    blackBoardAttachmentDAO.queryBuilder();
+            queryBuilder.where().eq(DBBlackBoardAttachment.Remote_Data_Path_FIELD_NAME, remoteDataPath);
+            PreparedQuery<DBBlackBoardAttachment> preparedQuery = queryBuilder.prepare();
+            List<DBBlackBoardAttachment>  dbBlackBoardAttachment = blackBoardAttachmentDAO.query(preparedQuery);
+            if(dbBlackBoardAttachment != null || !dbBlackBoardAttachment.isEmpty()) {
+                blackboardAttachment = mapDBBlackBoardAttachmentToBlackBoardAttachment(dbBlackBoardAttachment.get(0));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return blackboardAttachment;
     }
 
     @Override

@@ -28,7 +28,7 @@ public class TransientManager {
         if (serverBlackboardAttachments != null) {
             for (BlackBoardAttachment serverBlackboardAttachment : serverBlackboardAttachments) {
                 BlackBoardAttachment clientBlackboardAttachment = (BlackBoardAttachment)
-                        DAOHelper.getBlackBoardAttachmentDAO().queryForId(serverBlackboardAttachment.getBlackBoardAttachmentID());
+                        DAOHelper.getBlackBoardAttachmentDAO().queryForRemoteDataPath(serverBlackboardAttachment.getRemoteDataPath());
                 if (clientBlackboardAttachment != null) {
                     serverBlackboardAttachment.setDeviceDataPath(clientBlackboardAttachment.getDeviceDataPath());
                 }

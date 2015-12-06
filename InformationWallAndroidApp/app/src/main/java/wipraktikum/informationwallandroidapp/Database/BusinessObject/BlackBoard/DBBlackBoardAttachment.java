@@ -12,7 +12,7 @@ public class DBBlackBoardAttachment {
     private long mBlackBoardAttachmentID;
     @DatabaseField
     private String mAttachmentName;
-    @DatabaseField
+    @DatabaseField(columnName = Remote_Data_Path_FIELD_NAME)
     private String mRemoteDataPath;
     @DatabaseField
     private String mDeviceDataPath;
@@ -22,6 +22,8 @@ public class DBBlackBoardAttachment {
     private DBBlackBoardItem mBlackBoardItem;
     @DatabaseField
     private boolean mSyncStatus;
+
+    public static final String Remote_Data_Path_FIELD_NAME = "remoteDataPath";
 
     public DBBlackBoardAttachment(){};
 
