@@ -506,7 +506,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     }
 
     private BlackBoardItem fillBlackBoardItem(){
-        Contact newContact;
+        Contact newContact = null;
 
         blackBoardItem.setCreatedTimestamp(Calendar.getInstance().getTime());
         blackBoardItem.setEditedTimestamp(Calendar.getInstance().getTime());

@@ -65,7 +65,7 @@ public class BlackBoardAttachmentDAO implements DAO {
             queryBuilder.where().eq(DBBlackBoardAttachment.Remote_Data_Path_FIELD_NAME, remoteDataPath);
             PreparedQuery<DBBlackBoardAttachment> preparedQuery = queryBuilder.prepare();
             List<DBBlackBoardAttachment>  dbBlackBoardAttachment = blackBoardAttachmentDAO.query(preparedQuery);
-            if(dbBlackBoardAttachment != null || !dbBlackBoardAttachment.isEmpty()) {
+            if(dbBlackBoardAttachment != null && !dbBlackBoardAttachment.isEmpty()) {
                 blackboardAttachment = mapDBBlackBoardAttachmentToBlackBoardAttachment(dbBlackBoardAttachment.get(0));
             }
         } catch (SQLException e) {
