@@ -48,7 +48,6 @@
     <string name="black_board_long_click_dialog_edit">EDIT</string>
     <string name="black_board_long_click_dialog_delete">DELETE</string>
     <!--- BlackBoard Add Item -->
-    <string name="black_board_add_item_temp_attachments">currentAttachments</string>
     <string name="menu_black_board_save_item">Save</string>
     <string name="black_board_add_item_title">Title</string>
     <string name="black_board_add_item_contact">Search Contact</string>

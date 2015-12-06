@@ -117,7 +117,8 @@ public class BlackBoardOverview extends Fragment implements BlackBoardItemDialog
         SharedPreferences savedPrefs = PreferenceManager.getDefaultSharedPreferences(
                 InfoWallApplication.getInstance());
         SharedPreferences.Editor editor = savedPrefs.edit();
-        editor.remove(getString(R.string.black_board_add_item_temp_attachments));
+        editor.remove(BlackBoardAddItem.SAVE_ATTACHMENT_SHARED_PREF_KEY);
+        editor.remove(BlackBoardAddItem.FRAGMENT_VISIBLE_SHARED_PREF_KEY);
         editor.apply();
     }
 

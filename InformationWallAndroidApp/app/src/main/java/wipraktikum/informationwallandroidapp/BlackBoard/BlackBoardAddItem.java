@@ -64,6 +64,9 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     public static final String BLACK_BOARD_ITEM_ID_TAG = "blackBoardItemID";
     private static final String BLACK_BOARD_ATTACHMENT_SAVED_INSTANCE_TAG = "blackBoardAttachmentJSON";
 
+    public static final String SAVE_ATTACHMENT_SHARED_PREF_KEY = "sharedPrefAttachment";
+    public static final String FRAGMENT_VISIBLE_SHARED_PREF_KEY = "visibleFragment";
+
     BlackBoardItemDAO blackBoardItemDAO;
 
     private OnSaveBlackBoardItemListener mOnSaveBlackBoardItemListener = null;
@@ -204,6 +207,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
                     mOnStartActivityResultListener.onStartActivityResultListener();
                 }
                 otherFragmentIsVisible = true;
+                saveOtherFragmentVisibleToSharedPrefs();
                 FileHelper.getInstance().showFileChooser(getActivity());
             }
         });
@@ -213,14 +217,12 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
             @Override
             public void onClick(View v) {
                 otherFragmentIsVisible = true;
+                saveOtherFragmentVisibleToSharedPrefs();
                 ((BlackBoard) getActivity()).openLayoutSelectionFragment(new BlackBoardItemLayoutSelection(), true, blackBoardItem);
             }
         });
 
         layoutImage = (ImageView) view.findViewById(R.id.iv_black_board_layout);
-        //layoutDescrition = (TextView) view.findViewById(R.id.tv_black_board_layout);
-
-
 
         attachmentContainer = (LinearLayout) view.findViewById(R.id.ll_attachment_container);
     }
@@ -269,22 +271,42 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     @Override
     public void onResume(){
         super.onResume();
-        otherFragmentIsVisible = false;
-        //Tell Server to open Live Preview
-        BlackBoardAnimationUtils.openLivePreview();
 
+        //Don't open if other fragment was opened
+        if (!isOtherFragmentVisibleBySharedPrefs()) {
+            //Tell Server to open Live Preview
+            BlackBoardAnimationUtils.openLivePreview();
+        }
         //Handle initial Live Preview
         sendLivePreviewToServer();
         setCurrentAttachmentsFromSharedPrefs();
 
+        otherFragmentIsVisible = false;
+    }
+
+    private boolean isOtherFragmentVisibleBySharedPrefs(){
+        boolean attachmentString = PreferenceManager.getDefaultSharedPreferences(InfoWallApplication.getInstance()).getBoolean(FRAGMENT_VISIBLE_SHARED_PREF_KEY, false);
+        return attachmentString;
     }
 
     private void setCurrentAttachmentsFromSharedPrefs() {
-        String attachmentString = PreferenceManager.getDefaultSharedPreferences(InfoWallApplication.getInstance()).getString(getString(R.string.black_board_add_item_temp_attachments), "null");
-        if(attachmentString != "null") {
+        String attachmentString = PreferenceManager.getDefaultSharedPreferences(InfoWallApplication.getInstance()).getString(SAVE_ATTACHMENT_SHARED_PREF_KEY, null);
+        if(attachmentString != null) {
             blackBoardAttachments = new Gson().fromJson(attachmentString, new TypeToken<List<BlackBoardAttachment>>() {}.getType());
             setAttachmentViewContent();
         }
+    }
+
+    private void saveOtherFragmentVisibleToSharedPrefs(){
+        PreferenceManager.getDefaultSharedPreferences(InfoWallApplication.getInstance()).edit()
+                .putBoolean(FRAGMENT_VISIBLE_SHARED_PREF_KEY, true)
+                .commit();
+    }
+
+    private void saveBlackBoardAttachmentsToSharedPrefs() {
+        PreferenceManager.getDefaultSharedPreferences(InfoWallApplication.getInstance()).edit()
+                .putString(SAVE_ATTACHMENT_SHARED_PREF_KEY, BlackBoardAttachment.convertAttachmentListToJson(blackBoardAttachments))
+                .commit();
     }
 
     @Override
@@ -317,12 +339,6 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         }
 
         saveBlackBoardAttachmentsToSharedPrefs();
-    }
-
-    private void saveBlackBoardAttachmentsToSharedPrefs() {
-        PreferenceManager.getDefaultSharedPreferences(InfoWallApplication.getInstance()).edit()
-                .putString(getString(R.string.black_board_add_item_temp_attachments), BlackBoardAttachment.convertAttachmentListToJson(blackBoardAttachments))
-                .commit();
     }
 
     private void removeErrorsFromTextFields() {
