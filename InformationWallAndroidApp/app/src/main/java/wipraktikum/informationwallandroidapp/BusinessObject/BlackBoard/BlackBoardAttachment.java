@@ -103,9 +103,18 @@ public class BlackBoardAttachment {
 
     public static BlackBoardAttachment createNewAttachmentByFilePath(String filePath){
         BlackBoardAttachment blackBoardAttachment = new BlackBoardAttachment();
-        blackBoardAttachment.setAttachmentName(FileHelper.getInstance().getFileName(filePath));
         blackBoardAttachment.setDeviceDataPath(filePath);
         blackBoardAttachment.setDataType(FileHelper.getInstance().getBlackBoardAttachmentDataType(filePath));
+
+        if (blackBoardAttachment.getDataType() == DBBlackBoardAttachment.DataType.YOUTUBE){
+            blackBoardAttachment.setAttachmentName(filePath);
+        }else{
+            blackBoardAttachment.setAttachmentName(FileHelper.getInstance().getFileName(filePath));
+        }
+        if (FileHelper.getInstance().isURL(filePath)){
+            blackBoardAttachment.setRemoteDataPath(filePath);
+        }
+
         return blackBoardAttachment;
     }
 

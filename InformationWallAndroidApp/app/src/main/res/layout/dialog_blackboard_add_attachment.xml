@@ -3,10 +3,20 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <Button
-        android:id="@+id/bt_black_board_attachment_delete_dialog"
+        android:id="@+id/ib_blackboard_add_attachment_local"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:text="@string/delete"
+        android:text="@string/local_device"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="10dp"
+        android:background="@android:color/transparent" />
+    <View
+        style="@style/Divider" />
+    <Button
+        android:id="@+id/ib_blackboard_add_attachment_web"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="@string/web_link"
         android:gravity="left|center_vertical"
         android:paddingLeft="10dp"
         android:background="@android:color/transparent" />

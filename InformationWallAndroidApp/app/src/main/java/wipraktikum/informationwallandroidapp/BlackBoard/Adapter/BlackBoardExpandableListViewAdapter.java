@@ -182,7 +182,7 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
         final BlackBoardAttachment attachment = convertView.getItem();
         final FileHelper fileHelper = FileHelper.getInstance();
         //Download the file if does not exist
-        if (!fileHelper.exists(attachment.getDeviceDataPath())) {
+        if (!fileHelper.isURL(attachment.getDeviceDataPath()) && !fileHelper.exists(attachment.getDeviceDataPath())) {
             convertView.showProgressbar(true);
             downloadAttachments.add(convertView.getItem());
             //Start Download

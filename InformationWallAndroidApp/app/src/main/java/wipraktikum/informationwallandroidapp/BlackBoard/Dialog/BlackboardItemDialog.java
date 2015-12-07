@@ -19,7 +19,7 @@ import wipraktikum.informationwallandroidapp.R;
 /**
  * Created by Eric Schmidt on 08.11.2015.
  */
-public class BlackBoardItemDialogBuilder extends DialogFragment {
+public class BlackboardItemDialog extends DialogFragment {
     public final static String BLACK_BOARD_ITEM_ID_KEY = "blackBoardItemID";
     //Rights management
     private static boolean canEdit;
@@ -29,7 +29,7 @@ public class BlackBoardItemDialogBuilder extends DialogFragment {
     //Interfaces
     private OnItemChangeListener mOnItemChangeListener;
 
-    public static BlackBoardItemDialogBuilder newInstance(BlackBoardItem blackBoardItem){
+    public static BlackboardItemDialog newInstance(BlackBoardItem blackBoardItem){
         User currentUser = InfoWallApplication.getCurrentUser();
         mBlackBoardItem = blackBoardItem;
 
@@ -52,7 +52,7 @@ public class BlackBoardItemDialogBuilder extends DialogFragment {
             hasRights = true;
         }
 
-        return new BlackBoardItemDialogBuilder();
+        return new BlackboardItemDialog();
     }
 
     @Override

@@ -17,14 +17,14 @@ import wipraktikum.informationwallandroidapp.R;
 /**
  * Created by Eric Schmidt on 01.12.2015.
  */
-public class BlackBoardAttachmentDialog extends DialogFragment{
+public class BlackboardDeleteAttachmentDialog extends DialogFragment{
     //Interfaces
     private OnItemChangeListener mOnItemChangeListener;
     private static BlackBoardAttachment mBlackboardAttachment = null;
 
-    public static BlackBoardAttachmentDialog newInstance(BlackBoardAttachment blackboardAttachment){
+    public static BlackboardDeleteAttachmentDialog newInstance(BlackBoardAttachment blackboardAttachment){
         mBlackboardAttachment = blackboardAttachment;
-        return new BlackBoardAttachmentDialog();
+        return new BlackboardDeleteAttachmentDialog();
     }
 
     @Override

@@ -16,7 +16,7 @@ import com.android.volley.VolleyError;
 import org.json.JSONObject;
 
 import wipraktikum.informationwallandroidapp.BlackBoard.Adapter.BlackBoardExpandableListViewAdapter;
-import wipraktikum.informationwallandroidapp.BlackBoard.Dialog.BlackBoardItemDialogBuilder;
+import wipraktikum.informationwallandroidapp.BlackBoard.Dialog.BlackboardItemDialog;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
@@ -26,11 +26,11 @@ import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManage
 import wipraktikum.informationwallandroidapp.ServerCommunication.Synchronisation.SyncManager;
 import wipraktikum.informationwallandroidapp.Utils.JSONBuilder;
 
-public class BlackBoardOverview extends Fragment implements BlackBoardItemDialogBuilder.OnItemChangeListener, JsonManager.OnObjectResponseListener, JsonManager.OnErrorListener{
+public class BlackBoardOverview extends Fragment implements BlackboardItemDialog.OnItemChangeListener, JsonManager.OnObjectResponseListener, JsonManager.OnErrorListener{
     private final String FRAGMENT_TAG = "FRAGMENT_OVERVIEW";
 
     private BlackBoardExpandableListViewAdapter blackBoardExpandableListViewAdapter = null;
-    private BlackBoardItemDialogBuilder blackBoardItemDialogBuilder = null;
+    private BlackboardItemDialog blackboardItemDialog = null;
     private BlackBoardItem deletedBlackBoardItem;
     private JsonManager jsonManager;
 
@@ -123,18 +123,18 @@ public class BlackBoardOverview extends Fragment implements BlackBoardItemDialog
     }
 
     public void showDialogFragmentByItem(BlackBoardItem blackBoardItem){
-        blackBoardItemDialogBuilder = BlackBoardItemDialogBuilder.newInstance(blackBoardItem);
+        blackboardItemDialog = BlackboardItemDialog.newInstance(blackBoardItem);
         //If the user is able to do anything with the item
-        if (blackBoardItemDialogBuilder.hasRights()) {
-            blackBoardItemDialogBuilder.show(getFragmentManager(), BlackBoardItemDialogBuilder.class.getSimpleName());
+        if (blackboardItemDialog.hasRights()) {
+            blackboardItemDialog.show(getFragmentManager(), BlackboardItemDialog.class.getSimpleName());
         }
-        blackBoardItemDialogBuilder.setOnItemChangeListener(this);
+        blackboardItemDialog.setOnItemChangeListener(this);
     }
 
     @Override
     public void onDelete(BlackBoardItem blackBoardItem) {
         //Close Dialog
-        blackBoardItemDialogBuilder.dismiss();
+        blackboardItemDialog.dismiss();
         deletedBlackBoardItem = blackBoardItem;
 
         jsonManager.sendJson(ServerURLManager.DELETE_BLACK_BOARD_ITEM_URL, JSONBuilder.createJSONFromObject(blackBoardItem));
@@ -143,7 +143,7 @@ public class BlackBoardOverview extends Fragment implements BlackBoardItemDialog
     @Override
     public void onEdit(BlackBoardItem blackBoardItem) {
         //Close Dialog
-        blackBoardItemDialogBuilder.dismiss();
+        blackboardItemDialog.dismiss();
         //Open BlackBoardAddItem with arguments
         Bundle params = new Bundle();
         params.putLong(BlackBoardAddItem.BLACK_BOARD_ITEM_ID_TAG, blackBoardItem.getBlackBoardItemID());

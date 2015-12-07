@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dialogTitle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/ci_color_light">
+    <TextView
+        android:id="@+id/dialogTitleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:text="@string/dialog_blackboard_add_attachment_title"
+        android:textSize="25sp"
+        android:padding="15dp"
+        android:layout_weight="1"/>
+    <View
+        style="@style/Divider" />
+</LinearLayout>

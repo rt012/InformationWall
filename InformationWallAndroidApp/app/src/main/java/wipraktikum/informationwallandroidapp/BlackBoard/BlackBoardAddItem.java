@@ -36,7 +36,10 @@ import java.util.List;
 import wipraktikum.informationwallandroidapp.BlackBoard.Adapter.BlackBoardAutoCompleteTextViewContactAdapter;
 import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoardUtils.BlackBoardAnimationUtils;
 import wipraktikum.informationwallandroidapp.BlackBoard.CustomView.BlackBoardAttachmentView;
-import wipraktikum.informationwallandroidapp.BlackBoard.Dialog.BlackBoardAttachmentDialog;
+import wipraktikum.informationwallandroidapp.BlackBoard.Dialog.BlackboardAddAttachmentDialog;
+import wipraktikum.informationwallandroidapp.BlackBoard.Dialog.BlackboardAddWebAttachmentDialog;
+import wipraktikum.informationwallandroidapp.BlackBoard.Dialog.BlackboardDeleteAttachmentDialog;
+import wipraktikum.informationwallandroidapp.BlackBoard.Enum.AttachmentEnum;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardAttachment;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
 import wipraktikum.informationwallandroidapp.BusinessObject.Contact.Contact;
@@ -203,12 +206,19 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         buttonAttachment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mOnStartActivityResultListener != null) {
-                    mOnStartActivityResultListener.onStartActivityResultListener();
-                }
-                otherFragmentIsVisible = true;
-                saveOtherFragmentVisibleToSharedPrefs();
-                FileHelper.getInstance().showFileChooser(getActivity());
+                final BlackboardAddAttachmentDialog blackboardAddAttachmentDialog =  new BlackboardAddAttachmentDialog();
+                blackboardAddAttachmentDialog.setOnAttachmentTypeSelectListener(new BlackboardAddAttachmentDialog.OnAttachmentTypeSelectListener() {
+                    @Override
+                    public void onTypeSelect(AttachmentEnum attachmentEnum) {
+                        if (attachmentEnum == AttachmentEnum.LOCAL) {
+                            openLocalAttachmentFilePicker();
+                        } else {
+                            openWebAttachmentInputDialog();
+                            blackboardAddAttachmentDialog.dismiss();
+                        }
+                    }
+                });
+                blackboardAddAttachmentDialog.show(getFragmentManager(), BlackboardAddAttachmentDialog.class.getSimpleName());
             }
         });
 
@@ -225,6 +235,27 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         layoutImage = (ImageView) view.findViewById(R.id.iv_black_board_layout);
 
         attachmentContainer = (LinearLayout) view.findViewById(R.id.ll_attachment_container);
+    }
+
+    private void openWebAttachmentInputDialog(){
+        final BlackboardAddWebAttachmentDialog blackboardAddWebAttachmentDialog =  new BlackboardAddWebAttachmentDialog();
+        blackboardAddWebAttachmentDialog.setOnWebAttachmentInputListener(new BlackboardAddWebAttachmentDialog.OnWebAttachmentInputListener() {
+            @Override
+            public void onWebAttachmentInput(String webURL) {
+                saveAttachmentByFilePath(webURL);
+                blackboardAddWebAttachmentDialog.dismiss();
+            }
+        });
+        blackboardAddWebAttachmentDialog.show(getFragmentManager(), BlackboardAddAttachmentDialog.class.getSimpleName());
+    }
+
+    private void openLocalAttachmentFilePicker(){
+        if (mOnStartActivityResultListener != null) {
+            mOnStartActivityResultListener.onStartActivityResultListener();
+        }
+        otherFragmentIsVisible = true;
+        saveOtherFragmentVisibleToSharedPrefs();
+        FileHelper.getInstance().showFileChooser(getActivity());
     }
 
     private void setSelectedLayout() {
@@ -382,7 +413,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     private boolean validateTitleInput() {
         boolean valid = true;
         if(StringHelper.isStringNullOrEmpty(editTextTitle.getText().toString())){
-            editTextTitle.setError(getString(R.string.black_board_add_item_snackbar_no_title));
+            editTextTitle.setError(getString(R.string.blackboard_add_item_validate_no_title));
             valid = false;
         }else {
             editTextTitle.setError(null);
@@ -419,14 +450,17 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
             uploadAttachment();
     }
 
-    @Override
-    public void onActivityResult(Intent data) {
+    private void saveAttachmentByFilePath(String filePath){
         //Add filePath to LinearLayout below
-        BlackBoardAttachment blackBoardAttachment = BlackBoardAttachment.createNewAttachmentByFilePath(
-                getFilePathFromResult(data));
+        BlackBoardAttachment blackBoardAttachment = BlackBoardAttachment.createNewAttachmentByFilePath(filePath);
         addAttachmentViewToAttachmentContainer(blackBoardAttachment);
         blackBoardAttachments.add(blackBoardAttachment);
         saveBlackBoardAttachmentsToSharedPrefs();
+    }
+
+    @Override
+    public void onActivityResult(Intent data) {
+        saveAttachmentByFilePath(getFilePathFromResult(data));
     }
 
     private String getFilePathFromResult(Intent data) {
@@ -451,15 +485,15 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     }
 
     private void showBlackboardAttachmentDialog(BlackBoardAttachment attachment, final View attachmentView){
-        final BlackBoardAttachmentDialog blackBoardAttachmentDialog = BlackBoardAttachmentDialog.newInstance(attachment);
-        blackBoardAttachmentDialog.show(getFragmentManager(), BlackBoardAttachmentDialog.class.getSimpleName());
-        blackBoardAttachmentDialog.setOnItemChangeListener(new BlackBoardAttachmentDialog.OnItemChangeListener() {
+        final BlackboardDeleteAttachmentDialog blackboardDeleteAttachmentDialog = BlackboardDeleteAttachmentDialog.newInstance(attachment);
+        blackboardDeleteAttachmentDialog.show(getFragmentManager(), BlackboardDeleteAttachmentDialog.class.getSimpleName());
+        blackboardDeleteAttachmentDialog.setOnItemChangeListener(new BlackboardDeleteAttachmentDialog.OnItemChangeListener() {
             @Override
             public void onDelete(BlackBoardAttachment blackboardAttachment) {
                 attachmentContainer.removeView(attachmentView);
                 blackBoardAttachments.remove(blackboardAttachment);
                 blackBoardAttachmentViews.remove(attachmentView);
-                blackBoardAttachmentDialog.dismiss();
+                blackboardDeleteAttachmentDialog.dismiss();
             }
         });
     }
