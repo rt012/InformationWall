@@ -45,11 +45,6 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".BlackBoard.BlackBoardItemLayoutSelection"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity
             android:name=".BaseActivity"
             android:label="@string/title_activity_base" >
         </activity>
@@ -61,15 +56,22 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".TileOverview.TileOverview" />
+            <intent-filter>
+                <action android:name="android.intent.action.SEND_MULTIPLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="*/*" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="*/*" />
+            </intent-filter>
         </activity>
 
         <activity
             android:name=".Preferences.AppPreferences"
             android:label="@string/title_activity_preferences"
-            android:theme="@style/AppTheme.NoActionBar"
-             />
-
-
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- Added for Parse push notifications -->
 

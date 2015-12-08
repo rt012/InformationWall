@@ -1,6 +1,7 @@
 package wipraktikum.informationwallandroidapp.BlackBoard;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -10,11 +11,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.google.gson.Gson;
+import java.util.ArrayList;
+import java.util.List;
 
 import wipraktikum.informationwallandroidapp.BaseActivity;
 import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoardUtils.BlackBoardAnimationUtils;
-import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
 import wipraktikum.informationwallandroidapp.BusinessObject.Tile.Tile;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
@@ -23,6 +24,7 @@ import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
 import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
 import wipraktikum.informationwallandroidapp.Utils.FileHelper;
+import wipraktikum.informationwallandroidapp.Utils.RealPathHelper;
 
 /**
  * Created by Eric Schmidt on 30.10.2015.
@@ -55,6 +57,7 @@ public class BlackBoard extends BaseActivity{
         });
 
         openFragment(new BlackBoardOverview(), false);
+        handleIntentData();
     }
 
     @Override
@@ -62,11 +65,20 @@ public class BlackBoard extends BaseActivity{
         return mRootView;
     }
 
-    @Override
-    public void onResume(){
-        super.onResume();
+    private void handleIntentData(){
+        // Get intent, action and MIME type
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
 
-        if (getIntent().getExtras() != null && getIntent().getExtras().containsKey(TileOverview.TILE_ID_KEY_PARAM)){
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            prepareOpenBlackboardAddItemWithArguments(createAttachmentUriFromIntent(false));
+        } else if (Intent.ACTION_SEND_MULTIPLE.equals(action) && type != null) {
+            prepareOpenBlackboardAddItemWithArguments(createAttachmentUriFromIntent(true));
+        }
+
+        //Tile Information
+        if (getIntent().getExtras().containsKey(TileOverview.TILE_ID_KEY_PARAM)) {
             Tile currentTile = (Tile) DAOHelper.getTileDAO().queryForId(
                     getIntent().getExtras().getLong(TileOverview.TILE_ID_KEY_PARAM));
             if (currentTile.getIsActivated()) {
@@ -119,6 +131,35 @@ public class BlackBoard extends BaseActivity{
         }
     }
 
+    private List<Uri> createAttachmentUriFromIntent(boolean isMultiple){
+        List<Uri> attachmentUris = new ArrayList<>();
+
+        if (isMultiple){
+            attachmentUris = getIntent().getParcelableArrayListExtra(Intent.EXTRA_STREAM);
+        }else{
+            Uri imageUri = (Uri) getIntent().getParcelableExtra(Intent.EXTRA_STREAM);
+            attachmentUris.add(imageUri);
+        }
+
+        return attachmentUris;
+    }
+
+    private void prepareOpenBlackboardAddItemWithArguments(List<Uri> attachmentUris){
+        //Open BlackBoardAddItem with arguments
+        Bundle params = new Bundle();
+        ArrayList<String> attachmentPathList = new ArrayList<>();
+        for (Uri uri : attachmentUris){
+            String attachmentPath  = RealPathHelper.getInstance().getRealPathFromURI(uri);
+            attachmentPathList.add(attachmentPath);
+        }
+        params.putStringArrayList(BlackBoardAddItem.ATTACHMENT_Path_LIST_TAG, attachmentPathList);
+
+        BlackBoardAddItem blackboardAddItem = new BlackBoardAddItem();
+        blackboardAddItem.setArguments(params);
+
+        openFragment(blackboardAddItem, true);
+    }
+
     public void openBlackBoardOnServer(String actionParam) {
         BlackBoardAnimationUtils.openBlackBoardOnServer(actionParam);
     }
@@ -132,25 +173,6 @@ public class BlackBoard extends BaseActivity{
 
         //Set Listener
         setFragmentListener(fragment);
-    }
-
-    public void openLayoutSelectionFragment(Fragment fragment, boolean addtoBackStack, BlackBoardItem currentBlackboardItem){
-        if(currentBlackboardItem != null) {
-            String currentBlackBoardItemAsJson = new Gson().toJson(currentBlackboardItem);
-            Bundle params = new Bundle();
-            params.putString("currentBlackBoardItem", currentBlackBoardItemAsJson);
-            fragment.setArguments(params);
-        }
-
-        FragmentTransaction fragmentTransaction =  getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.black_board_fragment_container, fragment,
-                fragment.getClass().getSimpleName());
-        if (addtoBackStack)fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commitAllowingStateLoss();
-
-        //Set Listener
-        setFragmentListener(fragment);
-
     }
 
     private void setFragmentListener(Fragment fragment){

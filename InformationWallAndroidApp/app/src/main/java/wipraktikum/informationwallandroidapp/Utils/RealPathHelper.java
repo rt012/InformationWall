@@ -53,7 +53,7 @@ public class RealPathHelper{
      * @param uri The Uri to query.
      * @author paulburke @https://gist.github.com/prasad321/9852037
      */
-    public String getRealPathFromUri(final Uri uri) {
+    private String getRealPathFromUri(final Uri uri) {
 
         final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
 
@@ -125,7 +125,7 @@ public class RealPathHelper{
      * @param selectionArgs (Optional) Selection arguments used in the query.
      * @return The value of the _data column, which is typically a file path.
      */
-    public static String getDataColumn(Context context, Uri uri, String selection,
+    private static String getDataColumn(Context context, Uri uri, String selection,
                                        String[] selectionArgs) {
 
         Cursor cursor = null;

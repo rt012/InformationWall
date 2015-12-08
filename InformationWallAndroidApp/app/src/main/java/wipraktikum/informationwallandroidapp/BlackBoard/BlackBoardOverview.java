@@ -43,6 +43,20 @@ public class BlackBoardOverview extends Fragment implements BlackboardItemDialog
         return view;
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        if(jsonManager == null) {
+            jsonManager = new JsonManager();
+            jsonManager.setOnObjectResponseReceiveListener(this);
+            jsonManager.setOnErrorReceiveListener(this);
+        }
+
+        setTitle();
+        showFab();
+        deleteTempAttachments();
+    }
+
     private void setTitle(){
         getActivity().setTitle(getString(R.string.fragment_black_board_title));
     }
@@ -99,19 +113,6 @@ public class BlackBoardOverview extends Fragment implements BlackboardItemDialog
         });
     }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        if(jsonManager == null) {
-            jsonManager = new JsonManager();
-            jsonManager.setOnObjectResponseReceiveListener(this);
-            jsonManager.setOnErrorReceiveListener(this);
-        }
-
-        setTitle();
-        showFab();
-        deleteTempAttachments();
-    }
 
     private void deleteTempAttachments() {
         SharedPreferences savedPrefs = PreferenceManager.getDefaultSharedPreferences(
@@ -144,6 +145,10 @@ public class BlackBoardOverview extends Fragment implements BlackboardItemDialog
     public void onEdit(BlackBoardItem blackBoardItem) {
         //Close Dialog
         blackboardItemDialog.dismiss();
+        openBlackboardAddItemWithArguments(blackBoardItem);
+    }
+
+    private void openBlackboardAddItemWithArguments(BlackBoardItem blackBoardItem){
         //Open BlackBoardAddItem with arguments
         Bundle params = new Bundle();
         params.putLong(BlackBoardAddItem.BLACK_BOARD_ITEM_ID_TAG, blackBoardItem.getBlackBoardItemID());

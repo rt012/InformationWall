@@ -1,6 +1,7 @@
 package wipraktikum.informationwallandroidapp.BlackBoard;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -65,6 +66,7 @@ import wipraktikum.informationwallandroidapp.Utils.StringHelper;
 public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivityResultListener, TextWatcher,
         JsonManager.OnObjectResponseListener, JsonManager.OnErrorListener, BlackBoard.OnLayoutSelectionListener {
     public static final String BLACK_BOARD_ITEM_ID_TAG = "blackBoardItemID";
+    public static final String ATTACHMENT_Path_LIST_TAG = "attachmentList";
     private static final String BLACK_BOARD_ATTACHMENT_SAVED_INSTANCE_TAG = "blackBoardAttachmentJSON";
 
     public static final String SAVE_ATTACHMENT_SHARED_PREF_KEY = "sharedPrefAttachment";
@@ -116,9 +118,14 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
 
         initViews(view);
         showFab();
+        handleIntentData();
 
-        //Write BlackBoardItem Information to View
-        if (blackBoardItem == null && getArguments() != null){
+        return view;
+    }
+
+    private void handleIntentData(){
+        //Blackboard Item Intent Data
+        if (blackBoardItem == null && getArguments() != null && getArguments().getLong(BLACK_BOARD_ITEM_ID_TAG, -1) != -1){
             setTitle(getString(R.string.fragment_black_board_edit_item_title));
             blackBoardItem = (BlackBoardItem) blackBoardItemDAO.queryForId(
                     getArguments().getLong(BLACK_BOARD_ITEM_ID_TAG));
@@ -131,8 +138,29 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
             }
             setSelectedLayout();
         }
+        //Received Intent Data
+        if (getArguments() != null && getArguments().getStringArrayList(ATTACHMENT_Path_LIST_TAG) != null) {
+            List<String> attachmentPaths = getArguments().getStringArrayList(ATTACHMENT_Path_LIST_TAG);
+            for (String attachmentPath : attachmentPaths){
+                saveAttachmentByFilePath(attachmentPath);
+            }
+        }
+    }
 
-        return view;
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        //Don't open if other fragment was opened
+        if (!isOtherFragmentVisibleBySharedPrefs()) {
+            //Tell Server to open Live Preview
+            BlackBoardAnimationUtils.openLivePreview();
+        }
+        //Handle initial Live Preview
+        sendLivePreviewToServer();
+        setCurrentAttachmentsFromSharedPrefs();
+
+        otherFragmentIsVisible = false;
     }
 
     private void setTitle(String title){
@@ -228,13 +256,26 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
             public void onClick(View v) {
                 otherFragmentIsVisible = true;
                 saveOtherFragmentVisibleToSharedPrefs();
-                ((BlackBoard) getActivity()).openLayoutSelectionFragment(new BlackBoardItemLayoutSelection(), true, blackBoardItem);
+                openLayoutSelectionFragment();
             }
         });
 
         layoutImage = (ImageView) view.findViewById(R.id.iv_black_board_layout);
 
         attachmentContainer = (LinearLayout) view.findViewById(R.id.ll_attachment_container);
+    }
+
+    private void openLayoutSelectionFragment(){
+        Fragment blackBoardItemLayoutSelection = new BlackBoardItemLayoutSelection();
+
+        if (blackBoardItem != null) {
+            String currentBlackBoardItemAsJson = new Gson().toJson(blackBoardItem);
+            Bundle params = new Bundle();
+            params.putString("currentBlackBoardItem", currentBlackBoardItemAsJson);
+            blackBoardItemLayoutSelection.setArguments(params);
+        }
+
+        ((BlackBoard) getActivity()).openFragment(blackBoardItemLayoutSelection, true);
     }
 
     private void openWebAttachmentInputDialog(){
@@ -297,22 +338,6 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
 
     private void fillInAttachmentUI() {
         setAttachmentViewContent();
-    }
-
-    @Override
-    public void onResume(){
-        super.onResume();
-
-        //Don't open if other fragment was opened
-        if (!isOtherFragmentVisibleBySharedPrefs()) {
-            //Tell Server to open Live Preview
-            BlackBoardAnimationUtils.openLivePreview();
-        }
-        //Handle initial Live Preview
-        sendLivePreviewToServer();
-        setCurrentAttachmentsFromSharedPrefs();
-
-        otherFragmentIsVisible = false;
     }
 
     private boolean isOtherFragmentVisibleBySharedPrefs(){
@@ -451,21 +476,23 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     }
 
     private void saveAttachmentByFilePath(String filePath){
-        //Add filePath to LinearLayout below
-        BlackBoardAttachment blackBoardAttachment = BlackBoardAttachment.createNewAttachmentByFilePath(filePath);
-        addAttachmentViewToAttachmentContainer(blackBoardAttachment);
-        blackBoardAttachments.add(blackBoardAttachment);
-        saveBlackBoardAttachmentsToSharedPrefs();
+        if (filePath != null) {
+            //Add filePath to LinearLayout below
+            BlackBoardAttachment blackBoardAttachment = BlackBoardAttachment.createNewAttachmentByFilePath(filePath);
+            addAttachmentViewToAttachmentContainer(blackBoardAttachment);
+            blackBoardAttachments.add(blackBoardAttachment);
+            saveBlackBoardAttachmentsToSharedPrefs();
+        }
     }
 
     @Override
     public void onActivityResult(Intent data) {
-        saveAttachmentByFilePath(getFilePathFromResult(data));
+        saveAttachmentByFilePath(getFilePathFromUri(data.getData()));
     }
 
-    private String getFilePathFromResult(Intent data) {
+    private String getFilePathFromUri(Uri uri) {
         //ContactHelper.createVCFFromUri(getActivity(), data.getData());
-        return RealPathHelper.getInstance().getRealPathFromURI(data.getData());
+        return RealPathHelper.getInstance().getRealPathFromURI(uri);
     }
 
     private View addAttachmentViewToAttachmentContainer(final BlackBoardAttachment attachment){
