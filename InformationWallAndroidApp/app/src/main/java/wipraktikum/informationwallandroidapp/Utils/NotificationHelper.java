@@ -62,15 +62,13 @@ public class NotificationHelper {
     }
 
     public void showNotificationMessage(BlackBoardItem blackBoardItem, Intent intent) {
-        String title = "New Blackboarditem";
+        String title = "New Blackboard Item";
         String message = "Title: " + blackBoardItem.getTitle();
         if (isAppIsInBackground(mContext)) {
-
-
             // notification icon
             int icon = R.mipmap.ic_launcher;
 
-            int smallIcon = R.drawable.ic_event;
+            int smallIcon = R.drawable.icon_main;
 
             int mNotificationId = AppConfig.NOTIFICATION_ID;
 
@@ -102,11 +100,6 @@ public class NotificationHelper {
             if (mOnNotificationReceiveListener != null) {
                 mOnNotificationReceiveListener.onNotificationReceive();
             }
-            //intent.putExtra("title", title);
-            //intent.putExtra("message", message);
-            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            //mContext.startActivity(intent);
-
         }
     }
 

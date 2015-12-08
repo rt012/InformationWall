@@ -74,7 +74,11 @@ public class BaseActivity extends AppCompatActivity implements NotificationHelpe
 
     @Override
     public void onNotificationReceive() {
-        Snackbar.make(getRootView(), "Das ist ein Test", Snackbar.LENGTH_LONG).show();
+        showSnackbar(getString(R.string.new_blackboard_item_notification));
+    }
+
+    private void showSnackbar(String message){
+        Snackbar.make(getRootView(), message, Snackbar.LENGTH_LONG).show();
     }
 
     public View getRootView(){
