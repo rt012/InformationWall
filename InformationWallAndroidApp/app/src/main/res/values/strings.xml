@@ -9,6 +9,9 @@
     <string name="action_logout">Logout</string>
     <string name="action_about">About</string>
 
+    <!-- General -->
+    <string name="new_blackboard_item_notification">A new Blackboard Item was Uploaded</string>
+
     <!-- LogIn -->
     <string name="login_authenticating_progress_bar">Authenticating...</string>
     <string name="log_in_failed">Log in failed</string>
