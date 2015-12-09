@@ -79,6 +79,8 @@ public class PushNotificationReceiver extends ParsePushBroadcastReceiver {
             if (!isBackground) {
                 Intent resultIntent = new Intent(context, BlackBoard.class);
                 blackBoardItem.setUser(TransientManager.keepTransientUserData(blackBoardItem.getUser()));
+                blackBoardItem.setBlackBoardAttachment(TransientManager.keepTransientAttachmentList(blackBoardItem.getBlackBoardAttachment()));
+                blackBoardItem.setSyncStatus(true);
                 DAOHelper.getBlackBoardItemDAO().createOrUpdate(blackBoardItem);
                 if(blackBoardItem.getUser().getUserID() != InfoWallApplication.getInstance().getCurrentUser().getUserID()) {
                     showNotificationMessage(context, blackBoardItem, resultIntent);
