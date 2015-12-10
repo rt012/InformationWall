@@ -15,7 +15,6 @@ import android.support.v4.app.NotificationCompat;
 import java.util.List;
 
 import wipraktikum.informationwallandroidapp.AppConfig;
-import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
 import wipraktikum.informationwallandroidapp.R;
 
@@ -61,12 +60,10 @@ public class NotificationHelper {
         mNotifyManager.cancel(notifyID);
     }
 
-    public void showNotificationMessage(BlackBoardItem blackBoardItem, Intent intent) {
-        String title = "New Blackboard Item";
-        String message = "Title: " + blackBoardItem.getTitle();
+    public void showNotificationMessage(Intent intent, String message, String title) {
         if (isAppIsInBackground(mContext)) {
             // notification icon
-            int icon = R.mipmap.ic_launcher;
+            int largeIcon = R.drawable.icon_main;
 
             int smallIcon = R.drawable.icon_main;
 
@@ -90,7 +87,7 @@ public class NotificationHelper {
                     .setStyle(inboxStyle)
                     .setContentIntent(resultPendingIntent)
                     .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                    .setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), icon))
+                    .setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), largeIcon))
                     .setContentText(message)
                     .setDefaults(Notification.DEFAULT_VIBRATE)
                     .build();

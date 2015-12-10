@@ -78,7 +78,7 @@ public class BlackBoard extends BaseActivity{
         }
 
         //Tile Information
-        if (getIntent().getExtras().containsKey(TileOverview.TILE_ID_KEY_PARAM)) {
+        if (getIntent().getExtras() != null && getIntent().getExtras().containsKey(TileOverview.TILE_ID_KEY_PARAM)) {
             Tile currentTile = (Tile) DAOHelper.getTileDAO().queryForId(
                     getIntent().getExtras().getLong(TileOverview.TILE_ID_KEY_PARAM));
             if (currentTile.getIsActivated()) {

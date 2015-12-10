@@ -25,6 +25,7 @@ import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.Synchronisation.SyncManager;
 import wipraktikum.informationwallandroidapp.Utils.JSONBuilder;
+import wipraktikum.informationwallandroidapp.Utils.NotificationHelper;
 
 public class BlackBoardOverview extends Fragment implements BlackboardItemDialog.OnItemChangeListener, JsonManager.OnObjectResponseListener, JsonManager.OnErrorListener{
     private final String FRAGMENT_TAG = "FRAGMENT_OVERVIEW";
@@ -39,6 +40,14 @@ public class BlackBoardOverview extends Fragment implements BlackboardItemDialog
         View view = inflater.inflate(R.layout.fragment_blackboard_overview, viewGroup, false);
 
         initViews(view);
+
+        //Register Listener
+        NotificationHelper.getInstance().setOnNotificationReceiveListener(new NotificationHelper.OnNotificationReceiveListener() {
+            @Override
+            public void onNotificationReceive() {
+                blackBoardExpandableListViewAdapter.notifyDataSetChanged();
+            }
+        });
 
         return view;
     }
@@ -112,7 +121,6 @@ public class BlackBoardOverview extends Fragment implements BlackboardItemDialog
             }
         });
     }
-
 
     private void deleteTempAttachments() {
         SharedPreferences savedPrefs = PreferenceManager.getDefaultSharedPreferences(

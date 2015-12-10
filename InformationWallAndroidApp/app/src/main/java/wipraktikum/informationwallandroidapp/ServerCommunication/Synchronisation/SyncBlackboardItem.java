@@ -124,6 +124,7 @@ public class SyncBlackboardItem implements JsonManager.OnObjectResponseListener,
     public void OnResponse(JSONObject response) {
         Gson gsonInstance = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
         BlackBoardItem serverBlackBoardItem = gsonInstance.fromJson(new JsonParser().parse(response.toString()), BlackBoardItem.class);
+        serverBlackBoardItem = keepTransientUserData(serverBlackBoardItem);
         serverBlackBoardItem.setSyncStatus(true);
         BlackBoardItemDAO blackBoardItemDAO = DAOHelper.getBlackBoardItemDAO();
         blackBoardItemDAO.deleteByID(currentUnsyncedBlackBoardItem.getBlackBoardItemID());
