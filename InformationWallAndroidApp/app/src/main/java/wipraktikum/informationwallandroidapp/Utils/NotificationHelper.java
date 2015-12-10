@@ -84,7 +84,7 @@ public class NotificationHelper {
             Notification notification = mBuilder.setSmallIcon(smallIcon).setTicker("").setWhen(0)
                     .setAutoCancel(true)
                     .setContentTitle(title)
-                    .setStyle(inboxStyle)
+                    //.setStyle(inboxStyle)
                     .setContentIntent(resultPendingIntent)
                     .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                     .setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), largeIcon))

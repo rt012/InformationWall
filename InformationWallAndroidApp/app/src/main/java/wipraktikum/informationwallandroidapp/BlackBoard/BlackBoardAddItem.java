@@ -1,5 +1,6 @@
 package wipraktikum.informationwallandroidapp.BlackBoard;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -103,6 +104,8 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     private Button buttonAttachment = null;
     private Button buttonAddLayout = null;
     private ImageView layoutImage = null;
+
+    private ProgressDialog progressdialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup viewGroup, Bundle savedInstanceState) {
@@ -417,6 +420,11 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.menu_black_board_item_save) {
             if(validateInputs()) {
+                progressdialog = new ProgressDialog(getActivity());
+                progressdialog.setTitle(getString(R.string.progress_pleaseWait));
+                progressdialog.setMessage(getString(R.string.progress_itemUpload));
+                progressdialog.show();
+
                 saveBlackBoardItem();
                 return true;
             }
@@ -696,6 +704,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     public void OnResponse(JSONObject response) {
         BlackBoardAnimationUtils.closeLivePreviewOnServer();
         updateBlackBoardItemInDB(response);
+        progressdialog.dismiss();
         triggerOnSaveBlackBoardItemEvent(true);
     }
 
@@ -717,6 +726,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     @Override
     public void OnErrorResponse(VolleyError error) {
         BlackBoardAnimationUtils.closeLivePreviewOnServer();
+        progressdialog.dismiss();
         triggerOnSaveBlackBoardItemEvent(false);
     }
 

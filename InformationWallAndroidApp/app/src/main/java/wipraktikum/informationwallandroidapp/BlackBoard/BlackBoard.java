@@ -23,6 +23,7 @@ import wipraktikum.informationwallandroidapp.InfoWallApplication;
 import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
 import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
+import wipraktikum.informationwallandroidapp.Utils.ActivityHelper;
 import wipraktikum.informationwallandroidapp.Utils.FileHelper;
 import wipraktikum.informationwallandroidapp.Utils.RealPathHelper;
 
@@ -70,12 +71,20 @@ public class BlackBoard extends BaseActivity{
         Intent intent = getIntent();
         String action = intent.getAction();
         String type = intent.getType();
-
-        if (Intent.ACTION_SEND.equals(action) && type != null) {
-            prepareOpenBlackboardAddItemWithArguments(createAttachmentUriFromIntent(false));
-        } else if (Intent.ACTION_SEND_MULTIPLE.equals(action) && type != null) {
-            prepareOpenBlackboardAddItemWithArguments(createAttachmentUriFromIntent(true));
+        if(InfoWallApplication.getCurrentUser() == null) {
+            ActivityHelper.openLoginActivity(this);
+            return;
+        }else if(InfoWallApplication.getCurrentUser().getUserGroup().canWrite()) {
+            if (Intent.ACTION_SEND.equals(action) && type != null) {
+                prepareOpenBlackboardAddItemWithArguments(createAttachmentUriFromIntent(false));
+            } else if (Intent.ACTION_SEND_MULTIPLE.equals(action) && type != null) {
+                prepareOpenBlackboardAddItemWithArguments(createAttachmentUriFromIntent(true));
+            }
+        } else {
+            ActivityHelper.openBlackboardActivity(this);
+            return;
         }
+
 
         //Tile Information
         if (getIntent().getExtras() != null && getIntent().getExtras().containsKey(TileOverview.TILE_ID_KEY_PARAM)) {

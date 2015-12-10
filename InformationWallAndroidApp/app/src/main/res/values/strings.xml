@@ -98,6 +98,10 @@
     <string name="web_link">WEB LINK</string>
     <string name="local_device">LOCAL DEVICE</string>
 
+    <!-- Progress Dialog -->
+    <string name="progress_pleaseWait">Please wait...</string>
+    <string name="progress_itemUpload">Uploading entry...</string>
+
 
 
 </resources>

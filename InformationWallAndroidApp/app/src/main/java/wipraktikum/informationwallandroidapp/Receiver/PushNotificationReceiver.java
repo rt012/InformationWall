@@ -106,7 +106,8 @@ public class PushNotificationReceiver extends ParsePushBroadcastReceiver {
         intent.putExtras(parseIntent.getExtras());
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         notificationUtils.showNotificationMessage(intent,
-                InfoWallApplication.getInstance().getString(R.string.new_blackboard_item_notification_title),
-                blackBoardItem.getTitle());
+                blackBoardItem.getTitle(),
+                InfoWallApplication.getInstance().getString(R.string.new_blackboard_item_notification_title)
+                );
     }
 }
