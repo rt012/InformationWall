@@ -15,6 +15,7 @@ import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoard;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
+import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.ServerCommunication.TransientManager;
 import wipraktikum.informationwallandroidapp.Utils.NotificationHelper;
 
@@ -104,6 +105,8 @@ public class PushNotificationReceiver extends ParsePushBroadcastReceiver {
         notificationUtils = NotificationHelper.getInstance();
         intent.putExtras(parseIntent.getExtras());
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        notificationUtils.showNotificationMessage(blackBoardItem, intent);
+        notificationUtils.showNotificationMessage(intent,
+                InfoWallApplication.getInstance().getString(R.string.new_blackboard_item_notification_title),
+                blackBoardItem.getTitle());
     }
 }

@@ -79,7 +79,7 @@ public class BaseActivity extends AppCompatActivity implements NotificationHelpe
 
     private void showNewBlackboardItemSnackbar(){
         Snackbar snackbar = Snackbar
-                .make(getRootView(), getString(R.string.new_blackboard_item_notification), Snackbar.LENGTH_LONG)
+                .make(getRootView(), getString(R.string.new_blackboard_item_notification_title), Snackbar.LENGTH_LONG)
                 .setAction(getString(R.string.go_to_overview_notification), new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

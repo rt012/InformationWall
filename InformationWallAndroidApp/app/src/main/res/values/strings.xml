@@ -10,7 +10,7 @@
     <string name="action_about">About</string>
 
     <!-- General -->
-    <string name="new_blackboard_item_notification">New Blackboard Item</string>
+    <string name="new_blackboard_item_notification_title">New Blackboard Item</string>
     <string name="go_to_overview_notification">OVERVIEW</string>
 
     <!-- LogIn -->
