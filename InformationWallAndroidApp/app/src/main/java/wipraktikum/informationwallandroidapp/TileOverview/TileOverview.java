@@ -117,7 +117,7 @@ public class TileOverview extends BaseActivity {
         tileLongClickDialog.setOnRadioButtonChangeListener(new TileLongClickDialog.OnRadioButtonChangeListener() {
             @Override
             public void onRadioButtonChanged(int radioButtonPos) {
-                Log.i(TileLongClickDialog.class.getSimpleName(), "Send message to Webserver - Tile changed Size");
+                changeTileSizeOnServer(DBTile.EnumTileSize.values()[radioButtonPos]);
                 tile.setTileSize(DBTile.EnumTileSize.values()[radioButtonPos]);
                 DAOHelper.getTileDAO().update(tile);
             }
@@ -138,6 +138,11 @@ public class TileOverview extends BaseActivity {
             //Hide Tile on information wall
             activateTileOnServer(ServerURLManager.SHOW_BLACK_BOARD_PARAM_NOT_ACTIVE);
         }
+    }
+
+    private void changeTileSizeOnServer(DBTile.EnumTileSize tileSize){
+        JSONObject jsonObject = JSONBuilder.createJSONFromParam(ServerURLManager.CHANGE_TILE_SIZE_KEY, tileSize);
+        new JsonManager().sendJson(ServerURLManager.CHANGE_TILE_SIZE_PARAM_URL, jsonObject);
     }
 
     //Only Blackboard is currently working (--> No more Tiles at the moment)

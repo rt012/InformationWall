@@ -4,6 +4,9 @@ package wipraktikum.informationwallandroidapp.ServerCommunication;
  * Created by Eric Schmidt on 07.11.2015.
  */
 public class ServerURLManager {
+    //Change Tile Size
+    public static final String CHANGE_TILE_SIZE_PARAM_URL = "http://myinfowall.ddns.net/apps/tileSettings.php";
+    public static final String CHANGE_TILE_SIZE_KEY = "EnumTileSize";
     //Update blackboard behaviour
     public static final String UPDATE_BLACKBOARD_BEHAVIOUR_URL =  "http://myinfowall.ddns.net/apps/blackboard/updateStream.php";
     //Live Preview BlackBoardItemCreate / Edit
