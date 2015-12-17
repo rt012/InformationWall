@@ -19,9 +19,7 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
-import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.Utils.FileHelper;
-import wipraktikum.informationwallandroidapp.Utils.NotificationHelper;
 
 /**
  * Created by Eric Schmidt on 30.10.2015.
@@ -37,17 +35,17 @@ public class UploadManager{
     }
 
     public boolean uploadFile(final File uploadFile, String uploadUrl){
-        final NotificationHelper notifyHelper= NotificationHelper.getInstance();
+        //final NotificationHelper notifyHelper= NotificationHelper.getInstance();
 
         //Create a Notification to indicate Upload
-        final int notifyID =  notifyHelper.startNotification(mContext.getString
-                (R.string.notification_upload_progress));
+        //final int notifyID =  notifyHelper.startNotification(mContext.getString
+                //(R.string.notification_upload_progress));
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, uploadUrl,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        notifyHelper.closeNotification(notifyID);
+                        //notifyHelper.closeNotification(notifyID);
                         if(mOnUploadFinishedListener != null){
                             mOnUploadFinishedListener.onUploadFinished(response);
                         }
@@ -56,7 +54,7 @@ public class UploadManager{
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        notifyHelper.closeNotification(notifyID);
+                        //notifyHelper.closeNotification(notifyID);
                         if(mOnUploadFinishedListener != null){
                             mOnUploadFinishedListener.onUploadFinished(null);
                         }

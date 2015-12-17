@@ -243,6 +243,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
                     public void onTypeSelect(AttachmentEnum attachmentEnum) {
                         if (attachmentEnum == AttachmentEnum.LOCAL) {
                             openLocalAttachmentFilePicker();
+                            blackboardAddAttachmentDialog.dismiss();
                         } else {
                             openWebAttachmentInputDialog();
                             blackboardAddAttachmentDialog.dismiss();
