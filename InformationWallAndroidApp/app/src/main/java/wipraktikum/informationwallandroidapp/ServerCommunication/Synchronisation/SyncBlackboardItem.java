@@ -90,16 +90,23 @@ public class SyncBlackboardItem implements JsonManager.OnObjectResponseListener,
     private void UpdateOrCreateBlackBoardItems(JsonElement response) {
         BlackBoardItemDAO blackBoardItemDAO = DAOHelper.getBlackBoardItemDAO();
 
-        deleteAllBlackboardItems();
-
         Gson gsonInstance = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
         List<BlackBoardItem> serverItemList = gsonInstance.fromJson(response, new TypeToken<List<BlackBoardItem>>(){}.getType());
-
+        ArrayList<BlackBoardItem> editedBlackBoardList = new ArrayList<BlackBoardItem>();
         for(BlackBoardItem serverBlackBoardItem : serverItemList) {
             serverBlackBoardItem = keepTransientUserData(serverBlackBoardItem);
             serverBlackBoardItem.setSyncStatus(true);
-            blackBoardItemDAO.createOrUpdate(serverBlackBoardItem);
+            editedBlackBoardList.add(serverBlackBoardItem);
         }
+
+        deleteAllBlackboardItems();
+
+        for(BlackBoardItem blackBoardItem : editedBlackBoardList) {
+            blackBoardItemDAO.createOrUpdate(blackBoardItem);
+        }
+
+
+
     }
 
     private BlackBoardItem keepTransientUserData(BlackBoardItem serverBlackBoardItem) {
