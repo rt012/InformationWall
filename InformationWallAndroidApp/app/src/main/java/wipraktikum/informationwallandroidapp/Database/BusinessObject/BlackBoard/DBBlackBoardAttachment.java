@@ -91,7 +91,7 @@ public class DBBlackBoardAttachment {
     }
 
     public enum DataType {
-        PDF, IMG, YOUTUBE, OTHER;
+        PDF, IMG, VIDEO, YOUTUBE, OTHER;
     }
 
 

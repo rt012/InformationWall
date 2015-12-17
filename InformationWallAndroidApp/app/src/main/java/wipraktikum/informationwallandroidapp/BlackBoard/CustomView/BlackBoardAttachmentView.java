@@ -68,6 +68,9 @@ public class BlackBoardAttachmentView extends LinearLayout {
             case IMG:
                 drawable = ContextCompat.getDrawable(mContext, R.drawable.icon_img);
                 break;
+            case VIDEO:
+                drawable = ContextCompat.getDrawable(mContext, R.drawable.icon_video);
+                break;
             default:
                 drawable = ContextCompat.getDrawable(mContext, R.drawable.icon_attachment);
                 break;

@@ -79,6 +79,11 @@ public class FileHelper {
             case "jpeg":
             case "bmp":
                 return DBBlackBoardAttachment.DataType.IMG;
+            case "mp4":
+            case "avi":
+            case "wmv":
+            case "mov":
+                return DBBlackBoardAttachment.DataType.VIDEO;
         }
         //Check if fileName is a URL and act accordingly
         if (fullFileName.toLowerCase().contains(YOUTUBE_URL)){
