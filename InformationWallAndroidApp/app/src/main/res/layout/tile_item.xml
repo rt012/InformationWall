@@ -22,24 +22,6 @@
         android:background="#55000000"/>
 
     !-- Transparent layer -->
-    <RelativeLayout
-        android:id="@+id/tileBorder"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/is_activated_border"/>
-        <View
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_margin="8dp"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/check"/>
-
-    </RelativeLayout>
-
+    <include layout = "@layout/tile_activated_overlay"></include>
 
 </FrameLayout>
