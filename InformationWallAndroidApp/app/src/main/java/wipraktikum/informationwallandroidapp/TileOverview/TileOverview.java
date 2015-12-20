@@ -39,9 +39,9 @@ public class TileOverview extends BaseActivity {
         setSupportActionBar(toolbar);
 
         //Set Adapter for GridView
-        final GridViewTileOverviewAdapter tileOverviewAdapter = new GridViewTileOverviewAdapter(this);
         GridView gridView = (GridView)findViewById(R.id.gridview);
-        gridView.setAdapter(new GridViewTileOverviewAdapter(this));
+        final GridViewTileOverviewAdapter tileOverviewAdapter = new GridViewTileOverviewAdapter(this);
+        gridView.setAdapter(tileOverviewAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -58,6 +58,13 @@ public class TileOverview extends BaseActivity {
             }
         });
 
+        //Register Listeners
+        InfoWallApplication.getInstance().setOnPushReceiveListener(new InfoWallApplication.OnPushReceiveListener() {
+            @Override
+            public void onPushReceive() {
+                tileOverviewAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
@@ -67,7 +74,7 @@ public class TileOverview extends BaseActivity {
         //Show Tile if activated. Hide if not
         List<Tile> tileList = DAOHelper.getTileDAO().queryForAll();
         for (Tile tile : tileList){
-            if(tile.getName().equals("Black Board") && tile.getIsActivated()){
+            if(tile.getName().equals("Blackboard") && tile.getIsActivated()){
                 activateTileOnServer(ServerURLManager.SHOW_BLACK_BOARD_PARAM_ACTIVE);
             }else if (tile.getName().equals("Black Board") && !tile.getIsActivated()){
                 activateTileOnServer(ServerURLManager.SHOW_BLACK_BOARD_PARAM_NOT_ACTIVE);

@@ -33,6 +33,13 @@ public final class GridViewTileOverviewAdapter extends BaseAdapter {
     }
 
     @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+        // Get tiles from database
+        mTiles = DAOHelper.getTileDAO().queryForAll();
+    }
+
+    @Override
     public int getCount() {
         return mTiles.size();
     }

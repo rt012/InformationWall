@@ -34,6 +34,7 @@ public class InfoWallApplication extends Application {
     public static final String TAG = InfoWallApplication.class.getSimpleName();
     private RequestQueue mRequestQueue;
 
+    private OnPushReceiveListener mOnPushReceiveListener = null;
     private static Activity activeActivity;
 
     @Override
@@ -140,6 +141,12 @@ public class InfoWallApplication extends Application {
         return true;
     }
 
+    public void onPushReceive(){
+        if (mOnPushReceiveListener != null) {
+            mOnPushReceiveListener.onPushReceive();
+        }
+    }
+
     private static final class MyActivityLifecycleCallbacks implements ActivityLifecycleCallbacks {
 
         public void onActivityCreated(Activity activity, Bundle bundle) {
@@ -171,5 +178,13 @@ public class InfoWallApplication extends Application {
         public void onActivityStopped(Activity activity) {
             Log.e("","onActivityStopped:" + activity.getLocalClassName());
         }
+    }
+
+    public void setOnPushReceiveListener(OnPushReceiveListener onPushReceiveListener){
+        mOnPushReceiveListener = onPushReceiveListener;
+    }
+
+    public interface OnPushReceiveListener{
+        void onPushReceive();
     }
 }

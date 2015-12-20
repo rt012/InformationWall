@@ -59,6 +59,7 @@ public class PushNotificationReceiver extends ParsePushBroadcastReceiver {
             }else if(channel.equals(TILE_CHANGE_CHANNEL)) {
                 Log.e(TAG, "Tile Change Push received: " + json);
                 parseTileChangeJson(json);
+                InfoWallApplication.getInstance().onPushReceive();
             }
 
         } catch (JSONException e) {
