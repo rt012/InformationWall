@@ -25,6 +25,11 @@ import wipraktikum.informationwallandroidapp.Utils.NotificationHelper;
  */
 public class PushNotificationReceiver extends ParsePushBroadcastReceiver {
     private final String TAG = PushNotificationReceiver.class.getSimpleName();
+    private final String CHANNEL_KEY = "com.parse.Channel";
+    private final String DATA_KEY = "com.parse.Data";
+
+    private final String TILE_CHANGE_CHANNEL = "TileChannel";
+    private final String NEW_BLACKBOARD_ITEM_CHANNEL = "BlackboardChannel";
 
     private NotificationHelper notificationUtils;
 
@@ -43,18 +48,16 @@ public class PushNotificationReceiver extends ParsePushBroadcastReceiver {
 
         try {
             JSONObject json = null;
+            String channel = intent.getExtras().getString(CHANNEL_KEY);
+            json = new JSONObject(intent.getExtras().getString(DATA_KEY));
             //New Blackboard Item
-            json = new JSONObject(intent.getExtras().getString("com.parse.Data"));
-            if(json!= null) {
+            if(channel.equals(NEW_BLACKBOARD_ITEM_CHANNEL)) {
                 Log.e(TAG, "New Blackboard Push received: " + json);
                 parseIntent = intent;
                 parseNewBlackboardItemJson(context, json);
-            }
             //Tile Change
-            json = new JSONObject(intent.getExtras().getString("com.parse.Tile"));
-            if(json!= null) {
+            }else if(channel.equals(TILE_CHANGE_CHANNEL)) {
                 Log.e(TAG, "Tile Change Push received: " + json);
-                parseIntent = intent;
                 parseTileChangeJson(json);
             }
 
@@ -78,13 +81,9 @@ public class PushNotificationReceiver extends ParsePushBroadcastReceiver {
             Gson gsonHandler = new GsonBuilder().create();
             Tile tile = gsonHandler.fromJson(json.toString(), Tile.class);
 
-            boolean isBackground = false;
-
-            if (!isBackground) {
-                tile = TransientManager.keepTransientTileData(tile);
-                tile.setSyncStatus(true);
-                DAOHelper.getTileDAO().update(tile);
-            }
+            tile = TransientManager.keepTransientTileData(tile);
+            tile.setSyncStatus(true);
+            DAOHelper.getTileDAO().update(tile);
         } catch (Exception e) {
             Log.e(TAG, "Push message json exception: " + e.getMessage());
         }

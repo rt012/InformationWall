@@ -44,6 +44,14 @@ public class ParseUtils {
                 Toast.makeText(InfoWallApplication.getInstance(), "Successfully subscribed to Parse!", Toast.LENGTH_SHORT);
             }
         });
+
+        ParsePush.subscribeInBackground(AppConfig.TILE_CHANNEL, new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                Log.e(TAG, "Successfully subscribed to Parse!");
+                Toast.makeText(InfoWallApplication.getInstance(), "Successfully subscribed to Parse!", Toast.LENGTH_SHORT);
+            }
+        });
     }
 
     public static void unregisterParse() {
