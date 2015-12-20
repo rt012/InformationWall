@@ -124,7 +124,7 @@ public class InfoWallApplication extends Application {
 
         //Tiles
         Dao<DBTile, Long> tileDao =  databaseHelper.getTileDAO();
-        tileDao.createIfNotExists(new DBTile("Black Board", R.drawable.blackboard_app_icon, BlackBoard.class.getName()));
+        tileDao.createIfNotExists(new DBTile("Blackboard", R.drawable.blackboard_app_icon, BlackBoard.class.getName()));
         tileDao.createIfNotExists(new DBTile("Example Tile 1", R.drawable.app_coming_soon, TileOverview.class.getName()));
         tileDao.createIfNotExists(new DBTile("Example Tile 2", R.drawable.app_coming_soon, TileOverview.class.getName()));
     }

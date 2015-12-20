@@ -5,8 +5,12 @@ package wipraktikum.informationwallandroidapp.ServerCommunication;
  */
 public class ServerURLManager {
     //Change Tile Size
-    public static final String CHANGE_TILE_SIZE_PARAM_URL = "http://myinfowall.ddns.net/apps/tileSettings.php";
+    public static final String CHANGE_TILE_PARAM_URL = "http://myinfowall.ddns.net/apps/tileSettings.php";
     public static final String CHANGE_TILE_SIZE_KEY = "EnumTileSize";
+    //Show blackboard tile on InformationWall
+    public static final String SHOW_BLACK_BOARD_PARAM_KEY = "activated";
+    public static final String SHOW_BLACK_BOARD_PARAM_ACTIVE = "active";
+    public static final String SHOW_BLACK_BOARD_PARAM_NOT_ACTIVE = "notactivated";
     //Update blackboard behaviour
     public static final String UPDATE_BLACKBOARD_BEHAVIOUR_URL =  "http://myinfowall.ddns.net/apps/blackboard/updateStream.php";
     //Live Preview BlackBoardItemCreate / Edit
@@ -17,10 +21,6 @@ public class ServerURLManager {
     public static final String OPEN_BLACK_BOARD_PARAM_KEY = "status";
     public static final String OPEN_BLACK_BOARD_PARAM_OPEN = "open";
     public static final String OPEN_BLACK_BOARD_PARAM_CLOSE = "close";
-    //Show blackboard tile on InformationWall
-    public static final String SHOW_BLACK_BOARD_PARAM_KEY = "activated";
-    public static final String SHOW_BLACK_BOARD_PARAM_ACTIVE = "active";
-    public static final String SHOW_BLACK_BOARD_PARAM_NOT_ACTIVE = "notactivated";
     //Get all blackboard items from the server
     public static final String LIVE_PREVIEW_BLACKBOARD_ITEM_KEY = "livePreviewBlackboardItem";
     //Create or update a blackboard item

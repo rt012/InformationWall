@@ -1,5 +1,9 @@
 package wipraktikum.informationwallandroidapp.Database.DAO.Tile;
 
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -91,6 +95,25 @@ public class TileDAO implements DAO {
             e.printStackTrace();
         }
         return ok;
+    }
+
+    public Tile queryTileForName (String tileName){
+        Tile tile = null;
+        try {
+            Dao<DBTile, Long> tileDAO = InfoWallApplication.getInstance().getDatabaseHelper().getTileDAO();
+            // get our query builder from the DAO
+            QueryBuilder<DBTile, Long> queryBuilder =
+                    tileDAO.queryBuilder();
+            queryBuilder.where().eq(DBTile.NAME_FIELD_NAME, tileName);
+            PreparedQuery<DBTile> preparedQuery = queryBuilder.prepare();
+            List<DBTile>  dbTiles = tileDAO.query(preparedQuery);
+            if(dbTiles != null && !dbTiles.isEmpty()) {
+                tile = mapDBTileToTile(dbTiles.get(0));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tile;
     }
 
     public Tile mapDBTileToTile(DBTile dbTile) {

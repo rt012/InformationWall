@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoard;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
+import wipraktikum.informationwallandroidapp.BusinessObject.Tile.Tile;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
 import wipraktikum.informationwallandroidapp.R;
@@ -41,13 +42,21 @@ public class PushNotificationReceiver extends ParsePushBroadcastReceiver {
             return;
 
         try {
-            JSONObject json = new JSONObject(intent.getExtras().getString("com.parse.Data"));
-
-            Log.e(TAG, "Push received: " + json);
-
-            parseIntent = intent;
-
-            parsePushJson(context, json);
+            JSONObject json = null;
+            //New Blackboard Item
+            json = new JSONObject(intent.getExtras().getString("com.parse.Data"));
+            if(json!= null) {
+                Log.e(TAG, "New Blackboard Push received: " + json);
+                parseIntent = intent;
+                parseNewBlackboardItemJson(context, json);
+            }
+            //Tile Change
+            json = new JSONObject(intent.getExtras().getString("com.parse.Tile"));
+            if(json!= null) {
+                Log.e(TAG, "Tile Change Push received: " + json);
+                parseIntent = intent;
+                parseTileChangeJson(json);
+            }
 
         } catch (JSONException e) {
             Log.e(TAG, "Push message json exception: " + e.getMessage());
@@ -64,13 +73,30 @@ public class PushNotificationReceiver extends ParsePushBroadcastReceiver {
         super.onPushOpen(context, intent);
     }
 
+    private void parseTileChangeJson(JSONObject json){
+        try {
+            Gson gsonHandler = new GsonBuilder().create();
+            Tile tile = gsonHandler.fromJson(json.toString(), Tile.class);
+
+            boolean isBackground = false;
+
+            if (!isBackground) {
+                tile = TransientManager.keepTransientTileData(tile);
+                tile.setSyncStatus(true);
+                DAOHelper.getTileDAO().update(tile);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Push message json exception: " + e.getMessage());
+        }
+    }
+
     /**
      * Parses the push notification json
      *
      * @param context
      * @param json
      */
-    private void parsePushJson(Context context, JSONObject json) {
+    private void parseNewBlackboardItemJson(Context context, JSONObject json) {
         try {
             Gson gsonHandler = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
             BlackBoardItem blackBoardItem = gsonHandler.fromJson(json.toString(), BlackBoardItem.class);

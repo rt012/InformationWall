@@ -3,6 +3,7 @@ package wipraktikum.informationwallandroidapp.ServerCommunication;
 import java.util.List;
 
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardAttachment;
+import wipraktikum.informationwallandroidapp.BusinessObject.Tile.Tile;
 import wipraktikum.informationwallandroidapp.BusinessObject.User.User;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 
@@ -35,5 +36,18 @@ public class TransientManager {
             }
         }
         return serverBlackboardAttachments;
+    }
+
+    public static Tile keepTransientTileData (Tile serverTile) {
+        if (serverTile != null) {
+            Tile clientTile = (Tile)
+                    DAOHelper.getTileDAO().queryTileForName(serverTile.getName());
+            if (clientTile != null) {
+                serverTile.setTileID(clientTile.getTileID());
+                serverTile.setDrawableId(clientTile.getDrawableId());
+                serverTile.setScreen(clientTile.getScreen());
+            }
+        }
+        return serverTile;
     }
 }

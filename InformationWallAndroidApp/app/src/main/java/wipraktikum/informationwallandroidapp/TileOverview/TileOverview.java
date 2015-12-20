@@ -142,12 +142,12 @@ public class TileOverview extends BaseActivity {
 
     private void changeTileSizeOnServer(DBTile.EnumTileSize tileSize){
         JSONObject jsonObject = JSONBuilder.createJSONFromParam(ServerURLManager.CHANGE_TILE_SIZE_KEY, tileSize);
-        new JsonManager().sendJson(ServerURLManager.CHANGE_TILE_SIZE_PARAM_URL, jsonObject);
+        new JsonManager().sendJson(ServerURLManager.CHANGE_TILE_PARAM_URL, jsonObject);
     }
 
     //Only Blackboard is currently working (--> No more Tiles at the moment)
     private void activateTileOnServer(String actionParam){
         JSONObject jsonObject = JSONBuilder.createJSONFromParam(ServerURLManager.SHOW_BLACK_BOARD_PARAM_KEY, actionParam);
-        new JsonManager().sendJson(ServerURLManager.UPDATE_BLACKBOARD_BEHAVIOUR_URL, jsonObject);
+        new JsonManager().sendJson(ServerURLManager.CHANGE_TILE_PARAM_URL, jsonObject);
     }
 }

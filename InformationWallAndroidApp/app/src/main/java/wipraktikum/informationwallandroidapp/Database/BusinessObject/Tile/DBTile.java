@@ -10,7 +10,7 @@ import com.j256.ormlite.table.DatabaseTable;
 public class DBTile {
     @DatabaseField(generatedId = true)
     private long mTileID;
-    @DatabaseField(unique = true)
+    @DatabaseField(unique = true, columnName = NAME_FIELD_NAME)
     private String mName;
     @DatabaseField
     private int mDrawableId;
@@ -22,6 +22,8 @@ public class DBTile {
     private EnumTileSize mTileSize;
     @DatabaseField
     private boolean mSyncStatus;
+
+    public static final String NAME_FIELD_NAME = "Name";
 
     public DBTile(){}
 
