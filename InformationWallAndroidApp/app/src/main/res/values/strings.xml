@@ -48,6 +48,8 @@
     <string name="black_board_description">Description</string>
     <string name="black_board_no_description_information">No description available</string>
     <string name="black_board_last_edited">Edited:</string>
+    <!-- Blackboard Overview -->
+    <string name="blackboard_overview_failed_download">Failed to download file</string>
     <!-- BlackBoard Add Item -->
     <string name="menu_black_board_save_item">Save</string>
     <string name="black_board_add_item_title">Title</string>

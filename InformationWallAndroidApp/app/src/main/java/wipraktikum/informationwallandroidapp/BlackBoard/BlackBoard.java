@@ -197,7 +197,7 @@ public class BlackBoard extends BaseActivity{
                 @Override
                 public void onSaveBlackBoardItem(boolean isSuccessful) {
                     if (!isSuccessful) {
-                        Snackbar.make(getRootView(), R.string.black_board_add_item_snackbar_connection_error, Snackbar.LENGTH_LONG).show();
+                        showSnackBar(R.string.black_board_add_item_snackbar_connection_error);
                     }
                     onSupportNavigateUp();
                 }
@@ -213,6 +213,10 @@ public class BlackBoard extends BaseActivity{
                 }
             });
         }
+    }
+
+    public void showSnackBar(int message){
+        Snackbar.make(getRootView(), message, Snackbar.LENGTH_LONG).show();
     }
 
     public void showFab(boolean isVisible){

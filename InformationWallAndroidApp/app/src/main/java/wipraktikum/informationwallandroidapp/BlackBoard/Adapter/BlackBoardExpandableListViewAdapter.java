@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoard;
 import wipraktikum.informationwallandroidapp.BlackBoard.CustomView.BlackBoardAttachmentView;
 import wipraktikum.informationwallandroidapp.BlackBoard.CustomView.BlackBoardContactView;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardAttachment;
@@ -187,6 +188,14 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
             downloadAttachments.add(convertView.getItem());
             //Start Download
             final String filePath = DownloadManager.getInstance().downloadFile(attachment.getRemoteDataPath());
+
+            //Something went wrong downloading the file
+            if (filePath == null){
+                convertView.showProgressbar(false);
+                downloadAttachments.remove(convertView.getItem());
+                ((BlackBoard) context).showSnackBar(R.string.blackboard_overview_failed_download);
+            }
+
             context.registerReceiver(new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {

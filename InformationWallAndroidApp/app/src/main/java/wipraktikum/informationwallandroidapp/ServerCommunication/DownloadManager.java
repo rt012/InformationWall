@@ -27,6 +27,7 @@ public class DownloadManager {
     }
 
     public String downloadFile(String downloadUrl) {
+        if (!FileHelper.getInstance().isURL(downloadUrl)) return null;
         final String fileName = FileHelper.getInstance().getFileName(downloadUrl);
 
         String file_url = downloadUrl;
