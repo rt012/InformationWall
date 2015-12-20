@@ -23,6 +23,20 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
+    <!-- Material Design Title -->
+    <style name="CompatMaterialTitle">
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+    </style>
+
+    <!-- Material Design Caption -->
+    <style name="CompatMaterialCaption">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
+    </style>
+
     <!-- Black Board Item Add -->
     <style name="BlackBoardAddItemTextView">
         <item name="android:layout_width">@dimen/black_board_add_item_label</item>
