@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:showIn="@layout/activity_blackboard"
-    tools:context=".Blackboard.BlackBoardOverview">
+    tools:context=".BlackBoard.BlackBoardOverview">
 
     <ExpandableListView
         android:id="@+id/ex_lv_black_board"

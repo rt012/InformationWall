@@ -13,7 +13,7 @@ import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
 
-import wipraktikum.informationwallandroidapp.Blackboard.BlackBoard;
+import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoard;
 import wipraktikum.informationwallandroidapp.BusinessObject.User.User;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.Tile.DBTile;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;

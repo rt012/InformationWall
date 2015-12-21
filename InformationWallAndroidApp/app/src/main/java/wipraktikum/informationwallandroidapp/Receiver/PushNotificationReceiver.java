@@ -11,7 +11,7 @@ import com.parse.ParsePushBroadcastReceiver;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import wipraktikum.informationwallandroidapp.Blackboard.BlackBoard;
+import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoard;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
 import wipraktikum.informationwallandroidapp.BusinessObject.Tile.Tile;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
