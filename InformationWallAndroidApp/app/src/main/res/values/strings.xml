@@ -37,8 +37,11 @@
 
     <string name="dialog_fire_missiles">Test</string>
     <string name="title_activity_black_board">BlackBoard</string>
+    <!-- Feed Reader -->
+    <string name="activity_feed_reader_title">Feed Reader</string>
+    <string name="search_rss_feed">RSS Search</string>
     <!--- BlackBoard  -->
-    <string name="fragment_black_board_title">Black Board</string>
+    <string name="fragment_black_board_title">Blackboard</string>
     <string name="fragment_black_board_add_item_title">New Entry</string>
     <string name="fragment_black_board_edit_item_title">Edit Entry</string>
 

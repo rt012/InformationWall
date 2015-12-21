@@ -23,7 +23,7 @@ public class JsonManager {
     final String VOLLEY_TAG = "Volley Log";
 
     public void sendJson(String url, JSONObject jsonObject) {
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST, url,  jsonObject,
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, url,  jsonObject,
                 new Response.Listener<JSONObject>() {
 
                     @Override
@@ -54,23 +54,23 @@ public class JsonManager {
         JsonArrayRequest jsonObjReq = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {
 
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        VolleyLog.d(VOLLEY_TAG, "Success: " + response.toString());
-                        if(mOnArrayResponseListener != null){
-                            mOnArrayResponseListener.OnResponse(response);
-                        }
-
+                @Override
+                public void onResponse(JSONArray response) {
+                    VolleyLog.d(VOLLEY_TAG, "Success: " + response.toString());
+                    if(mOnArrayResponseListener != null){
+                        mOnArrayResponseListener.OnResponse(response);
                     }
-                }, new Response.ErrorListener() {
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(VOLLEY_TAG, "Error: " + error.getMessage());
-                if(mOnErrorListener != null){
-                    mOnErrorListener.OnErrorResponse(error);
                 }
-            }
+            }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    VolleyLog.d(VOLLEY_TAG, "Error: " + error.getMessage());
+                    if(mOnErrorListener != null){
+                        mOnErrorListener.OnErrorResponse(error);
+                    }
+                }
         }) {
         };
 

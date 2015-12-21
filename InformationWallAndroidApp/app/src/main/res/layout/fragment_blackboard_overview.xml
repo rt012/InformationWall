@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context="wipraktikum.informationwallandroidapp.BlackBoard.BlackBoard">
+    tools:context="wipraktikum.informationwallandroidapp.Blackboard.BlackBoard">
 
     <include layout="@layout/content_blackboard_overview" />
 

@@ -3,17 +3,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cl_blackboard_layout"
+    android:id="@+id/cl_feed_reader_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".Blackboard.BlackBoard">
+    tools:context=".FeedReader.FeedReader">
 
     <include layout="@layout/custom_app_bar_layout"></include>
 
+    <include layout="@layout/content_feed_reader"></include>
+
     <!-- Fragment Container-->
     <FrameLayout
-        android:id="@+id/black_board_fragment_container"
+        android:id="@+id/feed_reader_fragment_container"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="?attr/actionBarSize">

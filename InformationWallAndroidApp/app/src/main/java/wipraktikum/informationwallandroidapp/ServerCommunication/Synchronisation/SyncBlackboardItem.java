@@ -104,9 +104,6 @@ public class SyncBlackboardItem implements JsonManager.OnObjectResponseListener,
         for(BlackBoardItem blackBoardItem : editedBlackBoardList) {
             blackBoardItemDAO.createOrUpdate(blackBoardItem);
         }
-
-
-
     }
 
     private BlackBoardItem keepTransientUserData(BlackBoardItem serverBlackBoardItem) {
