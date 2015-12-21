@@ -64,7 +64,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".FeedReader.FeedReader"
+            android:name=".Feedreader.FeedReader"
             android:label="@string/activity_feed_reader_title"
             android:parentActivityName=".TileOverview.TileOverview"
             android:theme="@style/AppTheme.NoActionBar" >
