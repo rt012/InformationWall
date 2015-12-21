@@ -70,8 +70,7 @@ public class FileHelper {
     public DBBlackBoardAttachment.DataType getBlackBoardAttachmentDataType(String fullFileName){
         String extension = getFileExtension(fullFileName);
 
-        switch (extension) {
-            case "PDF":
+        switch (extension.toLowerCase()) {
             case "pdf":
                 return DBBlackBoardAttachment.DataType.PDF;
             case "png":
