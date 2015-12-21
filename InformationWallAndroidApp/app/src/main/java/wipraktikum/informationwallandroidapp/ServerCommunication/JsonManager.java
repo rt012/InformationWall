@@ -23,7 +23,7 @@ public class JsonManager {
     final String VOLLEY_TAG = "Volley Log";
 
     public void sendJson(String url, JSONObject jsonObject) {
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, url,  jsonObject,
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST, url,  jsonObject,
                 new Response.Listener<JSONObject>() {
 
                     @Override
@@ -44,6 +44,34 @@ public class JsonManager {
                         }
                     }
                 }) {
+        };
+
+        // Adding request to request queue
+        InfoWallApplication.getInstance().addToRequestQueue(jsonObjReq, "Test");
+    }
+
+    public void getJson(String url) {
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, url,  null,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        VolleyLog.d(VOLLEY_TAG, "Success: " + response.toString());
+                        if(mOnObjectResponseListener != null){
+                            mOnObjectResponseListener.OnResponse(response);
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(VOLLEY_TAG, "Error: " + error.getMessage());
+                if(mOnErrorListener != null){
+                    mOnErrorListener.OnErrorResponse(error);
+                }
+            }
+        }) {
         };
 
         // Adding request to request queue
