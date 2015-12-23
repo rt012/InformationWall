@@ -141,7 +141,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
             }
             setSelectedLayout();
         }
-        //Received Intent Data
+        //Received Intent Data from other App
         if (getArguments() != null && getArguments().getStringArrayList(ATTACHMENT_Path_LIST_TAG) != null) {
             List<String> attachmentPaths = getArguments().getStringArrayList(ATTACHMENT_Path_LIST_TAG);
             for (String attachmentPath : attachmentPaths){

@@ -18,6 +18,7 @@ import wipraktikum.informationwallandroidapp.InfoWallApplication;
 public class FileHelper {
     public static int PICK_ATTACHMENT_REQUEST = 1;
     private final String YOUTUBE_URL = "www.youtube.com";
+    private final String YOUTUBE_SHORT_URL = "youtu.be";
 
     private static FileHelper instance = null;
 
@@ -85,7 +86,7 @@ public class FileHelper {
                 return DBBlackBoardAttachment.DataType.VIDEO;
         }
         //Check if fileName is a URL and act accordingly
-        if (fullFileName.toLowerCase().contains(YOUTUBE_URL)){
+        if (fullFileName.toLowerCase().contains(YOUTUBE_URL) || fullFileName.toLowerCase().contains(YOUTUBE_SHORT_URL)){
             return DBBlackBoardAttachment.DataType.YOUTUBE;
         }
 

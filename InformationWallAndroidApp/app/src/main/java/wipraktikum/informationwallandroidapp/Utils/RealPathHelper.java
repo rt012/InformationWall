@@ -40,7 +40,12 @@ public class RealPathHelper{
         if (FileHelper.getInstance().exists(file.getAbsolutePath())){
             realPath = file.getAbsolutePath();
         }else {
-            realPath = getRealPathFromUri(data);
+            //Http URI
+            if (data.getScheme().equals("https") || data.getScheme().equals("http")){
+                realPath = data.getScheme() + "://" + data.getHost() + "/" + data.getPath();
+            }else {
+                realPath = getRealPathFromUri(data);
+            }
         }
         return realPath;
     }

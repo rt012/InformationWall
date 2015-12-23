@@ -74,6 +74,7 @@ public class BlackBoard extends BaseActivity{
         if(InfoWallApplication.getCurrentUser() == null) {
             ActivityHelper.openLoginActivity(this);
             return;
+            //Send Data from other Application
         }else if(InfoWallApplication.getCurrentUser().getUserGroup().canWrite()) {
             if (Intent.ACTION_SEND.equals(action) && type != null) {
                 prepareOpenBlackboardAddItemWithArguments(createAttachmentUriFromIntent(false));
@@ -146,8 +147,13 @@ public class BlackBoard extends BaseActivity{
         if (isMultiple){
             attachmentUris = getIntent().getParcelableArrayListExtra(Intent.EXTRA_STREAM);
         }else{
-            Uri imageUri = (Uri) getIntent().getParcelableExtra(Intent.EXTRA_STREAM);
-            attachmentUris.add(imageUri);
+            Uri uri = (Uri) getIntent().getParcelableExtra(Intent.EXTRA_STREAM);
+
+            if (attachmentUris.isEmpty()){
+                uri = Uri.parse(getIntent().getExtras().getString(Intent.EXTRA_TEXT));
+            }
+
+            attachmentUris.add(uri);
         }
 
         return attachmentUris;
@@ -161,12 +167,15 @@ public class BlackBoard extends BaseActivity{
             String attachmentPath  = RealPathHelper.getInstance().getRealPathFromURI(uri);
             attachmentPathList.add(attachmentPath);
         }
-        params.putStringArrayList(BlackBoardAddItem.ATTACHMENT_Path_LIST_TAG, attachmentPathList);
 
-        BlackBoardAddItem blackboardAddItem = new BlackBoardAddItem();
-        blackboardAddItem.setArguments(params);
+        if (!attachmentPathList.isEmpty()) {
+            params.putStringArrayList(BlackBoardAddItem.ATTACHMENT_Path_LIST_TAG, attachmentPathList);
 
-        openFragment(blackboardAddItem, true);
+            BlackBoardAddItem blackboardAddItem = new BlackBoardAddItem();
+            blackboardAddItem.setArguments(params);
+
+            openFragment(blackboardAddItem, true);
+        }
     }
 
     public void openBlackBoardOnServer(String actionParam) {
