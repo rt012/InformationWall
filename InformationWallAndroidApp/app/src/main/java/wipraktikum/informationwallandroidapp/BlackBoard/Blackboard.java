@@ -30,7 +30,7 @@ import wipraktikum.informationwallandroidapp.Utils.RealPathHelper;
 /**
  * Created by Eric Schmidt on 30.10.2015.
  */
-public class BlackBoard extends BaseActivity{
+public class Blackboard extends BaseActivity{
     private OnActivityResultListener mOnActivityResultListener = null;
     private OnLayoutSelectionListener mOnLayoutSelectionListener = null;
 
