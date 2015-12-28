@@ -3,21 +3,15 @@ package wipraktikum.informationwallandroidapp.Feedreader;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ListView;
-
-import java.util.ArrayList;
 
 import wipraktikum.informationwallandroidapp.BaseActivity;
-import wipraktikum.informationwallandroidapp.BusinessObject.FeedReader.Feed;
 import wipraktikum.informationwallandroidapp.BusinessObject.Tile.Tile;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
-import wipraktikum.informationwallandroidapp.Feedreader.Adapter.FeedReaderListAdapter;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
 import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
@@ -28,17 +22,11 @@ import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
 public class Feedreader extends BaseActivity {
     private FloatingActionButton fab = null;
     private View mRootView = null;
-    private ListView rssList = null;
-    private EditText rssSearch = null;
-
-    RSSSearch rssSearchManager = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed_reader);
-
-        rssSearchManager = new RSSSearch();
 
         initViews();
         showFab();
@@ -56,40 +44,9 @@ public class Feedreader extends BaseActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                openFragment(new FeedReaderAddFeed(), true);
             }
         });
-
-        rssList = (ListView) findViewById(R.id.feed_reader_rss_list);
-
-        rssSearch = (EditText) findViewById(R.id.input_rss_search);
-        rssSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() > 3) {
-                    rssSearchManager.searchRSSByName(s.toString());
-                    rssSearchManager.setOnSearchResponseReceiveListener(new RSSSearch.OnSearchResponseReceiveListener() {
-                        @Override
-                        public void OnSearchResponse(ArrayList<Feed> response) {
-                            fillRSSList(response);
-                        }
-                    });
-                }else{
-                    fillRSSList(new ArrayList<Feed>());
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-    }
-
-    private void fillRSSList(ArrayList<Feed> results){
-        rssList.setAdapter(new FeedReaderListAdapter(this, 0, results));
     }
 
     private void handleIntentData(){
@@ -112,6 +69,14 @@ public class Feedreader extends BaseActivity {
         }else{
             fab.hide();
         }
+    }
+
+    public void openFragment(Fragment fragment, boolean addToBackStack){
+        FragmentTransaction fragmentTransaction =  getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.feed_reader_fragment_container, fragment,
+                fragment.getClass().getSimpleName());
+        if (addToBackStack)fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commitAllowingStateLoss();
     }
 
 }
