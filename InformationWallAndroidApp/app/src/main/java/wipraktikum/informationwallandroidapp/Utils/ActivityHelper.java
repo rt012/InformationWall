@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import wipraktikum.informationwallandroidapp.BlackBoard.Blackboard;
-import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoardItemLayoutSelection;
+import wipraktikum.informationwallandroidapp.Blackboard.Blackboard;
+import wipraktikum.informationwallandroidapp.Blackboard.BlackBoardItemLayoutSelection;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
 import wipraktikum.informationwallandroidapp.Account.AccountActivity;
 import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;

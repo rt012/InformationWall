@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".BlackBoard.BlackBoardItemLayoutSelection">
+    tools:context=".Blackboard.BlackBoardItemLayoutSelection">
 
     <include layout="@layout/content_blackboard_layout_selection"></include>
 
