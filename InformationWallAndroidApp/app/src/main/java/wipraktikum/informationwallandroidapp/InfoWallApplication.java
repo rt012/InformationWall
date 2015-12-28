@@ -13,7 +13,7 @@ import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
 
-import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoard;
+import wipraktikum.informationwallandroidapp.BlackBoard.Blackboard;
 import wipraktikum.informationwallandroidapp.BusinessObject.User.User;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.Tile.DBTile;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
@@ -126,7 +126,7 @@ public class InfoWallApplication extends Application {
 
         //Tiles
         Dao<DBTile, Long> tileDao =  databaseHelper.getTileDAO();
-        tileDao.createIfNotExists(new DBTile("Blackboard", R.drawable.blackboard_app_icon, BlackBoard.class.getName()));
+        tileDao.createIfNotExists(new DBTile("Blackboard", R.drawable.blackboard_app_icon, Blackboard.class.getName()));
         tileDao.createIfNotExists(new DBTile("Feed Reader", R.drawable.feed_reader_app_icon, Feedreader.class.getName()));
         tileDao.createIfNotExists(new DBTile("Example Tile 2", R.drawable.app_coming_soon, TileOverview.class.getName()));
     }

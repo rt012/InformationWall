@@ -64,8 +64,8 @@ import wipraktikum.informationwallandroidapp.Utils.StringHelper;
 /**
  * Created by Eric Schmidt on 30.10.2015.
  */
-public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivityResultListener, TextWatcher,
-        JsonManager.OnObjectResponseListener, JsonManager.OnErrorListener, BlackBoard.OnLayoutSelectionListener {
+public class BlackBoardAddItem extends Fragment implements Blackboard.OnActivityResultListener, TextWatcher,
+        JsonManager.OnObjectResponseListener, JsonManager.OnErrorListener, Blackboard.OnLayoutSelectionListener {
     public static final String BLACK_BOARD_ITEM_ID_TAG = "blackBoardItemID";
     public static final String ATTACHMENT_Path_LIST_TAG = "attachmentList";
     private static final String BLACK_BOARD_ATTACHMENT_SAVED_INSTANCE_TAG = "blackBoardAttachmentJSON";
@@ -114,8 +114,8 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
 
         blackBoardItemDAO = DAOHelper.getBlackBoardItemDAO();
 
-        ((BlackBoard)getActivity()).setOnActivityResultListener(this);
-        ((BlackBoard)getActivity()).setOnLayoutSelectionListener(this);
+        ((Blackboard)getActivity()).setOnActivityResultListener(this);
+        ((Blackboard)getActivity()).setOnLayoutSelectionListener(this);
 
         setRetainInstance(true);
 
@@ -171,7 +171,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
     }
 
     private void showFab(){
-        ((BlackBoard)getActivity()).showFab(false);
+        ((Blackboard)getActivity()).showFab(false);
     }
 
     private void initViews(View view){
@@ -279,7 +279,7 @@ public class BlackBoardAddItem extends Fragment implements BlackBoard.OnActivity
             blackBoardItemLayoutSelection.setArguments(params);
         }
 
-        ((BlackBoard) getActivity()).openFragment(blackBoardItemLayoutSelection, true);
+        ((Blackboard) getActivity()).openFragment(blackBoardItemLayoutSelection, true);
     }
 
     private void openWebAttachmentInputDialog(){

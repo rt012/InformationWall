@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoard;
+import wipraktikum.informationwallandroidapp.BlackBoard.Blackboard;
 import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoardItemLayoutSelection;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
 import wipraktikum.informationwallandroidapp.Account.AccountActivity;
@@ -22,7 +22,7 @@ public class ActivityHelper {
     }
 
     public static void openBlackboardActivity(Context context) {
-        Intent intent = new Intent(context, BlackBoard.class);
+        Intent intent = new Intent(context, Blackboard.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }

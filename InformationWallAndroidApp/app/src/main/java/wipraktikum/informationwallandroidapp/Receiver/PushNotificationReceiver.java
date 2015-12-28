@@ -11,7 +11,7 @@ import com.parse.ParsePushBroadcastReceiver;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoard;
+import wipraktikum.informationwallandroidapp.BlackBoard.Blackboard;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
 import wipraktikum.informationwallandroidapp.BusinessObject.Tile.Tile;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
@@ -104,7 +104,7 @@ public class PushNotificationReceiver extends ParsePushBroadcastReceiver {
             boolean isBackground = false;
 
             if (!isBackground) {
-                Intent resultIntent = new Intent(context, BlackBoard.class);
+                Intent resultIntent = new Intent(context, Blackboard.class);
                 blackBoardItem.setUser(TransientManager.keepTransientUserData(blackBoardItem.getUser()));
                 blackBoardItem.setBlackBoardAttachment(TransientManager.keepTransientAttachmentList(blackBoardItem.getBlackBoardAttachment()));
                 blackBoardItem.setSyncStatus(true);

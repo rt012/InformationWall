@@ -71,7 +71,7 @@ public class BlackBoardOverview extends Fragment implements BlackboardItemDialog
     }
 
     private void showFab(){
-        ((BlackBoard)getActivity()).showFab(true);
+        ((Blackboard)getActivity()).showFab(true);
     }
 
     private void initViews(View view){
@@ -164,7 +164,7 @@ public class BlackBoardOverview extends Fragment implements BlackboardItemDialog
         BlackBoardAddItem blackBoardAddItem = new BlackBoardAddItem();
         blackBoardAddItem.setArguments(params);
 
-        ((BlackBoard)getActivity()).openFragment(blackBoardAddItem, true);
+        ((Blackboard)getActivity()).openFragment(blackBoardAddItem, true);
     }
 
     @Override
