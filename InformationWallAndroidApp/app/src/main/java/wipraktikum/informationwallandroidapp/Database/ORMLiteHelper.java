@@ -14,6 +14,7 @@ import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.Contact.DBContact;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.Contact.DBContactAddress;
+import wipraktikum.informationwallandroidapp.Database.BusinessObject.FeedReader.DBFeed;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.Tile.DBTile;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.User.DBUser;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.User.DBUserGroup;
@@ -35,6 +36,7 @@ public class ORMLiteHelper extends OrmLiteSqliteOpenHelper{
     private Dao<DBContactAddress, Long> contactAddressDAO;
     private Dao<DBUser, Long> userDAO;
     private Dao<DBUserGroup, Long> userGroupDAO;
+    private Dao<DBFeed, Long> feedReaderDAO;
 
     public ORMLiteHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -54,6 +56,7 @@ public class ORMLiteHelper extends OrmLiteSqliteOpenHelper{
             TableUtils.createTable(connectionSource, DBContactAddress.class);
             TableUtils.createTable(connectionSource, DBUser.class);
             TableUtils.createTable(connectionSource, DBUserGroup.class);
+            TableUtils.createTable(connectionSource, DBFeed.class);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -74,6 +77,7 @@ public class ORMLiteHelper extends OrmLiteSqliteOpenHelper{
             TableUtils.dropTable(connectionSource, DBContactAddress.class, false);
             TableUtils.dropTable(connectionSource, DBUser.class, false);
             TableUtils.dropTable(connectionSource, DBUserGroup.class, false);
+            TableUtils.dropTable(connectionSource, DBFeed.class, false);
             onCreate(database, connectionSource);
 
         } catch (SQLException e) {
@@ -95,6 +99,22 @@ public class ORMLiteHelper extends OrmLiteSqliteOpenHelper{
             e.printStackTrace();
         }
         return tileDAO;
+    }
+
+    /**
+     * Returns an instance of the Tile data access object
+     * @return
+     * @throws SQLException
+     */
+    public Dao<DBFeed, Long> getFeedReaderDAO() throws SQLException {
+        try {
+            if (feedReaderDAO == null) {
+                feedReaderDAO = getDao(DBFeed.class);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return feedReaderDAO;
     }
 
     /**

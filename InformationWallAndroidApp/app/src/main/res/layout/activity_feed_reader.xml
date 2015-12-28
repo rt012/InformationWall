@@ -11,8 +11,6 @@
 
     <include layout="@layout/custom_app_bar_layout"></include>
 
-    <include layout="@layout/fragment_feed_reader"></include>
-
     <!-- Fragment Container-->
     <FrameLayout
         android:id="@+id/feed_reader_fragment_container"

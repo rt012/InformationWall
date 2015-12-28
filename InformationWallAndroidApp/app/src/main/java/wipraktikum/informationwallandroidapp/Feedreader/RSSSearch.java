@@ -54,6 +54,7 @@ public class RSSSearch {
                 feed.setFeed(feedJsonObject.getString("feedId"));
                 feed.setWebsite(feedJsonObject.getString("website"));
                 feed.setDescription(feedJsonObject.getString("description"));
+                feed.setImageURL(feedJsonObject.getString("visualUrl"));
 
                 feedList.add(feed);
             }

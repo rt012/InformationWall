@@ -4,6 +4,7 @@ import wipraktikum.informationwallandroidapp.Database.DAO.BlackBoard.BlackBoardA
 import wipraktikum.informationwallandroidapp.Database.DAO.BlackBoard.BlackBoardItemDAO;
 import wipraktikum.informationwallandroidapp.Database.DAO.Contact.ContactAddressDAO;
 import wipraktikum.informationwallandroidapp.Database.DAO.Contact.ContactDAO;
+import wipraktikum.informationwallandroidapp.Database.DAO.FeedReader.FeedReaderDAO;
 import wipraktikum.informationwallandroidapp.Database.DAO.Tile.TileDAO;
 import wipraktikum.informationwallandroidapp.Database.DAO.User.UserDAO;
 import wipraktikum.informationwallandroidapp.Database.DAO.User.UserGroupDAO;
@@ -35,4 +36,9 @@ public class DAOHelper {
     public static UserDAO getUserDAO() {return UserDAO.getInstance();}
 
     public static UserGroupDAO getUserGroupDAO() {return UserGroupDAO.getInstance();}
+
+    public static FeedReaderDAO getFeedReaderDAO(){
+        return FeedReaderDAO.getInstance();
+    }
+
 }

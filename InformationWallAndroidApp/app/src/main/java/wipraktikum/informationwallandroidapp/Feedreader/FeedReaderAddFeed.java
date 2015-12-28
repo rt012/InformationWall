@@ -33,6 +33,7 @@ public class FeedReaderAddFeed extends Fragment {
 
         setRetainInstance(true);
 
+        ((FeedReader) getActivity()).showFab(false);
         rssSearchManager = new RSSSearch();
 
         initViews(view);

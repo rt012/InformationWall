@@ -1,15 +1,29 @@
-package wipraktikum.informationwallandroidapp.BusinessObject.FeedReader;
+package wipraktikum.informationwallandroidapp.Database.BusinessObject.FeedReader;
+
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
 /**
- * Created by Eric Schmidt on 21.12.2015.
+ * Created by Eric Schmidt on 28.12.2015.
  */
-public class Feed {
+@DatabaseTable
+public class DBFeed {
+    @DatabaseField(id = true)
     private long mFeedReaderID;
+    @DatabaseField
     private String mTitle;
+    @DatabaseField
     private String mWebsite;
+    @DatabaseField
     private String mDescription;
+    @DatabaseField
     private String mFeed;
+    @DatabaseField
     private String mImageURL;
+    @DatabaseField(columnName = SYNCSTATUS_FIELD_NAME)
+    private boolean mSyncStatus;
+
+    public static final String SYNCSTATUS_FIELD_NAME = "syncStatus";
 
     public long getFeedReaderID() {
         return mFeedReaderID;

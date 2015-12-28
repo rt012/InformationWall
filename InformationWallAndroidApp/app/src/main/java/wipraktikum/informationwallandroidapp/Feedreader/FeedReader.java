@@ -29,7 +29,7 @@ public class FeedReader extends BaseActivity {
         setContentView(R.layout.activity_feed_reader);
 
         initViews();
-        showFab();
+        showFab(true);
         handleIntentData();
     }
 
@@ -62,10 +62,14 @@ public class FeedReader extends BaseActivity {
         }
     }
 
-    public void showFab(){
+    public void showFab(boolean showFab){
         //By User
         if (InfoWallApplication.getCurrentUser().getUserGroup().canWrite()) {
-            fab.show();
+            if(showFab) {
+                fab.show();
+            }else{
+                fab.hide();
+            }
         }else{
             fab.hide();
         }
