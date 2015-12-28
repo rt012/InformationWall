@@ -19,7 +19,7 @@ import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
 /**
  * Created by Eric Schmidt on 21.12.2015.
  */
-public class Feedreader extends BaseActivity {
+public class FeedReader extends BaseActivity {
     private FloatingActionButton fab = null;
     private View mRootView = null;
 
