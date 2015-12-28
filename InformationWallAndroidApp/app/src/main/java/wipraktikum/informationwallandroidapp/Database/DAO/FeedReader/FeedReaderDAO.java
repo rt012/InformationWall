@@ -57,7 +57,7 @@ public class FeedReaderDAO  implements DAO{
     public boolean create(Object object) {
         boolean ok = false;
         try {
-            InfoWallApplication.getInstance().getDatabaseHelper().getFeedReaderDAO().createOrUpdate(mapFeedToDBFeed((Feed) object));
+            InfoWallApplication.getInstance().getDatabaseHelper().getFeedReaderDAO().create(mapFeedToDBFeed((Feed) object));
             ok = true;
         } catch (SQLException e) {
             e.printStackTrace();

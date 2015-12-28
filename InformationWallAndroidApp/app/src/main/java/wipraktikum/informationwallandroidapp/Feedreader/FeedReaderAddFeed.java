@@ -48,7 +48,7 @@ public class FeedReaderAddFeed extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Feed feed = (Feed) rssList.getAdapter().getItem(position);
-                DAOHelper.getFeedReaderDAO().createOrUpdate(feed);
+                DAOHelper.getFeedReaderDAO().create(feed);
                 ((FeedReader) getActivity()).onSupportNavigateUp();
             }
         });
