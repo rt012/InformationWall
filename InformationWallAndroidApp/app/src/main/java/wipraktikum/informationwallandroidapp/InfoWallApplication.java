@@ -18,7 +18,7 @@ import wipraktikum.informationwallandroidapp.BusinessObject.User.User;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.Tile.DBTile;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.Database.ORMLiteHelper;
-import wipraktikum.informationwallandroidapp.Feedreader.FeedReader;
+import wipraktikum.informationwallandroidapp.FeedReader.FeedReader;
 import wipraktikum.informationwallandroidapp.ServerCommunication.Synchronisation.SyncManager;
 import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
 import wipraktikum.informationwallandroidapp.Utils.ActivityHelper;
