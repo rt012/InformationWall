@@ -28,7 +28,7 @@ public class FeedReaderAddFeed extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup viewGroup, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_feed_reader, viewGroup, false);
+        View view = inflater.inflate(R.layout.fragment_feed_reader_search, viewGroup, false);
         setHasOptionsMenu(true);
 
         setRetainInstance(true);
