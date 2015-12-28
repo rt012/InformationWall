@@ -31,6 +31,28 @@ public class FeedReader extends BaseActivity {
         initViews();
         showFab(true);
         handleIntentData();
+
+        openFragment(new FeedReaderOverview(), false);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0){
+            getSupportFragmentManager().popBackStack();
+
+            return true;
+        }else {
+            return super.onSupportNavigateUp();
+        }
+    }
+
+    @Override
+    public void onBackPressed(){
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0){
+            getSupportFragmentManager().popBackStack();
+        }else {
+            super.onBackPressed();
+        }
     }
 
     private void initViews(){

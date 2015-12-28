@@ -7,12 +7,14 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
 import wipraktikum.informationwallandroidapp.BusinessObject.FeedReader.Feed;
+import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.Feedreader.Adapter.FeedReaderListAdapter;
 import wipraktikum.informationwallandroidapp.R;
 
@@ -20,7 +22,6 @@ import wipraktikum.informationwallandroidapp.R;
  * Created by Eric Schmidt on 28.12.2015.
  */
 public class FeedReaderAddFeed extends Fragment {
-    private View mRootView = null;
     private ListView rssList = null;
     private EditText rssSearch = null;
 
@@ -43,6 +44,15 @@ public class FeedReaderAddFeed extends Fragment {
 
     private void initViews(View view){
         rssList = (ListView) view.findViewById(R.id.feed_reader_rss_list);
+        rssList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Feed feed = (Feed) rssList.getAdapter().getItem(position);
+                DAOHelper.getFeedReaderDAO().createOrUpdate(feed);
+                ((FeedReader) getActivity()).onSupportNavigateUp();
+            }
+        });
+
 
         rssSearch = (EditText) view.findViewById(R.id.input_rss_search);
         rssSearch.addTextChangedListener(new TextWatcher() {

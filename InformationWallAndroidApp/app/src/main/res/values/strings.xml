@@ -40,6 +40,7 @@
     <!-- Feed Reader -->
     <string name="activity_feed_reader_title">Feed Reader</string>
     <string name="search_rss_feed">RSS Search</string>
+    <string name="feed_reader_no_feeds">No RSS Feeds selected</string>
     <!--- BlackBoard  -->
     <string name="fragment_black_board_title">Blackboard</string>
     <string name="fragment_black_board_add_item_title">New Entry</string>
