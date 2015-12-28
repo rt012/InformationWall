@@ -23,6 +23,7 @@ public class FeedReaderOverview extends Fragment {
         setHasOptionsMenu(true);
 
         setRetainInstance(true);
+        initViews(view);
         ((FeedReader) getActivity()).showFab(true);
 
         return view;
