@@ -71,6 +71,9 @@ public class FeedReaderListAdapter extends ArraySwipeAdapter {
             }
         });
 
+        ImageView editFeed = (ImageView) convertView.findViewById(R.id.edit_feed);
+        editFeed.setVisibility(View.GONE);
+
         return convertView;
     }
 
