@@ -7,6 +7,10 @@ public class ServerURLManager {
     //Change Tile Size
     public static final String CHANGE_TILE_PARAM_URL = "http://myinfowall.ddns.net/apps/tileSettings.php";
     public static final String CHANGE_TILE_SIZE_KEY = "EnumTileSize";
+    //Create a new Feed
+    public static final String NEW_FEED_KEY = "http://myinfowall.ddns.net/apps/feed/addFeed.php";
+    //Create a new Feed
+    public static final String DELETE_FEED_KEY = "http://myinfowall.ddns.net/apps/feed/deleteFeed.php";
     //Show blackboard tile on InformationWall
     public static final String SHOW_BLACK_BOARD_PARAM_KEY = "activated";
     public static final String SHOW_BLACK_BOARD_PARAM_ACTIVE = "active";

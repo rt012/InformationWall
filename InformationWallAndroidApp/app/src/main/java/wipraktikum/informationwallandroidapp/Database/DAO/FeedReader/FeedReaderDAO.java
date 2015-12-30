@@ -107,6 +107,8 @@ public class FeedReaderDAO  implements DAO{
 
     @Override
     public boolean delete(Object object) {
+        Feed feed = (Feed) object;
+        deleteByID(feed.getFeedReaderID());
         return false;
     }
 
@@ -132,6 +134,7 @@ public class FeedReaderDAO  implements DAO{
             feed.setFeed(dbFeed.getFeed());
             feed.setFeedReaderID(dbFeed.getFeedReaderID());
             feed.setWebsite(dbFeed.getWebsite());
+            feed.setSyncStatus(dbFeed.isSyncStatus());
         }
 
         return feed;
@@ -147,6 +150,7 @@ public class FeedReaderDAO  implements DAO{
             dbFeed.setFeed(feed.getFeed());
             dbFeed.setFeedReaderID(feed.getFeedReaderID());
             dbFeed.setWebsite(feed.getWebsite());
+            dbFeed.setSyncStatus(feed.isSyncStatus());
         }
 
         return dbFeed;

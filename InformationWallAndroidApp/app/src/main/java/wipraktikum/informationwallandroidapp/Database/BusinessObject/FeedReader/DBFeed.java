@@ -72,4 +72,12 @@ public class DBFeed {
     public void setImageURL(String mImageURL) {
         this.mImageURL = mImageURL;
     }
+
+    public boolean isSyncStatus() {
+        return mSyncStatus;
+    }
+
+    public void setSyncStatus(boolean mSyncStatus) {
+        this.mSyncStatus = mSyncStatus;
+    }
 }

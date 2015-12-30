@@ -1,5 +1,9 @@
 package wipraktikum.informationwallandroidapp.BusinessObject.FeedReader;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParser;
+
 /**
  * Created by Eric Schmidt on 21.12.2015.
  */
@@ -10,6 +14,7 @@ public class Feed {
     private String mDescription;
     private String mFeed;
     private String mImageURL;
+    private boolean mSyncStatus;
 
     public long getFeedReaderID() {
         return mFeedReaderID;
@@ -57,5 +62,18 @@ public class Feed {
 
     public void setImageURL(String mImageURL) {
         this.mImageURL = mImageURL;
+    }
+
+    public boolean isSyncStatus() {
+        return mSyncStatus;
+    }
+
+    public void setSyncStatus(boolean mSyncStatus) {
+        this.mSyncStatus = mSyncStatus;
+    }
+
+    public static Feed parseItemFromJson(String json) {
+        Gson gsonInstance = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+        return gsonInstance.fromJson(new JsonParser().parse(json), Feed.class);
     }
 }

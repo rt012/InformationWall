@@ -3,6 +3,7 @@ package wipraktikum.informationwallandroidapp.Feedreader;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
@@ -103,6 +104,26 @@ public class FeedReader extends BaseActivity {
                 fragment.getClass().getSimpleName());
         if (addToBackStack)fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commitAllowingStateLoss();
+
+        setFragmentListener(fragment);
+    }
+
+    private void setFragmentListener(Fragment fragment){
+        if (fragment instanceof FeedReaderAddFeed){
+            ((FeedReaderAddFeed) fragment).setOnSaveFeedListener(new FeedReaderAddFeed.OnSaveFeedListener() {
+                @Override
+                public void onSaveFeed(boolean isSuccessful) {
+                    if (!isSuccessful){
+                        showSnackBar(R.string.black_board_add_item_snackbar_connection_error);
+                    }
+                    onSupportNavigateUp();
+                }
+            });
+        }
+    }
+
+    public void showSnackBar(int message){
+        Snackbar.make(getRootView(), message, Snackbar.LENGTH_LONG).show();
     }
 
 }

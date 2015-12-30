@@ -11,21 +11,30 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.android.volley.VolleyError;
+
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import wipraktikum.informationwallandroidapp.BusinessObject.FeedReader.Feed;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.Feedreader.Adapter.FeedReaderListAdapter;
 import wipraktikum.informationwallandroidapp.R;
+import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
+import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
+import wipraktikum.informationwallandroidapp.Utils.JSONBuilder;
 
 /**
  * Created by Eric Schmidt on 28.12.2015.
  */
-public class FeedReaderAddFeed extends Fragment {
+public class FeedReaderAddFeed extends Fragment implements JsonManager.OnObjectResponseListener, JsonManager.OnErrorListener {
     private ListView rssList = null;
     private EditText rssSearch = null;
 
-    RSSSearch rssSearchManager = null;
+    private RSSSearch rssSearchManager = null;
+    private Feed feed = null;
+    private OnSaveFeedListener mOnSaveFeedListener = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup viewGroup, Bundle savedInstanceState) {
@@ -47,9 +56,10 @@ public class FeedReaderAddFeed extends Fragment {
         rssList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Feed feed = (Feed) rssList.getAdapter().getItem(position);
-                DAOHelper.getFeedReaderDAO().create(feed);
-                ((FeedReader) getActivity()).onSupportNavigateUp();
+                feed = (Feed) rssList.getAdapter().getItem(position);
+                feed.setSyncStatus(false);
+                saveFeedToDB(feed);
+                saveFeedToServer(feed);
             }
         });
 
@@ -84,4 +94,49 @@ public class FeedReaderAddFeed extends Fragment {
     private void fillRSSList(ArrayList<Feed> results){
         rssList.setAdapter(new FeedReaderListAdapter(getActivity(), 0, results));
     }
+
+    private void saveFeedToDB(Feed feed){
+        DAOHelper.getFeedReaderDAO().create(feed);
+    }
+
+    private void saveFeedToServer(Feed feed){
+        JsonManager jsonManager = new JsonManager();
+        JSONObject feedJson = JSONBuilder.createJSONFromObject(feed);
+        jsonManager.sendJson(ServerURLManager.NEW_FEED_KEY, feedJson);
+        jsonManager.setOnObjectResponseReceiveListener(this);
+        jsonManager.setOnErrorReceiveListener(this);
+    }
+
+    private void updateFeedFromServer(JSONObject response) {
+        Feed serverFeed = Feed.parseItemFromJson(response.toString());
+        serverFeed.setSyncStatus(true);
+        DAOHelper.getFeedReaderDAO().delete(feed);
+        DAOHelper.getFeedReaderDAO().createOrUpdate(serverFeed);
+    }
+
+    @Override
+    public void OnErrorResponse(VolleyError error) {
+        triggerOnSaveFeedEvent(false);
+    }
+
+    @Override
+    public void OnResponse(JSONObject response) {
+        updateFeedFromServer(response);
+        triggerOnSaveFeedEvent(true);
+    }
+
+    private void triggerOnSaveFeedEvent(boolean successfull) {
+        if (mOnSaveFeedListener != null) {
+            mOnSaveFeedListener.onSaveFeed(successfull);
+        }
+    }
+
+    public void setOnSaveFeedListener(OnSaveFeedListener onSaveFeedListener){
+        mOnSaveFeedListener = onSaveFeedListener;
+    }
+
+    public interface OnSaveFeedListener {
+        void onSaveFeed(boolean isSuccessful);
+    }
+
 }
