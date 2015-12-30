@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include layout="@layout/feed_item_upper"></include>
+        <include layout="@layout/blackboard_ex_lv_group"></include>
 
     </LinearLayout>
 </com.daimajia.swipe.SwipeLayout>

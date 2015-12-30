@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.daimajia.swipe.SwipeLayout;
@@ -63,7 +64,7 @@ public class FeedReaderListAdapter extends ArraySwipeAdapter {
         TextView tcDesc = (TextView) convertView.findViewById(R.id.feed_reader_list_desc);
         tcDesc.setText(feed.getDescription());
 
-        ImageView deleteFeed = (ImageView) convertView.findViewById(R.id.delete_feed);
+        LinearLayout deleteFeed = (LinearLayout) convertView.findViewById(R.id.delete_object);
         deleteFeed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,7 +72,7 @@ public class FeedReaderListAdapter extends ArraySwipeAdapter {
             }
         });
 
-        ImageView editFeed = (ImageView) convertView.findViewById(R.id.edit_feed);
+        LinearLayout editFeed = (LinearLayout) convertView.findViewById(R.id.edit_object);
         editFeed.setVisibility(View.GONE);
 
         return convertView;

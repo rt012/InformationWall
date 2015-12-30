@@ -103,7 +103,7 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = layoutInflater.inflate(R.layout.blackboard_ex_lv_group, null);
+            convertView = layoutInflater.inflate(R.layout.blackboard_item, null);
         }
         SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
         //Item Title
