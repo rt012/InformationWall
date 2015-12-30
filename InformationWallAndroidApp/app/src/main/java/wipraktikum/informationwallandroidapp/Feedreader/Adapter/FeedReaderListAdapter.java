@@ -6,9 +6,11 @@ import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.daimajia.swipe.SwipeLayout;
+import com.daimajia.swipe.adapters.ArraySwipeAdapter;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -20,24 +22,33 @@ import wipraktikum.informationwallandroidapp.R;
 /**
  * Created by Eric Schmidt on 21.12.2015.
  */
-public class FeedReaderListAdapter extends ArrayAdapter {
-    Context context = null;
+public class FeedReaderListAdapter extends ArraySwipeAdapter {
+    private Context context = null;
+    private OnDeleteFeedListener mOnDeleteFeedListener = null;
+    private boolean enableSwipe = true;
 
     public FeedReaderListAdapter(Context context, int resource, List objects) {
         super(context, resource, objects);
-
         this.context = context;
+    }
+
+    @Override
+    public int getSwipeLayoutResourceId(int position) {
+        return R.id.swipe;
     }
 
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
         View convertView = view;
-        Feed feed = (Feed) getItem(position);
+
+        final Feed feed = (Feed) getItem(position);
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.feed_item, null);
+
+            if (enableSwipe != true) ((SwipeLayout) convertView).setSwipeEnabled(false);
         }
 
         ImageView iconView = (ImageView) convertView.findViewById(R.id.feed_reader_icon);
@@ -52,7 +63,33 @@ public class FeedReaderListAdapter extends ArrayAdapter {
         TextView tcDesc = (TextView) convertView.findViewById(R.id.feed_reader_list_desc);
         tcDesc.setText(feed.getDescription());
 
+        ImageView deleteFeed = (ImageView) convertView.findViewById(R.id.delete_feed);
+        deleteFeed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                triggerOnDeleteFeedEvent(feed);
+            }
+        });
+
         return convertView;
+    }
+
+    public void setEnableSwipe(boolean enableSwipe){
+        this.enableSwipe = enableSwipe;
+    }
+
+    private void triggerOnDeleteFeedEvent(Feed feed) {
+        if (mOnDeleteFeedListener != null) {
+            mOnDeleteFeedListener.onDeleteFeed(feed);
+        }
+    }
+
+    public void setOnDeleteFeedListener(OnDeleteFeedListener onDeleteFeedListener){
+        mOnDeleteFeedListener = onDeleteFeedListener;
+    }
+
+    public interface OnDeleteFeedListener {
+        void onDeleteFeed(Feed feed);
     }
 
     private class LoadImageView extends AsyncTask<String, Void, Drawable> {

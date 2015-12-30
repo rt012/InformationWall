@@ -92,7 +92,9 @@ public class FeedReaderAddFeed extends Fragment implements JsonManager.OnObjectR
     }
 
     private void fillRSSList(ArrayList<Feed> results){
-        rssList.setAdapter(new FeedReaderListAdapter(getActivity(), 0, results));
+        FeedReaderListAdapter adapter = new FeedReaderListAdapter(getActivity(), 0, results);
+        adapter.setEnableSwipe(false);
+        rssList.setAdapter(adapter);
     }
 
     private void saveFeedToDB(Feed feed){

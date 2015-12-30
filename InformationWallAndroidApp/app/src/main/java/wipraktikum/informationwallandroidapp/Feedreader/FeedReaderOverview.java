@@ -7,15 +7,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import java.util.List;
+
+import wipraktikum.informationwallandroidapp.BusinessObject.FeedReader.Feed;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.Feedreader.Adapter.FeedReaderListAdapter;
 import wipraktikum.informationwallandroidapp.R;
+import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
+import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
+import wipraktikum.informationwallandroidapp.Utils.JSONBuilder;
 
 /**
  * Created by Eric Schmidt on 28.12.2015.
  */
 public class FeedReaderOverview extends Fragment {
     private ListView rssList = null;
+
+    private FeedReaderListAdapter adapter = null;
+    private List feedList = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup viewGroup, Bundle savedInstanceState) {
@@ -35,9 +44,21 @@ public class FeedReaderOverview extends Fragment {
         fillRSSList();
     }
 
-
     private void fillRSSList(){
-        rssList.setAdapter(new FeedReaderListAdapter(getActivity(), 0, DAOHelper.getFeedReaderDAO().queryForAll()));
+        feedList = DAOHelper.getFeedReaderDAO().queryForAll();
+        adapter = new FeedReaderListAdapter(getActivity(), 0, feedList);
+        rssList.setAdapter(adapter);
+        adapter.setOnDeleteFeedListener(new FeedReaderListAdapter.OnDeleteFeedListener() {
+            @Override
+            public void onDeleteFeed(Feed feed) {
+                adapter.remove(feed);
+                DAOHelper.getFeedReaderDAO().delete(feed);
+                if (feed.isSyncStatus()) {
+                    new JsonManager().sendJson(ServerURLManager.DELETE_FEED_KEY, JSONBuilder.createJSONFromObject(feed));
+                }
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
 }
