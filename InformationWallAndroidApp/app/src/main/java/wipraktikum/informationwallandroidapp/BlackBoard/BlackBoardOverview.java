@@ -8,7 +8,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 
 import com.android.volley.VolleyError;
@@ -16,7 +15,6 @@ import com.android.volley.VolleyError;
 import org.json.JSONObject;
 
 import wipraktikum.informationwallandroidapp.BlackBoard.Adapter.BlackBoardExpandableListViewAdapter;
-import wipraktikum.informationwallandroidapp.BlackBoard.Dialog.BlackboardItemDialog;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
@@ -27,11 +25,10 @@ import wipraktikum.informationwallandroidapp.ServerCommunication.Synchronisation
 import wipraktikum.informationwallandroidapp.Utils.JSONBuilder;
 import wipraktikum.informationwallandroidapp.Utils.NotificationHelper;
 
-public class BlackBoardOverview extends Fragment implements BlackboardItemDialog.OnItemChangeListener, JsonManager.OnObjectResponseListener, JsonManager.OnErrorListener{
+public class BlackBoardOverview extends Fragment implements BlackBoardExpandableListViewAdapter.OnItemChangeListener, JsonManager.OnObjectResponseListener, JsonManager.OnErrorListener{
     private final String FRAGMENT_TAG = "FRAGMENT_OVERVIEW";
 
     private BlackBoardExpandableListViewAdapter blackBoardExpandableListViewAdapter = null;
-    private BlackboardItemDialog blackboardItemDialog = null;
     private BlackBoardItem deletedBlackBoardItem;
     private JsonManager jsonManager;
 
@@ -98,6 +95,7 @@ public class BlackBoardOverview extends Fragment implements BlackboardItemDialog
 
         final ExpandableListView expandableListView = (ExpandableListView) view.findViewById(R.id.ex_lv_black_board);
         blackBoardExpandableListViewAdapter = new BlackBoardExpandableListViewAdapter(getActivity());
+        blackBoardExpandableListViewAdapter.setOnItemChangeListener(this);
         expandableListView.setAdapter(blackBoardExpandableListViewAdapter);
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             int previousGroup = -1;
@@ -111,15 +109,6 @@ public class BlackBoardOverview extends Fragment implements BlackboardItemDialog
                 previousGroup = groupPosition;
             }
         });
-
-        expandableListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                showDialogFragmentByItem(((BlackBoardItem)
-                        blackBoardExpandableListViewAdapter.getGroup(position)));
-                return true;
-            }
-        });
     }
 
     private void deleteTempAttachments() {
@@ -131,19 +120,8 @@ public class BlackBoardOverview extends Fragment implements BlackboardItemDialog
         editor.apply();
     }
 
-    public void showDialogFragmentByItem(BlackBoardItem blackBoardItem){
-        blackboardItemDialog = BlackboardItemDialog.newInstance(blackBoardItem);
-        //If the user is able to do anything with the item
-        if (blackboardItemDialog.hasRights()) {
-            blackboardItemDialog.show(getFragmentManager(), BlackboardItemDialog.class.getSimpleName());
-        }
-        blackboardItemDialog.setOnItemChangeListener(this);
-    }
-
     @Override
     public void onDelete(BlackBoardItem blackBoardItem) {
-        //Close Dialog
-        blackboardItemDialog.dismiss();
         deletedBlackBoardItem = blackBoardItem;
 
         jsonManager.sendJson(ServerURLManager.DELETE_BLACK_BOARD_ITEM_URL, JSONBuilder.createJSONFromObject(blackBoardItem));
@@ -151,8 +129,6 @@ public class BlackBoardOverview extends Fragment implements BlackboardItemDialog
 
     @Override
     public void onEdit(BlackBoardItem blackBoardItem) {
-        //Close Dialog
-        blackboardItemDialog.dismiss();
         openBlackboardAddItemWithArguments(blackBoardItem);
     }
 

@@ -6,7 +6,7 @@
     <LinearLayout
         android:id="@+id/delete_object"
         android:background="@color/ci_color"
-        android:layout_width="wrap_content"
+        android:layout_width="40dp"
         android:padding="5dp"
         android:gravity="center"
         android:layout_height="match_parent">
@@ -19,7 +19,7 @@
         android:id="@+id/edit_object"
         android:src="@android:drawable/ic_menu_edit"
         android:background="@color/ci_color_lightest"
-        android:layout_width="wrap_content"
+        android:layout_width="40dp"
         android:padding="5dp"
         android:gravity="center"
         android:layout_height="match_parent">

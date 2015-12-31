@@ -81,11 +81,7 @@ public class Blackboard extends BaseActivity{
             } else if (Intent.ACTION_SEND_MULTIPLE.equals(action) && type != null) {
                 prepareOpenBlackboardAddItemWithArguments(createAttachmentUriFromIntent(true));
             }
-        } else {
-            ActivityHelper.openBlackboardActivity(this);
-            return;
         }
-
 
         //Tile Information
         if (getIntent().getExtras() != null && getIntent().getExtras().containsKey(TileOverview.TILE_ID_KEY_PARAM)) {

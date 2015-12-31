@@ -11,6 +11,8 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.daimajia.swipe.SwipeLayout;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,7 +24,9 @@ import wipraktikum.informationwallandroidapp.BlackBoard.CustomView.BlackBoardAtt
 import wipraktikum.informationwallandroidapp.BlackBoard.CustomView.BlackBoardContactView;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardAttachment;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
+import wipraktikum.informationwallandroidapp.BusinessObject.User.User;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
+import wipraktikum.informationwallandroidapp.InfoWallApplication;
 import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.ServerCommunication.DownloadManager;
 import wipraktikum.informationwallandroidapp.Utils.FileHelper;
@@ -36,6 +40,11 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
     private final Context context;
     private List<BlackBoardItem> mBlackBoardItems = new ArrayList<BlackBoardItem>();
     private ArrayList<BlackBoardAttachment> downloadAttachments = new ArrayList<>();
+    //Rightsmanagement
+    private boolean canEdit = true;
+    private boolean canDelete = true;
+    //Interface
+    private OnItemChangeListener mOnItemChangeListener;
 
     public BlackBoardExpandableListViewAdapter(Context context) {
         this.context = context;
@@ -96,15 +105,58 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
         return false;
     }
 
+    private void checkUserRights(BlackBoardItem blackBoardItem){
+        User currentUser = InfoWallApplication.getCurrentUser();
+
+        canDelete = false;
+        canEdit = false;
+
+        //Rights management
+        if (currentUser.getUserGroup().canDelete()){
+            canDelete = true;
+        }
+        if (currentUser.getUserGroup().canEdit()){
+            canEdit = true;
+        }
+        //If the user is the creator than allow edit
+        if (blackBoardItem.getUser().equals(currentUser)){
+            canEdit = true;
+        }
+    }
+
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-        BlackBoardItem blackBoardItem = (BlackBoardItem) getGroup(groupPosition);
+        final BlackBoardItem blackBoardItem = (BlackBoardItem) getGroup(groupPosition);
+        checkUserRights(blackBoardItem);
+
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.blackboard_item, null);
+            //Deactivate Swipe if User has no Rights
+            if (!canDelete && !canEdit) ((SwipeLayout) convertView).setSwipeEnabled(false);
         }
+
+        //Edit & Delete
+        LinearLayout deleteFeed = (LinearLayout) convertView.findViewById(R.id.delete_object);
+        deleteFeed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                triggerOnDeleteFeedEvent(blackBoardItem);
+            }
+        });
+        if (!canDelete) deleteFeed.setVisibility(View.GONE);
+
+        LinearLayout editFeed = (LinearLayout) convertView.findViewById(R.id.edit_object);
+        editFeed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                triggerOnEditFeedEvent(blackBoardItem);
+            }
+        });
+        if (!canEdit) editFeed.setVisibility(View.GONE);
+
         SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
         //Item Title
         TextView tvItemTitle = (TextView) convertView
@@ -131,6 +183,18 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
         }
 
         return convertView;
+    }
+
+    private void triggerOnDeleteFeedEvent(BlackBoardItem blackBoardItem){
+        if(mOnItemChangeListener != null){
+            mOnItemChangeListener.onDelete(blackBoardItem);
+        }
+    }
+
+    private void triggerOnEditFeedEvent(BlackBoardItem blackBoardItem){
+        if(mOnItemChangeListener != null){
+            mOnItemChangeListener.onEdit(blackBoardItem);
+        }
     }
 
     @Override
@@ -221,5 +285,14 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
             inProgress = true;
         }
         return inProgress;
+    }
+
+    public void setOnItemChangeListener(OnItemChangeListener onItemChangeListener){
+        mOnItemChangeListener = onItemChangeListener;
+    }
+
+    public interface OnItemChangeListener {
+        void onDelete(BlackBoardItem blackBoardItem);
+        void onEdit(BlackBoardItem blackBoardItem);
     }
 }
