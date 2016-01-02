@@ -74,10 +74,10 @@ public class TileOverview extends BaseActivity {
         //Show Tile if activated. Hide if not
         List<Tile> tileList = DAOHelper.getTileDAO().queryForAll();
         for (Tile tile : tileList){
-            if(tile.getName().equals("Blackboard") && tile.getIsActivated()){
-                activateTileOnServer(ServerURLManager.SHOW_BLACK_BOARD_PARAM_ACTIVE);
-            }else if (tile.getName().equals("Black Board") && !tile.getIsActivated()){
-                activateTileOnServer(ServerURLManager.SHOW_BLACK_BOARD_PARAM_NOT_ACTIVE);
+            if(tile.getIsActivated()){
+                activateTileOnServer(ServerURLManager.SHOW_BLACK_BOARD_PARAM_ACTIVE, tile);
+            }else if (!tile.getIsActivated()){
+                activateTileOnServer(ServerURLManager.SHOW_BLACK_BOARD_PARAM_NOT_ACTIVE, tile);
             }
         }
     }
@@ -124,7 +124,7 @@ public class TileOverview extends BaseActivity {
         tileLongClickDialog.setOnRadioButtonChangeListener(new TileLongClickDialog.OnRadioButtonChangeListener() {
             @Override
             public void onRadioButtonChanged(int radioButtonPos) {
-                changeTileSizeOnServer(DBTile.EnumTileSize.values()[radioButtonPos]);
+                changeTileSizeOnServer(DBTile.EnumTileSize.values()[radioButtonPos], tile);
                 tile.setTileSize(DBTile.EnumTileSize.values()[radioButtonPos]);
                 DAOHelper.getTileDAO().update(tile);
             }
@@ -137,23 +137,25 @@ public class TileOverview extends BaseActivity {
             tile.setIsActivated(true);
 
             //Show Tile on information wall
-            activateTileOnServer(ServerURLManager.SHOW_BLACK_BOARD_PARAM_ACTIVE);
+            activateTileOnServer(ServerURLManager.SHOW_BLACK_BOARD_PARAM_ACTIVE, tile);
         }else{
             isActivatedWrapper.setVisibility(View.GONE);
             tile.setIsActivated(false);
 
             //Hide Tile on information wall
-            activateTileOnServer(ServerURLManager.SHOW_BLACK_BOARD_PARAM_NOT_ACTIVE);
+            activateTileOnServer(ServerURLManager.SHOW_BLACK_BOARD_PARAM_NOT_ACTIVE, tile);
         }
     }
 
-    private void changeTileSizeOnServer(DBTile.EnumTileSize tileSize){
-        JSONObject jsonObject = JSONBuilder.createJSONFromParam(ServerURLManager.CHANGE_TILE_SIZE_KEY, tileSize);
+    private void changeTileSizeOnServer(DBTile.EnumTileSize tileSize, Tile tile){
+        String actionParam = tileSize.toString() + tile.getName();
+        JSONObject jsonObject = JSONBuilder.createJSONFromParam(ServerURLManager.CHANGE_TILE_SIZE_KEY, actionParam);
         new JsonManager().sendJson(ServerURLManager.CHANGE_TILE_PARAM_URL, jsonObject);
     }
 
     //Only Blackboard is currently working (--> No more Tiles at the moment)
-    private void activateTileOnServer(String actionParam){
+    private void activateTileOnServer(String actionParam, Tile tile){
+        actionParam += tile.getName();
         JSONObject jsonObject = JSONBuilder.createJSONFromParam(ServerURLManager.SHOW_BLACK_BOARD_PARAM_KEY, actionParam);
         new JsonManager().sendJson(ServerURLManager.CHANGE_TILE_PARAM_URL, jsonObject);
     }

@@ -6,6 +6,7 @@ package wipraktikum.informationwallandroidapp.ServerCommunication.Synchronisatio
 public class SyncManager {
     private boolean syncFinishedContact = false;
     private boolean syncFinishedBlackboardItem = false;
+    private boolean syncFinishedTile = false;
 
     private OnSyncFinishedListener mOnSyncFinishedListener = null;
 
@@ -17,15 +18,20 @@ public class SyncManager {
         return SyncBlackboardItem.getInstance();
     }
 
+    public static SyncTile getSyncTile(){
+        return  SyncTile.getInstance();
+    }
+
     public void syncAll(){
         getSyncBlackboardItem().syncBlackBoardItems();
         getSyncContact().syncContacts();
+        getSyncTile().syncTiles();
 
         getSyncBlackboardItem().setOnSyncFinishedListener(new SyncBlackboardItem.OnSyncFinishedListener() {
             @Override
             public void onSyncFinished() {
                 syncFinishedBlackboardItem = true;
-                if (syncFinishedContact == true){
+                if (syncFinished()) {
                     informListener();
                 }
             }
@@ -35,7 +41,17 @@ public class SyncManager {
             @Override
             public void onSyncFinished() {
                 syncFinishedContact = true;
-                if (syncFinishedBlackboardItem == true){
+                if (syncFinished()){
+                    informListener();
+                }
+            }
+        });
+
+        getSyncTile().setOnSyncFinishedListener(new SyncTile.OnSyncFinishedListener() {
+            @Override
+            public void onSyncFinished() {
+                syncFinishedTile = true;
+                if (syncFinished()){
                     informListener();
                 }
             }
@@ -46,6 +62,11 @@ public class SyncManager {
         if (mOnSyncFinishedListener != null){
             mOnSyncFinishedListener.onSyncFinished();
         }
+    }
+
+    private boolean syncFinished(){
+        if (syncFinishedContact && syncFinishedBlackboardItem && syncFinishedTile) return true;
+        return false;
     }
 
     //Listener for OnActivityResult Event

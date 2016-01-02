@@ -66,6 +66,17 @@ public class TileDAO implements DAO {
         return ok;
     }
 
+    public boolean createOrUpdate(Object object) {
+        boolean ok = false;
+        try {
+            InfoWallApplication.getInstance().getDatabaseHelper().getTileDAO().createOrUpdate(mapTileToDBTile((Tile) object));
+            ok = true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ok;
+    }
+
     @Override
     public boolean update(Object object){
         boolean ok = false;
