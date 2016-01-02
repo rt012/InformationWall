@@ -7,6 +7,7 @@ public class SyncManager {
     private boolean syncFinishedContact = false;
     private boolean syncFinishedBlackboardItem = false;
     private boolean syncFinishedTile = false;
+    private boolean syncFinishedFeed = false;
 
     private OnSyncFinishedListener mOnSyncFinishedListener = null;
 
@@ -22,10 +23,15 @@ public class SyncManager {
         return  SyncTile.getInstance();
     }
 
+    public static SyncFeed getSyncFeed(){
+        return  SyncFeed.getInstance();
+    }
+
     public void syncAll(){
         getSyncBlackboardItem().syncBlackBoardItems();
         getSyncContact().syncContacts();
         getSyncTile().syncTiles();
+        getSyncFeed().syncFeeds();
 
         getSyncBlackboardItem().setOnSyncFinishedListener(new SyncBlackboardItem.OnSyncFinishedListener() {
             @Override
@@ -51,6 +57,16 @@ public class SyncManager {
             @Override
             public void onSyncFinished() {
                 syncFinishedTile = true;
+                if (syncFinished()){
+                    informListener();
+                }
+            }
+        });
+
+        getSyncFeed().setOnSyncFinishedListener(new SyncFeed.OnSyncFinishedListener() {
+            @Override
+            public void onSyncFinished() {
+                syncFinishedFeed = true;
                 if (syncFinished()){
                     informListener();
                 }

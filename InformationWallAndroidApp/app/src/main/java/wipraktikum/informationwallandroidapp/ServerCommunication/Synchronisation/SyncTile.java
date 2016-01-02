@@ -17,6 +17,7 @@ import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.Database.DAO.Tile.TileDAO;
 import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
+import wipraktikum.informationwallandroidapp.ServerCommunication.TransientManager;
 
 /**
  * Created by Eric Schmidt on 02.01.2016.
@@ -52,18 +53,25 @@ public class SyncTile implements JsonManager.OnArrayResponseListener {
     }
 
     private void syncTilesFromServer() {
-        jsonManagerFromServer.getJsonArray(ServerURLManager.GET_ALL_BLACKBOARD_ITEMS_URL);
+        jsonManagerFromServer.getJsonArray(ServerURLManager.GET_ALL_TILES_URL);
     }
 
     private void UpdateOrCreateBlackBoardItems(JsonElement response) {
         TileDAO tileDAO = DAOHelper.getTileDAO();
 
         Gson gsonInstance = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-        List<Tile> serverItemList = gsonInstance.fromJson(response, new TypeToken<List<Tile>>(){}.getType());
+        List<Tile> serverItemList = gsonInstance.fromJson(response, new TypeToken<List<Tile>>() {
+        }.getType());
+        List<Tile> editedItemList = new ArrayList<>();
+
+        for (Tile tile : serverItemList){
+            tile = TransientManager.keepTransientTileData(tile);
+            editedItemList.add(tile);
+        }
 
         deleteAllTiles();
 
-        for(Tile tile : serverItemList) {
+        for(Tile tile : editedItemList) {
             tileDAO.createOrUpdate(tile);
         }
     }

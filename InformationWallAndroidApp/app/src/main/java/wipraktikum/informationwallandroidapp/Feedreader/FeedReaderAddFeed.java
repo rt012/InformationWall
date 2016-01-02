@@ -104,7 +104,7 @@ public class FeedReaderAddFeed extends Fragment implements JsonManager.OnObjectR
     private void saveFeedToServer(Feed feed){
         JsonManager jsonManager = new JsonManager();
         JSONObject feedJson = JSONBuilder.createJSONFromObject(feed);
-        jsonManager.sendJson(ServerURLManager.NEW_FEED_KEY, feedJson);
+        jsonManager.sendJson(ServerURLManager.NEW_FEED_URL, feedJson);
         jsonManager.setOnObjectResponseReceiveListener(this);
         jsonManager.setOnErrorReceiveListener(this);
     }

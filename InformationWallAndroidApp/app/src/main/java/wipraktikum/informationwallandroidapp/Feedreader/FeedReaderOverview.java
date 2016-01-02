@@ -54,7 +54,7 @@ public class FeedReaderOverview extends Fragment {
                 adapter.remove(feed);
                 DAOHelper.getFeedReaderDAO().delete(feed);
                 if (feed.isSyncStatus()) {
-                    new JsonManager().sendJson(ServerURLManager.DELETE_FEED_KEY, JSONBuilder.createJSONFromObject(feed));
+                    new JsonManager().sendJson(ServerURLManager.DELETE_FEED_URL, JSONBuilder.createJSONFromObject(feed));
                 }
                 adapter.notifyDataSetChanged();
             }

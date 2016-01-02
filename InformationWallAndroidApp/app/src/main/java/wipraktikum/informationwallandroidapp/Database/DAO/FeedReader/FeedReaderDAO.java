@@ -1,6 +1,8 @@
 package wipraktikum.informationwallandroidapp.Database.DAO.FeedReader;
 
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -123,6 +125,25 @@ public class FeedReaderDAO  implements DAO{
         }
         return ok;
     }
+
+    public ArrayList<Feed> getUnsyncedItems() throws SQLException{
+        Dao<DBFeed, Long> feedReaderDAO = InfoWallApplication.getInstance().getDatabaseHelper().getFeedReaderDAO();
+        // get our query builder from the DAO
+        QueryBuilder<DBFeed, Long> queryBuilder =
+                feedReaderDAO.queryBuilder();
+        queryBuilder.where().eq(DBFeed.SYNCSTATUS_FIELD_NAME, false);
+        PreparedQuery<DBFeed> preparedQuery = queryBuilder.prepare();
+        List<DBFeed> dbFeeds = feedReaderDAO.query(preparedQuery);
+
+        ArrayList<Feed> unsycedFeeds = new ArrayList<Feed>();
+        if(dbFeeds != null || !dbFeeds.isEmpty()) {
+            for(DBFeed dbFeed : dbFeeds) {
+                unsycedFeeds.add(mapDBFeedToFeed(dbFeed));
+            }
+        }
+        return unsycedFeeds;
+    }
+
 
     public Feed mapDBFeedToFeed(DBFeed dbFeed) {
         Feed feed = new Feed();

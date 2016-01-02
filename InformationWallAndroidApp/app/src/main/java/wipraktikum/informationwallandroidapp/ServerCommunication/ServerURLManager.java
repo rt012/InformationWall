@@ -8,9 +8,9 @@ public class ServerURLManager {
     public static final String CHANGE_TILE_PARAM_URL = "http://myinfowall.ddns.net/apps/tileSettings.php";
     public static final String CHANGE_TILE_SIZE_KEY = "EnumTileSize";
     //Create a new Feed
-    public static final String NEW_FEED_KEY = "http://myinfowall.ddns.net/apps/feed/addFeed.php";
-    //Create a new Feed
-    public static final String DELETE_FEED_KEY = "http://myinfowall.ddns.net/apps/feed/deleteFeed.php";
+    public static final String NEW_FEED_URL = "http://myinfowall.ddns.net/apps/feed/addFeed.php";
+    //Delete a new Feed
+    public static final String DELETE_FEED_URL = "http://myinfowall.ddns.net/apps/feed/deleteFeed.php";
     //Show blackboard tile on InformationWall
     public static final String SHOW_BLACK_BOARD_PARAM_KEY = "activated";
     public static final String SHOW_BLACK_BOARD_PARAM_ACTIVE = "active";
@@ -40,5 +40,6 @@ public class ServerURLManager {
     //Sync
     public static final String GET_ALL_BLACKBOARD_ITEMS_URL = "http://myinfowall.ddns.net/apps/blackboard/getAllBlackBoardItems.php";
     public static final String GET_ALL_CONTACTS_URL = "http://myinfowall.ddns.net/apps/blackboard/syncContact.php";
-
+    public static final String GET_ALL_TILES_URL = "http://myinfowall.ddns.net/apps/blackboard/syncContact.php";
+    public static final String GET_ALL_FEEDS_URL = "http://myinfowall.ddns.net/apps/blackboard/syncContact.php";
 }
