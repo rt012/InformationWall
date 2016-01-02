@@ -3,7 +3,6 @@ package wipraktikum.informationwallandroidapp.BlackBoard;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -42,7 +41,7 @@ public class Blackboard extends BaseActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blackboard);
-        mRootView = (CoordinatorLayout) findViewById(R.id.cl_blackboard_layout);
+        mRootView = findViewById(R.id.cl_blackboard_layout);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

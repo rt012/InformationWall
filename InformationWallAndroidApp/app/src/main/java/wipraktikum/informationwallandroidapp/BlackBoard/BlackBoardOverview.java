@@ -1,5 +1,6 @@
 package wipraktikum.informationwallandroidapp.BlackBoard;
 
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -14,6 +15,8 @@ import com.android.volley.VolleyError;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import wipraktikum.informationwallandroidapp.BlackBoard.Adapter.BlackBoardExpandableListViewAdapter;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
@@ -22,15 +25,19 @@ import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.Synchronisation.SyncManager;
+import wipraktikum.informationwallandroidapp.ServerCommunication.TransientManager;
 import wipraktikum.informationwallandroidapp.Utils.JSONBuilder;
 import wipraktikum.informationwallandroidapp.Utils.NotificationHelper;
+import wipraktikum.informationwallandroidapp.Utils.UndoDeleteHelper;
 
-public class BlackBoardOverview extends Fragment implements BlackBoardExpandableListViewAdapter.OnItemChangeListener, JsonManager.OnObjectResponseListener, JsonManager.OnErrorListener{
+public class BlackBoardOverview extends Fragment implements BlackBoardExpandableListViewAdapter.OnItemChangeListener{
     private final String FRAGMENT_TAG = "FRAGMENT_OVERVIEW";
 
     private BlackBoardExpandableListViewAdapter blackBoardExpandableListViewAdapter = null;
-    private BlackBoardItem deletedBlackBoardItem;
+    private UndoDeleteHelper undoDeleteHelper = null;
     private JsonManager jsonManager;
+
+    private ProgressDialog progressDialog = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup viewGroup, Bundle savedInstanceState) {
@@ -52,9 +59,9 @@ public class BlackBoardOverview extends Fragment implements BlackBoardExpandable
         super.onResume();
         if(jsonManager == null) {
             jsonManager = new JsonManager();
-            jsonManager.setOnObjectResponseReceiveListener(this);
-            jsonManager.setOnErrorReceiveListener(this);
         }
+
+        undoDeleteHelper = new UndoDeleteHelper(((Blackboard)getActivity()).getRootView(), getActivity());
 
         initViews(getView());
         setTitle();
@@ -121,9 +128,69 @@ public class BlackBoardOverview extends Fragment implements BlackBoardExpandable
 
     @Override
     public void onDelete(BlackBoardItem blackBoardItem) {
-        deletedBlackBoardItem = blackBoardItem;
+        DAOHelper.getBlackBoardItemDAO().delete(blackBoardItem);
+        blackBoardExpandableListViewAdapter.notifyDataSetChanged();
 
         jsonManager.sendJson(ServerURLManager.DELETE_BLACK_BOARD_ITEM_URL, JSONBuilder.createJSONFromObject(blackBoardItem));
+
+        undoDeleteHelper.showUndoSnackbar(blackBoardItem);
+        undoDeleteHelper.setOnUndoDeleteListener(new UndoDeleteHelper.OnUndoDeleteListener() {
+            @Override
+            public void onUndo(ArrayList<Object> undoObjects) {
+                for (Object object : undoObjects) {
+                    BlackBoardItem blackBoardItem = (BlackBoardItem) object;
+                    restoreBlackBoardItemInDB(blackBoardItem);
+                    restoreBlackBoardItemOnServer(blackBoardItem);
+                    blackBoardExpandableListViewAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+    }
+
+    private void restoreBlackBoardItemInDB(BlackBoardItem blackBoardItem){
+        DAOHelper.getBlackBoardItemDAO().createOrUpdate(blackBoardItem);
+    }
+
+    private void restoreBlackBoardItemOnServer(final BlackBoardItem blackBoardItem) {
+        progressDialog.show();
+        JsonManager jsonManager = new JsonManager();
+        jsonManager.setOnObjectResponseReceiveListener(new JsonManager.OnObjectResponseListener() {
+            @Override
+            public void OnResponse(JSONObject response) {
+                updateBlackBoardItemInDB(response, blackBoardItem);
+                progressDialog.hide();
+            }
+        });
+        jsonManager.setOnErrorReceiveListener(new JsonManager.OnErrorListener() {
+            @Override
+            public void OnErrorResponse(VolleyError error) {
+                ((Blackboard)getActivity()).showSnackBar(R.string.black_board_add_item_snackbar_connection_error);
+                progressDialog.hide();
+            }
+        });
+
+        jsonManager.sendJson(ServerURLManager.NEW_BLACKBOARD_ITEM_URL, JSONBuilder.createJSONFromObject(blackBoardItem));
+    }
+
+    private void showProgressDialog(){
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setTitle(getString(R.string.progress_pleaseWait));
+        progressDialog.setMessage(getString(R.string.progress_itemUpload));
+        progressDialog.show();
+    }
+
+    private void hideProgressDialog(){
+        progressDialog.hide();
+    }
+
+    private void updateBlackBoardItemInDB(JSONObject response, BlackBoardItem blackBoardItem) {
+        BlackBoardItem serverBlackBoardItem = BlackBoardItem.parseItemFromJson(response.toString());
+        serverBlackBoardItem.setUser(TransientManager.keepTransientUserData(serverBlackBoardItem.getUser()));
+        serverBlackBoardItem.setBlackBoardAttachment(TransientManager.keepTransientAttachmentList(serverBlackBoardItem.getBlackBoardAttachment()));
+        serverBlackBoardItem.setSyncStatus(true);
+        DAOHelper.getBlackBoardItemDAO().delete(blackBoardItem);
+        DAOHelper.getBlackBoardItemDAO().createOrUpdate(serverBlackBoardItem);
+        blackBoardExpandableListViewAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -140,18 +207,5 @@ public class BlackBoardOverview extends Fragment implements BlackBoardExpandable
         blackBoardAddItem.setArguments(params);
 
         ((Blackboard)getActivity()).openFragment(blackBoardAddItem, true);
-    }
-
-    @Override
-    public void OnResponse(JSONObject response) {
-        DAOHelper.getBlackBoardItemDAO().delete(deletedBlackBoardItem);
-        blackBoardExpandableListViewAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void OnErrorResponse(VolleyError error) {
-        System.out.print("asdasd");
-        DAOHelper.getBlackBoardItemDAO().delete(deletedBlackBoardItem);
-        blackBoardExpandableListViewAdapter.notifyDataSetChanged();
     }
 }
