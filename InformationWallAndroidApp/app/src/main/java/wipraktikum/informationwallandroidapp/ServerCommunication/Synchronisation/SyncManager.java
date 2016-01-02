@@ -11,19 +11,19 @@ public class SyncManager {
 
     private OnSyncFinishedListener mOnSyncFinishedListener = null;
 
-    public static SyncContact getSyncContact(){
+    private static SyncContact getSyncContact(){
         return SyncContact.getInstance();
     }
 
-    public static SyncBlackboardItem getSyncBlackboardItem(){
+    private static SyncBlackboardItem getSyncBlackboardItem(){
         return SyncBlackboardItem.getInstance();
     }
 
-    public static SyncTile getSyncTile(){
+    private static SyncTile getSyncTile(){
         return  SyncTile.getInstance();
     }
 
-    public static SyncFeed getSyncFeed(){
+    private static SyncFeed getSyncFeed(){
         return  SyncFeed.getInstance();
     }
 
@@ -37,7 +37,7 @@ public class SyncManager {
             @Override
             public void onSyncFinished() {
                 syncFinishedBlackboardItem = true;
-                if (syncFinished()) {
+                if (allSyncsFinished()) {
                     informListener();
                 }
             }
@@ -47,7 +47,7 @@ public class SyncManager {
             @Override
             public void onSyncFinished() {
                 syncFinishedContact = true;
-                if (syncFinished()){
+                if (allSyncsFinished()){
                     informListener();
                 }
             }
@@ -57,7 +57,7 @@ public class SyncManager {
             @Override
             public void onSyncFinished() {
                 syncFinishedTile = true;
-                if (syncFinished()){
+                if (allSyncsFinished()){
                     informListener();
                 }
             }
@@ -67,11 +67,59 @@ public class SyncManager {
             @Override
             public void onSyncFinished() {
                 syncFinishedFeed = true;
-                if (syncFinished()){
+                if (allSyncsFinished()){
                     informListener();
                 }
             }
         });
+    }
+
+    public void syncBlackboardInformation(){
+        getSyncBlackboardItem().syncBlackBoardItems();
+        getSyncContact().syncContacts();
+
+        getSyncBlackboardItem().setOnSyncFinishedListener(new SyncBlackboardItem.OnSyncFinishedListener() {
+            @Override
+            public void onSyncFinished() {
+                syncFinishedBlackboardItem = true;
+                if (syncFinishedContact) {
+                    informListener();
+                }
+            }
+        });
+
+        getSyncContact().setOnSyncFinishedListener(new SyncContact.OnSyncFinishedListener() {
+            @Override
+            public void onSyncFinished() {
+                syncFinishedContact = true;
+                if (syncFinishedBlackboardItem){
+                    informListener();
+                }
+            }
+        });
+    }
+
+    public void syncFeedReaderInformation(){
+        getSyncFeed().syncFeeds();
+
+        getSyncFeed().setOnSyncFinishedListener(new SyncFeed.OnSyncFinishedListener() {
+            @Override
+            public void onSyncFinished() {
+                informListener();
+            }
+        });
+    }
+
+    public void syncTileInformation(){
+        getSyncTile().syncTiles();
+
+        getSyncTile().setOnSyncFinishedListener(new SyncTile.OnSyncFinishedListener() {
+            @Override
+            public void onSyncFinished() {
+                informListener();
+            }
+        });
+
     }
 
     private void informListener(){
@@ -80,8 +128,8 @@ public class SyncManager {
         }
     }
 
-    private boolean syncFinished(){
-        if (syncFinishedContact && syncFinishedBlackboardItem && syncFinishedTile) return true;
+    private boolean allSyncsFinished(){
+        if (syncFinishedContact && syncFinishedBlackboardItem && syncFinishedTile && syncFinishedFeed) return true;
         return false;
     }
 

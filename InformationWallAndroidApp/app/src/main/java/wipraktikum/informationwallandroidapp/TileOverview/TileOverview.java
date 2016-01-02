@@ -21,6 +21,7 @@ import wipraktikum.informationwallandroidapp.InfoWallApplication;
 import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
+import wipraktikum.informationwallandroidapp.ServerCommunication.Synchronisation.SyncManager;
 import wipraktikum.informationwallandroidapp.TileOverview.Adapter.GridViewTileOverviewAdapter;
 import wipraktikum.informationwallandroidapp.TileOverview.Dialog.TileLongClickDialog;
 import wipraktikum.informationwallandroidapp.Utils.JSONBuilder;
@@ -37,6 +38,9 @@ public class TileOverview extends BaseActivity {
         setContentView(R.layout.activity_tile_overview);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //Sync App Data
+        syncAppData();
 
         //Set Adapter for GridView
         GridView gridView = (GridView)findViewById(R.id.gridview);
@@ -80,6 +84,11 @@ public class TileOverview extends BaseActivity {
                 activateTileOnServer(ServerURLManager.SHOW_BLACK_BOARD_PARAM_NOT_ACTIVE, tile);
             }
         }
+    }
+
+    private void syncAppData(){
+        //Sync Blackboard Items, Contacts, Tiles and Feeds from server and send unsynced items to it
+        new SyncManager().syncAll();
     }
 
     private void startActivityByTile(Tile tile){

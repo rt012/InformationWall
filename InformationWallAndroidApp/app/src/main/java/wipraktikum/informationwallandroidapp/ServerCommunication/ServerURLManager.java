@@ -40,6 +40,6 @@ public class ServerURLManager {
     //Sync
     public static final String GET_ALL_BLACKBOARD_ITEMS_URL = "http://myinfowall.ddns.net/apps/blackboard/getAllBlackBoardItems.php";
     public static final String GET_ALL_CONTACTS_URL = "http://myinfowall.ddns.net/apps/blackboard/syncContact.php";
-    public static final String GET_ALL_TILES_URL = "http://myinfowall.ddns.net/apps/blackboard/syncContact.php";
-    public static final String GET_ALL_FEEDS_URL = "http://myinfowall.ddns.net/apps/blackboard/syncContact.php";
+    public static final String GET_ALL_TILES_URL = "http://myinfowall.ddns.net/apps/getAllTiles.php";
+    public static final String GET_ALL_FEEDS_URL = "http://myinfowall.ddns.net/apps/feed/getAllFeeds.php";
 }

@@ -2,6 +2,7 @@ package wipraktikum.informationwallandroidapp.Feedreader;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import wipraktikum.informationwallandroidapp.Feedreader.Adapter.FeedReaderListAd
 import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
+import wipraktikum.informationwallandroidapp.ServerCommunication.Synchronisation.SyncManager;
 import wipraktikum.informationwallandroidapp.Utils.JSONBuilder;
 
 /**
@@ -39,6 +41,27 @@ public class FeedReaderOverview extends Fragment {
     }
 
     private void initViews(View view){
+        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setColorSchemeResources(
+                R.color.refresh_progress_1,
+                R.color.refresh_progress_2,
+                R.color.refresh_progress_3);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                SyncManager syncManager = new SyncManager();
+                syncManager.syncFeedReaderInformation();
+                syncManager.setOnSyncFinishedListener(new SyncManager.OnSyncFinishedListener() {
+                    @Override
+                    public void onSyncFinished() {
+                        // stopping swipe refresh
+                        swipeRefreshLayout.setRefreshing(false);
+                        fillRSSList();
+                    }
+                });
+            }
+        });
+
         rssList = (ListView) view.findViewById(R.id.feed_reader_rss_list);
         rssList.setEmptyView(view.findViewById(R.id.empty));
         fillRSSList();

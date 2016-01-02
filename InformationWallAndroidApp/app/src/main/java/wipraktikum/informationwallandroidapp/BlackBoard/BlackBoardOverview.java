@@ -81,7 +81,7 @@ public class BlackBoardOverview extends Fragment implements BlackBoardExpandable
             @Override
             public void onRefresh() {
                 SyncManager syncManager = new SyncManager();
-                syncManager.syncAll();
+                syncManager.syncBlackboardInformation();
                 syncManager.setOnSyncFinishedListener(new SyncManager.OnSyncFinishedListener() {
                     @Override
                     public void onSyncFinished() {
