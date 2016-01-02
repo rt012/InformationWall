@@ -34,10 +34,16 @@ public class FeedReaderOverview extends Fragment {
         setHasOptionsMenu(true);
 
         setRetainInstance(true);
-        initViews(view);
-        ((FeedReader) getActivity()).showFab(true);
 
         return view;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        initViews(getView());
+        ((FeedReader) getActivity()).showFab(true);
     }
 
     private void initViews(View view){

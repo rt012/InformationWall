@@ -64,7 +64,7 @@ public class BlackBoardAttachmentView extends LinearLayout {
         }
 
         //if swipe is enabled than the item is currently edited = Always not greyed out! (I know there is prop. a better way..)
-        this.setAlpha(1F);
+        if (swipeEnabled) this.setAlpha(1F);
 
         //Content Loaded
        contentLoadingProgressBar = (ContentLoadingProgressBar)
