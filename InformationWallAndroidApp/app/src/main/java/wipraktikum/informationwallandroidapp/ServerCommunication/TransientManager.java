@@ -3,7 +3,6 @@ package wipraktikum.informationwallandroidapp.ServerCommunication;
 import java.util.List;
 
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardAttachment;
-import wipraktikum.informationwallandroidapp.BusinessObject.FeedReader.Feed;
 import wipraktikum.informationwallandroidapp.BusinessObject.Tile.Tile;
 import wipraktikum.informationwallandroidapp.BusinessObject.User.User;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
@@ -37,19 +36,6 @@ public class TransientManager {
             }
         }
         return serverBlackboardAttachments;
-    }
-
-    public static Feed keepTransientFeedData(Feed serverFeed){
-        if (serverFeed != null){
-            Feed clientFeed = (Feed) DAOHelper.getFeedReaderDAO().queryForId(serverFeed.getFeedReaderID());
-            if (clientFeed != null) {
-                serverFeed.setWebsite(clientFeed.getWebsite());
-                serverFeed.setDescription(clientFeed.getWebsite());
-                serverFeed.setTitle(clientFeed.getTitle());
-            }
-        }
-
-        return serverFeed;
     }
 
     public static Tile keepTransientTileData (Tile serverTile) {

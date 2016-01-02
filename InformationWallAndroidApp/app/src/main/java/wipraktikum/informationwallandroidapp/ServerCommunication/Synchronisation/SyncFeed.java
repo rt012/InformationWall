@@ -19,7 +19,6 @@ import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.Database.DAO.FeedReader.FeedReaderDAO;
 import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
-import wipraktikum.informationwallandroidapp.ServerCommunication.TransientManager;
 import wipraktikum.informationwallandroidapp.Utils.JSONBuilder;
 
 /**
@@ -90,17 +89,11 @@ public class SyncFeed implements JsonManager.OnObjectResponseListener, JsonManag
 
         Gson gsonInstance = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
         List<Feed> serverItemList = gsonInstance.fromJson(response, new TypeToken<List<Feed>>(){}.getType());
-        ArrayList<Feed> editedItemList = new ArrayList<Feed>();
-
-        for(Feed sererFeed : serverItemList) {
-            sererFeed = TransientManager.keepTransientFeedData(sererFeed);
-            sererFeed.setSyncStatus(true);
-            editedItemList.add(sererFeed);
-        }
 
         deleteAllFeeds();
 
-        for(Feed feed : editedItemList) {
+        for(Feed feed : serverItemList) {
+            feed.setSyncStatus(true);
             feedReaderDAO.createOrUpdate(feed);
         }
     }
@@ -119,7 +112,6 @@ public class SyncFeed implements JsonManager.OnObjectResponseListener, JsonManag
     public void OnResponse(JSONObject response) {
         Gson gsonInstance = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
         Feed serverFeed = gsonInstance.fromJson(new JsonParser().parse(response.toString()), Feed.class);
-        serverFeed = TransientManager.keepTransientFeedData(serverFeed);
         serverFeed.setSyncStatus(true);
         FeedReaderDAO feedReaderDAO = DAOHelper.getFeedReaderDAO();
         feedReaderDAO.deleteByID(currentUnsyncedFeed.getFeedReaderID());
