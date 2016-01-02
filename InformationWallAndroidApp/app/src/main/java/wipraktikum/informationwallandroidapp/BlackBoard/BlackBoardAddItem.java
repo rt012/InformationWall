@@ -40,7 +40,6 @@ import wipraktikum.informationwallandroidapp.BlackBoard.BlackBoardUtils.BlackBoa
 import wipraktikum.informationwallandroidapp.BlackBoard.CustomView.BlackBoardAttachmentView;
 import wipraktikum.informationwallandroidapp.BlackBoard.Dialog.BlackboardAddAttachmentDialog;
 import wipraktikum.informationwallandroidapp.BlackBoard.Dialog.BlackboardAddWebAttachmentDialog;
-import wipraktikum.informationwallandroidapp.BlackBoard.Dialog.BlackboardDeleteAttachmentDialog;
 import wipraktikum.informationwallandroidapp.BlackBoard.Enum.AttachmentEnum;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardAttachment;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
@@ -88,6 +87,7 @@ public class BlackBoardAddItem extends Fragment implements Blackboard.OnActivity
     private boolean isEditedItem = false;
     private boolean otherFragmentIsVisible = false;
     private boolean layoutUpdated = false;
+    private String searchContactTmp = "";
 
     private TableLayout tlAddContact = null;
     private AutoCompleteTextView autoCompleteTextViewContact = null;
@@ -221,12 +221,14 @@ public class BlackBoardAddItem extends Fragment implements Blackboard.OnActivity
                 if (tlAddContact.getVisibility() == View.GONE) {
                     tlAddContact.setVisibility(View.VISIBLE);
                     autoCompleteTextViewContact.setEnabled(false);
+                    searchContactTmp = autoCompleteTextViewContact.getText().toString();
                     autoCompleteTextViewContact.setText(getActivity().getString(R.string.black_board_add_item_new_contact));
+                    autoCompleteTextViewContact.setHint(getActivity().getString(R.string.black_board_add_item_new_contact));
                     imageButtonExpandContact.setImageResource(R.drawable.ic_arrow_up);
                 } else {
                     tlAddContact.setVisibility(View.GONE);
                     autoCompleteTextViewContact.setEnabled(true);
-                    autoCompleteTextViewContact.setText("");
+                    autoCompleteTextViewContact.setText(searchContactTmp);
                     autoCompleteTextViewContact.setHint(getActivity().getString(R.string.black_board_add_item_contact));
                     imageButtonExpandContact.setImageResource(R.drawable.ic_arrow_down);
                 }
@@ -505,33 +507,20 @@ public class BlackBoardAddItem extends Fragment implements Blackboard.OnActivity
     }
 
     private View addAttachmentViewToAttachmentContainer(final BlackBoardAttachment attachment){
-        final BlackBoardAttachmentView attachmentView = new BlackBoardAttachmentView(getActivity(), attachment, false);
+        final BlackBoardAttachmentView attachmentView = new BlackBoardAttachmentView(getActivity(), attachment, false, true);
         attachmentContainer.addView(attachmentView, 0);
         blackBoardAttachmentViews.add(attachmentView);
 
-        attachmentView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                showBlackboardAttachmentDialog(attachment, attachmentView);
-                return true;
-            }
-        });
-
-        return attachmentView;
-    }
-
-    private void showBlackboardAttachmentDialog(BlackBoardAttachment attachment, final View attachmentView){
-        final BlackboardDeleteAttachmentDialog blackboardDeleteAttachmentDialog = BlackboardDeleteAttachmentDialog.newInstance(attachment);
-        blackboardDeleteAttachmentDialog.show(getFragmentManager(), BlackboardDeleteAttachmentDialog.class.getSimpleName());
-        blackboardDeleteAttachmentDialog.setOnItemChangeListener(new BlackboardDeleteAttachmentDialog.OnItemChangeListener() {
+        attachmentView.setOnItemChangeListener(new BlackBoardAttachmentView.OnItemChangeListener() {
             @Override
             public void onDelete(BlackBoardAttachment blackboardAttachment) {
                 attachmentContainer.removeView(attachmentView);
                 blackBoardAttachments.remove(blackboardAttachment);
                 blackBoardAttachmentViews.remove(attachmentView);
-                blackboardDeleteAttachmentDialog.dismiss();
             }
         });
+
+        return attachmentView;
     }
 
     @Override

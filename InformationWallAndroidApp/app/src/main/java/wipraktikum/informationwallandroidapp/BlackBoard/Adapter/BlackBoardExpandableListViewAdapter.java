@@ -224,7 +224,8 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
         attachmentContainer.removeAllViews();
         for(int i = 0; i < blackBoardItem.getBlackBoardAttachment().size(); i++) {
             final BlackBoardAttachment attachment = blackBoardItem.getBlackBoardAttachment().get(i);
-            BlackBoardAttachmentView attachmentView = new BlackBoardAttachmentView(this.context, attachment, isDownloadInProgress(attachment));
+            BlackBoardAttachmentView attachmentView = new BlackBoardAttachmentView(this.context, attachment,
+                    isDownloadInProgress(attachment), false);
             attachmentView.setOnClickListener(this);
             attachmentContainer.addView(attachmentView);
         }

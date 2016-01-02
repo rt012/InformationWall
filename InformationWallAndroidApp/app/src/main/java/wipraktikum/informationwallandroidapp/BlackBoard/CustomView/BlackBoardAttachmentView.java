@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,13 +24,29 @@ public class BlackBoardAttachmentView extends LinearLayout {
     private BlackBoardAttachment attachment;
     private ContentLoadingProgressBar contentLoadingProgressBar = null;
 
-    public BlackBoardAttachmentView(final Context context, final BlackBoardAttachment attachment, boolean isDownloadInProgress) {
+    private OnItemChangeListener mOnItemChangeListener = null;
+
+    public BlackBoardAttachmentView(final Context context, final BlackBoardAttachment attachment
+            , boolean isDownloadInProgress, boolean swipeEnabled) {
         super(context);
         this.mContext = context;
         this.attachment = attachment;
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.content_blackboard_lv_attachment_item, this);
+        inflater.inflate(R.layout.attachment_item, this);
+
+        LinearLayout deleteAttachment = (LinearLayout) findViewById(R.id.delete_object);
+        deleteAttachment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                triggerOnDeleteAttachmentEvent(attachment);
+            }
+        });
+        if (!swipeEnabled) deleteAttachment.setVisibility(View.GONE);
+
+        //Edit Field
+        LinearLayout editAttachment = (LinearLayout) findViewById(R.id.edit_object);
+        editAttachment.setVisibility(View.GONE);
 
         //Attachment Icon
         ImageView attachmentIcon = (ImageView) findViewById(R.id.iv_black_board_attachment_item);
@@ -46,6 +63,9 @@ public class BlackBoardAttachmentView extends LinearLayout {
             this.setAlpha(0.5f);
         }
 
+        //if swipe is enabled than the item is currently edited = Always not greyed out! (I know there is prop. a better way..)
+        this.setAlpha(1F);
+
         //Content Loaded
        contentLoadingProgressBar = (ContentLoadingProgressBar)
                 findViewById(R.id.lp_black_board_attachment_item);
@@ -56,7 +76,11 @@ public class BlackBoardAttachmentView extends LinearLayout {
         }
     }
 
-
+    private void triggerOnDeleteAttachmentEvent(BlackBoardAttachment attachment) {
+        if (mOnItemChangeListener != null) {
+            mOnItemChangeListener.onDelete(attachment);
+        }
+    }
 
     private Drawable getDrawableFromDataType(DBBlackBoardAttachment.DataType dataType) {
         Drawable drawable = null;
@@ -89,5 +113,13 @@ public class BlackBoardAttachmentView extends LinearLayout {
         }else {
             contentLoadingProgressBar.hide();
         }
+    }
+
+    public void setOnItemChangeListener(OnItemChangeListener onItemChangeListener){
+        mOnItemChangeListener = onItemChangeListener;
+    }
+
+    public interface OnItemChangeListener {
+        void onDelete(BlackBoardAttachment blackboardAttachment);
     }
 }

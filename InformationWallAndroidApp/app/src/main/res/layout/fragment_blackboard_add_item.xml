@@ -33,11 +33,17 @@
         <TableRow
             android:paddingLeft="5dp"
             android:layout_weight="1">
-            <AutoCompleteTextView
-                android:id="@+id/ac_tv_black_board_add_item_contact"
+            <android.support.design.widget.TextInputLayout
                 style="@style/BlackBoardAddItemEditText"
-                android:layout_weight="1"
-                android:hint="@string/black_board_add_item_contact" />
+                android:layout_weight="1">
+                <AutoCompleteTextView
+                    android:id="@+id/ac_tv_black_board_add_item_contact"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:layout_weight="1"
+                    android:hint="@string/black_board_add_item_contact" />
+            </android.support.design.widget.TextInputLayout>
             <ImageButton
                 android:id="@+id/ib_tv_black_board_add_item_contact"
                 android:layout_width="match_parent"
