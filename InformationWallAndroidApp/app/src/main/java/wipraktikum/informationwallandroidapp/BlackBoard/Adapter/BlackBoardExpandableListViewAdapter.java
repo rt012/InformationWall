@@ -40,7 +40,7 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
     private final Context context;
     private List<BlackBoardItem> mBlackBoardItems = new ArrayList<BlackBoardItem>();
     private ArrayList<BlackBoardAttachment> downloadAttachments = new ArrayList<>();
-    //Rightsmanagement
+    //Right Management
     private boolean canEdit = true;
     private boolean canDelete = true;
     //Interface
@@ -139,23 +139,26 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
         }
 
         //Edit & Delete
-        LinearLayout deleteFeed = (LinearLayout) convertView.findViewById(R.id.delete_object);
-        deleteFeed.setOnClickListener(new View.OnClickListener() {
+        final LinearLayout deleteItem = (LinearLayout) convertView.findViewById(R.id.delete_object);
+        deleteItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 triggerOnDeleteFeedEvent(blackBoardItem);
             }
         });
-        if (!canDelete) deleteFeed.setVisibility(View.GONE);
+        if (!canDelete) deleteItem.setVisibility(View.GONE);
 
-        LinearLayout editFeed = (LinearLayout) convertView.findViewById(R.id.edit_object);
-        editFeed.setOnClickListener(new View.OnClickListener() {
+        final LinearLayout editItem = (LinearLayout) convertView.findViewById(R.id.edit_object);
+        editItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 triggerOnEditFeedEvent(blackBoardItem);
             }
         });
-        if (!canEdit) editFeed.setVisibility(View.GONE);
+        if (!canEdit) editItem.setVisibility(View.GONE);
+
+        //Add SwipeListener to the swipe layout
+        addSwipeListener((SwipeLayout) convertView, convertView.findViewById(R.id.swipe), context);
 
         SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
         //Item Title
@@ -183,6 +186,61 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
         }
 
         return convertView;
+    }
+
+    private void addSwipeListener(SwipeLayout swipeLayout, final View swipeView, final Context context){
+        swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
+            @Override
+            public void onStartOpen(SwipeLayout layout) {
+            }
+
+            @Override
+            public void onOpen(SwipeLayout layout) {
+                if (isViewOverlapping(swipeView, ((Blackboard) context).getFab())){
+                    ((Blackboard)context).showFab(false);
+                }else{
+                    ((Blackboard)context).showFab(true);
+                }
+            }
+
+            @Override
+            public void onStartClose(SwipeLayout layout) {
+            }
+
+            @Override
+            public void onClose(SwipeLayout layout) {
+                ((Blackboard)context).showFab(true);
+            }
+
+            @Override
+            public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
+
+            }
+
+            @Override
+            public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
+
+            }
+        });
+    }
+
+    private boolean isViewOverlapping(View firstView, View secondView) {
+        int[] firstPosition = new int[2];
+        int[] secondPosition = new int[2];
+
+        firstView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        firstView.getLocationOnScreen(firstPosition);
+        secondView.getLocationOnScreen(secondPosition);
+
+        int r = firstView.getMeasuredWidth() + firstPosition[0];
+
+        int firstHeight = firstView.getMeasuredHeight() + firstPosition[1];
+        int secondHeight = secondPosition[1];
+
+        return firstHeight >= secondHeight && (firstHeight != 0 && secondHeight != 0);
+
+       // int l = secondPosition[0];
+       // return r >= l && (r != 0 && l != 0);
     }
 
     private void triggerOnDeleteFeedEvent(BlackBoardItem blackBoardItem){

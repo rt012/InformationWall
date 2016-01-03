@@ -60,6 +60,10 @@ public class Blackboard extends BaseActivity{
         handleIntentData();
     }
 
+    public FloatingActionButton getFab(){
+        return fab;
+    }
+
     @Override
     public View getRootView(){
         return mRootView;

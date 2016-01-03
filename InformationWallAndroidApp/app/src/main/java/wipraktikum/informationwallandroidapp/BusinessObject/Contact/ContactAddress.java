@@ -89,7 +89,7 @@ public class ContactAddress {
     }
 
     public boolean isEmpty(){
-        if (StringHelper.isStringNullOrEmpty(getFullAddress()) && StringHelper.isStringNullOrEmpty(getZipCode())) return true;
+        if (StringHelper.isStringNullOrEmpty(getFullAddress())) return true;
         return false;
     }
 
