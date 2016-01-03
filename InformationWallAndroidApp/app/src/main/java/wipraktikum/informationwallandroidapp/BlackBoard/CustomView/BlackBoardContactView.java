@@ -24,6 +24,11 @@ public class BlackBoardContactView extends TableLayout {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.content_blackboard_ex_lv_child_contact, this);
 
+        if (blackBoardContact.isEmpty()){
+            findViewById(R.id.layout_container).setVisibility(View.GONE);
+            return;
+        }
+
         //Contact Information
         TextView txtContactCompany = (TextView) findViewById(R.id.tv_black_board_contact_company);
         ImageView ivContactCompany = (ImageView) findViewById(R.id.iv_black_board_contact_company);
@@ -94,6 +99,5 @@ public class BlackBoardContactView extends TableLayout {
         }else{
             trContactFullAddress.setVisibility(View.GONE);
         }
-
     }
 }

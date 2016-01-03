@@ -88,6 +88,11 @@ public class ContactAddress {
         this.mSyncStatus = mSyncStatus;
     }
 
+    public boolean isEmpty(){
+        if (StringHelper.isStringNullOrEmpty(getFullAddress()) && StringHelper.isStringNullOrEmpty(getZipCode())) return true;
+        return false;
+    }
+
     public static void splitStreet(ContactAddress contactAddress, String street) {
         String[] splitStreet = street.split(" ");
         if (splitStreet.length == 2) {

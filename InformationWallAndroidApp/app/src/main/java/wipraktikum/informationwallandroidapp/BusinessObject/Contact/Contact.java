@@ -112,6 +112,13 @@ public class Contact {
         return false;
     }
 
+    public boolean isEmpty(){
+        if (StringHelper.isStringNullOrEmpty(getCompany()) && StringHelper.isStringNullOrEmpty(getEMailAddress())
+                && StringHelper.isStringNullOrEmpty(getFullName()) && StringHelper.isStringNullOrEmpty(getTelephone())
+                && getContactAddress().isEmpty()) return true;
+        return false;
+    }
+
     public static void splitContactFullName(Contact contact, String fullName) {
         String[] splitFullName = fullName.split(" ");
         if (splitFullName.length == 2) {
