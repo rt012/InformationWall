@@ -35,7 +35,7 @@ import wipraktikum.informationwallandroidapp.Utils.StringHelper;
 /**
  * Created by Eric Schmidt on 25.10.2015.
  */
-public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapter implements View.OnClickListener{
+public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapter{
 
     private final Context context;
     private List<BlackBoardItem> mBlackBoardItems = new ArrayList<BlackBoardItem>();
@@ -224,9 +224,46 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
         attachmentContainer.removeAllViews();
         for(int i = 0; i < blackBoardItem.getBlackBoardAttachment().size(); i++) {
             final BlackBoardAttachment attachment = blackBoardItem.getBlackBoardAttachment().get(i);
-            BlackBoardAttachmentView attachmentView = new BlackBoardAttachmentView(this.context, attachment,
+            final BlackBoardAttachmentView attachmentView = new BlackBoardAttachmentView(this.context, attachment,
                     isDownloadInProgress(attachment), false);
-            attachmentView.setOnClickListener(this);
+            attachmentView.getSurfaceView().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final BlackBoardAttachment attachment = attachmentView.getItem();
+                    final FileHelper fileHelper = FileHelper.getInstance();
+                    //Download the file if does not exist
+                    if (!fileHelper.isURL(attachment.getDeviceDataPath()) && !fileHelper.exists(attachment.getDeviceDataPath())) {
+                        attachmentView.showProgressbar(true);
+                        downloadAttachments.add(attachmentView.getItem());
+                        //Start Download
+                        final String filePath = DownloadManager.getInstance().downloadFile(attachment.getRemoteDataPath());
+
+                        //Something went wrong downloading the file
+                        if (filePath == null){
+                            attachmentView.showProgressbar(false);
+                            downloadAttachments.remove(attachmentView.getItem());
+                            ((Blackboard) context).showSnackBar(R.string.blackboard_overview_failed_download);
+                        }
+
+                        context.registerReceiver(new BroadcastReceiver() {
+                            @Override
+                            public void onReceive(Context context, Intent intent) {
+                                attachmentView.showProgressbar(false);
+                                downloadAttachments.remove(attachmentView.getItem());
+                                //Update BlackBoardAttachment
+                                attachment.setDeviceDataPath(filePath);
+                                DAOHelper.getBlackBoardAttachmentDAO().update(attachment);
+                                //Open File
+                                fileHelper.openFile(context, filePath);
+                                notifyDataSetChanged();
+                            }
+                        }, new IntentFilter(android.app.DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+                    }else{
+                        //Open File
+                        fileHelper.openFile(context, attachment.getDeviceDataPath());
+                    }
+                }
+            });
             attachmentContainer.addView(attachmentView);
         }
 
@@ -240,44 +277,6 @@ public class BlackBoardExpandableListViewAdapter extends BaseExpandableListAdapt
     @Override
     public boolean isChildSelectable(int i, int i1) {
         return false;
-    }
-
-    @Override
-    public void onClick(View v) {
-        final BlackBoardAttachmentView convertView = (BlackBoardAttachmentView) v;
-        final BlackBoardAttachment attachment = convertView.getItem();
-        final FileHelper fileHelper = FileHelper.getInstance();
-        //Download the file if does not exist
-        if (!fileHelper.isURL(attachment.getDeviceDataPath()) && !fileHelper.exists(attachment.getDeviceDataPath())) {
-            convertView.showProgressbar(true);
-            downloadAttachments.add(convertView.getItem());
-            //Start Download
-            final String filePath = DownloadManager.getInstance().downloadFile(attachment.getRemoteDataPath());
-
-            //Something went wrong downloading the file
-            if (filePath == null){
-                convertView.showProgressbar(false);
-                downloadAttachments.remove(convertView.getItem());
-                ((Blackboard) context).showSnackBar(R.string.blackboard_overview_failed_download);
-            }
-
-            context.registerReceiver(new BroadcastReceiver() {
-                @Override
-                public void onReceive(Context context, Intent intent) {
-                    convertView.showProgressbar(false);
-                    downloadAttachments.remove(convertView.getItem());
-                    //Update BlackBoardAttachment
-                    attachment.setDeviceDataPath(filePath);
-                    DAOHelper.getBlackBoardAttachmentDAO().update(attachment);
-                    //Open File
-                    fileHelper.openFile(context, filePath);
-                    notifyDataSetChanged();
-                }
-            }, new IntentFilter(android.app.DownloadManager.ACTION_DOWNLOAD_COMPLETE));
-        }else{
-            //Open File
-            fileHelper.openFile(context, attachment.getDeviceDataPath());
-        }
     }
 
     private boolean isDownloadInProgress(BlackBoardAttachment attachment){
