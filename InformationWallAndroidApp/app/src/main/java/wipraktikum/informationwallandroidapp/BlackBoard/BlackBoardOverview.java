@@ -43,15 +43,21 @@ public class BlackBoardOverview extends Fragment implements BlackBoardExpandable
     public View onCreateView(LayoutInflater inflater,ViewGroup viewGroup, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_blackboard_overview, viewGroup, false);
 
+        initNewBlackBoardItemNotificationListener();
+
+        return view;
+    }
+
+    private void initNewBlackBoardItemNotificationListener() {
         //Register Listener
         NotificationHelper.getInstance().setOnNotificationReceiveListener(new NotificationHelper.OnNotificationReceiveListener() {
             @Override
             public void onNotificationReceive() {
                 blackBoardExpandableListViewAdapter.notifyDataSetChanged();
+                NotificationHelper.showSnackBar(((Blackboard) getActivity()).getRootView(), getString(R.string.new_blackboard_item_notification_title));
+
             }
         });
-
-        return view;
     }
 
     @Override

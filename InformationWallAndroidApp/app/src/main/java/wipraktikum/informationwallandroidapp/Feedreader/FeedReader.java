@@ -16,23 +16,25 @@ import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.InfoWallApplication;
 import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.TileOverview.TileOverview;
+import wipraktikum.informationwallandroidapp.Utils.NotificationHelper;
 
 /**
  * Created by Eric Schmidt on 21.12.2015.
  */
 public class FeedReader extends BaseActivity {
     private FloatingActionButton fab = null;
-    private View mRootView = null;
+    private CoordinatorLayout mRootView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed_reader);
+        mRootView = (CoordinatorLayout) findViewById(R.id.cl_feed_reader_layout);
 
         initViews();
         showFab(true);
         handleIntentData();
-
+        initNewBlackBoardItemNotificationListener();
         openFragment(new FeedReaderOverview(), false);
     }
 
@@ -124,6 +126,16 @@ public class FeedReader extends BaseActivity {
 
     public void showSnackBar(int message){
         Snackbar.make(getRootView(), message, Snackbar.LENGTH_LONG).show();
+    }
+    private void initNewBlackBoardItemNotificationListener() {
+        //Register Listener
+        NotificationHelper.getInstance().setOnNotificationReceiveListener(new NotificationHelper.OnNotificationReceiveListener() {
+            @Override
+            public void onNotificationReceive() {
+                NotificationHelper.showNewBlackBoardItemSnackbar(getRootView(), getString(R.string.new_blackboard_item_notification_title));
+
+            }
+        });
     }
 
 }

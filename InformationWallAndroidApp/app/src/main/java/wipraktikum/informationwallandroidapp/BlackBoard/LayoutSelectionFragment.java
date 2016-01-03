@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import wipraktikum.informationwallandroidapp.R;
+import wipraktikum.informationwallandroidapp.Utils.NotificationHelper;
 
 /**
  * Created by Remi on 26.11.2015.
@@ -54,7 +55,19 @@ public class LayoutSelectionFragment extends Fragment {
                 .inflate(R.layout.fragment_layout_slide, container, false);
 
         initView(rootView);
+        initNewBlackBoardItemNotificationListener();
         return rootView;
+    }
+
+    private void initNewBlackBoardItemNotificationListener() {
+        //Register Listener
+        NotificationHelper.getInstance().setOnNotificationReceiveListener(new NotificationHelper.OnNotificationReceiveListener() {
+            @Override
+            public void onNotificationReceive() {
+                NotificationHelper.showNewBlackBoardItemSnackbar(((Blackboard) getActivity()).getRootView(), getString(R.string.new_blackboard_item_notification_title));
+
+            }
+        });
     }
 
     @Override

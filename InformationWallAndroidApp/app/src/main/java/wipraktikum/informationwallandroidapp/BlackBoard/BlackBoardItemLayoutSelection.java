@@ -25,6 +25,7 @@ import wipraktikum.informationwallandroidapp.BaseActivity;
 import wipraktikum.informationwallandroidapp.BusinessObject.BlackBoard.BlackBoardItem;
 import wipraktikum.informationwallandroidapp.Database.BusinessObject.BlackBoard.DBBlackBoardItem;
 import wipraktikum.informationwallandroidapp.R;
+import wipraktikum.informationwallandroidapp.Utils.NotificationHelper;
 
 
 public class BlackBoardItemLayoutSelection extends Fragment {
@@ -57,8 +58,20 @@ public class BlackBoardItemLayoutSelection extends Fragment {
         setUiPageViewController(view);
 
         setInitialState();
+        initNewBlackBoardItemNotificationListener();
 
         return view;
+    }
+
+    private void initNewBlackBoardItemNotificationListener() {
+        //Register Listener
+        NotificationHelper.getInstance().setOnNotificationReceiveListener(new NotificationHelper.OnNotificationReceiveListener() {
+            @Override
+            public void onNotificationReceive() {
+                NotificationHelper.showNewBlackBoardItemSnackbar(((Blackboard) getActivity()).getRootView(), getString(R.string.new_blackboard_item_notification_title));
+
+            }
+        });
     }
 
     private void initViews(View view){

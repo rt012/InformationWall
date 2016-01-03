@@ -2,6 +2,7 @@ package wipraktikum.informationwallandroidapp.TileOverview;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -25,17 +26,20 @@ import wipraktikum.informationwallandroidapp.ServerCommunication.Synchronisation
 import wipraktikum.informationwallandroidapp.TileOverview.Adapter.GridViewTileOverviewAdapter;
 import wipraktikum.informationwallandroidapp.TileOverview.Dialog.TileLongClickDialog;
 import wipraktikum.informationwallandroidapp.Utils.JSONBuilder;
+import wipraktikum.informationwallandroidapp.Utils.NotificationHelper;
 
 
 public class TileOverview extends BaseActivity {
     public final static String TILE_ID_KEY_PARAM = "tileID";
 
     private ORMLiteHelper databaseHelper = null;
+    private CoordinatorLayout mRootView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tile_overview);
+        mRootView = (CoordinatorLayout) findViewById(R.id.cl_tileoverview);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -69,6 +73,8 @@ public class TileOverview extends BaseActivity {
                 tileOverviewAdapter.notifyDataSetChanged();
             }
         });
+
+        initNewBlackBoardItemNotificationListener();
     }
 
     @Override
@@ -167,5 +173,21 @@ public class TileOverview extends BaseActivity {
         actionParam += tile.getName();
         JSONObject jsonObject = JSONBuilder.createJSONFromParam(ServerURLManager.SHOW_BLACK_BOARD_PARAM_KEY, actionParam);
         new JsonManager().sendJson(ServerURLManager.CHANGE_TILE_PARAM_URL, jsonObject);
+    }
+
+    private void initNewBlackBoardItemNotificationListener() {
+        //Register Listener
+        NotificationHelper.getInstance().setOnNotificationReceiveListener(new NotificationHelper.OnNotificationReceiveListener() {
+            @Override
+            public void onNotificationReceive() {
+                NotificationHelper.showNewBlackBoardItemSnackbar(getRootView(), getString(R.string.new_blackboard_item_notification_title));
+
+            }
+        });
+    }
+
+    @Override
+    public View getRootView(){
+        return mRootView;
     }
 }

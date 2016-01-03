@@ -57,6 +57,7 @@ import wipraktikum.informationwallandroidapp.ServerCommunication.UploadManager;
 import wipraktikum.informationwallandroidapp.Utils.ActivityHelper;
 import wipraktikum.informationwallandroidapp.Utils.FileHelper;
 import wipraktikum.informationwallandroidapp.Utils.JSONBuilder;
+import wipraktikum.informationwallandroidapp.Utils.NotificationHelper;
 import wipraktikum.informationwallandroidapp.Utils.RealPathHelper;
 import wipraktikum.informationwallandroidapp.Utils.StringHelper;
 
@@ -122,8 +123,20 @@ public class BlackBoardAddItem extends Fragment implements Blackboard.OnActivity
         initViews(view);
         showFab();
         handleIntentData();
+        initNewBlackBoardItemNotificationListener();
 
         return view;
+    }
+
+    private void initNewBlackBoardItemNotificationListener() {
+        //Register Listener
+        NotificationHelper.getInstance().setOnNotificationReceiveListener(new NotificationHelper.OnNotificationReceiveListener() {
+            @Override
+            public void onNotificationReceive() {
+                NotificationHelper.showNewBlackBoardItemSnackbar(((Blackboard) getActivity()).getRootView(), getString(R.string.new_blackboard_item_notification_title));
+
+            }
+        });
     }
 
     private void handleIntentData(){

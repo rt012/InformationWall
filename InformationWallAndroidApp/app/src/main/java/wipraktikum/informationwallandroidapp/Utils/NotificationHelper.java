@@ -10,7 +10,9 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.os.Build;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.NotificationCompat;
+import android.view.View;
 
 import java.util.List;
 
@@ -138,6 +140,25 @@ public class NotificationHelper {
 
     public interface OnNotificationReceiveListener{
         public void onNotificationReceive();
+    }
+
+    public static void showNewBlackBoardItemSnackbar(View rootView, String message) {
+        Snackbar snackbar = Snackbar
+                .make(rootView, message, Snackbar.LENGTH_LONG)
+                .setAction(InfoWallApplication.getInstance().getString(R.string.go_to_overview_notification), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ActivityHelper.openBlackboardActivity(InfoWallApplication.getInstance());
+                    }
+                });
+
+        snackbar.show();
+    }
+
+    public static void showSnackBar(View rootView, String message) {
+        Snackbar snackbar = Snackbar
+                .make(rootView, message, Snackbar.LENGTH_LONG);
+        snackbar.show();
     }
 
 }
