@@ -152,20 +152,20 @@ public class BlackBoardOverview extends Fragment implements BlackBoardExpandable
     }
 
     private void restoreBlackBoardItemOnServer(final BlackBoardItem blackBoardItem) {
-        progressDialog.show();
+        showProgressDialog();
         JsonManager jsonManager = new JsonManager();
         jsonManager.setOnObjectResponseReceiveListener(new JsonManager.OnObjectResponseListener() {
             @Override
             public void OnResponse(JSONObject response) {
                 updateBlackBoardItemInDB(response, blackBoardItem);
-                progressDialog.hide();
+                hideProgressDialog();
             }
         });
         jsonManager.setOnErrorReceiveListener(new JsonManager.OnErrorListener() {
             @Override
             public void OnErrorResponse(VolleyError error) {
                 ((Blackboard)getActivity()).showSnackBar(R.string.black_board_add_item_snackbar_connection_error);
-                progressDialog.hide();
+                hideProgressDialog();
             }
         });
 

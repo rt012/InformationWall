@@ -652,7 +652,6 @@ public class BlackBoardAddItem extends Fragment implements Blackboard.OnActivity
         JsonManager jsonManager = new JsonManager();
         jsonManager.setOnObjectResponseReceiveListener(this);
         jsonManager.setOnErrorReceiveListener(this);
-
         jsonManager.sendJson(ServerURLManager.NEW_BLACKBOARD_ITEM_URL, JSONBuilder.createJSONFromObject(blackBoardItem));
     }
 
