@@ -205,7 +205,7 @@ public class Blackboard extends BaseActivity{
                 @Override
                 public void onSaveBlackBoardItem(boolean isSuccessful) {
                     if (!isSuccessful) {
-                        showSnackBar(R.string.black_board_add_item_snackbar_connection_error);
+                         showSnackBar(R.string.black_board_add_item_snackbar_connection_error);
                     }
                     onSupportNavigateUp();
                 }

@@ -1,6 +1,5 @@
 package wipraktikum.informationwallandroidapp.BlackBoard;
 
-import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -28,6 +27,7 @@ import wipraktikum.informationwallandroidapp.ServerCommunication.Synchronisation
 import wipraktikum.informationwallandroidapp.ServerCommunication.TransientManager;
 import wipraktikum.informationwallandroidapp.Utils.JSONBuilder;
 import wipraktikum.informationwallandroidapp.Utils.NotificationHelper;
+import wipraktikum.informationwallandroidapp.Utils.ProgressDialogHelper;
 import wipraktikum.informationwallandroidapp.Utils.UndoDeleteHelper;
 
 public class BlackBoardOverview extends Fragment implements BlackBoardExpandableListViewAdapter.OnItemChangeListener{
@@ -37,7 +37,7 @@ public class BlackBoardOverview extends Fragment implements BlackBoardExpandable
     private UndoDeleteHelper undoDeleteHelper = null;
     private JsonManager jsonManager;
 
-    private ProgressDialog progressDialog = null;
+    private ProgressDialogHelper progressDialog = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup viewGroup, Bundle savedInstanceState) {
@@ -179,10 +179,11 @@ public class BlackBoardOverview extends Fragment implements BlackBoardExpandable
     }
 
     private void showProgressDialog(){
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setTitle(getString(R.string.progress_pleaseWait));
-        progressDialog.setMessage(getString(R.string.progress_itemUpload));
-        progressDialog.show();
+        if (progressDialog == null){
+            progressDialog = new ProgressDialogHelper(getActivity());
+        }
+
+        progressDialog.show(getString(R.string.progress_pleaseWait), getString(R.string.progress_itemUpload));
     }
 
     private void hideProgressDialog(){

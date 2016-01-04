@@ -8,6 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.android.volley.VolleyError;
+
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import wipraktikum.informationwallandroidapp.BusinessObject.FeedReader.Feed;
@@ -18,6 +23,8 @@ import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.Synchronisation.SyncManager;
 import wipraktikum.informationwallandroidapp.Utils.JSONBuilder;
+import wipraktikum.informationwallandroidapp.Utils.ProgressDialogHelper;
+import wipraktikum.informationwallandroidapp.Utils.UndoDeleteHelper;
 
 /**
  * Created by Eric Schmidt on 28.12.2015.
@@ -27,6 +34,8 @@ public class FeedReaderOverview extends Fragment {
 
     private FeedReaderListAdapter adapter = null;
     private List feedList = null;
+    private UndoDeleteHelper undoDeleteHelper = null;
+    private ProgressDialogHelper progressDialog = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup viewGroup, Bundle savedInstanceState) {
@@ -44,6 +53,8 @@ public class FeedReaderOverview extends Fragment {
 
         initViews(getView());
         ((FeedReader) getActivity()).showFab(true);
+
+        undoDeleteHelper = new UndoDeleteHelper(((FeedReader)getActivity()).getRootView(), getActivity());
     }
 
     private void initViews(View view){
@@ -86,8 +97,68 @@ public class FeedReaderOverview extends Fragment {
                     new JsonManager().sendJson(ServerURLManager.DELETE_FEED_URL, JSONBuilder.createJSONFromObject(feed));
                 }
                 adapter.notifyDataSetChanged();
+
+                undoDeleteHelper.showUndoSnackbar(feed);
+                undoDeleteHelper.setOnUndoDeleteListener(new UndoDeleteHelper.OnUndoDeleteListener() {
+                    @Override
+                    public void onUndo(ArrayList<Object> undoObjects) {
+                        for (Object object : undoObjects) {
+                            Feed undoFeed = (Feed) object;
+                            restoreFeedInDB(undoFeed);
+                            restoreFeedOnServer(undoFeed);
+                            fillRSSList();
+                        }
+                    }
+                });
             }
         });
     }
+
+    private void restoreFeedInDB(Feed feed){
+        DAOHelper.getFeedReaderDAO().create(feed);
+    }
+
+    private void restoreFeedOnServer(final Feed feed){
+        showProgressDialog();
+
+        JsonManager jsonManager = new JsonManager();
+        JSONObject feedJson = JSONBuilder.createJSONFromObject(feed);
+        jsonManager.sendJson(ServerURLManager.NEW_FEED_URL, feedJson);
+        jsonManager.setOnObjectResponseReceiveListener(new JsonManager.OnObjectResponseListener() {
+            @Override
+            public void OnResponse(JSONObject response) {
+                updateFeedFromServer(response, feed);
+                hideProgressDialog();
+            }
+        });
+        jsonManager.setOnErrorReceiveListener(new JsonManager.OnErrorListener() {
+            @Override
+            public void OnErrorResponse(VolleyError error) {
+                ((FeedReader) getActivity()).showSnackBar(R.string.black_board_add_item_snackbar_connection_error);
+                hideProgressDialog();
+            }
+        });
+    }
+
+    private void updateFeedFromServer(JSONObject response, Feed feed) {
+        Feed serverFeed = Feed.parseItemFromJson(response.toString());
+        serverFeed.setSyncStatus(true);
+        DAOHelper.getFeedReaderDAO().delete(feed);
+        DAOHelper.getFeedReaderDAO().createOrUpdate(serverFeed);
+        fillRSSList();
+    }
+
+    private void showProgressDialog(){
+        if (progressDialog == null){
+            progressDialog = new ProgressDialogHelper(getActivity());
+        }
+
+        progressDialog.show(getString(R.string.progress_pleaseWait), getString(R.string.progress_itemUpload));
+    }
+
+    private void hideProgressDialog(){
+       progressDialog.hide();
+    }
+
 
 }

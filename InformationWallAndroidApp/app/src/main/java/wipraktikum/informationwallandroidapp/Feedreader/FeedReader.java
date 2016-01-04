@@ -124,9 +124,14 @@ public class FeedReader extends BaseActivity {
         }
     }
 
+    public View getRootView(){
+        return mRootView;
+    }
+
     public void showSnackBar(int message){
         Snackbar.make(getRootView(), message, Snackbar.LENGTH_LONG).show();
     }
+
     private void initNewBlackBoardItemNotificationListener() {
         //Register Listener
         NotificationHelper.getInstance().setOnNotificationReceiveListener(new NotificationHelper.OnNotificationReceiveListener() {

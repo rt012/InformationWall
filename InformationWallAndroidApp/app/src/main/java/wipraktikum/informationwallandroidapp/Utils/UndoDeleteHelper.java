@@ -34,6 +34,7 @@ public class UndoDeleteHelper {
                         if (mOnUndoDeleteListener != null){
                             mOnUndoDeleteListener.onUndo(deletedObjects);
                         }
+                        deletedObjects.clear();
                     }
                 }).show();
     }
