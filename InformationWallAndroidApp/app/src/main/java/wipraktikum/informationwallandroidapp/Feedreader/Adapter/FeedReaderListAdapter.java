@@ -18,6 +18,7 @@ import java.net.URL;
 import java.util.List;
 
 import wipraktikum.informationwallandroidapp.BusinessObject.FeedReader.Feed;
+import wipraktikum.informationwallandroidapp.Feedreader.FeedReader;
 import wipraktikum.informationwallandroidapp.R;
 
 /**
@@ -64,6 +65,7 @@ public class FeedReaderListAdapter extends ArraySwipeAdapter {
         TextView tcDesc = (TextView) convertView.findViewById(R.id.feed_reader_list_desc);
         tcDesc.setText(feed.getDescription());
 
+        //Edit & Delete
         LinearLayout deleteFeed = (LinearLayout) convertView.findViewById(R.id.delete_object);
         deleteFeed.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,8 +77,67 @@ public class FeedReaderListAdapter extends ArraySwipeAdapter {
         LinearLayout editFeed = (LinearLayout) convertView.findViewById(R.id.edit_object);
         editFeed.setVisibility(View.GONE);
 
+        //Add SwipeListener to the swipe layout
+        addSwipeListener((SwipeLayout) convertView, convertView.findViewById(R.id.swipe), context);
+
         return convertView;
     }
+
+    private void addSwipeListener(SwipeLayout swipeLayout, final View swipeView, final Context context){
+        swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
+            @Override
+            public void onStartOpen(SwipeLayout layout) {
+            }
+
+            @Override
+            public void onOpen(SwipeLayout layout) {
+                if (isViewOverlapping(swipeView, ((FeedReader) context).getFab())){
+                    ((FeedReader)context).showFab(false);
+                }else{
+                    ((FeedReader)context).showFab(true);
+                }
+            }
+
+            @Override
+            public void onStartClose(SwipeLayout layout) {
+            }
+
+            @Override
+            public void onClose(SwipeLayout layout) {
+                ((FeedReader)context).showFab(true);
+            }
+
+            @Override
+            public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
+
+            }
+
+            @Override
+            public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
+
+            }
+        });
+    }
+
+    private boolean isViewOverlapping(View firstView, View secondView) {
+        int[] firstPosition = new int[2];
+        int[] secondPosition = new int[2];
+
+        firstView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        firstView.getLocationOnScreen(firstPosition);
+        secondView.getLocationOnScreen(secondPosition);
+
+        int r = firstView.getMeasuredWidth() + firstPosition[0];
+
+        int firstHeight = firstView.getMeasuredHeight() + firstPosition[1];
+        int secondHeight = secondPosition[1];
+
+        return firstHeight >= secondHeight && (firstHeight != 0 && secondHeight != 0);
+
+        // int l = secondPosition[0];
+        // return r >= l && (r != 0 && l != 0);
+    }
+
 
     public void setEnableSwipe(boolean enableSwipe){
         this.enableSwipe = enableSwipe;

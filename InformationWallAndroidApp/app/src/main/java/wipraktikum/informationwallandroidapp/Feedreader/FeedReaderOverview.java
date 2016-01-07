@@ -16,8 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import wipraktikum.informationwallandroidapp.BusinessObject.FeedReader.Feed;
+import wipraktikum.informationwallandroidapp.BusinessObject.User.User;
 import wipraktikum.informationwallandroidapp.Database.DAO.DAOHelper;
 import wipraktikum.informationwallandroidapp.Feedreader.Adapter.FeedReaderListAdapter;
+import wipraktikum.informationwallandroidapp.InfoWallApplication;
 import wipraktikum.informationwallandroidapp.R;
 import wipraktikum.informationwallandroidapp.ServerCommunication.JsonManager;
 import wipraktikum.informationwallandroidapp.ServerCommunication.ServerURLManager;
@@ -52,6 +54,7 @@ public class FeedReaderOverview extends Fragment {
         super.onResume();
 
         initViews(getView());
+        checkUserRights();
         ((FeedReader) getActivity()).showFab(true);
 
         undoDeleteHelper = new UndoDeleteHelper(((FeedReader)getActivity()).getRootView(), getActivity());
@@ -112,6 +115,17 @@ public class FeedReaderOverview extends Fragment {
                 });
             }
         });
+    }
+
+    private void checkUserRights(){
+        User currentUser = InfoWallApplication.getCurrentUser();
+        if (currentUser != null) {
+            if (currentUser.getUserGroup().canDelete()){
+                adapter.setEnableSwipe(true);
+            }else{
+                adapter.setEnableSwipe(false);
+            }
+        }
     }
 
     private void restoreFeedInDB(Feed feed){

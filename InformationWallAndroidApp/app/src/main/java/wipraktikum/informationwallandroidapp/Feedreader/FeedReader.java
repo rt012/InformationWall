@@ -87,6 +87,10 @@ public class FeedReader extends BaseActivity {
         }
     }
 
+    public FloatingActionButton getFab(){
+        return fab;
+    }
+
     public void showFab(boolean showFab){
         //By User
         if (InfoWallApplication.getCurrentUser().getUserGroup().canWrite()) {
