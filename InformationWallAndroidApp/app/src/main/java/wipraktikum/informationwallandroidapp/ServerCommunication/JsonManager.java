@@ -1,5 +1,7 @@
 package wipraktikum.informationwallandroidapp.ServerCommunication;
 
+import android.util.Log;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -28,7 +30,8 @@ public class JsonManager {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        VolleyLog.d(VOLLEY_TAG, "Success: " + response.toString());
+                        VolleyLog.e(VOLLEY_TAG, "Success: " + response.toString());
+                        Log.e(VOLLEY_TAG,"Success: " + response.toString());
                         if(mOnObjectResponseListener != null){
                             mOnObjectResponseListener.OnResponse(response);
                         }
@@ -38,14 +41,16 @@ public class JsonManager {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        VolleyLog.d(VOLLEY_TAG, "Error: " + error.getMessage());
+                        VolleyLog.e(VOLLEY_TAG, "Error: " + error.getMessage());
+                        Log.e(VOLLEY_TAG, "Error: " + error.getMessage());
                         if(mOnErrorListener != null){
                             mOnErrorListener.OnErrorResponse(error);
                         }
                     }
                 }) {
         };
-
+        VolleyLog.e(VOLLEY_TAG, "add to request queue url: " + url + jsonObject.toString());
+        Log.e(VOLLEY_TAG, "add to request queue url: " + url + jsonObject.toString());
         // Adding request to request queue
         InfoWallApplication.getInstance().addToRequestQueue(jsonObjReq, "Test");
     }

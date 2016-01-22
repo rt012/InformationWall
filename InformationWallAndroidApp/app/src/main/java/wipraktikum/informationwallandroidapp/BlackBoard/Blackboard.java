@@ -147,12 +147,12 @@ public class Blackboard extends BaseActivity{
             attachmentUris = getIntent().getParcelableArrayListExtra(Intent.EXTRA_STREAM);
         }else{
             Uri uri = (Uri) getIntent().getParcelableExtra(Intent.EXTRA_STREAM);
-
-            if (attachmentUris.isEmpty()){
+            if(uri != null){
+                attachmentUris.add(uri);
+            } else {
                 uri = Uri.parse(getIntent().getExtras().getString(Intent.EXTRA_TEXT));
+                attachmentUris.add(uri);
             }
-
-            attachmentUris.add(uri);
         }
 
         return attachmentUris;
