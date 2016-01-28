@@ -34,6 +34,7 @@ public class TileOverview extends BaseActivity {
 
     private ORMLiteHelper databaseHelper = null;
     private CoordinatorLayout mRootView = null;
+    private GridViewTileOverviewAdapter tileOverviewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,7 @@ public class TileOverview extends BaseActivity {
 
         //Set Adapter for GridView
         GridView gridView = (GridView)findViewById(R.id.gridview);
-        final GridViewTileOverviewAdapter tileOverviewAdapter = new GridViewTileOverviewAdapter(this);
+        tileOverviewAdapter = new GridViewTileOverviewAdapter(this);
         gridView.setAdapter(tileOverviewAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -159,19 +160,20 @@ public class TileOverview extends BaseActivity {
 
     private void activateTile(boolean isActivated, View isActivatedWrapper, Tile tile){
         if(isActivated) {
-            isActivatedWrapper.setVisibility(View.VISIBLE);
+            //isActivatedWrapper.setVisibility(View.VISIBLE);
             tile.setIsActivated(true);
 
             //Show Tile on information wall
             activateTileOnServer(ServerURLManager.SHOW_BLACK_BOARD_PARAM_ACTIVE, tile);
         }else{
-            isActivatedWrapper.setVisibility(View.GONE);
+            //isActivatedWrapper.setVisibility(View.GONE);
             tile.setIsActivated(false);
 
             //Hide Tile on information wall
             activateTileOnServer(ServerURLManager.SHOW_BLACK_BOARD_PARAM_NOT_ACTIVE, tile);
         }
         DAOHelper.getTileDAO().update(tile);
+        tileOverviewAdapter.notifyDataSetChanged();
     }
 
     private void changeTileSizeOnServer(DBTile.EnumTileSize tileSize, Tile tile){

@@ -1,5 +1,7 @@
 package wipraktikum.informationwallandroidapp.ServerCommunication.Synchronisation;
 
+import android.util.Log;
+
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -56,7 +58,7 @@ public class SyncTile implements JsonManager.OnArrayResponseListener {
         jsonManagerFromServer.getJsonArray(ServerURLManager.GET_ALL_TILES_URL);
     }
 
-    private void UpdateOrCreateBlackBoardItems(JsonElement response) {
+    private void UpdateOrCreateTile(JsonElement response) {
         TileDAO tileDAO = DAOHelper.getTileDAO();
 
         Gson gsonInstance = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
@@ -64,8 +66,18 @@ public class SyncTile implements JsonManager.OnArrayResponseListener {
         }.getType());
         List<Tile> editedItemList = new ArrayList<>();
 
-        for (Tile tile : serverItemList){
+        for (int i = 0; i < serverItemList.size(); i++) {
+            Tile tile = serverItemList.get(i);
             tile = TransientManager.keepTransientTileData(tile);
+            try {
+                String tileStatus = response.getAsJsonArray().get(i).getAsJsonObject().get("mIsActivated").getAsString();
+                Log.e("Volley", tileStatus);
+                if(tileStatus.equals("active")) {
+                    tile.setIsActivated(true);
+                }
+            }catch (Exception e) {
+                Log.e("Volley", e.toString());
+            }
             editedItemList.add(tile);
         }
 
@@ -88,7 +100,7 @@ public class SyncTile implements JsonManager.OnArrayResponseListener {
 
     @Override
     public void OnResponse(JSONArray response) {
-        UpdateOrCreateBlackBoardItems(new JsonParser().parse(response.toString()));
+        UpdateOrCreateTile(new JsonParser().parse(response.toString()));
         if (mOnSyncFinishedListener != null){
             mOnSyncFinishedListener.onSyncFinished();
         }
