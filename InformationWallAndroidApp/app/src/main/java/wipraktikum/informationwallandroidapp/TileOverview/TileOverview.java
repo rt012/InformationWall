@@ -43,8 +43,6 @@ public class TileOverview extends BaseActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Sync App Data
-        syncAppData();
 
         //Set Adapter for GridView
         GridView gridView = (GridView)findViewById(R.id.gridview);
@@ -81,6 +79,24 @@ public class TileOverview extends BaseActivity {
     public void onResume(){
         super.onResume();
 
+        //Sync App Data
+        syncAppData();
+    }
+
+    private void syncAppData(){
+        //Sync Blackboard Items, Contacts, Tiles and Feeds from server and send unsynced items to it
+        SyncManager syncManager = new SyncManager();
+        syncManager.syncAll();
+        syncManager.setOnSyncFinishedListener(new SyncManager.OnSyncFinishedListener() {
+            @Override
+            public void onSyncFinished() {
+                updateTilesOnServer();
+            }
+        });
+
+    }
+
+    private void updateTilesOnServer() {
         //Show Tile if activated. Hide if not
         List<Tile> tileList = DAOHelper.getTileDAO().queryForAll();
         for (Tile tile : tileList){
@@ -90,11 +106,6 @@ public class TileOverview extends BaseActivity {
                 activateTileOnServer(ServerURLManager.SHOW_BLACK_BOARD_PARAM_NOT_ACTIVE, tile);
             }
         }
-    }
-
-    private void syncAppData(){
-        //Sync Blackboard Items, Contacts, Tiles and Feeds from server and send unsynced items to it
-        new SyncManager().syncAll();
     }
 
     private void startActivityByTile(Tile tile){
@@ -133,7 +144,7 @@ public class TileOverview extends BaseActivity {
                 } else {
                     activateTile(false, isActivatedView, tile);
                 }
-                DAOHelper.getTileDAO().update(tile);
+
             }
         });
         tileLongClickDialog.setOnRadioButtonChangeListener(new TileLongClickDialog.OnRadioButtonChangeListener() {
@@ -160,6 +171,7 @@ public class TileOverview extends BaseActivity {
             //Hide Tile on information wall
             activateTileOnServer(ServerURLManager.SHOW_BLACK_BOARD_PARAM_NOT_ACTIVE, tile);
         }
+        DAOHelper.getTileDAO().update(tile);
     }
 
     private void changeTileSizeOnServer(DBTile.EnumTileSize tileSize, Tile tile){
